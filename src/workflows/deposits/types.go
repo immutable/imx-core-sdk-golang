@@ -1,28 +1,28 @@
 package deposits
 
 import (
-	"github.com/ethereum/go-ethereum/core/types"
-	types2 "immutable.com/imx-core-sdk/workflows/types"
+	eth "github.com/ethereum/go-ethereum/core/types"
+	. "immutable.com/imx-core-sdk/workflows/types"
 )
 
 type TokenDeposit interface {
-	Deposit() types.Transaction
+	Deposit() eth.Transaction
 }
 
 type ETHDeposit struct {
-	Type   types2.TokenTypeEnum
+	Type   TokenTypeEnum
 	Amount string
 }
 
 type ERC20Deposit struct {
-	Type         types2.TokenTypeEnum
+	Type         TokenTypeEnum
 	Amount       string
 	TokenAddress string
 	Symbol       string
 }
 
 type ERC721Deposit struct {
-	Type         types2.TokenTypeEnum
+	Type         TokenTypeEnum
 	TokenId      string
 	TokenAddress string
 }

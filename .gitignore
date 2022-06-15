@@ -1,0 +1,72 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+dist
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+# Serverless directories
+.serverless
+
+# Golang output binary directory
+bin
+vendor
+
+# IDE
+.vscode
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Dependency directories
+node_modules/
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Mocks
+# Note we are in the process of committing all generated code to ensure that:
+# 1. Dev env performs identically to CI env; and
+# 2. Devs don't need to generate mocks for interfaces
+#    that are external to the module they are working on. For example
+#    all interfaces in `common`.
+mock_*
+# The following mocks are committed. These lines will not be required
+# once all generated code is committed and the `mock_*` line is removed.
+!common/**/mock_*
+!**/services/engine/**/mock_*
+!**/services/snapshot/**/mock_*
+!**/services/public-api/app/snapshot/**/mock_*
+!mock_test.go
+
+coverage.txt
+
+.idea/
+
+# Lambda
+*.zip
+**/lambdas/**/bootstrap
+
+.DS_Store
+/result
+.env
+.direnv
+/dev/
