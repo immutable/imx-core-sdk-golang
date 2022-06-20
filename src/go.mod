@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/ethereum/go-ethereum v1.10.18
+	github.com/shopspring/decimal v1.3.1
 	github.com/stretchr/testify v1.7.0
 	immutable.com/imx-core-sdk/api v0.0.0-00010101000000-000000000000
 )

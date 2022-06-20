@@ -12,30 +12,22 @@ import (
 	"math/big"
 )
 
-func (d *ERC20Deposit) Execute(e *ethereum.Client, apis *api.APIClient) (*ethtypes.Transaction, error) {
-	if d.Type != types.ERC20Type {
+func (d *ERC721Deposit) Execute(e *ethereum.Client, apis *api.APIClient) (*ethtypes.Transaction, error) {
+	if d.Type != types.ERC721Type {
 		return nil, errors.New("invalid token type")
 	}
 	ctx := context.Background()
-
-	// Get decimals for this specific ERC20
-	token, resp, err := apis.TokensApi.GetToken(ctx, d.TokenAddress).Execute()
-	if err != nil {
-		return nil, fmt.Errorf("Error when calling `TokensApi.GetToken`: %v\nFull HTTP response: %v", err, resp)
-	}
-
-	decimals, err := utils.FromStringToDecimal(token.Decimals)
-	if err != nil {
-		return nil, fmt.Errorf("Error parsing token decimals: %v\n", err)
-	}
-	amount := utils.ToWei(d.Amount, int(*decimals))
 
 	// Approve whether an amount of token from an account can be spent by a third-party account
 	auth, err := e.BuildTransactOpts(ctx)
 	if err != nil {
 		return nil, err
 	}
-	approve, err := e.IERC20Contract.Approve(auth, e.StarkContractAddress, amount)
+	tokenId, ok := utils.StringToBigInt(d.TokenId)
+	if !ok {
+		return nil, fmt.Errorf("error converting tokentId to bigint: %v\n", d.TokenId)
+	}
+	approve, err := e.IERC721Contract.Approve(auth, e.StarkContractAddress, tokenId)
 	if err != nil {
 		return nil, err
 	}
@@ -43,10 +35,11 @@ func (d *ERC20Deposit) Execute(e *ethereum.Client, apis *api.APIClient) (*ethtyp
 	e.Client.SendTransaction(ctx, approve)
 
 	// Get signable deposit details
-	getSignableDepositRequest := api.NewGetSignableDepositRequest(amount.String(), *api.NewSignableToken(), e.GetAddress().Hex())
+	const amount = "1"
+	getSignableDepositRequest := api.NewGetSignableDepositRequest(amount, *api.NewSignableToken(), e.GetAddress().Hex())
 	getSignableDepositRequest.Token.SetType(string(d.Type))
 	getSignableDepositRequest.Token.SetData(map[string]interface{}{
-		"decimals":      int(*decimals),
+		"token_id":      d.TokenId,
 		"token_address": d.TokenAddress,
 	})
 
@@ -60,6 +53,7 @@ func (d *ERC20Deposit) Execute(e *ethereum.Client, apis *api.APIClient) (*ethtyp
 	encodeAssetRequest.Token.SetType(string(d.Type))
 	encodeAssetRequest.Token.SetData(api.EncodeAssetTokenData{
 		TokenAddress: &d.TokenAddress,
+		TokenId:      &d.TokenId,
 	})
 	encodingResult, resp, err := apis.EncodingApi.EncodeAsset(ctx, "asset").EncodeAssetRequest(*encodeAssetRequest).Execute()
 	if err != nil {
@@ -83,18 +77,18 @@ func (d *ERC20Deposit) Execute(e *ethereum.Client, apis *api.APIClient) (*ethtyp
 
 	// TODO: verify if big.NewInt(int64(signableDeposit.VaultId)) is the correct conversion
 	if isRegistered {
-		return depositERC20(ctx, e, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, amount)
+		return depositERC721(ctx, e, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, tokenId)
 	} else {
-		return registerAndDepositERC20(ctx, e, apis.UsersApi, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, amount)
+		return registerAndDepositERC721(ctx, e, apis.UsersApi, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, tokenId)
 	}
 }
 
-func depositERC20(ctx context.Context, e *ethereum.Client, starkPublicKey *big.Int, vaultId *big.Int, assetType *big.Int, quantizedAmount *big.Int) (*ethtypes.Transaction, error) {
+func depositERC721(ctx context.Context, e *ethereum.Client, starkPublicKey *big.Int, vaultId *big.Int, assetType *big.Int, tokenId *big.Int) (*ethtypes.Transaction, error) {
 	auth, err := e.BuildTransactOpts(ctx)
 	if err != nil {
 		return nil, err
 	}
-	tnx, err := e.CoreContract.DepositERC20(auth, starkPublicKey, assetType, vaultId, quantizedAmount)
+	tnx, err := e.CoreContract.DepositNft(auth, starkPublicKey, assetType, vaultId, tokenId)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +105,7 @@ func depositERC20(ctx context.Context, e *ethereum.Client, starkPublicKey *big.I
 	return tnx, nil
 }
 
-func registerAndDepositERC20(ctx context.Context, e *ethereum.Client, userApi *api.UsersApiService, starkPublicKey *big.Int, vaultId *big.Int, assetType *big.Int, quantizedAmount *big.Int) (*ethtypes.Transaction, error) {
+func registerAndDepositERC721(ctx context.Context, e *ethereum.Client, userApi *api.UsersApiService, starkPublicKey *big.Int, vaultId *big.Int, assetType *big.Int, tokenId *big.Int) (*ethtypes.Transaction, error) {
 	registrationRequest := api.NewGetSignableRegistrationRequest(e.GetAddress().Hex(), starkPublicKey.String())
 	signableRegistration, resp, err := userApi.GetSignableRegistration(ctx).GetSignableRegistrationRequest(*registrationRequest).Execute()
 	if err != nil {
@@ -121,12 +115,12 @@ func registerAndDepositERC20(ctx context.Context, e *ethereum.Client, userApi *a
 	if err != nil {
 		return nil, err
 	}
-	// TODO: verify if it is correct to do []byte conversion on OperatorSignature as below
+
 	operatorSignature, err := utils.HexToByteArray(signableRegistration.OperatorSignature)
 	if err != nil {
 		return nil, err
 	}
-	tnx, err := e.CoreContract.RegisterAndDepositERC20(auth, e.GetAddress(), starkPublicKey, operatorSignature, assetType, vaultId, quantizedAmount)
+	tnx, err := e.RegistrationContract.RegisterAndDepositNft(auth, e.GetAddress(), starkPublicKey, operatorSignature, assetType, vaultId, tokenId)
 	if err != nil {
 		return nil, err
 	}
