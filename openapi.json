@@ -272,7 +272,7 @@
           },
           {
             "type": "string",
-            "description": "String created by signing wallet address and timestamp",
+            "description": "String created by signing wallet address and timestamp. See https://docs.x.immutable.com/docs/generate-imx-signature",
             "name": "IMX-Signature",
             "in": "header",
             "required": true
@@ -2856,7 +2856,8 @@
         "icon_url",
         "metadata_api_url",
         "name",
-        "project_id"
+        "project_id",
+        "project_owner_address"
       ],
       "properties": {
         "address": {
@@ -2890,6 +2891,10 @@
         "project_id": {
           "description": "The collection's project ID",
           "type": "integer"
+        },
+        "project_owner_address": {
+          "description": "Project owner address",
+          "type": "string"
         }
       }
     },
@@ -4798,7 +4803,7 @@
       "type": "object",
       "properties": {
         "data": {
-          "description": "Token data"
+          "description": "Token data. See https://docs.x.immutable.com/docs/token-data-object\""
         },
         "type": {
           "description": "Type of token",

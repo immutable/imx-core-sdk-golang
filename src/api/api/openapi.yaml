@@ -6,12 +6,7 @@ info:
   title: Immutable X API
   version: "0.1"
 servers:
-- description: dev on ropsten test network
-  url: https://api.dev.x.immutable.com/
-- description: ropsten test network
-  url: https://api.ropsten.x.immutable.com/
-- description: production network
-  url: https://api.x.immutable.com/
+- url: https://api.ropsten.x.immutable.com/
 paths:
   /v1/assets:
     get:
@@ -19,142 +14,94 @@ paths:
       operationId: listAssets
       parameters:
       - description: Page size of the result
-        explode: true
         in: query
         name: page_size
-        required: false
         schema:
           type: integer
-        style: form
       - description: Cursor
-        explode: true
         in: query
         name: cursor
-        required: false
         schema:
           type: string
-        style: form
       - description: Property to sort by
-        explode: true
         in: query
         name: order_by
-        required: false
         schema:
           enum:
           - updated_at
           - name
           type: string
-        style: form
       - description: Direction to sort (asc/desc)
-        explode: true
         in: query
         name: direction
-        required: false
         schema:
           type: string
-        style: form
       - description: Ethereum address of the user who owns these assets
-        explode: true
         in: query
         name: user
-        required: false
         schema:
           type: string
-        style: form
       - description: Status of these assets
-        explode: true
         in: query
         name: status
-        required: false
         schema:
           type: string
-        style: form
       - description: Name of the asset to search
-        explode: true
         in: query
         name: name
-        required: false
         schema:
           type: string
-        style: form
       - description: "JSON-encoded metadata filters for these asset. Example: {'proto':['1147'],'quality':['Meteorite']}"
-        explode: true
         in: query
         name: metadata
-        required: false
         schema:
           type: string
-        style: form
       - description: Set flag to true to fetch an array of sell order details with
           accepted status associated with the asset
-        explode: true
         in: query
         name: sell_orders
-        required: false
         schema:
           type: boolean
-        style: form
       - description: Set flag to true to fetch an array of buy order details  with
           accepted status associated with the asset
-        explode: true
         in: query
         name: buy_orders
-        required: false
         schema:
           type: boolean
-        style: form
       - description: Set flag to include fees associated with the asset
-        explode: true
         in: query
         name: include_fees
-        required: false
         schema:
           type: boolean
-        style: form
       - description: Collection contract address
-        explode: true
         in: query
         name: collection
-        required: false
         schema:
           type: string
-        style: form
       - description: "Minimum timestamp for when these assets were last updated, in\
           \ ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z'"
-        explode: true
         in: query
         name: updated_min_timestamp
-        required: false
         schema:
           type: string
-        style: form
       - description: "Maximum timestamp for when these assets were last updated, in\
           \ ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z'"
-        explode: true
         in: query
         name: updated_max_timestamp
-        required: false
         schema:
           type: string
-        style: form
       - description: Comma separated string of fee percentages that are to be paired
           with auxiliary_fee_recipients
-        explode: true
         in: query
         name: auxiliary_fee_percentages
-        required: false
         schema:
           type: string
-        style: form
       - description: Comma separated string of fee recipients that are to be paired
           with auxiliary_fee_percentages
-        explode: true
         in: query
         name: auxiliary_fee_recipients
-        required: false
         schema:
           type: string
-        style: form
       responses:
         "200":
           content:
@@ -171,29 +118,22 @@ paths:
       operationId: getAsset
       parameters:
       - description: Address of the ERC721 contract
-        explode: false
         in: path
         name: token_address
         required: true
         schema:
           type: string
-        style: simple
       - description: Either ERC721 token ID or internal IMX ID
-        explode: false
         in: path
         name: token_id
         required: true
         schema:
           type: string
-        style: simple
       - description: Set flag to include fees associated with the asset
-        explode: true
         in: query
         name: include_fees
-        required: false
         schema:
           type: boolean
-        style: form
       responses:
         "200":
           content:
@@ -210,61 +150,40 @@ paths:
       operationId: listCollections
       parameters:
       - description: Page size of the result
-        explode: true
         in: query
         name: page_size
-        required: false
         schema:
           type: integer
-        style: form
       - description: Cursor
-        explode: true
         in: query
         name: cursor
-        required: false
         schema:
           type: string
-        style: form
       - description: Property to sort by
-        explode: true
         in: query
         name: order_by
-        required: false
         schema:
           type: string
-        style: form
       - description: Direction to sort (asc/desc)
-        explode: true
         in: query
         name: direction
-        required: false
         schema:
           type: string
-        style: form
       - description: "List of collections not to be included, separated by commas"
-        explode: true
         in: query
         name: blacklist
-        required: false
         schema:
           type: string
-        style: form
       - description: "List of collections to be included, separated by commas"
-        explode: true
         in: query
         name: whitelist
-        required: false
         schema:
           type: string
-        style: form
       - description: Keyword to search in collection name and description
-        explode: true
         in: query
         name: keyword
-        required: false
         schema:
           type: string
-        style: form
       responses:
         "200":
           content:
@@ -279,22 +198,18 @@ paths:
       description: Create collection
       operationId: createCollection
       parameters:
-      - description: String created by signing wallet address and timestamp
-        explode: false
+      - description: String created by signing wallet address and timestamp. See https://docs.x.immutable.com/docs/generate-imx-signature
         in: header
         name: IMX-Signature
         required: true
         schema:
           type: string
-        style: simple
       - description: Unix Epoc timestamp
-        explode: false
         in: header
         name: IMX-Timestamp
         required: true
         schema:
           type: string
-        style: simple
       requestBody:
         content:
           application/json:
@@ -312,24 +227,18 @@ paths:
           headers:
             Collection_Limit_Reset:
               description: The expiry date of the current four-week window.
-              explode: false
               schema:
                 type: string
-              style: simple
             Collection_Limit:
               description: The collection limit available to the project for each
                 four-week window.
-              explode: false
               schema:
                 type: string
-              style: simple
             Collection_Remaining:
               description: The amount of collections remaining for current four-week
                 window.
-              explode: false
               schema:
                 type: string
-              style: simple
       summary: Create collection
       tags:
       - collections
@@ -340,13 +249,11 @@ paths:
       operationId: getCollection
       parameters:
       - description: Collection contract address
-        explode: false
         in: path
         name: address
         required: true
         schema:
           type: string
-        style: simple
       responses:
         "200":
           content:
@@ -362,29 +269,23 @@ paths:
       operationId: updateCollection
       parameters:
       - description: Collection contract address
-        explode: false
         in: path
         name: address
         required: true
         schema:
           type: string
-        style: simple
       - description: String created by signing wallet address and timestamp
-        explode: false
         in: header
         name: IMX-Signature
         required: true
         schema:
           type: string
-        style: simple
       - description: Unix Epoc timestamp
-        explode: false
         in: header
         name: IMX-Timestamp
         required: true
         schema:
           type: string
-        style: simple
       requestBody:
         content:
           application/json:
@@ -409,29 +310,21 @@ paths:
       operationId: listCollectionFilters
       parameters:
       - description: Collection contract address
-        explode: false
         in: path
         name: address
         required: true
         schema:
           type: string
-        style: simple
       - description: Page size of the result
-        explode: true
         in: query
         name: page_size
-        required: false
         schema:
           type: integer
-        style: form
       - description: Next page token
-        explode: true
         in: query
         name: next_page_token
-        required: false
         schema:
           type: string
-        style: form
       responses:
         "200":
           content:
@@ -448,13 +341,11 @@ paths:
       operationId: getMetadataSchema
       parameters:
       - description: Collection contract address
-        explode: false
         in: path
         name: address
         required: true
         schema:
           type: string
-        style: simple
       responses:
         "200":
           content:
@@ -472,29 +363,23 @@ paths:
       operationId: addMetadataSchemaToCollection
       parameters:
       - description: Collection contract address
-        explode: false
         in: path
         name: address
         required: true
         schema:
           type: string
-        style: simple
       - description: String created by signing wallet address and timestamp
-        explode: false
         in: header
         name: IMX-Signature
         required: true
         schema:
           type: string
-        style: simple
       - description: Unix Epoc timestamp
-        explode: false
         in: header
         name: IMX-Timestamp
         required: true
         schema:
           type: string
-        style: simple
       requestBody:
         content:
           application/json:
@@ -519,37 +404,29 @@ paths:
       operationId: updateMetadataSchemaByName
       parameters:
       - description: Collection contract address
-        explode: false
         in: path
         name: address
         required: true
         schema:
           type: string
-        style: simple
       - description: Metadata schema name
-        explode: false
         in: path
         name: name
         required: true
         schema:
           type: string
-        style: simple
       - description: String created by signing wallet address and timestamp
-        explode: false
         in: header
         name: IMX-Signature
         required: true
         schema:
           type: string
-        style: simple
       - description: Unix Epoc timestamp
-        explode: false
         in: header
         name: IMX-Timestamp
         required: true
         schema:
           type: string
-        style: simple
       requestBody:
         content:
           application/json:
@@ -574,135 +451,87 @@ paths:
       operationId: listDeposits
       parameters:
       - description: Page size of the result
-        explode: true
         in: query
         name: page_size
-        required: false
         schema:
           type: integer
-        style: form
       - description: Cursor
-        explode: true
         in: query
         name: cursor
-        required: false
         schema:
           type: string
-        style: form
       - description: Property to sort by
-        explode: true
         in: query
         name: order_by
-        required: false
         schema:
           type: string
-        style: form
       - description: Direction to sort (asc/desc)
-        explode: true
         in: query
         name: direction
-        required: false
         schema:
           type: string
-        style: form
       - description: Ethereum address of the user who submitted this deposit
-        explode: true
         in: query
         name: user
-        required: false
         schema:
           type: string
-        style: form
       - description: Status of this deposit
-        explode: true
         in: query
         name: status
-        required: false
         schema:
           type: string
-        style: form
       - description: "Minimum timestamp for this deposit, in ISO 8601 UTC format.\
           \ Example: '2022-05-27T00:10:22Z'"
-        explode: true
         in: query
         name: updated_min_timestamp
-        required: false
         schema:
           type: string
-        style: form
       - description: "Maximum timestamp for this deposit, in ISO 8601 UTC format.\
           \ Example: '2022-05-27T00:10:22Z'"
-        explode: true
         in: query
         name: updated_max_timestamp
-        required: false
         schema:
           type: string
-        style: form
       - description: Token type of the deposited asset
-        explode: true
         in: query
         name: token_type
-        required: false
         schema:
           type: string
-        style: form
       - description: ERC721 Token ID of the minted asset
-        explode: true
         in: query
         name: token_id
-        required: false
         schema:
           type: string
-        style: form
       - description: Internal IMX ID of the minted asset
-        explode: true
         in: query
         name: asset_id
-        required: false
         schema:
           type: string
-        style: form
       - description: Token address of the deposited asset
-        explode: true
         in: query
         name: token_address
-        required: false
         schema:
           type: string
-        style: form
       - description: Token name of the deposited asset
-        explode: true
         in: query
         name: token_name
-        required: false
         schema:
           type: string
-        style: form
       - description: Min quantity for the deposited asset
-        explode: true
         in: query
         name: min_quantity
-        required: false
         schema:
           type: string
-        style: form
       - description: Max quantity for the deposited asset
-        explode: true
         in: query
         name: max_quantity
-        required: false
         schema:
           type: string
-        style: form
       - description: JSON-encoded metadata filters for the deposited asset
-        explode: true
         in: query
         name: metadata
-        required: false
         schema:
           type: string
-        style: form
       responses:
         "200":
           content:
@@ -719,13 +548,11 @@ paths:
       operationId: getDeposit
       parameters:
       - description: Deposit ID
-        explode: false
         in: path
         name: id
         required: true
         schema:
           type: string
-        style: simple
       responses:
         "200":
           content:
@@ -743,13 +570,11 @@ paths:
       operationId: encodeAsset
       parameters:
       - description: Asset type to be encoded. (asset/mintable-asset)
-        explode: false
         in: path
         name: assetType
         required: true
         schema:
           type: string
-        style: simple
       requestBody:
         content:
           application/json:
@@ -775,21 +600,17 @@ paths:
       operationId: getMintableTokenDetailsByClientTokenId
       parameters:
       - description: Address of the ERC721 contract
-        explode: false
         in: path
         name: token_address
         required: true
         schema:
           type: string
-        style: simple
       - description: ERC721 token ID
-        explode: false
         in: path
         name: token_id
         required: true
         schema:
           type: string
-        style: simple
       responses:
         "200":
           content:
@@ -807,135 +628,87 @@ paths:
       operationId: listMints
       parameters:
       - description: Page size of the result
-        explode: true
         in: query
         name: page_size
-        required: false
         schema:
           type: integer
-        style: form
       - description: Cursor
-        explode: true
         in: query
         name: cursor
-        required: false
         schema:
           type: string
-        style: form
       - description: Property to sort by
-        explode: true
         in: query
         name: order_by
-        required: false
         schema:
           type: string
-        style: form
       - description: Direction to sort (asc/desc)
-        explode: true
         in: query
         name: direction
-        required: false
         schema:
           type: string
-        style: form
       - description: Ethereum address of the user who submitted this mint
-        explode: true
         in: query
         name: user
-        required: false
         schema:
           type: string
-        style: form
       - description: Status of this mint
-        explode: true
         in: query
         name: status
-        required: false
         schema:
           type: string
-        style: form
       - description: "Minimum timestamp for this mint, in ISO 8601 UTC format. Example:\
           \ '2022-05-27T00:10:22Z'"
-        explode: true
         in: query
         name: updated_min_timestamp
-        required: false
         schema:
           type: string
-        style: form
       - description: "Maximum timestamp for this mint, in ISO 8601 UTC format. Example:\
           \ '2022-05-27T00:10:22Z'"
-        explode: true
         in: query
         name: updated_max_timestamp
-        required: false
         schema:
           type: string
-        style: form
       - description: Token type of the minted asset
-        explode: true
         in: query
         name: token_type
-        required: false
         schema:
           type: string
-        style: form
       - description: ERC721 Token ID of the minted asset
-        explode: true
         in: query
         name: token_id
-        required: false
         schema:
           type: string
-        style: form
       - description: Internal IMX ID of the minted asset
-        explode: true
         in: query
         name: asset_id
-        required: false
         schema:
           type: string
-        style: form
       - description: Token Name of the minted asset
-        explode: true
         in: query
         name: token_name
-        required: false
         schema:
           type: string
-        style: form
       - description: Token address of the minted asset
-        explode: true
         in: query
         name: token_address
-        required: false
         schema:
           type: string
-        style: form
       - description: Min quantity for the minted asset
-        explode: true
         in: query
         name: min_quantity
-        required: false
         schema:
           type: string
-        style: form
       - description: Max quantity for the minted asset
-        explode: true
         in: query
         name: max_quantity
-        required: false
         schema:
           type: string
-        style: form
       - description: JSON-encoded metadata filters for the minted asset
-        explode: true
         in: query
         name: metadata
-        required: false
         schema:
           type: string
-        style: form
       responses:
         "200":
           content:
@@ -952,13 +725,11 @@ paths:
       operationId: getMint
       parameters:
       - description: Mint ID. This is the transaction_id returned from listMints
-        explode: false
         in: path
         name: id
         required: true
         schema:
           type: string
-        style: simple
       responses:
         "200":
           content:
@@ -975,26 +746,18 @@ paths:
       operationId: listOrders
       parameters:
       - description: Page size of the result
-        explode: true
         in: query
         name: page_size
-        required: false
         schema:
           type: integer
-        style: form
       - description: Cursor
-        explode: true
         in: query
         name: cursor
-        required: false
         schema:
           type: string
-        style: form
       - description: Property to sort by
-        explode: true
         in: query
         name: order_by
-        required: false
         schema:
           enum:
           - created_at
@@ -1004,28 +767,19 @@ paths:
           - buy_quantity_with_fees
           - updated_at
           type: string
-        style: form
       - description: Direction to sort (asc/desc)
-        explode: true
         in: query
         name: direction
-        required: false
         schema:
           type: string
-        style: form
       - description: Ethereum address of the user who submitted this order
-        explode: true
         in: query
         name: user
-        required: false
         schema:
           type: string
-        style: form
       - description: Status of this order
-        explode: true
         in: query
         name: status
-        required: false
         schema:
           enum:
           - active
@@ -1034,191 +788,124 @@ paths:
           - expired
           - inactive
           type: string
-        style: form
       - description: "Minimum created at timestamp for this order, in ISO 8601 UTC\
           \ format. Example: '2022-05-27T00:10:22Z'"
-        explode: true
         in: query
         name: min_timestamp
-        required: false
         schema:
           type: string
-        style: form
       - description: "Maximum created at timestamp for this order, in ISO 8601 UTC\
           \ format. Example: '2022-05-27T00:10:22Z'"
-        explode: true
         in: query
         name: max_timestamp
-        required: false
         schema:
           type: string
-        style: form
       - description: "Minimum updated at timestamp for this order, in ISO 8601 UTC\
           \ format. Example: '2022-05-27T00:10:22Z'"
-        explode: true
         in: query
         name: updated_min_timestamp
-        required: false
         schema:
           type: string
-        style: form
       - description: "Maximum updated at timestamp for this order, in ISO 8601 UTC\
           \ format. Example: '2022-05-27T00:10:22Z'"
-        explode: true
         in: query
         name: updated_max_timestamp
-        required: false
         schema:
           type: string
-        style: form
       - description: Token type of the asset this order buys
-        explode: true
         in: query
         name: buy_token_type
-        required: false
         schema:
           type: string
-        style: form
       - description: ERC721 Token ID of the asset this order buys
-        explode: true
         in: query
         name: buy_token_id
-        required: false
         schema:
           type: string
-        style: form
       - description: Internal IMX ID of the asset this order buys
-        explode: true
         in: query
         name: buy_asset_id
-        required: false
         schema:
           type: string
-        style: form
       - description: Comma separated string of token addresses of the asset this order
           buys
-        explode: true
         in: query
         name: buy_token_address
-        required: false
         schema:
           type: string
-        style: form
       - description: Token name of the asset this order buys
-        explode: true
         in: query
         name: buy_token_name
-        required: false
         schema:
           type: string
-        style: form
       - description: Min quantity for the asset this order buys
-        explode: true
         in: query
         name: buy_min_quantity
-        required: false
         schema:
           type: string
-        style: form
       - description: Max quantity for the asset this order buys
-        explode: true
         in: query
         name: buy_max_quantity
-        required: false
         schema:
           type: string
-        style: form
       - description: JSON-encoded metadata filters for the asset this order buys
-        explode: true
         in: query
         name: buy_metadata
-        required: false
         schema:
           type: string
-        style: form
       - description: Token type of the asset this order sells
-        explode: true
         in: query
         name: sell_token_type
-        required: false
         schema:
           type: string
-        style: form
       - description: ERC721 Token ID of the asset this order sells
-        explode: true
         in: query
         name: sell_token_id
-        required: false
         schema:
           type: string
-        style: form
       - description: Internal IMX ID of the asset this order sells
-        explode: true
         in: query
         name: sell_asset_id
-        required: false
         schema:
           type: string
-        style: form
       - description: Comma separated string of token addresses of the asset this order
           sells
-        explode: true
         in: query
         name: sell_token_address
-        required: false
         schema:
           type: string
-        style: form
       - description: Token name of the asset this order sells
-        explode: true
         in: query
         name: sell_token_name
-        required: false
         schema:
           type: string
-        style: form
       - description: Min quantity for the asset this order sells
-        explode: true
         in: query
         name: sell_min_quantity
-        required: false
         schema:
           type: string
-        style: form
       - description: Max quantity for the asset this order sells
-        explode: true
         in: query
         name: sell_max_quantity
-        required: false
         schema:
           type: string
-        style: form
       - description: JSON-encoded metadata filters for the asset this order sells
-        explode: true
         in: query
         name: sell_metadata
-        required: false
         schema:
           type: string
-        style: form
       - description: Comma separated string of fee percentages that are to be paired
           with auxiliary_fee_recipients
-        explode: true
         in: query
         name: auxiliary_fee_percentages
-        required: false
         schema:
           type: string
-        style: form
       - description: Comma separated string of fee recipients that are to be paired
           with auxiliary_fee_percentages
-        explode: true
         in: query
         name: auxiliary_fee_recipients
-        required: false
         schema:
           type: string
-        style: form
       responses:
         "200":
           content:
@@ -1234,21 +921,15 @@ paths:
       operationId: createOrder
       parameters:
       - description: eth address
-        explode: false
         in: header
         name: x-imx-eth-address
-        required: false
         schema:
           type: string
-        style: simple
       - description: eth signature
-        explode: false
         in: header
         name: x-imx-eth-signature
-        required: false
         schema:
           type: string
-        style: simple
       requestBody:
         content:
           application/json:
@@ -1273,29 +954,21 @@ paths:
       operationId: cancelOrder
       parameters:
       - description: eth address
-        explode: false
         in: header
         name: x-imx-eth-address
-        required: false
         schema:
           type: string
-        style: simple
       - description: eth signature
-        explode: false
         in: header
         name: x-imx-eth-signature
-        required: false
         schema:
           type: string
-        style: simple
       - description: Order ID to cancel
-        explode: false
         in: path
         name: id
         required: true
         schema:
           type: string
-        style: simple
       requestBody:
         content:
           application/json:
@@ -1319,39 +992,28 @@ paths:
       operationId: getOrder
       parameters:
       - description: Order ID
-        explode: false
         in: path
         name: id
         required: true
         schema:
           type: string
-        style: simple
       - description: Set flag to true to include fee body for the order
-        explode: true
         in: query
         name: include_fees
-        required: false
         schema:
           type: boolean
-        style: form
       - description: Comma separated string of fee percentages that are to be paired
           with auxiliary_fee_recipients
-        explode: true
         in: query
         name: auxiliary_fee_percentages
-        required: false
         schema:
           type: string
-        style: form
       - description: Comma separated string of fee recipients that are to be paired
           with auxiliary_fee_percentages
-        explode: true
         in: query
         name: auxiliary_fee_recipients
-        required: false
         schema:
           type: string
-        style: form
       responses:
         "200":
           content:
@@ -1368,53 +1030,37 @@ paths:
       operationId: getProjects
       parameters:
       - description: Page size of the result
-        explode: true
         in: query
         name: page_size
-        required: false
         schema:
           type: integer
-        style: form
       - description: Cursor
-        explode: true
         in: query
         name: cursor
-        required: false
         schema:
           type: string
-        style: form
       - description: Property to sort by
-        explode: true
         in: query
         name: order_by
-        required: false
         schema:
           type: string
-        style: form
       - description: Direction to sort (asc/desc)
-        explode: true
         in: query
         name: direction
-        required: false
         schema:
           type: string
-        style: form
       - description: String created by signing wallet address and timestamp
-        explode: false
         in: header
         name: IMX-Signature
         required: true
         schema:
           type: string
-        style: simple
       - description: Unix Epoc timestamp
-        explode: false
         in: header
         name: IMX-Timestamp
         required: true
         schema:
           type: string
-        style: simple
       responses:
         "200":
           content:
@@ -1430,21 +1076,17 @@ paths:
       operationId: createProject
       parameters:
       - description: String created by signing wallet address and timestamp
-        explode: false
         in: header
         name: IMX-Signature
         required: true
         schema:
           type: string
-        style: simple
       - description: Unix Epoc timestamp
-        explode: false
         in: header
         name: IMX-Timestamp
         required: true
         schema:
           type: string
-        style: simple
       requestBody:
         content:
           application/json:
@@ -1469,29 +1111,23 @@ paths:
       operationId: getProject
       parameters:
       - description: Project ID
-        explode: false
         in: path
         name: id
         required: true
         schema:
           type: string
-        style: simple
       - description: String created by signing wallet address and timestamp
-        explode: false
         in: header
         name: IMX-Signature
         required: true
         schema:
           type: string
-        style: simple
       - description: Unix Epoc timestamp
-        explode: false
         in: header
         name: IMX-Timestamp
         required: true
         schema:
           type: string
-        style: simple
       responses:
         "200":
           content:
@@ -1640,21 +1276,15 @@ paths:
       operationId: listTokens
       parameters:
       - description: Contract address of the token
-        explode: true
         in: query
         name: address
-        required: false
         schema:
           type: string
-        style: form
       - description: "Token symbols for the token, e.g. ?symbols=IMX,ETH"
-        explode: true
         in: query
         name: symbols
-        required: false
         schema:
           type: string
-        style: form
       responses:
         "200":
           content:
@@ -1671,13 +1301,11 @@ paths:
       operationId: getToken
       parameters:
       - description: Token Contract Address
-        explode: false
         in: path
         name: address
         required: true
         schema:
           type: string
-        style: simple
       responses:
         "200":
           content:
@@ -1694,103 +1322,67 @@ paths:
       operationId: listTrades
       parameters:
       - description: Party A's sell token type
-        explode: true
         in: query
         name: party_a_token_type
-        required: false
         schema:
           type: string
-        style: form
       - description: Party A's sell token address
-        explode: true
         in: query
         name: party_a_token_address
-        required: false
         schema:
           type: string
-        style: form
       - description: Party A's sell token id
-        explode: true
         in: query
         name: party_a_token_id
-        required: false
         schema:
           type: string
-        style: form
       - description: Party B's sell token type
-        explode: true
         in: query
         name: party_b_token_type
-        required: false
         schema:
           type: string
-        style: form
       - description: Party B's sell token address
-        explode: true
         in: query
         name: party_b_token_address
-        required: false
         schema:
           type: string
-        style: form
       - description: Party B's sell token id
-        explode: true
         in: query
         name: party_b_token_id
-        required: false
         schema:
           type: string
-        style: form
       - description: Page size of the result
-        explode: true
         in: query
         name: page_size
-        required: false
         schema:
           type: integer
-        style: form
       - description: Cursor
-        explode: true
         in: query
         name: cursor
-        required: false
         schema:
           type: string
-        style: form
       - description: Property to sort by
-        explode: true
         in: query
         name: order_by
-        required: false
         schema:
           type: string
-        style: form
       - description: Direction to sort (asc/desc)
-        explode: true
         in: query
         name: direction
-        required: false
         schema:
           type: string
-        style: form
       - description: "Minimum timestamp for this trade, in ISO 8601 UTC format. Example:\
           \ '2022-05-27T00:10:22Z'"
-        explode: true
         in: query
         name: min_timestamp
-        required: false
         schema:
           type: string
-        style: form
       - description: "Maximum timestamp for this trade, in ISO 8601 UTC format. Example:\
           \ '2022-05-27T00:10:22Z'"
-        explode: true
         in: query
         name: max_timestamp
-        required: false
         schema:
           type: string
-        style: form
       responses:
         "200":
           content:
@@ -1806,21 +1398,15 @@ paths:
       operationId: createTrade
       parameters:
       - description: eth address
-        explode: false
         in: header
         name: x-imx-eth-address
-        required: false
         schema:
           type: string
-        style: simple
       - description: eth signature
-        explode: false
         in: header
         name: x-imx-eth-signature
-        required: false
         schema:
           type: string
-        style: simple
       requestBody:
         content:
           application/json:
@@ -1845,13 +1431,11 @@ paths:
       operationId: getTrade
       parameters:
       - description: Trade ID
-        explode: false
         in: path
         name: id
         required: true
         schema:
           type: string
-        style: simple
       responses:
         "200":
           content:
@@ -1868,146 +1452,95 @@ paths:
       operationId: listTransfers
       parameters:
       - description: Page size of the result
-        explode: true
         in: query
         name: page_size
-        required: false
         schema:
           type: integer
-        style: form
       - description: Cursor
-        explode: true
         in: query
         name: cursor
-        required: false
         schema:
           type: string
-        style: form
       - description: Property to sort by
-        explode: true
         in: query
         name: order_by
-        required: false
         schema:
           type: string
-        style: form
       - description: Direction to sort (asc/desc)
-        explode: true
         in: query
         name: direction
-        required: false
         schema:
           type: string
-        style: form
       - description: Ethereum address of the user who submitted this transfer
-        explode: true
         in: query
         name: user
-        required: false
         schema:
           type: string
-        style: form
       - description: Ethereum address of the user who received this transfer
-        explode: true
         in: query
         name: receiver
-        required: false
         schema:
           type: string
-        style: form
       - description: Status of this transfer
-        explode: true
         in: query
         name: status
-        required: false
         schema:
           enum:
           - success
           - failure
           type: string
-        style: form
       - description: "Minimum timestamp for this transfer, in ISO 8601 UTC format.\
           \ Example: '2022-05-27T00:10:22Z'"
-        explode: true
         in: query
         name: min_timestamp
-        required: false
         schema:
           type: string
-        style: form
       - description: "Maximum timestamp for this transfer, in ISO 8601 UTC format.\
           \ Example: '2022-05-27T00:10:22Z'"
-        explode: true
         in: query
         name: max_timestamp
-        required: false
         schema:
           type: string
-        style: form
       - description: Token type of the transferred asset
-        explode: true
         in: query
         name: token_type
-        required: false
         schema:
           type: string
-        style: form
       - description: ERC721 Token ID of the minted asset
-        explode: true
         in: query
         name: token_id
-        required: false
         schema:
           type: string
-        style: form
       - description: Internal IMX ID of the minted asset
-        explode: true
         in: query
         name: asset_id
-        required: false
         schema:
           type: string
-        style: form
       - description: Token address of the transferred asset
-        explode: true
         in: query
         name: token_address
-        required: false
         schema:
           type: string
-        style: form
       - description: Token name of the transferred asset
-        explode: true
         in: query
         name: token_name
-        required: false
         schema:
           type: string
-        style: form
       - description: Max quantity for the transferred asset
-        explode: true
         in: query
         name: min_quantity
-        required: false
         schema:
           type: string
-        style: form
       - description: Max quantity for the transferred asset
-        explode: true
         in: query
         name: max_quantity
-        required: false
         schema:
           type: string
-        style: form
       - description: JSON-encoded metadata filters for the transferred asset
-        explode: true
         in: query
         name: metadata
-        required: false
         schema:
           type: string
-        style: form
       responses:
         "200":
           content:
@@ -2023,21 +1556,15 @@ paths:
       operationId: createTransferV1
       parameters:
       - description: eth address
-        explode: false
         in: header
         name: x-imx-eth-address
-        required: false
         schema:
           type: string
-        style: simple
       - description: eth signature
-        explode: false
         in: header
         name: x-imx-eth-signature
-        required: false
         schema:
           type: string
-        style: simple
       requestBody:
         content:
           application/json:
@@ -2062,13 +1589,11 @@ paths:
       operationId: getTransfer
       parameters:
       - description: Transfer ID
-        explode: false
         in: path
         name: id
         required: true
         schema:
           type: string
-        style: simple
       responses:
         "200":
           content:
@@ -2107,13 +1632,11 @@ paths:
       operationId: getUsers
       parameters:
       - description: User
-        explode: false
         in: path
         name: user
         required: true
         schema:
           type: string
-        style: simple
       responses:
         "200":
           content:
@@ -2130,151 +1653,97 @@ paths:
       operationId: listWithdrawals
       parameters:
       - description: Withdrawal has been transferred to user's Layer 1 wallet
-        explode: true
         in: query
         name: withdrawn_to_wallet
-        required: false
         schema:
           type: boolean
-        style: form
       - description: Status of the on-chain batch confirmation for this withdrawal
-        explode: true
         in: query
         name: rollup_status
-        required: false
         schema:
           type: string
-        style: form
       - description: Page size of the result
-        explode: true
         in: query
         name: page_size
-        required: false
         schema:
           type: integer
-        style: form
       - description: Cursor
-        explode: true
         in: query
         name: cursor
-        required: false
         schema:
           type: string
-        style: form
       - description: Property to sort by
-        explode: true
         in: query
         name: order_by
-        required: false
         schema:
           type: string
-        style: form
       - description: Direction to sort (asc/desc)
-        explode: true
         in: query
         name: direction
-        required: false
         schema:
           type: string
-        style: form
       - description: Ethereum address of the user who submitted this withdrawal
-        explode: true
         in: query
         name: user
-        required: false
         schema:
           type: string
-        style: form
       - description: Status of this withdrawal
-        explode: true
         in: query
         name: status
-        required: false
         schema:
           type: string
-        style: form
       - description: "Minimum timestamp for this deposit, in ISO 8601 UTC format.\
           \ Example: '2022-05-27T00:10:22Z'"
-        explode: true
         in: query
         name: min_timestamp
-        required: false
         schema:
           type: string
-        style: form
       - description: "Maximum timestamp for this deposit, in ISO 8601 UTC format.\
           \ Example: '2022-05-27T00:10:22Z'"
-        explode: true
         in: query
         name: max_timestamp
-        required: false
         schema:
           type: string
-        style: form
       - description: Token type of the withdrawn asset
-        explode: true
         in: query
         name: token_type
-        required: false
         schema:
           type: string
-        style: form
       - description: ERC721 Token ID of the minted asset
-        explode: true
         in: query
         name: token_id
-        required: false
         schema:
           type: string
-        style: form
       - description: Internal IMX ID of the minted asset
-        explode: true
         in: query
         name: asset_id
-        required: false
         schema:
           type: string
-        style: form
       - description: Token address of the withdrawn asset
-        explode: true
         in: query
         name: token_address
-        required: false
         schema:
           type: string
-        style: form
       - description: Token name of the withdrawn asset
-        explode: true
         in: query
         name: token_name
-        required: false
         schema:
           type: string
-        style: form
       - description: Min quantity for the withdrawn asset
-        explode: true
         in: query
         name: min_quantity
-        required: false
         schema:
           type: string
-        style: form
       - description: Max quantity for the withdrawn asset
-        explode: true
         in: query
         name: max_quantity
-        required: false
         schema:
           type: string
-        style: form
       - description: JSON-encoded metadata filters for the withdrawn asset
-        explode: true
         in: query
         name: metadata
-        required: false
         schema:
           type: string
-        style: form
       responses:
         "200":
           content:
@@ -2290,21 +1759,15 @@ paths:
       operationId: createWithdrawal
       parameters:
       - description: eth address
-        explode: false
         in: header
         name: x-imx-eth-address
-        required: false
         schema:
           type: string
-        style: simple
       - description: eth signature
-        explode: false
         in: header
         name: x-imx-eth-signature
-        required: false
         schema:
           type: string
-        style: simple
       requestBody:
         content:
           application/json:
@@ -2329,13 +1792,11 @@ paths:
       operationId: getWithdrawal
       parameters:
       - description: Withdrawal ID
-        explode: false
         in: path
         name: id
         required: true
         schema:
           type: string
-        style: simple
       responses:
         "200":
           content:
@@ -2352,13 +1813,11 @@ paths:
       operationId: listBalances
       parameters:
       - description: Ethereum wallet address for user
-        explode: false
         in: path
         name: owner
         required: true
         schema:
           type: string
-        style: simple
       responses:
         "200":
           content:
@@ -2375,21 +1834,17 @@ paths:
       operationId: getBalance
       parameters:
       - description: Address of the owner/user
-        explode: false
         in: path
         name: owner
         required: true
         schema:
           type: string
-        style: simple
       - description: Token address
-        explode: false
         in: path
         name: address
         required: true
         schema:
           type: string
-        style: simple
       responses:
         "200":
           content:
@@ -2423,23 +1878,17 @@ paths:
           headers:
             Mint_Limit_Reset:
               description: The expiry date of the current four-week window.
-              explode: false
               schema:
                 type: string
-              style: simple
             Mint_Limit:
               description: The mint limit available to the project for each four-week
                 window.
-              explode: false
               schema:
                 type: string
-              style: simple
             Mint_Remaining:
               description: The amount of mints remaining for current four-week window.
-              explode: false
               schema:
                 type: string
-              style: simple
       summary: Mint Tokens V2
       tags:
       - mints
@@ -2472,21 +1921,15 @@ paths:
       operationId: createTransfer
       parameters:
       - description: eth address
-        explode: false
         in: header
         name: x-imx-eth-address
-        required: false
         schema:
           type: string
-        style: simple
       - description: eth signature
-        explode: false
         in: header
         name: x-imx-eth-signature
-        required: false
         schema:
           type: string
-        style: simple
       requestBody:
         content:
           application/json:
@@ -2756,6 +2199,7 @@ components:
         metadata_api_url: metadata_api_url
         name: name
         description: description
+        project_owner_address: project_owner_address
       properties:
         address:
           description: Ethereum address of the ERC721 contract
@@ -2782,6 +2226,9 @@ components:
         project_id:
           description: The collection's project ID
           type: integer
+        project_owner_address:
+          description: Project owner address
+          type: string
       required:
       - address
       - collection_image_url
@@ -2790,6 +2237,7 @@ components:
       - metadata_api_url
       - name
       - project_id
+      - project_owner_address
       type: object
     CollectionDetails:
       example:
@@ -4153,6 +3601,7 @@ components:
           metadata_api_url: metadata_api_url
           name: name
           description: description
+          project_owner_address: project_owner_address
         - icon_url: icon_url
           collection_image_url: collection_image_url
           address: address
@@ -4160,6 +3609,7 @@ components:
           metadata_api_url: metadata_api_url
           name: name
           description: description
+          project_owner_address: project_owner_address
         remaining: 0
       properties:
         cursor:
@@ -5201,7 +4651,7 @@ components:
         type: ETH/ERC20/ERC721
       properties:
         data:
-          description: Token data
+          description: Token data. See https://docs.x.immutable.com/docs/token-data-object"
           type: object
         type:
           description: Type of token

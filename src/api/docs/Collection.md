@@ -11,12 +11,13 @@ Name | Type | Description | Notes
 **MetadataApiUrl** | **NullableString** | URL of the metadata for this collection | 
 **Name** | **string** | Name of the collection | 
 **ProjectId** | **int32** | The collection&#39;s project ID | 
+**ProjectOwnerAddress** | **string** | Project owner address | 
 
 ## Methods
 
 ### NewCollection
 
-`func NewCollection(address string, collectionImageUrl NullableString, description NullableString, iconUrl NullableString, metadataApiUrl NullableString, name string, projectId int32, ) *Collection`
+`func NewCollection(address string, collectionImageUrl NullableString, description NullableString, iconUrl NullableString, metadataApiUrl NullableString, name string, projectId int32, projectOwnerAddress string, ) *Collection`
 
 NewCollection instantiates a new Collection object
 This constructor will assign default values to properties that have it defined,
@@ -209,6 +210,26 @@ and a boolean to check if the value has been set.
 `func (o *Collection) SetProjectId(v int32)`
 
 SetProjectId sets ProjectId field to given value.
+
+
+### GetProjectOwnerAddress
+
+`func (o *Collection) GetProjectOwnerAddress() string`
+
+GetProjectOwnerAddress returns the ProjectOwnerAddress field if non-nil, zero value otherwise.
+
+### GetProjectOwnerAddressOk
+
+`func (o *Collection) GetProjectOwnerAddressOk() (*string, bool)`
+
+GetProjectOwnerAddressOk returns a tuple with the ProjectOwnerAddress field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetProjectOwnerAddress
+
+`func (o *Collection) SetProjectOwnerAddress(v string)`
+
+SetProjectOwnerAddress sets ProjectOwnerAddress field to given value.
 
 
 

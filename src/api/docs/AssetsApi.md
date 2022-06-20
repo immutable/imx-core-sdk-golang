@@ -1,6 +1,6 @@
 # \AssetsApi
 
-All URIs are relative to *https://api.dev.x.immutable.com*
+All URIs are relative to *https://api.ropsten.x.immutable.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -38,7 +38,7 @@ func main() {
     apiClient := openapiclient.NewAPIClient(configuration)
     resp, r, err := apiClient.AssetsApi.GetAsset(context.Background(), tokenAddress, tokenId).IncludeFees(includeFees).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `AssetsApi.GetAsset``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `AssetsApi.GetAsset`: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
     // response from `GetAsset`: Asset

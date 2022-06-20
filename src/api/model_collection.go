@@ -31,13 +31,15 @@ type Collection struct {
 	Name string `json:"name"`
 	// The collection's project ID
 	ProjectId int32 `json:"project_id"`
+	// Project owner address
+	ProjectOwnerAddress string `json:"project_owner_address"`
 }
 
 // NewCollection instantiates a new Collection object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCollection(address string, collectionImageUrl NullableString, description NullableString, iconUrl NullableString, metadataApiUrl NullableString, name string, projectId int32) *Collection {
+func NewCollection(address string, collectionImageUrl NullableString, description NullableString, iconUrl NullableString, metadataApiUrl NullableString, name string, projectId int32, projectOwnerAddress string) *Collection {
 	this := Collection{}
 	this.Address = address
 	this.CollectionImageUrl = collectionImageUrl
@@ -46,6 +48,7 @@ func NewCollection(address string, collectionImageUrl NullableString, descriptio
 	this.MetadataApiUrl = metadataApiUrl
 	this.Name = name
 	this.ProjectId = projectId
+	this.ProjectOwnerAddress = projectOwnerAddress
 	return &this
 }
 
@@ -233,6 +236,30 @@ func (o *Collection) SetProjectId(v int32) {
 	o.ProjectId = v
 }
 
+// GetProjectOwnerAddress returns the ProjectOwnerAddress field value
+func (o *Collection) GetProjectOwnerAddress() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.ProjectOwnerAddress
+}
+
+// GetProjectOwnerAddressOk returns a tuple with the ProjectOwnerAddress field value
+// and a boolean to check if the value has been set.
+func (o *Collection) GetProjectOwnerAddressOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.ProjectOwnerAddress, true
+}
+
+// SetProjectOwnerAddress sets field value
+func (o *Collection) SetProjectOwnerAddress(v string) {
+	o.ProjectOwnerAddress = v
+}
+
 func (o Collection) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if true {
@@ -255,6 +282,9 @@ func (o Collection) MarshalJSON() ([]byte, error) {
 	}
 	if true {
 		toSerialize["project_id"] = o.ProjectId
+	}
+	if true {
+		toSerialize["project_owner_address"] = o.ProjectOwnerAddress
 	}
 	return json.Marshal(toSerialize)
 }

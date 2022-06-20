@@ -1,6 +1,6 @@
 # \CollectionsApi
 
-All URIs are relative to *https://api.dev.x.immutable.com*
+All URIs are relative to *https://api.ropsten.x.immutable.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -33,7 +33,7 @@ import (
 )
 
 func main() {
-    iMXSignature := "iMXSignature_example" // string | String created by signing wallet address and timestamp
+    iMXSignature := "iMXSignature_example" // string | String created by signing wallet address and timestamp. See https://docs.x.immutable.com/docs/generate-imx-signature
     iMXTimestamp := "iMXTimestamp_example" // string | Unix Epoc timestamp
     createCollectionRequest := *openapiclient.NewCreateCollectionRequest("ContractAddress_example", "Name_example", "OwnerPublicKey_example") // CreateCollectionRequest | create a collection
 
@@ -60,7 +60,7 @@ Other parameters are passed through a pointer to a apiCreateCollectionRequest st
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **iMXSignature** | **string** | String created by signing wallet address and timestamp | 
+ **iMXSignature** | **string** | String created by signing wallet address and timestamp. See https://docs.x.immutable.com/docs/generate-imx-signature | 
  **iMXTimestamp** | **string** | Unix Epoc timestamp | 
  **createCollectionRequest** | [**CreateCollectionRequest**](CreateCollectionRequest.md) | create a collection | 
 
