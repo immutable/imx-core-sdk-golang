@@ -1,3 +1,7 @@
 go 1.18
 
-use ./generated
+use (
+	./examples/publicapi/list_assets
+	./generated
+	./src
+)
