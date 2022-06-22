@@ -46,6 +46,10 @@ type Collection struct {
 	// The collection's project ID
 	// Required: true
 	ProjectID *int64 `json:"project_id"`
+
+	// Project owner address
+	// Required: true
+	ProjectOwnerAddress *string `json:"project_owner_address"`
 }
 
 // Validate validates this collection
@@ -77,6 +81,10 @@ func (m *Collection) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateProjectID(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateProjectOwnerAddress(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -143,6 +151,15 @@ func (m *Collection) validateName(formats strfmt.Registry) error {
 func (m *Collection) validateProjectID(formats strfmt.Registry) error {
 
 	if err := validate.Required("project_id", "body", m.ProjectID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *Collection) validateProjectOwnerAddress(formats strfmt.Registry) error {
+
+	if err := validate.Required("project_owner_address", "body", m.ProjectOwnerAddress); err != nil {
 		return err
 	}
 

@@ -19,6 +19,9 @@ import (
 // swagger:model CreateTradeResponse
 type CreateTradeResponse struct {
 
+	// Request ID that returns when a trade initiated through risk-manager
+	RequestID string `json:"request_id,omitempty"`
+
 	// Current status of trade
 	// Required: true
 	Status *string `json:"status"`

@@ -8,10 +8,8 @@ package models
 import (
 	"context"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-	"github.com/go-openapi/validate"
 )
 
 // CollectionDetails collection details
@@ -20,47 +18,14 @@ import (
 type CollectionDetails struct {
 
 	// URL of the icon of the collection
-	// Required: true
-	IconURL *string `json:"icon_url"`
+	IconURL string `json:"icon_url,omitempty"`
 
 	// Name of the collection
-	// Required: true
-	Name *string `json:"name"`
+	Name string `json:"name,omitempty"`
 }
 
 // Validate validates this collection details
 func (m *CollectionDetails) Validate(formats strfmt.Registry) error {
-	var res []error
-
-	if err := m.validateIconURL(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateName(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if len(res) > 0 {
-		return errors.CompositeValidationError(res...)
-	}
-	return nil
-}
-
-func (m *CollectionDetails) validateIconURL(formats strfmt.Registry) error {
-
-	if err := validate.Required("icon_url", "body", m.IconURL); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *CollectionDetails) validateName(formats strfmt.Registry) error {
-
-	if err := validate.Required("name", "body", m.Name); err != nil {
-		return err
-	}
-
 	return nil
 }
 

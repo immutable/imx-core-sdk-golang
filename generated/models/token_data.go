@@ -11,7 +11,6 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-	"github.com/go-openapi/validate"
 )
 
 // TokenData token data
@@ -29,12 +28,10 @@ type TokenData struct {
 	Properties *AssetProperties `json:"properties,omitempty"`
 
 	// Quantity of this asset
-	// Required: true
-	Quantity *string `json:"quantity"`
+	Quantity string `json:"quantity,omitempty"`
 
 	// Quantity of this asset with the sum of all fees applied to the asset
-	// Required: true
-	QuantityWithFees *string `json:"quantity_with_fees"`
+	QuantityWithFees string `json:"quantity_with_fees,omitempty"`
 
 	// Address of ERC721/ERC20 contract
 	TokenAddress string `json:"token_address,omitempty"`
@@ -48,14 +45,6 @@ func (m *TokenData) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateProperties(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateQuantity(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateQuantityWithFees(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -79,24 +68,6 @@ func (m *TokenData) validateProperties(formats strfmt.Registry) error {
 			}
 			return err
 		}
-	}
-
-	return nil
-}
-
-func (m *TokenData) validateQuantity(formats strfmt.Registry) error {
-
-	if err := validate.Required("quantity", "body", m.Quantity); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *TokenData) validateQuantityWithFees(formats strfmt.Registry) error {
-
-	if err := validate.Required("quantity_with_fees", "body", m.QuantityWithFees); err != nil {
-		return err
 	}
 
 	return nil

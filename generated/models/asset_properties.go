@@ -22,10 +22,10 @@ type AssetProperties struct {
 	Collection *CollectionDetails `json:"collection,omitempty"`
 
 	// Image URL of this asset
-	ImageURL *string `json:"image_url,omitempty"`
+	ImageURL string `json:"image_url,omitempty"`
 
 	// Name of this asset
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 }
 
 // Validate validates this asset properties

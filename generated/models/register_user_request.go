@@ -19,6 +19,9 @@ import (
 // swagger:model RegisterUserRequest
 type RegisterUserRequest struct {
 
+	// User email
+	Email string `json:"email,omitempty"`
+
 	// Eth signature
 	// Required: true
 	EthSignature *string `json:"eth_signature"`

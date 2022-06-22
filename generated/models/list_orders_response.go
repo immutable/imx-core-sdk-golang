@@ -30,7 +30,7 @@ type ListOrdersResponse struct {
 
 	// Orders matching query parameters
 	// Required: true
-	Result []*Order `json:"result"`
+	Result []*OrdersOrder `json:"result"`
 }
 
 // Validate validates this list orders response

@@ -11,7 +11,6 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-	"github.com/go-openapi/validate"
 )
 
 // Token token
@@ -20,12 +19,10 @@ import (
 type Token struct {
 
 	// Token details of this asset
-	// Required: true
-	Data *TokenData `json:"data"`
+	Data *TokenData `json:"data,omitempty"`
 
 	// Type of this asset (ETH/ERC20/ERC721)
-	// Required: true
-	Type *string `json:"type"`
+	Type string `json:"type,omitempty"`
 }
 
 // Validate validates this token
@@ -36,10 +33,6 @@ func (m *Token) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateType(formats); err != nil {
-		res = append(res, err)
-	}
-
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
@@ -47,9 +40,8 @@ func (m *Token) Validate(formats strfmt.Registry) error {
 }
 
 func (m *Token) validateData(formats strfmt.Registry) error {
-
-	if err := validate.Required("data", "body", m.Data); err != nil {
-		return err
+	if swag.IsZero(m.Data) { // not required
+		return nil
 	}
 
 	if m.Data != nil {
@@ -61,15 +53,6 @@ func (m *Token) validateData(formats strfmt.Registry) error {
 			}
 			return err
 		}
-	}
-
-	return nil
-}
-
-func (m *Token) validateType(formats strfmt.Registry) error {
-
-	if err := validate.Required("type", "body", m.Type); err != nil {
-		return err
 	}
 
 	return nil

@@ -1,4 +1,4 @@
-module examples
+module examples/publicapi/list_assets
 
 go 1.18
 

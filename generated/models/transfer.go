@@ -19,10 +19,6 @@ import (
 // swagger:model Transfer
 type Transfer struct {
 
-	// Token details of this asset
-	// Required: true
-	Data *TokenData `json:"data"`
-
 	// Ethereum address of the user who received this transfer
 	// Required: true
 	Receiver *string `json:"receiver"`
@@ -35,13 +31,13 @@ type Transfer struct {
 	// Required: true
 	Timestamp *string `json:"timestamp"`
 
+	// Token transferred by the user
+	// Required: true
+	Token *Token `json:"token"`
+
 	// Sequential transaction ID
 	// Required: true
 	TransactionID *int64 `json:"transaction_id"`
-
-	// Type of this asset (ETH/ERC20/ERC721)
-	// Required: true
-	Type *string `json:"type"`
 
 	// Ethereum address of the user  who submitted this transfer
 	// Required: true
@@ -51,10 +47,6 @@ type Transfer struct {
 // Validate validates this transfer
 func (m *Transfer) Validate(formats strfmt.Registry) error {
 	var res []error
-
-	if err := m.validateData(formats); err != nil {
-		res = append(res, err)
-	}
 
 	if err := m.validateReceiver(formats); err != nil {
 		res = append(res, err)
@@ -68,11 +60,11 @@ func (m *Transfer) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateTransactionID(formats); err != nil {
+	if err := m.validateToken(formats); err != nil {
 		res = append(res, err)
 	}
 
-	if err := m.validateType(formats); err != nil {
+	if err := m.validateTransactionID(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -83,26 +75,6 @@ func (m *Transfer) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *Transfer) validateData(formats strfmt.Registry) error {
-
-	if err := validate.Required("data", "body", m.Data); err != nil {
-		return err
-	}
-
-	if m.Data != nil {
-		if err := m.Data.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("data")
-			} else if ce, ok := err.(*errors.CompositeError); ok {
-				return ce.ValidateName("data")
-			}
-			return err
-		}
-	}
-
 	return nil
 }
 
@@ -133,18 +105,29 @@ func (m *Transfer) validateTimestamp(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Transfer) validateTransactionID(formats strfmt.Registry) error {
+func (m *Transfer) validateToken(formats strfmt.Registry) error {
 
-	if err := validate.Required("transaction_id", "body", m.TransactionID); err != nil {
+	if err := validate.Required("token", "body", m.Token); err != nil {
 		return err
+	}
+
+	if m.Token != nil {
+		if err := m.Token.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("token")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("token")
+			}
+			return err
+		}
 	}
 
 	return nil
 }
 
-func (m *Transfer) validateType(formats strfmt.Registry) error {
+func (m *Transfer) validateTransactionID(formats strfmt.Registry) error {
 
-	if err := validate.Required("type", "body", m.Type); err != nil {
+	if err := validate.Required("transaction_id", "body", m.TransactionID); err != nil {
 		return err
 	}
 
@@ -164,7 +147,7 @@ func (m *Transfer) validateUser(formats strfmt.Registry) error {
 func (m *Transfer) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.contextValidateData(ctx, formats); err != nil {
+	if err := m.contextValidateToken(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -174,14 +157,14 @@ func (m *Transfer) ContextValidate(ctx context.Context, formats strfmt.Registry)
 	return nil
 }
 
-func (m *Transfer) contextValidateData(ctx context.Context, formats strfmt.Registry) error {
+func (m *Transfer) contextValidateToken(ctx context.Context, formats strfmt.Registry) error {
 
-	if m.Data != nil {
-		if err := m.Data.ContextValidate(ctx, formats); err != nil {
+	if m.Token != nil {
+		if err := m.Token.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("data")
+				return ve.ValidateName("token")
 			} else if ce, ok := err.(*errors.CompositeError); ok {
-				return ce.ValidateName("data")
+				return ce.ValidateName("token")
 			}
 			return err
 		}
