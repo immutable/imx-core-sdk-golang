@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
+	"immutable.com/imx-core-sdk-golang/api/client"
+	"immutable.com/imx-core-sdk-golang/api/client/assets"
 	"immutable.com/imx-core-sdk-golang/config"
-	"immutable.com/imx-core-sdk-golang/generated/client"
-	"immutable.com/imx-core-sdk-golang/generated/client/assets"
 )
 
 func main() {

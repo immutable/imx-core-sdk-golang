@@ -3,7 +3,7 @@ package config
 import (
 	"net/url"
 
-	"immutable.com/imx-core-sdk-golang/generated/client"
+	"immutable.com/imx-core-sdk-golang/api/client"
 )
 
 const (
