@@ -2,6 +2,6 @@ go 1.18
 
 use (
 	./examples/publicapi/list_assets
-	./src/generated
+	./src/generated/api
 	./src
 )

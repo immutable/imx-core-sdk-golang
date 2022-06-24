@@ -1,4 +1,4 @@
-GENERATED_CODE_DIR=generated
+GENERATED_CODE_DIR=generated/api
 CURRENT_DIR = $(shell pwd)
 
 .PHONY: generate-openapi-prod
@@ -25,7 +25,7 @@ get-openapi-ropsten:
 generate-api:
 	rm -rf src/$(GENERATED_CODE_DIR) && \
     mkdir -p src/$(GENERATED_CODE_DIR) && \
-	cd src/$(GENERATED_CODE_DIR); go mod init immutable.com/imx-core-sdk-golang/$(GENERATED_CODE_DIR); \
+	cd src/$(GENERATED_CODE_DIR); go mod init immutable.com/imx-core-sdk-golang/api; \
     swagger generate client -f $(CURRENT_DIR)/openapi.json && \
 	go mod tidy
 
