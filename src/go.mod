@@ -1,4 +1,4 @@
-module src
+module immutable.com/imx-core-sdk-golang
 
 go 1.18
 
