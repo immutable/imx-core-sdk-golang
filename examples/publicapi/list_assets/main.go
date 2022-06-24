@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"generated/client"
-	"generated/client/assets"
-	"src/config"
+
+	"immutable.com/imx-core-sdk-golang/config"
+	"immutable.com/imx-core-sdk-golang/generated/client"
+	"immutable.com/imx-core-sdk-golang/generated/client/assets"
 )
 
 func main() {

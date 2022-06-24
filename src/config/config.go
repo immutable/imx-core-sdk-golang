@@ -1,7 +1,10 @@
 package config
 
-import "net/url"
-import "generated/client"
+import (
+	"net/url"
+
+	"immutable.com/imx-core-sdk-golang/generated/client"
+)
 
 const (
 	EthereumDefaultGasLimit uint64  = 30000        // Ethereum default gas limit in gas units

@@ -1,2 +1,8 @@
+# IDE folders
+
 .vscode
 .idea
+
+# mac 
+
+.DS_Store
