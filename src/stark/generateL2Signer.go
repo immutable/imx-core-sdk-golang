@@ -5,11 +5,12 @@ import (
 	"crypto/sha256"
 	"encoding/binary"
 	"fmt"
+	"math/big"
+
 	"github.com/aarbt/hdkeys"
 	"github.com/dontpanicdao/caigo"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/utils"
-	"math/big"
 )
 
 const (

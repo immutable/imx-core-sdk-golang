@@ -3,6 +3,9 @@ package stark
 import (
 	"crypto/ecdsa"
 	"fmt"
+	"math/big"
+	"testing"
+
 	"github.com/ethereum/go-ethereum/accounts"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -11,8 +14,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/utils"
-	"math/big"
-	"testing"
 )
 
 func TestStarkSigner_VerifySignature(t *testing.T) {
