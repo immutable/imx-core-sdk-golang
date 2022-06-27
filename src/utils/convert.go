@@ -3,11 +3,12 @@ package utils
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/shopspring/decimal"
 	"math/big"
 	"strconv"
 	"strings"
+
+	"github.com/ethereum/go-ethereum/params"
+	"github.com/shopspring/decimal"
 )
 
 func ParseBigFloat(value string) (*big.Float, error) {
