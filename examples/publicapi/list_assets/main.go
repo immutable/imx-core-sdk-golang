@@ -10,12 +10,9 @@ import (
 
 func main() {
 
-	cfg, err := config.NewDevConfig()
-	if err != nil || cfg == nil {
-		fmt.Errorf("failed to get the config. error: %v", err)
-	}
+	apiUrl := config.GetApiUrl(config.Dev)
 
-	httpClient := client.NewHTTPClientWithConfig(nil, config.NewTransportConfig(cfg.CoreApiEndpoint))
+	httpClient := client.NewHTTPClientWithConfig(nil, config.NewTransportConfig(apiUrl))
 	listAssetsResponse, err := httpClient.Assets.ListAssets(assets.NewListAssetsParams())
 	if err != nil {
 		fmt.Errorf("error: %v", err.Error())
