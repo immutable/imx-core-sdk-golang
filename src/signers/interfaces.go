@@ -13,5 +13,5 @@ type L1Signer interface {
 
 type L2Signer interface {
 	SignMessage(message string) (string, error)
-	PublicKey() string
+	GetAddress() string
 }
