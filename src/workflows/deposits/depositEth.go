@@ -120,7 +120,7 @@ func registerAndDepositEth(
 	params.SetGetSignableRegistrationRequest(registrationRequest)
 	signableRegistration, err := userApi.GetSignableRegistration(params)
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `UserApi.GetSignableRegistration`: %v", err)
+		return nil, fmt.Errorf("Error when calling `UserApi.GetSignableRegistration`: %v", err)
 	}
 	auth, err := e.BuildTransactOpts(ctx, l1signer)
 	if err != nil {
