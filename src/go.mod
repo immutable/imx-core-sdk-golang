@@ -8,6 +8,7 @@ require (
 	github.com/aarbt/hdkeys v0.0.0-20151205172415-ee76d77aba2f
 	github.com/dontpanicdao/caigo v0.2.0
 	github.com/ethereum/go-ethereum v1.10.19
+	github.com/shopspring/decimal v1.3.1
 	immutable.com/imx-core-sdk-golang/api v0.0.0-00010101000000-000000000000
 )
 
