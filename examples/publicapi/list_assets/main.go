@@ -1,12 +1,22 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 
 	"immutable.com/imx-core-sdk-golang/api/client"
 	"immutable.com/imx-core-sdk-golang/api/client/assets"
 	"immutable.com/imx-core-sdk-golang/config"
 )
+
+func PrettyStruct(data interface{}) (string, error) {
+	val, err := json.MarshalIndent(data, "", "    ")
+	if err != nil {
+		return "", err
+	}
+	return string(val), nil
+}
 
 func main() {
 
@@ -20,13 +30,14 @@ func main() {
 	if err != nil {
 		fmt.Errorf("error: %v", err.Error())
 	}
+
 	if listAssetsResponse != nil {
 		if listAssetsResponse.Payload != nil {
-			for _, asset := range (*listAssetsResponse.Payload).Result {
-				if asset != nil {
-					fmt.Printf("%+v\n", *asset)
-				}
+			res, err := PrettyStruct((*listAssetsResponse.Payload).Result)
+			if err != nil {
+				log.Fatal(err)
 			}
+			fmt.Println(res)
 		}
 	}
 }
