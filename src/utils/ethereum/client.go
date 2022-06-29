@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	EthereumDefaultGasLimit uint64  = 30000        // Ethereum default gas limit in gas units
+	EthereumDefaultGasLimit uint64  = 300000       // Ethereum default gas limit in gas units
 	EthereumDefaultGasPrice uint64  = 160000000000 // Ethereum default gas price in wei
 	EthereumEGSAPIKey       string  = ""           // Ethereum eth gas station (EGS) API key
 	EthereumEGSSpeed        string  = "fast"       // Ethereum eth gas station (EGS) speed
