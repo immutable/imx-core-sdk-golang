@@ -3,6 +3,7 @@ package workflows
 import (
 	"context"
 	"fmt"
+
 	"github.com/ethereum/go-ethereum/core/types"
 	"immutable.com/imx-core-sdk-golang/api/client"
 	"immutable.com/imx-core-sdk-golang/config"

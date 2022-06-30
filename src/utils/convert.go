@@ -39,7 +39,8 @@ func EtherToWei(eth *big.Float) *big.Int {
 	return wei
 }
 
-func RemoveHex(hexString string) (string, error) {
+// TrimHexPrefix removes the prefix `0x` from the given hex string.
+func TrimHexPrefix(hexString string) (string, error) {
 	if len(hexString) < 2 {
 		return "", fmt.Errorf("invalid hex string %s", hexString)
 	}
@@ -51,7 +52,7 @@ func RemoveHex(hexString string) (string, error) {
 
 func HexToInt(hexString string) (*big.Int, error) {
 	addressInt := new(big.Int)
-	hexString, err := RemoveHex(hexString)
+	hexString, err := TrimHexPrefix(hexString)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +61,7 @@ func HexToInt(hexString string) (*big.Int, error) {
 }
 
 func HexToByteArray(hexString string) ([]byte, error) {
-	hexString, err := RemoveHex(hexString)
+	hexString, err := TrimHexPrefix(hexString)
 	if err != nil {
 		return nil, err
 	}

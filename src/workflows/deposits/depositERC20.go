@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	. "github.com/ethereum/go-ethereum/core/types"
 	"immutable.com/imx-core-sdk-golang/api/client"
@@ -16,10 +18,9 @@ import (
 	"immutable.com/imx-core-sdk-golang/utils"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
 	"immutable.com/imx-core-sdk-golang/workflows/types"
-	"math/big"
 )
 
-func (d *ERC20Deposit) Execute(e *ethereum.Client, apis *client.ImmutableXAPI, l1signer signers.L1Signer) (*Transaction, error) {
+func (d *ERC20Deposit) Execute(ethClient *ethereum.Client, apis *client.ImmutableXAPI, l1signer signers.L1Signer) (*Transaction, error) {
 	if d.Type != types.ERC20Type {
 		return nil, errors.New("invalid token type")
 	}
@@ -40,15 +41,15 @@ func (d *ERC20Deposit) Execute(e *ethereum.Client, apis *client.ImmutableXAPI, l
 	amount := utils.ToWei(d.Amount, int(*decimals))
 
 	// Approve whether an amount of token from an account can be spent by a third-party account
-	auth, err := e.BuildTransactOpts(ctx, l1signer)
+	auth, err := ethClient.BuildTransactOpts(ctx, l1signer)
 	if err != nil {
 		return nil, err
 	}
-	ierc20Contract, err := e.NewIERC20Contract(ctx, d.TokenAddress)
+	ierc20Contract, err := ethClient.NewIERC20Contract(ctx, d.TokenAddress)
 	if err != nil {
 		return nil, err
 	}
-	_, err = ierc20Contract.Approve(auth, e.StarkContractAddress, amount)
+	_, err = ierc20Contract.Approve(auth, ethClient.StarkContractAddress, amount)
 	if err != nil {
 		return nil, err
 	}
@@ -101,17 +102,17 @@ func (d *ERC20Deposit) Execute(e *ethereum.Client, apis *client.ImmutableXAPI, l
 		return nil, fmt.Errorf("error converting StarkKey to bigint: %v\n", signableDeposit.StarkKey)
 	}
 
-	isRegistered, _ := e.RegistrationContract.IsRegistered(nil, starkKey)
+	isRegistered, _ := ethClient.RegistrationContract.IsRegistered(nil, starkKey)
 	// Note: if we reach here, it means we are registered off-chain.
 	// Above call will return an error user is not registered but this is for on-chain
 	// we should swallow this error to allow the register and deposit flow to execute.
 
 	if isRegistered {
-		return depositERC20(ctx, e, l1signer, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, amount)
+		return depositERC20(ctx, ethClient, l1signer, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, amount)
 	} else {
 		return registerAndDepositERC20(
 			ctx,
-			e,
+			ethClient,
 			l1signer,
 			apis.Users,
 			starkKey,
