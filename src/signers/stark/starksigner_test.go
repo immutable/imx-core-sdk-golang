@@ -24,7 +24,7 @@ func TestStarkSigner_VerifySignature(t *testing.T) {
 	}
 	l1Signer, _ := GetL1Signer(privateKey, nil)
 
-	l2Signer, _ := GenerateSigner(l1Signer, "")
+	l2Signer, _ := GenerateStarkSigner(l1Signer)
 	message := "0x074180eaec7e68712b5a0fbf5d63a70c33940c9b02e60565e36f84d705b669e"
 	hash, _ := utils.HexToInt(message)
 	signature, _ := l2Signer.SignMessage(message)
@@ -93,7 +93,7 @@ func (b *BaseL1Signer) SignTx(tx *types.Transaction) (*types.Transaction, error)
 }
 
 func GetL1Signer(privateKey string, chainId *big.Int) (signers.L1Signer, error) {
-	privateKey, err := utils.RemoveHex(privateKey)
+	privateKey, err := utils.TrimHexPrefix(privateKey)
 	if err != nil {
 		return nil, err
 	}

@@ -18,7 +18,7 @@ const (
 )
 
 // GenerateStarkSigner creates StarkSigner.
-func GenerateStarkSigner(signer signers.L1Signer) (signers.L2Signer, error) {
+func GenerateStarkSigner(signer signers.L1Signer) (*StarkSigner, error) {
 	seed, err := generateSeed(signer, SeedStarkMessage)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to generate seed using l1signer: %v", err)
