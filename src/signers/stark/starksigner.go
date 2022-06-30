@@ -60,6 +60,11 @@ func (base *StarkSigner) VerifySignature(hash *big.Int, signature string, requir
 	return nil
 }
 
+// GetAddress returns the stark public key of the StarkSigner as a 64 digit hex string prefixed with 0x.
+func (s *StarkSigner) GetAddress() string {
+	return fmt.Sprintf("0x%064x", s.publicKey)
+}
+
 func rsFromSig(signature string) (*big.Int, *big.Int) {
 	sig := signature[2:]
 	size := 64
@@ -68,11 +73,6 @@ func rsFromSig(signature string) (*big.Int, *big.Int) {
 	s := new(big.Int)
 	s.SetString(sig[size:size*2], 16)
 	return r, s
-}
-
-// GetAddress returns the stark public key of the StarkSigner as a 64 digit hex string prefixed with 0x.
-func (s *StarkSigner) GetAddress() string {
-	return fmt.Sprintf("0x%064x", s.publicKey)
 }
 
 func serializeSignature(r, s *big.Int) string {
