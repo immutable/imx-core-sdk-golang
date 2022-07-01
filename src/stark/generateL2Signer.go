@@ -4,7 +4,6 @@ package stark
 import (
 	"crypto/sha256"
 	"encoding/binary"
-	"errors"
 	"fmt"
 	"github.com/aarbt/hdkeys"
 	"github.com/dontpanicdao/caigo"
@@ -73,7 +72,7 @@ func generatePath(layer, application, eth []byte, index string) string {
 // If pedersenParamsPath is empty string the file will be pulled from Starkware
 // official github repository. For production deployments it is recommended
 // to have the file stored locally.
-func GenerateSigner(signer signers.L1Signer, pedersenParamsPath string) (signers.L2Signer, error) {
+func GenerateSigner(signer signers.L1Signer, pedersenParamsPath string) (*StarkSigner, error) {
 	seed, err := generateSeed(signer)
 	if err != nil {
 		return nil, fmt.Errorf("error getting seed from l1signer: %v", err)
@@ -121,11 +120,7 @@ func NewStarkSigner(privateKey, publicKey *big.Int, curve *caigo.StarkCurve) *St
 }
 
 func (base *StarkSigner) SignMessage(message string) (string, error) {
-	fixedMessage, err := fixMessage(message)
-	if err != nil {
-		return "", err
-	}
-	hash, err := utils.HexToInt(fixedMessage)
+	hash, err := utils.HexToInt(message)
 	if err != nil {
 		return "", err
 	}
@@ -136,30 +131,44 @@ func (base *StarkSigner) SignMessage(message string) (string, error) {
 	return serializeSignature(r, s), nil
 }
 
-// fixMessage removes the hex prefix and appends the message with a zero if it is required.
-func fixMessage(message string) (string, error) {
-	value, err := utils.RemoveHex(message)
-	if err != nil {
-		return "", err
+func (base *StarkSigner) VerifySignature(hash *big.Int, signature string, requiredSigner string) error {
+	// All signatures must be 130 characters hex encoded 0x + 64 bytes with 2 characters each
+	requiredSigLength := len("0x") + 64*2
+	if len(signature) != requiredSigLength {
+		return fmt.Errorf("invalid signature")
 	}
 
-	if len(value) <= 62 {
-		// In this case, message should not be transformed, as byteLength() is at most 31
-		// so delta < 0 (see _truncateToN).
-		return value, nil
-	}
+	pubKey, _ := utils.HexToInt(requiredSigner)
+	y := base.curve.GetYCoordinate(pubKey)
 
-	if len(value) != 63 {
-		return "", errors.New("invalid message length")
-	}
+	r, s := rsFromSig(signature)
 
-	// In this case delta will be 4 so we perform a shift-left of 4 bits by adding a zero
-	return fmt.Sprintf("%s0", value), nil
+	// verification
+	ok := base.curve.Verify(hash, r, s, pubKey, y)
+	if ok {
+		return nil
+	}
+	negY := big.NewInt(0).Mod(big.NewInt(0).Neg(y), base.curve.P)
+	ok = base.curve.Verify(hash, r, s, pubKey, negY)
+	if !ok {
+		return fmt.Errorf("verification failed")
+	}
+	return nil
 }
 
-// GetAddress returns the stark public key of the StarkSigner as a hex string
+func rsFromSig(signature string) (*big.Int, *big.Int) {
+	sig := signature[2:]
+	size := 64
+	r := new(big.Int)
+	r.SetString(sig[0:size], 16)
+	s := new(big.Int)
+	s.SetString(sig[size:size*2], 16)
+	return r, s
+}
+
+// GetAddress returns the stark public key of the StarkSigner as a 64 digit hex string prefixed with 0x.
 func (s *StarkSigner) GetAddress() string {
-	return caigo.BigToHex(s.publicKey)
+	return fmt.Sprintf("0x%064x", s.publicKey)
 }
 
 func serializeSignature(r, s *big.Int) string {
