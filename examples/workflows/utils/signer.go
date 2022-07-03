@@ -9,7 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"immutable.com/imx-core-sdk-golang/signers"
-	"immutable.com/imx-core-sdk-golang/utils"
+	coreutils "immutable.com/imx-core-sdk-golang/utils"
 )
 
 // BaseL1Signer is an L1Signer implementation to assist for demo code.
@@ -20,7 +20,7 @@ type BaseL1Signer struct {
 
 // NewBaseL1Signer creates a new BaseL1Signer object with the given user's privateKey and chainId.
 func NewBaseL1Signer(privateKeyInHex string, chainId *big.Int) (signers.L1Signer, error) {
-	privateKey, err := utils.TrimHexPrefix(privateKeyInHex)
+	privateKey, err := coreutils.TrimHexPrefix(privateKeyInHex)
 	if err != nil {
 		return nil, err
 	}
