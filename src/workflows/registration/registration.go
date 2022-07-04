@@ -77,8 +77,7 @@ func IsRegisteredOnChain(contract *contracts.Registration, starkPublicKey string
 	return &isRegistered, nil
 }
 
-func GetSignableRegistrationOnchain(api *client.ImmutableXAPI, etherKey string, starkKey string) (*users.GetSignableRegistrationOK, error) {
-	ctx := context.Background()
+func GetSignableRegistrationOnchain(ctx context.Context, api *client.ImmutableXAPI, etherKey string, starkKey string) (*users.GetSignableRegistrationOK, error) {
 	signableRegistrationParams := users.NewGetSignableRegistrationParamsWithContext(ctx)
 
 	signableRegistrationParams.SetGetSignableRegistrationRequest(&models.GetSignableRegistrationRequest{
