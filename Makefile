@@ -26,7 +26,7 @@ generate-api:
 	rm -rf src/$(GENERATED_CODE_DIR) && \
     mkdir -p src/$(GENERATED_CODE_DIR) && \
 	cd src/$(GENERATED_CODE_DIR); go mod init immutable.com/imx-core-sdk-golang/api; \
-    swagger generate client -f $(CURRENT_DIR)/openapi.json && \
+    swagger generate client -f $(CURRENT_DIR)/openapi.json -T $(CURRENT_DIR)/generator-templates && \
 	go mod tidy
 
 	
