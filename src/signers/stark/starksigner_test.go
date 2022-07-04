@@ -74,9 +74,9 @@ type BaseL1Signer struct {
 	chainId    *big.Int
 }
 
-func (b *BaseL1Signer) GetAddress() common.Address {
+func (b *BaseL1Signer) GetAddress() string {
 	address := crypto.PubkeyToAddress(b.privateKey.PublicKey)
-	return address
+	return address.Hex()
 }
 
 func (b *BaseL1Signer) SignMessage(message string) ([]byte, error) {

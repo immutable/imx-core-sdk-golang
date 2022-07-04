@@ -25,7 +25,7 @@ func RegisterOffchain(ctx context.Context, api *client.ImmutableXAPI, l1signer s
 
 	signableRegistrationOffchainParams := users.NewGetSignableRegistrationOffchainParamsWithContext(ctx)
 
-	etherKey := l1signer.GetAddress().Hex()
+	etherKey := l1signer.GetAddress()
 	starkKey := l2signer.GetAddress()
 	signableRegistrationOffchainParams.SetGetSignableRegistrationRequest(&models.GetSignableRegistrationRequest{
 		EtherKey: &etherKey,

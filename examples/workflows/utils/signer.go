@@ -32,9 +32,9 @@ func NewBaseL1Signer(privateKeyInHex string, chainId *big.Int) (signers.L1Signer
 }
 
 // GetAddress gets the address which is the public key associated with this signer.
-func (b *BaseL1Signer) GetAddress() common.Address {
+func (b *BaseL1Signer) GetAddress() string {
 	address := crypto.PubkeyToAddress(b.privateKey.PublicKey)
-	return address
+	return address.Hex()
 }
 
 // SignMessage signs the given message using the private key and returns the signature.

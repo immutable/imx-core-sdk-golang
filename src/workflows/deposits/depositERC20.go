@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/ethereum/go-ethereum/common"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -56,7 +57,7 @@ func (d *ERC20Deposit) Execute(ethClient *ethereum.Client, apis *client.Immutabl
 
 	// Get signable deposit details
 	amountStr := amount.String()
-	user := l1signer.GetAddress().Hex()
+	user := l1signer.GetAddress()
 	getSignableDepositRequest := &models.GetSignableDepositRequest{
 		Amount: &amountStr,
 		Token: &models.SignableToken{
@@ -153,7 +154,7 @@ func registerAndDepositERC20(
 	assetType *big.Int,
 	quantizedAmount *big.Int,
 ) (*Transaction, error) {
-	etherKey := l1signer.GetAddress().Hex()
+	etherKey := l1signer.GetAddress()
 	starkKey := hexutil.EncodeBig(starkPublicKey)
 	registrationRequest := &models.GetSignableRegistrationRequest{
 		EtherKey: &etherKey,
@@ -178,7 +179,7 @@ func registerAndDepositERC20(
 
 	tnx, err := e.CoreContract.RegisterAndDepositERC20(
 		auth,
-		l1signer.GetAddress(),
+		common.HexToAddress(l1signer.GetAddress()),
 		starkPublicKey,
 		operatorSignature,
 		assetType,

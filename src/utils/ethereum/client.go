@@ -156,7 +156,7 @@ func ValidateEthereumAddress(address string) error {
 }
 
 func (e *Client) BuildTransactOpts(ctx context.Context, l1signer signers.L1Signer) (*bind.TransactOpts, error) {
-	keyAddr := l1signer.GetAddress()
+	keyAddr := ethcommon.HexToAddress(l1signer.GetAddress())
 
 	auth := &bind.TransactOpts{
 		From: keyAddr,
