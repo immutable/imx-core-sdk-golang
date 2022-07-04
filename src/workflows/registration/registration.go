@@ -16,7 +16,7 @@ import (
 )
 
 // RegisterOffchain performs user registration off chain.
-func RegisterOffchain(ctx context.Context, api *client.ImmutableXAPI, l1signer signers.L1Signer, l2signer signers.L2Signer, userEmail string) (*users.RegisterUserOK, error) {
+func RegisterOffchain(ctx context.Context, api *client.ImmutableXAPI, l1signer signers.L1Signer, l2signer signers.L2Signer, userEmail string) (*models.RegisterUserResponse, error) {
 	if userEmail != "" {
 		if !isValidEmail(userEmail) {
 			return nil, fmt.Errorf("given userEmail is invalid: %v\n", userEmail)
@@ -98,7 +98,7 @@ func isValidEmail(email string) bool {
 	return err == nil
 }
 
-func registerUser(ctx context.Context, api *client.ImmutableXAPI, etherKey string, etherSignature string, starkKey string, starkSignature string, userEmail string) (*users.RegisterUserOK, error) {
+func registerUser(ctx context.Context, api *client.ImmutableXAPI, etherKey string, etherSignature string, starkKey string, starkSignature string, userEmail string) (*models.RegisterUserResponse, error) {
 	registerUserParams := users.NewRegisterUserParamsWithContext(ctx)
 	registerUserParams.SetRegisterUserRequest(&models.RegisterUserRequest{
 		Email:          userEmail,
@@ -112,5 +112,5 @@ func registerUser(ctx context.Context, api *client.ImmutableXAPI, etherKey strin
 	if err != nil {
 		return nil, fmt.Errorf("Failed to RegisterUser, error: %v\n", err)
 	}
-	return registerUserResponse, nil
+	return registerUserResponse.GetPayload(), nil
 }

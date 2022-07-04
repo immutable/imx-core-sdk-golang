@@ -27,7 +27,7 @@ func Demo_UserRegistrationWorkflow(ctx context.Context, workflow *workflows.Work
 		log.Fatalf("error in creating StarkSigner: %v\n", err)
 	}
 
-	val, err := json.MarshalIndent(response.GetPayload(), "", "    ")
+	val, err := json.MarshalIndent(response, "", "    ")
 	if err != nil {
 		log.Fatalf("error in json marshaling: %v\n", err)
 	}
