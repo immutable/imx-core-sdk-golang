@@ -3,11 +3,12 @@ package ethereum
 import (
 	"context"
 	"fmt"
-	"immutable.com/imx-core-sdk-golang/generated/contracts"
-	"immutable.com/imx-core-sdk-golang/signers"
 	"math/big"
 	"regexp"
 	"time"
+
+	"immutable.com/imx-core-sdk-golang/generated/contracts"
+	"immutable.com/imx-core-sdk-golang/signers"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	ethcommon "github.com/ethereum/go-ethereum/common"
