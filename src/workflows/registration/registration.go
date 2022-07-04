@@ -77,7 +77,7 @@ func IsRegisteredOnChain(contract *contracts.Registration, starkPublicKey string
 	return &isRegistered, nil
 }
 
-func GetSignableRegistrationOnchain(ctx context.Context, api *client.ImmutableXAPI, etherKey string, starkKey string) (*users.GetSignableRegistrationOK, error) {
+func GetSignableRegistrationOnchain(ctx context.Context, api *client.ImmutableXAPI, etherKey string, starkKey string) (*models.GetSignableRegistrationResponse, error) {
 	signableRegistrationParams := users.NewGetSignableRegistrationParamsWithContext(ctx)
 
 	signableRegistrationParams.SetGetSignableRegistrationRequest(&models.GetSignableRegistrationRequest{
@@ -89,7 +89,7 @@ func GetSignableRegistrationOnchain(ctx context.Context, api *client.ImmutableXA
 	if err != nil {
 		return nil, fmt.Errorf("Error when calling `api.Users.GetSignableRegistration`: %v\n", err)
 	}
-	return signableRegistration, nil
+	return signableRegistration.GetPayload(), nil
 }
 
 func isValidEmail(email string) bool {
