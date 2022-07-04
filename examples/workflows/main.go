@@ -2,17 +2,14 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
-	"os"
-
-	"immutable.com/imx-core-sdk-golang/examples/workflows/deposits"
 
 	"immutable.com/imx-core-sdk-golang/config"
-
+	"immutable.com/imx-core-sdk-golang/examples/workflows/deposits"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/onboarding"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
-	"immutable.com/imx-core-sdk-golang/workflows"
+	"immutable.com/imx-core-sdk-golang/factories"
+	"immutable.com/imx-core-sdk-golang/utils/ethereum"
 )
 
 const (
@@ -23,13 +20,14 @@ const (
 func main() {
 	ctx := context.Background()
 	cfg := config.GetConfig(config.Ropsten, alchemyApiKey)
-	workflow, err := workflows.NewWorkflow(cfg)
+	apiClient := factories.NewApiClient(cfg)
+	ethClient, err := factories.NewEthereumClient(context.Background(), cfg, ethereum.DefaultGasParams)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "error creating new workflow: %v", err)
+		log.Fatalf("error dialing ethereum client: %v\n", err)
 	}
-	defer workflow.CloseEthClient()
+	defer ethClient.Client.Close()
 
-	chainId, err := workflow.EthClient.Client.ChainID(ctx)
+	chainId, err := ethClient.Client.ChainID(ctx)
 	if err != nil {
 		log.Fatalf("error obtaining chain id: %v\n", err)
 	}
@@ -39,6 +37,6 @@ func main() {
 		log.Fatalf("error in creating BaseL1Signer: %v\n", err)
 	}
 
-	onboarding.Demo_UserRegistrationWorkflow(ctx, workflow, l1signer)
-	deposits.Demo_DepositWorkflow(ctx, workflow, l1signer)
+	onboarding.Demo_UserRegistrationWorkflow(ctx, apiClient, l1signer)
+	deposits.Demo_DepositWorkflow(ctx, ethClient, apiClient, l1signer)
 }
