@@ -33,7 +33,7 @@ func Demo_UserRegistrationWorkflow(ctx context.Context, workflow *workflows.Work
 	}
 	log.Println("registration success, response: ", string(val))
 
-	accounts, err := registration.IsRegisteredOffChain(ctx, workflow.ApiClient, l1signer.GetAddress().Hex())
+	accounts, err := registration.IsRegisteredOffChain(ctx, workflow.ApiClient, l1signer.GetAddress())
 	if err != nil {
 		log.Fatalf("error in IsRegisteredOffChain function: %v\n", err)
 	}

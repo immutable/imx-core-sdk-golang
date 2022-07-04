@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/binary"
 	"fmt"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"math/big"
 	"path"
 
@@ -24,7 +25,7 @@ func GenerateStarkSigner(signer signers.L1Signer) (*StarkSigner, error) {
 		return nil, fmt.Errorf("Failed to generate seed using l1signer: %v", err)
 	}
 
-	starkPath := generateStarkPath([]byte("starkex"), []byte("immutablex"), signer.GetAddress().Bytes(), "1")
+	starkPath := generateStarkPath([]byte("starkex"), []byte("immutablex"), hexutil.MustDecode(signer.GetAddress()), "1")
 	childKey, err := hdkeys.NewMasterKey(seed).Chain(starkPath)
 	if err != nil {
 		return nil, err

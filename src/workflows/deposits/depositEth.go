@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/ethereum/go-ethereum/common"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -31,7 +32,7 @@ func (d *ETHDeposit) Execute(e *ethereum.Client, apis *client.ImmutableXAPI, l1s
 		return nil, fmt.Errorf("Error when parsing deposit amount: %v\n", err)
 	}
 	amountStr := amount.String()
-	user := l1signer.GetAddress().Hex()
+	user := l1signer.GetAddress()
 	getSignableDepositRequest := &models.GetSignableDepositRequest{
 		Amount: &amountStr,
 		Token: &models.SignableToken{
@@ -71,7 +72,7 @@ func (d *ETHDeposit) Execute(e *ethereum.Client, apis *client.ImmutableXAPI, l1s
 	if err != nil {
 		return nil, fmt.Errorf("error converting StarkKey to bigint: %v\n", *signableDeposit.StarkKey)
 	}
-	isRegistered, _ := e.RegistrationContract.IsRegistered(&bind.CallOpts{From: l1signer.GetAddress()}, starkKey)
+	isRegistered, _ := e.RegistrationContract.IsRegistered(&bind.CallOpts{From: common.HexToAddress(l1signer.GetAddress())}, starkKey)
 	// Note: if we reach here, it means we are registered off-chain.
 	// Above call will return an error user is not registered but this is for on-chain
 	// we should swallow this error to allow the register and deposit flow to execute.
@@ -110,7 +111,7 @@ func registerAndDepositEth(
 	assetType *big.Int,
 	amount *big.Int,
 ) (*Transaction, error) {
-	etherKey := l1signer.GetAddress().Hex()
+	etherKey := l1signer.GetAddress()
 	starkKey := hexutil.EncodeBig(starkPublicKey)
 	registrationRequest := &models.GetSignableRegistrationRequest{
 		EtherKey: &etherKey,
@@ -134,7 +135,7 @@ func registerAndDepositEth(
 	auth.Value = amount
 	tnx, err := e.CoreContract.RegisterAndDepositEth(
 		auth,
-		l1signer.GetAddress(),
+		common.HexToAddress(l1signer.GetAddress()),
 		starkPublicKey,
 		operatorSignature,
 		assetType,

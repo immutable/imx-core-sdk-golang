@@ -17,7 +17,7 @@ import (
 
 const (
 	signerPrivateKey string = "" // Provide your wallet private key here
-	alchemyApiKey    string = "" // Provide your alchemy key here.
+	alchemyApiKey    string = "" // Provide your alchemy key here
 )
 
 func main() {

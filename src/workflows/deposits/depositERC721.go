@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	. "github.com/ethereum/go-ethereum/core/types"
 	"immutable.com/imx-core-sdk-golang/api/client"
@@ -44,7 +45,7 @@ func (d *ERC721Deposit) Execute(e *ethereum.Client, apis *client.ImmutableXAPI, 
 
 	// Get signable deposit details
 	var amount = "1"
-	user := l1signer.GetAddress().Hex()
+	user := l1signer.GetAddress()
 	getSignableDepositRequest := &models.GetSignableDepositRequest{
 		Amount: &amount,
 		Token: &models.SignableToken{
@@ -142,7 +143,7 @@ func registerAndDepositERC721(
 	assetType *big.Int,
 	tokenId *big.Int,
 ) (*Transaction, error) {
-	etherKey := l1signer.GetAddress().Hex()
+	etherKey := l1signer.GetAddress()
 	starkKey := hexutil.EncodeBig(starkPublicKey)
 	registrationRequest := &models.GetSignableRegistrationRequest{
 		EtherKey: &etherKey,
@@ -166,7 +167,7 @@ func registerAndDepositERC721(
 	}
 	tnx, err := e.RegistrationContract.RegisterAndDepositNft(
 		auth,
-		l1signer.GetAddress(),
+		common.HexToAddress(l1signer.GetAddress()),
 		starkPublicKey,
 		operatorSignature,
 		assetType,
