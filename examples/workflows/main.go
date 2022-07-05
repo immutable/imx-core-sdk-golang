@@ -7,8 +7,10 @@ import (
 	"immutable.com/imx-core-sdk-golang/config"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/deposits"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/onboarding"
+	"immutable.com/imx-core-sdk-golang/examples/workflows/trades"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
 	"immutable.com/imx-core-sdk-golang/factories"
+	"immutable.com/imx-core-sdk-golang/signers/stark"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
 )
 
@@ -37,6 +39,12 @@ func main() {
 		log.Fatalf("error in creating BaseL1Signer: %v\n", err)
 	}
 
+	l2signer, err := stark.GenerateStarkSigner(l1signer)
+	if err != nil {
+		log.Fatalf("error in creating StarkSigner: %v\n", err)
+	}
+
 	onboarding.Demo_UserRegistrationWorkflow(ctx, apiClient, l1signer)
 	deposits.Demo_DepositWorkflow(ctx, ethClient, apiClient, l1signer)
+	trades.Demo_TradesWorkflow(ctx, apiClient.Trades, l1signer, l2signer)
 }
