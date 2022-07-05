@@ -166,7 +166,7 @@ func (e *Client) BuildTransactOpts(ctx context.Context, l1signer signers.L1Signe
 			}
 			return l1signer.SignTx(tx)
 		},
-		Context: context.Background(),
+		Context: ctx,
 	}
 
 	if err := e.setGasPriceAndLimit(ctx, auth); err != nil {

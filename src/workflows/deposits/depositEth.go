@@ -4,14 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	. "github.com/ethereum/go-ethereum/core/types"
 	"immutable.com/imx-core-sdk-golang/api/client"
-	"immutable.com/imx-core-sdk-golang/api/client/deposits"
 	"immutable.com/imx-core-sdk-golang/api/client/encoding"
 	"immutable.com/imx-core-sdk-golang/api/client/users"
 	"immutable.com/imx-core-sdk-golang/api/models"
@@ -21,44 +20,28 @@ import (
 	"immutable.com/imx-core-sdk-golang/workflows/types"
 )
 
-func (d *ETHDeposit) Execute(e *ethereum.Client, apis *client.ImmutableXAPI, l1signer signers.L1Signer) (*Transaction, error) {
+func (d *ETHDeposit) Execute(ctx context.Context, ethClient *ethereum.Client, apis *client.ImmutableXAPI, l1signer signers.L1Signer) (*Transaction, error) {
 	if d.Type != types.ETHType {
 		return nil, errors.New("invalid token type")
 	}
-	ctx := context.Background()
 
 	amount, err := utils.ParseEtherToWei(d.Amount)
 	if err != nil {
 		return nil, fmt.Errorf("Error when parsing deposit amount: %v\n", err)
 	}
-	amountStr := amount.String()
-	user := l1signer.GetAddress()
-	getSignableDepositRequest := &models.GetSignableDepositRequest{
-		Amount: &amountStr,
-		Token: &models.SignableToken{
-			Data: map[string]interface{}{
-				"decimals": 18,
-			},
-			Type: string(types.ETHType),
-		},
-		User: &user,
-	}
-	params := deposits.NewGetSignableDepositParams()
-	params.SetGetSignableDepositRequest(getSignableDepositRequest)
-	signableDepositOK, err := apis.Deposits.GetSignableDeposit(params)
+	signableDepositRequest := GetSignableDepositRequestForEth(amount.String(), l1signer.GetAddress())
+	signableDeposit, err := GetSignableDeposit(ctx, apis.Deposits, signableDepositRequest)
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `Deposits.GetSignableDeposit`: %v", err)
+		return nil, err
 	}
-	signableDeposit := signableDepositOK.GetPayload()
 
-	encodeAssetRequest := &models.EncodeAssetRequest{
+	encodeParams := encoding.NewEncodeAssetParamsWithContext(ctx)
+	encodeParams.SetAssetType("asset")
+	encodeParams.SetEncodeAssetRequest(&models.EncodeAssetRequest{
 		Token: &models.EncodeAssetRequestToken{
 			Type: string(d.Type),
 		},
-	}
-	encodeParams := encoding.NewEncodeAssetParams()
-	encodeParams.SetAssetType("asset")
-	encodeParams.SetEncodeAssetRequest(encodeAssetRequest)
+	})
 	encodedAsset, err := apis.Encoding.EncodeAsset(encodeParams)
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `Encoding.EncodeAsset`: %v", err)
@@ -72,38 +55,21 @@ func (d *ETHDeposit) Execute(e *ethereum.Client, apis *client.ImmutableXAPI, l1s
 	if err != nil {
 		return nil, fmt.Errorf("error converting StarkKey to bigint: %v\n", *signableDeposit.StarkKey)
 	}
-	isRegistered, _ := e.RegistrationContract.IsRegistered(&bind.CallOpts{From: common.HexToAddress(l1signer.GetAddress())}, starkKey)
+	isRegistered, _ := ethClient.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	// Note: if we reach here, it means we are registered off-chain.
 	// Above call will return an error user is not registered but this is for on-chain
 	// we should swallow this error to allow the register and deposit flow to execute.
 
 	if isRegistered {
-		return depositEth(
-			ctx,
-			e,
-			l1signer,
-			starkKey,
-			big.NewInt(*signableDeposit.VaultID),
-			assetType,
-			amount,
-		)
+		return depositEth(ctx, ethClient, l1signer, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, amount)
 	} else {
-		return registerAndDepositEth(
-			ctx,
-			e,
-			l1signer,
-			apis.Users,
-			starkKey,
-			big.NewInt(*signableDeposit.VaultID),
-			assetType,
-			amount,
-		)
+		return registerAndDepositEth(ctx, ethClient, l1signer, apis.Users, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, amount)
 	}
 }
 
 func registerAndDepositEth(
 	ctx context.Context,
-	e *ethereum.Client,
+	ethClient *ethereum.Client,
 	l1signer signers.L1Signer,
 	userApi users.ClientService,
 	starkPublicKey *big.Int,
@@ -113,17 +79,16 @@ func registerAndDepositEth(
 ) (*Transaction, error) {
 	etherKey := l1signer.GetAddress()
 	starkKey := hexutil.EncodeBig(starkPublicKey)
-	registrationRequest := &models.GetSignableRegistrationRequest{
+	params := users.NewGetSignableRegistrationParamsWithContext(ctx)
+	params.SetGetSignableRegistrationRequest(&models.GetSignableRegistrationRequest{
 		EtherKey: &etherKey,
 		StarkKey: &starkKey,
-	}
-	params := users.NewGetSignableRegistrationParams()
-	params.SetGetSignableRegistrationRequest(registrationRequest)
+	})
 	signableRegistration, err := userApi.GetSignableRegistration(params)
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `UserApi.GetSignableRegistration`: %v", err)
 	}
-	auth, err := e.BuildTransactOpts(ctx, l1signer)
+	auth, err := ethClient.BuildTransactOpts(ctx, l1signer)
 	if err != nil {
 		return nil, err
 	}
@@ -133,7 +98,7 @@ func registerAndDepositEth(
 		return nil, err
 	}
 	auth.Value = amount
-	tnx, err := e.CoreContract.RegisterAndDepositEth(
+	tnx, err := ethClient.CoreContract.RegisterAndDepositEth(
 		auth,
 		common.HexToAddress(l1signer.GetAddress()),
 		starkPublicKey,
@@ -149,19 +114,19 @@ func registerAndDepositEth(
 
 func depositEth(
 	ctx context.Context,
-	e *ethereum.Client,
+	ethClient *ethereum.Client,
 	l1signer signers.L1Signer,
 	starkPublicKey *big.Int,
 	vaultId *big.Int,
 	assetType *big.Int,
 	amount *big.Int,
 ) (*Transaction, error) {
-	auth, err := e.BuildTransactOpts(ctx, l1signer)
+	auth, err := ethClient.BuildTransactOpts(ctx, l1signer)
 	auth.Value = amount
 	if err != nil {
 		return nil, err
 	}
-	tnx, err := e.CoreContract.Deposit(auth, starkPublicKey, assetType, vaultId)
+	tnx, err := ethClient.CoreContract.Deposit(auth, starkPublicKey, assetType, vaultId)
 	if err != nil {
 		return nil, err
 	}

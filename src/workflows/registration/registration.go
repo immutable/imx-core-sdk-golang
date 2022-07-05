@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"net/mail"
 
-	"immutable.com/imx-core-sdk-golang/utils"
-
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"immutable.com/imx-core-sdk-golang/api/client"
 	"immutable.com/imx-core-sdk-golang/api/client/users"
 	"immutable.com/imx-core-sdk-golang/api/models"
 	"immutable.com/imx-core-sdk-golang/generated/contracts"
 	"immutable.com/imx-core-sdk-golang/signers"
+	"immutable.com/imx-core-sdk-golang/utils"
 )
 
 // RegisterOffchain performs user registration off chain.
@@ -63,13 +63,13 @@ func IsRegisteredOffChain(ctx context.Context, api *client.ImmutableXAPI, public
 	return users.GetPayload().Accounts, nil
 }
 
-func IsRegisteredOnChain(contract *contracts.Registration, starkPublicKey string) (*bool, error) {
+func IsRegisteredOnChain(ctx context.Context, contract *contracts.Registration, starkPublicKey string) (*bool, error) {
 	starkKey, err := utils.HexToInt(starkPublicKey)
 	if err != nil {
 		return nil, fmt.Errorf("error converting StarkKey to bigint: %v\n", starkPublicKey)
 	}
 
-	isRegistered, err := contract.IsRegistered(nil, starkKey)
+	isRegistered, err := contract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	if err != nil {
 		isRegistered = false
 		return &isRegistered, fmt.Errorf("error: %v\n", err)

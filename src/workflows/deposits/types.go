@@ -1,6 +1,7 @@
 package deposits
 
 import (
+	"context"
 	eth "github.com/ethereum/go-ethereum/core/types"
 	"immutable.com/imx-core-sdk-golang/api/client"
 	"immutable.com/imx-core-sdk-golang/signers"
@@ -9,7 +10,7 @@ import (
 )
 
 type TokenDeposit interface {
-	Execute(e *ethereum.Client, apis *client.ImmutableXAPI, l1signer signers.L1Signer) (*eth.Transaction, error)
+	Execute(ctx context.Context, ethClient *ethereum.Client, apis *client.ImmutableXAPI, l1signer signers.L1Signer) (*eth.Transaction, error)
 }
 
 type ETHDeposit struct {
