@@ -20,13 +20,13 @@ import (
 	"immutable.com/imx-core-sdk-golang/workflows/types"
 )
 
-func (d *ERC721Deposit) Execute(ctx context.Context, e *ethereum.Client, apis *client.ImmutableXAPI, l1signer signers.L1Signer) (*Transaction, error) {
+func (d *ERC721Deposit) Execute(ctx context.Context, ethClient *ethereum.Client, apis *client.ImmutableXAPI, l1signer signers.L1Signer) (*Transaction, error) {
 	if d.Type != types.ERC721Type {
 		return nil, errors.New("invalid token type")
 	}
 
 	// Approve whether an amount of token from an account can be spent by a third-party account
-	auth, err := e.BuildTransactOpts(ctx, l1signer)
+	auth, err := ethClient.BuildTransactOpts(ctx, l1signer)
 	if err != nil {
 		return nil, err
 	}
@@ -34,11 +34,11 @@ func (d *ERC721Deposit) Execute(ctx context.Context, e *ethereum.Client, apis *c
 	if !ok {
 		return nil, fmt.Errorf("error converting tokentId to bigint: %v\n", d.TokenId)
 	}
-	ierc721Contract, err := e.NewIERC721Contract(ctx, d.TokenAddress)
+	ierc721Contract, err := ethClient.NewIERC721Contract(ctx, d.TokenAddress)
 	if err != nil {
 		return nil, err
 	}
-	_, err = ierc721Contract.Approve(auth, e.StarkContractAddress, tokenId)
+	_, err = ierc721Contract.Approve(auth, ethClient.StarkContractAddress, tokenId)
 	if err != nil {
 		return nil, err
 	}
@@ -76,15 +76,15 @@ func (d *ERC721Deposit) Execute(ctx context.Context, e *ethereum.Client, apis *c
 		return nil, fmt.Errorf("error converting StarkKey to bigint: %v\n", signableDeposit.StarkKey)
 	}
 
-	isRegistered, _ := e.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
+	isRegistered, _ := ethClient.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	// Note: if we reach here, it means we are registered off-chain.
 	// Above call will return an error user is not registered but this is for on-chain
 	// we should swallow this error to allow the register and deposit flow to execute.
 
 	if isRegistered {
-		return depositERC721(ctx, e, l1signer, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, tokenId)
+		return depositERC721(ctx, ethClient, l1signer, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, tokenId)
 	} else {
-		return registerAndDepositERC721(ctx, e, l1signer, apis.Users, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, tokenId)
+		return registerAndDepositERC721(ctx, ethClient, l1signer, apis.Users, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, tokenId)
 	}
 }
 
