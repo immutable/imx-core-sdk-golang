@@ -23,7 +23,12 @@ func main() {
 	apiUrl := config.GetApiUrl(config.Dev)
 
 	httpClient := client.NewHTTPClientWithConfig(nil, config.NewTransportConfig(apiUrl))
-	listAssetsResponse, err := httpClient.Assets.ListAssets(assets.NewListAssetsParams())
+	listAssetParams := assets.NewListAssetsParams()
+
+	// Add optional custom header parameters if required.
+	listAssetParams.AddCustomHeader("client_id", "123")
+
+	listAssetsResponse, err := httpClient.Assets.ListAssets(listAssetParams)
 	if err != nil {
 		fmt.Errorf("error: %v", err.Error())
 	}
