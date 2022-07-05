@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewRegisterUserParams() *RegisterUserParams {
 	return &RegisterUserParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewRegisterUserParams() *RegisterUserParams {
 // with the ability to set a timeout on a request.
 func NewRegisterUserParamsWithTimeout(timeout time.Duration) *RegisterUserParams {
 	return &RegisterUserParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewRegisterUserParamsWithTimeout(timeout time.Duration) *RegisterUserParams
 // with the ability to set a context for a request.
 func NewRegisterUserParamsWithContext(ctx context.Context) *RegisterUserParams {
 	return &RegisterUserParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewRegisterUserParamsWithContext(ctx context.Context) *RegisterUserParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewRegisterUserParamsWithHTTPClient(client *http.Client) *RegisterUserParams {
 	return &RegisterUserParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -66,6 +70,8 @@ type RegisterUserParams struct {
 	   Register User
 	*/
 	RegisterUserRequest *models.RegisterUserRequest
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -109,6 +115,11 @@ func (o *RegisterUserParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to register user params.
+func (o *RegisterUserParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the register user params
 func (o *RegisterUserParams) WithHTTPClient(client *http.Client) *RegisterUserParams {
 	o.SetHTTPClient(client)
@@ -137,6 +148,17 @@ func (o *RegisterUserParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 	if o.RegisterUserRequest != nil {
 		if err := r.SetBodyParam(o.RegisterUserRequest); err != nil {

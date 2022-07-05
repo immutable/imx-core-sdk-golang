@@ -24,7 +24,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetDepositParams() *GetDepositParams {
 	return &GetDepositParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -32,7 +33,8 @@ func NewGetDepositParams() *GetDepositParams {
 // with the ability to set a timeout on a request.
 func NewGetDepositParamsWithTimeout(timeout time.Duration) *GetDepositParams {
 	return &GetDepositParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -40,7 +42,8 @@ func NewGetDepositParamsWithTimeout(timeout time.Duration) *GetDepositParams {
 // with the ability to set a context for a request.
 func NewGetDepositParamsWithContext(ctx context.Context) *GetDepositParams {
 	return &GetDepositParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -48,7 +51,8 @@ func NewGetDepositParamsWithContext(ctx context.Context) *GetDepositParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewGetDepositParamsWithHTTPClient(client *http.Client) *GetDepositParams {
 	return &GetDepositParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -64,6 +68,8 @@ type GetDepositParams struct {
 	   Deposit ID
 	*/
 	ID string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -107,6 +113,11 @@ func (o *GetDepositParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to get deposit params.
+func (o *GetDepositParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the get deposit params
 func (o *GetDepositParams) WithHTTPClient(client *http.Client) *GetDepositParams {
 	o.SetHTTPClient(client)
@@ -135,6 +146,17 @@ func (o *GetDepositParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 
 	// path param id

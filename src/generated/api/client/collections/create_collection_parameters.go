@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewCreateCollectionParams() *CreateCollectionParams {
 	return &CreateCollectionParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewCreateCollectionParams() *CreateCollectionParams {
 // with the ability to set a timeout on a request.
 func NewCreateCollectionParamsWithTimeout(timeout time.Duration) *CreateCollectionParams {
 	return &CreateCollectionParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewCreateCollectionParamsWithTimeout(timeout time.Duration) *CreateCollecti
 // with the ability to set a context for a request.
 func NewCreateCollectionParamsWithContext(ctx context.Context) *CreateCollectionParams {
 	return &CreateCollectionParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewCreateCollectionParamsWithContext(ctx context.Context) *CreateCollection
 // with the ability to set a custom HTTPClient for a request.
 func NewCreateCollectionParamsWithHTTPClient(client *http.Client) *CreateCollectionParams {
 	return &CreateCollectionParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -78,6 +82,8 @@ type CreateCollectionParams struct {
 	   Unix Epoc timestamp
 	*/
 	IMXTimestamp string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -119,6 +125,11 @@ func (o *CreateCollectionParams) WithContext(ctx context.Context) *CreateCollect
 // SetContext adds the context to the create collection params
 func (o *CreateCollectionParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to create collection params.
+func (o *CreateCollectionParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the create collection params
@@ -171,6 +182,17 @@ func (o *CreateCollectionParams) WriteToRequest(r runtime.ClientRequest, reg str
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 	if o.CreateCollectionRequest != nil {
 		if err := r.SetBodyParam(o.CreateCollectionRequest); err != nil {

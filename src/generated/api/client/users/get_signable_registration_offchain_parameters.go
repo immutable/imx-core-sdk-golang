@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetSignableRegistrationOffchainParams() *GetSignableRegistrationOffchainParams {
 	return &GetSignableRegistrationOffchainParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewGetSignableRegistrationOffchainParams() *GetSignableRegistrationOffchain
 // with the ability to set a timeout on a request.
 func NewGetSignableRegistrationOffchainParamsWithTimeout(timeout time.Duration) *GetSignableRegistrationOffchainParams {
 	return &GetSignableRegistrationOffchainParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewGetSignableRegistrationOffchainParamsWithTimeout(timeout time.Duration) 
 // with the ability to set a context for a request.
 func NewGetSignableRegistrationOffchainParamsWithContext(ctx context.Context) *GetSignableRegistrationOffchainParams {
 	return &GetSignableRegistrationOffchainParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewGetSignableRegistrationOffchainParamsWithContext(ctx context.Context) *G
 // with the ability to set a custom HTTPClient for a request.
 func NewGetSignableRegistrationOffchainParamsWithHTTPClient(client *http.Client) *GetSignableRegistrationOffchainParams {
 	return &GetSignableRegistrationOffchainParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -66,6 +70,8 @@ type GetSignableRegistrationOffchainParams struct {
 	   Register User Offchain
 	*/
 	GetSignableRegistrationRequest *models.GetSignableRegistrationRequest
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -109,6 +115,11 @@ func (o *GetSignableRegistrationOffchainParams) SetContext(ctx context.Context) 
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to get signable registration offchain params.
+func (o *GetSignableRegistrationOffchainParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the get signable registration offchain params
 func (o *GetSignableRegistrationOffchainParams) WithHTTPClient(client *http.Client) *GetSignableRegistrationOffchainParams {
 	o.SetHTTPClient(client)
@@ -137,6 +148,17 @@ func (o *GetSignableRegistrationOffchainParams) WriteToRequest(r runtime.ClientR
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 	if o.GetSignableRegistrationRequest != nil {
 		if err := r.SetBodyParam(o.GetSignableRegistrationRequest); err != nil {

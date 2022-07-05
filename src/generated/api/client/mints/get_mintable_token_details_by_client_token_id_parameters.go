@@ -24,7 +24,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetMintableTokenDetailsByClientTokenIDParams() *GetMintableTokenDetailsByClientTokenIDParams {
 	return &GetMintableTokenDetailsByClientTokenIDParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -32,7 +33,8 @@ func NewGetMintableTokenDetailsByClientTokenIDParams() *GetMintableTokenDetailsB
 // with the ability to set a timeout on a request.
 func NewGetMintableTokenDetailsByClientTokenIDParamsWithTimeout(timeout time.Duration) *GetMintableTokenDetailsByClientTokenIDParams {
 	return &GetMintableTokenDetailsByClientTokenIDParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -40,7 +42,8 @@ func NewGetMintableTokenDetailsByClientTokenIDParamsWithTimeout(timeout time.Dur
 // with the ability to set a context for a request.
 func NewGetMintableTokenDetailsByClientTokenIDParamsWithContext(ctx context.Context) *GetMintableTokenDetailsByClientTokenIDParams {
 	return &GetMintableTokenDetailsByClientTokenIDParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -48,7 +51,8 @@ func NewGetMintableTokenDetailsByClientTokenIDParamsWithContext(ctx context.Cont
 // with the ability to set a custom HTTPClient for a request.
 func NewGetMintableTokenDetailsByClientTokenIDParamsWithHTTPClient(client *http.Client) *GetMintableTokenDetailsByClientTokenIDParams {
 	return &GetMintableTokenDetailsByClientTokenIDParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -70,6 +74,8 @@ type GetMintableTokenDetailsByClientTokenIDParams struct {
 	   ERC721 token ID
 	*/
 	TokenID string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -113,6 +119,11 @@ func (o *GetMintableTokenDetailsByClientTokenIDParams) SetContext(ctx context.Co
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to get mintable token details by client token Id params.
+func (o *GetMintableTokenDetailsByClientTokenIDParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the get mintable token details by client token Id params
 func (o *GetMintableTokenDetailsByClientTokenIDParams) WithHTTPClient(client *http.Client) *GetMintableTokenDetailsByClientTokenIDParams {
 	o.SetHTTPClient(client)
@@ -152,6 +163,17 @@ func (o *GetMintableTokenDetailsByClientTokenIDParams) WriteToRequest(r runtime.
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 
 	// path param token_address

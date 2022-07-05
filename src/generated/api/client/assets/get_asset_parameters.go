@@ -25,7 +25,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetAssetParams() *GetAssetParams {
 	return &GetAssetParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -33,7 +34,8 @@ func NewGetAssetParams() *GetAssetParams {
 // with the ability to set a timeout on a request.
 func NewGetAssetParamsWithTimeout(timeout time.Duration) *GetAssetParams {
 	return &GetAssetParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -41,7 +43,8 @@ func NewGetAssetParamsWithTimeout(timeout time.Duration) *GetAssetParams {
 // with the ability to set a context for a request.
 func NewGetAssetParamsWithContext(ctx context.Context) *GetAssetParams {
 	return &GetAssetParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -49,7 +52,8 @@ func NewGetAssetParamsWithContext(ctx context.Context) *GetAssetParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewGetAssetParamsWithHTTPClient(client *http.Client) *GetAssetParams {
 	return &GetAssetParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -77,6 +81,8 @@ type GetAssetParams struct {
 	   Either ERC721 token ID or internal IMX ID
 	*/
 	TokenID string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,6 +124,11 @@ func (o *GetAssetParams) WithContext(ctx context.Context) *GetAssetParams {
 // SetContext adds the context to the get asset params
 func (o *GetAssetParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to get asset params.
+func (o *GetAssetParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the get asset params
@@ -170,6 +181,17 @@ func (o *GetAssetParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 
 	if o.IncludeFees != nil {

@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewCreateProjectParams() *CreateProjectParams {
 	return &CreateProjectParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewCreateProjectParams() *CreateProjectParams {
 // with the ability to set a timeout on a request.
 func NewCreateProjectParamsWithTimeout(timeout time.Duration) *CreateProjectParams {
 	return &CreateProjectParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewCreateProjectParamsWithTimeout(timeout time.Duration) *CreateProjectPara
 // with the ability to set a context for a request.
 func NewCreateProjectParamsWithContext(ctx context.Context) *CreateProjectParams {
 	return &CreateProjectParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewCreateProjectParamsWithContext(ctx context.Context) *CreateProjectParams
 // with the ability to set a custom HTTPClient for a request.
 func NewCreateProjectParamsWithHTTPClient(client *http.Client) *CreateProjectParams {
 	return &CreateProjectParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -78,6 +82,8 @@ type CreateProjectParams struct {
 	   Unix Epoc timestamp
 	*/
 	IMXTimestamp string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -119,6 +125,11 @@ func (o *CreateProjectParams) WithContext(ctx context.Context) *CreateProjectPar
 // SetContext adds the context to the create project params
 func (o *CreateProjectParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to create project params.
+func (o *CreateProjectParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the create project params
@@ -171,6 +182,17 @@ func (o *CreateProjectParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 	if o.CreateProjectRequest != nil {
 		if err := r.SetBodyParam(o.CreateProjectRequest); err != nil {

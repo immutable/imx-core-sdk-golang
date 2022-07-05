@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewCancelOrderParams() *CancelOrderParams {
 	return &CancelOrderParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewCancelOrderParams() *CancelOrderParams {
 // with the ability to set a timeout on a request.
 func NewCancelOrderParamsWithTimeout(timeout time.Duration) *CancelOrderParams {
 	return &CancelOrderParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewCancelOrderParamsWithTimeout(timeout time.Duration) *CancelOrderParams {
 // with the ability to set a context for a request.
 func NewCancelOrderParamsWithContext(ctx context.Context) *CancelOrderParams {
 	return &CancelOrderParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewCancelOrderParamsWithContext(ctx context.Context) *CancelOrderParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewCancelOrderParamsWithHTTPClient(client *http.Client) *CancelOrderParams {
 	return &CancelOrderParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -84,6 +88,8 @@ type CancelOrderParams struct {
 	   eth signature
 	*/
 	XImxEthSignature *string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -125,6 +131,11 @@ func (o *CancelOrderParams) WithContext(ctx context.Context) *CancelOrderParams 
 // SetContext adds the context to the cancel order params
 func (o *CancelOrderParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to cancel order params.
+func (o *CancelOrderParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the cancel order params
@@ -188,6 +199,17 @@ func (o *CancelOrderParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 	if o.CancelOrderRequest != nil {
 		if err := r.SetBodyParam(o.CancelOrderRequest); err != nil {

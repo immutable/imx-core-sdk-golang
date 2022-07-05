@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetSignableOrderParams() *GetSignableOrderParams {
 	return &GetSignableOrderParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewGetSignableOrderParams() *GetSignableOrderParams {
 // with the ability to set a timeout on a request.
 func NewGetSignableOrderParamsWithTimeout(timeout time.Duration) *GetSignableOrderParams {
 	return &GetSignableOrderParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewGetSignableOrderParamsWithTimeout(timeout time.Duration) *GetSignableOrd
 // with the ability to set a context for a request.
 func NewGetSignableOrderParamsWithContext(ctx context.Context) *GetSignableOrderParams {
 	return &GetSignableOrderParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewGetSignableOrderParamsWithContext(ctx context.Context) *GetSignableOrder
 // with the ability to set a custom HTTPClient for a request.
 func NewGetSignableOrderParamsWithHTTPClient(client *http.Client) *GetSignableOrderParams {
 	return &GetSignableOrderParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -66,6 +70,8 @@ type GetSignableOrderParams struct {
 	   get a signable order
 	*/
 	GetSignableOrderRequestV3 *models.GetSignableOrderRequest
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -109,6 +115,11 @@ func (o *GetSignableOrderParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to get signable order params.
+func (o *GetSignableOrderParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the get signable order params
 func (o *GetSignableOrderParams) WithHTTPClient(client *http.Client) *GetSignableOrderParams {
 	o.SetHTTPClient(client)
@@ -137,6 +148,17 @@ func (o *GetSignableOrderParams) WriteToRequest(r runtime.ClientRequest, reg str
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 	if o.GetSignableOrderRequestV3 != nil {
 		if err := r.SetBodyParam(o.GetSignableOrderRequestV3); err != nil {

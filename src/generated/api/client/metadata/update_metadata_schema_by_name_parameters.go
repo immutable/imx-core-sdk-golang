@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewUpdateMetadataSchemaByNameParams() *UpdateMetadataSchemaByNameParams {
 	return &UpdateMetadataSchemaByNameParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewUpdateMetadataSchemaByNameParams() *UpdateMetadataSchemaByNameParams {
 // with the ability to set a timeout on a request.
 func NewUpdateMetadataSchemaByNameParamsWithTimeout(timeout time.Duration) *UpdateMetadataSchemaByNameParams {
 	return &UpdateMetadataSchemaByNameParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewUpdateMetadataSchemaByNameParamsWithTimeout(timeout time.Duration) *Upda
 // with the ability to set a context for a request.
 func NewUpdateMetadataSchemaByNameParamsWithContext(ctx context.Context) *UpdateMetadataSchemaByNameParams {
 	return &UpdateMetadataSchemaByNameParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewUpdateMetadataSchemaByNameParamsWithContext(ctx context.Context) *Update
 // with the ability to set a custom HTTPClient for a request.
 func NewUpdateMetadataSchemaByNameParamsWithHTTPClient(client *http.Client) *UpdateMetadataSchemaByNameParams {
 	return &UpdateMetadataSchemaByNameParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -90,6 +94,8 @@ type UpdateMetadataSchemaByNameParams struct {
 	   Metadata schema name
 	*/
 	Name string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -131,6 +137,11 @@ func (o *UpdateMetadataSchemaByNameParams) WithContext(ctx context.Context) *Upd
 // SetContext adds the context to the update metadata schema by name params
 func (o *UpdateMetadataSchemaByNameParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to update metadata schema by name params.
+func (o *UpdateMetadataSchemaByNameParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the update metadata schema by name params
@@ -205,6 +216,17 @@ func (o *UpdateMetadataSchemaByNameParams) WriteToRequest(r runtime.ClientReques
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 
 	// header param IMX-Signature

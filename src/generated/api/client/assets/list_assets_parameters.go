@@ -25,7 +25,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewListAssetsParams() *ListAssetsParams {
 	return &ListAssetsParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -33,7 +34,8 @@ func NewListAssetsParams() *ListAssetsParams {
 // with the ability to set a timeout on a request.
 func NewListAssetsParamsWithTimeout(timeout time.Duration) *ListAssetsParams {
 	return &ListAssetsParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -41,7 +43,8 @@ func NewListAssetsParamsWithTimeout(timeout time.Duration) *ListAssetsParams {
 // with the ability to set a context for a request.
 func NewListAssetsParamsWithContext(ctx context.Context) *ListAssetsParams {
 	return &ListAssetsParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -49,7 +52,8 @@ func NewListAssetsParamsWithContext(ctx context.Context) *ListAssetsParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewListAssetsParamsWithHTTPClient(client *http.Client) *ListAssetsParams {
 	return &ListAssetsParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -156,6 +160,8 @@ type ListAssetsParams struct {
 	*/
 	User *string
 
+	AdditionalHeaderParams map[string]string
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -196,6 +202,11 @@ func (o *ListAssetsParams) WithContext(ctx context.Context) *ListAssetsParams {
 // SetContext adds the context to the list assets params
 func (o *ListAssetsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to list assets params.
+func (o *ListAssetsParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the list assets params
@@ -391,6 +402,17 @@ func (o *ListAssetsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 
 	if o.AuxiliaryFeePercentages != nil {

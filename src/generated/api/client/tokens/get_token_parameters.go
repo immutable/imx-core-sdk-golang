@@ -24,7 +24,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetTokenParams() *GetTokenParams {
 	return &GetTokenParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -32,7 +33,8 @@ func NewGetTokenParams() *GetTokenParams {
 // with the ability to set a timeout on a request.
 func NewGetTokenParamsWithTimeout(timeout time.Duration) *GetTokenParams {
 	return &GetTokenParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -40,7 +42,8 @@ func NewGetTokenParamsWithTimeout(timeout time.Duration) *GetTokenParams {
 // with the ability to set a context for a request.
 func NewGetTokenParamsWithContext(ctx context.Context) *GetTokenParams {
 	return &GetTokenParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -48,7 +51,8 @@ func NewGetTokenParamsWithContext(ctx context.Context) *GetTokenParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewGetTokenParamsWithHTTPClient(client *http.Client) *GetTokenParams {
 	return &GetTokenParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -64,6 +68,8 @@ type GetTokenParams struct {
 	   Token Contract Address
 	*/
 	Address string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -107,6 +113,11 @@ func (o *GetTokenParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to get token params.
+func (o *GetTokenParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the get token params
 func (o *GetTokenParams) WithHTTPClient(client *http.Client) *GetTokenParams {
 	o.SetHTTPClient(client)
@@ -135,6 +146,17 @@ func (o *GetTokenParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 
 	// path param address

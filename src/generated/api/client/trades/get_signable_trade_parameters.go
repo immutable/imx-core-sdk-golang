@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetSignableTradeParams() *GetSignableTradeParams {
 	return &GetSignableTradeParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewGetSignableTradeParams() *GetSignableTradeParams {
 // with the ability to set a timeout on a request.
 func NewGetSignableTradeParamsWithTimeout(timeout time.Duration) *GetSignableTradeParams {
 	return &GetSignableTradeParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewGetSignableTradeParamsWithTimeout(timeout time.Duration) *GetSignableTra
 // with the ability to set a context for a request.
 func NewGetSignableTradeParamsWithContext(ctx context.Context) *GetSignableTradeParams {
 	return &GetSignableTradeParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewGetSignableTradeParamsWithContext(ctx context.Context) *GetSignableTrade
 // with the ability to set a custom HTTPClient for a request.
 func NewGetSignableTradeParamsWithHTTPClient(client *http.Client) *GetSignableTradeParams {
 	return &GetSignableTradeParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -66,6 +70,8 @@ type GetSignableTradeParams struct {
 	   get a signable trade
 	*/
 	GetSignableTradeRequest *models.GetSignableTradeRequest
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -109,6 +115,11 @@ func (o *GetSignableTradeParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to get signable trade params.
+func (o *GetSignableTradeParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the get signable trade params
 func (o *GetSignableTradeParams) WithHTTPClient(client *http.Client) *GetSignableTradeParams {
 	o.SetHTTPClient(client)
@@ -137,6 +148,17 @@ func (o *GetSignableTradeParams) WriteToRequest(r runtime.ClientRequest, reg str
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 	if o.GetSignableTradeRequest != nil {
 		if err := r.SetBodyParam(o.GetSignableTradeRequest); err != nil {

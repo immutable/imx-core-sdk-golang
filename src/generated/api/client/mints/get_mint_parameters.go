@@ -24,7 +24,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetMintParams() *GetMintParams {
 	return &GetMintParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -32,7 +33,8 @@ func NewGetMintParams() *GetMintParams {
 // with the ability to set a timeout on a request.
 func NewGetMintParamsWithTimeout(timeout time.Duration) *GetMintParams {
 	return &GetMintParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -40,7 +42,8 @@ func NewGetMintParamsWithTimeout(timeout time.Duration) *GetMintParams {
 // with the ability to set a context for a request.
 func NewGetMintParamsWithContext(ctx context.Context) *GetMintParams {
 	return &GetMintParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -48,7 +51,8 @@ func NewGetMintParamsWithContext(ctx context.Context) *GetMintParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewGetMintParamsWithHTTPClient(client *http.Client) *GetMintParams {
 	return &GetMintParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -64,6 +68,8 @@ type GetMintParams struct {
 	   Mint ID. This is the transaction_id returned from listMints
 	*/
 	ID string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -107,6 +113,11 @@ func (o *GetMintParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to get mint params.
+func (o *GetMintParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the get mint params
 func (o *GetMintParams) WithHTTPClient(client *http.Client) *GetMintParams {
 	o.SetHTTPClient(client)
@@ -135,6 +146,17 @@ func (o *GetMintParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regis
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 
 	// path param id

@@ -25,7 +25,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewListTransfersParams() *ListTransfersParams {
 	return &ListTransfersParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -33,7 +34,8 @@ func NewListTransfersParams() *ListTransfersParams {
 // with the ability to set a timeout on a request.
 func NewListTransfersParamsWithTimeout(timeout time.Duration) *ListTransfersParams {
 	return &ListTransfersParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -41,7 +43,8 @@ func NewListTransfersParamsWithTimeout(timeout time.Duration) *ListTransfersPara
 // with the ability to set a context for a request.
 func NewListTransfersParamsWithContext(ctx context.Context) *ListTransfersParams {
 	return &ListTransfersParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -49,7 +52,8 @@ func NewListTransfersParamsWithContext(ctx context.Context) *ListTransfersParams
 // with the ability to set a custom HTTPClient for a request.
 func NewListTransfersParamsWithHTTPClient(client *http.Client) *ListTransfersParams {
 	return &ListTransfersParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -162,6 +166,8 @@ type ListTransfersParams struct {
 	*/
 	User *string
 
+	AdditionalHeaderParams map[string]string
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -202,6 +208,11 @@ func (o *ListTransfersParams) WithContext(ctx context.Context) *ListTransfersPar
 // SetContext adds the context to the list transfers params
 func (o *ListTransfersParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to list transfers params.
+func (o *ListTransfersParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the list transfers params
@@ -408,6 +419,17 @@ func (o *ListTransfersParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 
 	if o.AssetID != nil {

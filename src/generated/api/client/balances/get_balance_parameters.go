@@ -24,7 +24,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetBalanceParams() *GetBalanceParams {
 	return &GetBalanceParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -32,7 +33,8 @@ func NewGetBalanceParams() *GetBalanceParams {
 // with the ability to set a timeout on a request.
 func NewGetBalanceParamsWithTimeout(timeout time.Duration) *GetBalanceParams {
 	return &GetBalanceParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -40,7 +42,8 @@ func NewGetBalanceParamsWithTimeout(timeout time.Duration) *GetBalanceParams {
 // with the ability to set a context for a request.
 func NewGetBalanceParamsWithContext(ctx context.Context) *GetBalanceParams {
 	return &GetBalanceParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -48,7 +51,8 @@ func NewGetBalanceParamsWithContext(ctx context.Context) *GetBalanceParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewGetBalanceParamsWithHTTPClient(client *http.Client) *GetBalanceParams {
 	return &GetBalanceParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -70,6 +74,8 @@ type GetBalanceParams struct {
 	   Address of the owner/user
 	*/
 	Owner string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -113,6 +119,11 @@ func (o *GetBalanceParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to get balance params.
+func (o *GetBalanceParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the get balance params
 func (o *GetBalanceParams) WithHTTPClient(client *http.Client) *GetBalanceParams {
 	o.SetHTTPClient(client)
@@ -152,6 +163,17 @@ func (o *GetBalanceParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 
 	// path param address

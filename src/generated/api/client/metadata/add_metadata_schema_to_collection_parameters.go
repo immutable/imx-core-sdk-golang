@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewAddMetadataSchemaToCollectionParams() *AddMetadataSchemaToCollectionParams {
 	return &AddMetadataSchemaToCollectionParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewAddMetadataSchemaToCollectionParams() *AddMetadataSchemaToCollectionPara
 // with the ability to set a timeout on a request.
 func NewAddMetadataSchemaToCollectionParamsWithTimeout(timeout time.Duration) *AddMetadataSchemaToCollectionParams {
 	return &AddMetadataSchemaToCollectionParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewAddMetadataSchemaToCollectionParamsWithTimeout(timeout time.Duration) *A
 // with the ability to set a context for a request.
 func NewAddMetadataSchemaToCollectionParamsWithContext(ctx context.Context) *AddMetadataSchemaToCollectionParams {
 	return &AddMetadataSchemaToCollectionParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewAddMetadataSchemaToCollectionParamsWithContext(ctx context.Context) *Add
 // with the ability to set a custom HTTPClient for a request.
 func NewAddMetadataSchemaToCollectionParamsWithHTTPClient(client *http.Client) *AddMetadataSchemaToCollectionParams {
 	return &AddMetadataSchemaToCollectionParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -84,6 +88,8 @@ type AddMetadataSchemaToCollectionParams struct {
 	   Collection contract address
 	*/
 	Address string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -125,6 +131,11 @@ func (o *AddMetadataSchemaToCollectionParams) WithContext(ctx context.Context) *
 // SetContext adds the context to the add metadata schema to collection params
 func (o *AddMetadataSchemaToCollectionParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to add metadata schema to collection params.
+func (o *AddMetadataSchemaToCollectionParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the add metadata schema to collection params
@@ -188,6 +199,17 @@ func (o *AddMetadataSchemaToCollectionParams) WriteToRequest(r runtime.ClientReq
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 	if o.AddMetadataSchemaToCollectionRequest != nil {
 		if err := r.SetBodyParam(o.AddMetadataSchemaToCollectionRequest); err != nil {

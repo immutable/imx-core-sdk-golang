@@ -25,7 +25,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetOrderParams() *GetOrderParams {
 	return &GetOrderParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -33,7 +34,8 @@ func NewGetOrderParams() *GetOrderParams {
 // with the ability to set a timeout on a request.
 func NewGetOrderParamsWithTimeout(timeout time.Duration) *GetOrderParams {
 	return &GetOrderParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -41,7 +43,8 @@ func NewGetOrderParamsWithTimeout(timeout time.Duration) *GetOrderParams {
 // with the ability to set a context for a request.
 func NewGetOrderParamsWithContext(ctx context.Context) *GetOrderParams {
 	return &GetOrderParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -49,7 +52,8 @@ func NewGetOrderParamsWithContext(ctx context.Context) *GetOrderParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewGetOrderParamsWithHTTPClient(client *http.Client) *GetOrderParams {
 	return &GetOrderParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -83,6 +87,8 @@ type GetOrderParams struct {
 	   Set flag to true to include fee body for the order
 	*/
 	IncludeFees *bool
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -124,6 +130,11 @@ func (o *GetOrderParams) WithContext(ctx context.Context) *GetOrderParams {
 // SetContext adds the context to the get order params
 func (o *GetOrderParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to get order params.
+func (o *GetOrderParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the get order params
@@ -187,6 +198,17 @@ func (o *GetOrderParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 
 	if o.AuxiliaryFeePercentages != nil {

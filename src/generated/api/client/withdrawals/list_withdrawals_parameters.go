@@ -25,7 +25,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewListWithdrawalsParams() *ListWithdrawalsParams {
 	return &ListWithdrawalsParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -33,7 +34,8 @@ func NewListWithdrawalsParams() *ListWithdrawalsParams {
 // with the ability to set a timeout on a request.
 func NewListWithdrawalsParamsWithTimeout(timeout time.Duration) *ListWithdrawalsParams {
 	return &ListWithdrawalsParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -41,7 +43,8 @@ func NewListWithdrawalsParamsWithTimeout(timeout time.Duration) *ListWithdrawals
 // with the ability to set a context for a request.
 func NewListWithdrawalsParamsWithContext(ctx context.Context) *ListWithdrawalsParams {
 	return &ListWithdrawalsParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -49,7 +52,8 @@ func NewListWithdrawalsParamsWithContext(ctx context.Context) *ListWithdrawalsPa
 // with the ability to set a custom HTTPClient for a request.
 func NewListWithdrawalsParamsWithHTTPClient(client *http.Client) *ListWithdrawalsParams {
 	return &ListWithdrawalsParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -168,6 +172,8 @@ type ListWithdrawalsParams struct {
 	*/
 	WithdrawnToWallet *bool
 
+	AdditionalHeaderParams map[string]string
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -208,6 +214,11 @@ func (o *ListWithdrawalsParams) WithContext(ctx context.Context) *ListWithdrawal
 // SetContext adds the context to the list withdrawals params
 func (o *ListWithdrawalsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to list withdrawals params.
+func (o *ListWithdrawalsParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the list withdrawals params
@@ -425,6 +436,17 @@ func (o *ListWithdrawalsParams) WriteToRequest(r runtime.ClientRequest, reg strf
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
+		return err
+	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
 	var res []error
 
 	if o.AssetID != nil {
