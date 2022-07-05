@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetSignableTransferParams() *GetSignableTransferParams {
 	return &GetSignableTransferParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewGetSignableTransferParams() *GetSignableTransferParams {
 // with the ability to set a timeout on a request.
 func NewGetSignableTransferParamsWithTimeout(timeout time.Duration) *GetSignableTransferParams {
 	return &GetSignableTransferParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewGetSignableTransferParamsWithTimeout(timeout time.Duration) *GetSignable
 // with the ability to set a context for a request.
 func NewGetSignableTransferParamsWithContext(ctx context.Context) *GetSignableTransferParams {
 	return &GetSignableTransferParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewGetSignableTransferParamsWithContext(ctx context.Context) *GetSignableTr
 // with the ability to set a custom HTTPClient for a request.
 func NewGetSignableTransferParamsWithHTTPClient(client *http.Client) *GetSignableTransferParams {
 	return &GetSignableTransferParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -66,6 +70,8 @@ type GetSignableTransferParams struct {
 	   get details of signable transfer
 	*/
 	GetSignableTransferRequestV2 *models.GetSignableTransferRequest
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -109,6 +115,11 @@ func (o *GetSignableTransferParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to get signable transfer params.
+func (o *GetSignableTransferParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the get signable transfer params
 func (o *GetSignableTransferParams) WithHTTPClient(client *http.Client) *GetSignableTransferParams {
 	o.SetHTTPClient(client)
@@ -137,6 +148,18 @@ func (o *GetSignableTransferParams) WriteToRequest(r runtime.ClientRequest, reg 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 	if o.GetSignableTransferRequestV2 != nil {
 		if err := r.SetBodyParam(o.GetSignableTransferRequestV2); err != nil {

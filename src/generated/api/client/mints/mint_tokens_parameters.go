@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewMintTokensParams() *MintTokensParams {
 	return &MintTokensParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewMintTokensParams() *MintTokensParams {
 // with the ability to set a timeout on a request.
 func NewMintTokensParamsWithTimeout(timeout time.Duration) *MintTokensParams {
 	return &MintTokensParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewMintTokensParamsWithTimeout(timeout time.Duration) *MintTokensParams {
 // with the ability to set a context for a request.
 func NewMintTokensParamsWithContext(ctx context.Context) *MintTokensParams {
 	return &MintTokensParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewMintTokensParamsWithContext(ctx context.Context) *MintTokensParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewMintTokensParamsWithHTTPClient(client *http.Client) *MintTokensParams {
 	return &MintTokensParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -66,6 +70,8 @@ type MintTokensParams struct {
 	   details of tokens to mint
 	*/
 	MintTokensRequestV2 []*models.MintRequest
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -109,6 +115,11 @@ func (o *MintTokensParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to mint tokens params.
+func (o *MintTokensParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the mint tokens params
 func (o *MintTokensParams) WithHTTPClient(client *http.Client) *MintTokensParams {
 	o.SetHTTPClient(client)
@@ -137,6 +148,18 @@ func (o *MintTokensParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 	if o.MintTokensRequestV2 != nil {
 		if err := r.SetBodyParam(o.MintTokensRequestV2); err != nil {

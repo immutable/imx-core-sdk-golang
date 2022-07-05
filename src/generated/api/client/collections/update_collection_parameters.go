@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewUpdateCollectionParams() *UpdateCollectionParams {
 	return &UpdateCollectionParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewUpdateCollectionParams() *UpdateCollectionParams {
 // with the ability to set a timeout on a request.
 func NewUpdateCollectionParamsWithTimeout(timeout time.Duration) *UpdateCollectionParams {
 	return &UpdateCollectionParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewUpdateCollectionParamsWithTimeout(timeout time.Duration) *UpdateCollecti
 // with the ability to set a context for a request.
 func NewUpdateCollectionParamsWithContext(ctx context.Context) *UpdateCollectionParams {
 	return &UpdateCollectionParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewUpdateCollectionParamsWithContext(ctx context.Context) *UpdateCollection
 // with the ability to set a custom HTTPClient for a request.
 func NewUpdateCollectionParamsWithHTTPClient(client *http.Client) *UpdateCollectionParams {
 	return &UpdateCollectionParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -84,6 +88,8 @@ type UpdateCollectionParams struct {
 	   Collection contract address
 	*/
 	Address string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -125,6 +131,11 @@ func (o *UpdateCollectionParams) WithContext(ctx context.Context) *UpdateCollect
 // SetContext adds the context to the update collection params
 func (o *UpdateCollectionParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to update collection params.
+func (o *UpdateCollectionParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the update collection params
@@ -188,6 +199,18 @@ func (o *UpdateCollectionParams) WriteToRequest(r runtime.ClientRequest, reg str
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 
 	// header param IMX-Signature

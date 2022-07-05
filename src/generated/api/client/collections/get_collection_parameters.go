@@ -24,7 +24,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetCollectionParams() *GetCollectionParams {
 	return &GetCollectionParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -32,7 +33,8 @@ func NewGetCollectionParams() *GetCollectionParams {
 // with the ability to set a timeout on a request.
 func NewGetCollectionParamsWithTimeout(timeout time.Duration) *GetCollectionParams {
 	return &GetCollectionParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -40,7 +42,8 @@ func NewGetCollectionParamsWithTimeout(timeout time.Duration) *GetCollectionPara
 // with the ability to set a context for a request.
 func NewGetCollectionParamsWithContext(ctx context.Context) *GetCollectionParams {
 	return &GetCollectionParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -48,7 +51,8 @@ func NewGetCollectionParamsWithContext(ctx context.Context) *GetCollectionParams
 // with the ability to set a custom HTTPClient for a request.
 func NewGetCollectionParamsWithHTTPClient(client *http.Client) *GetCollectionParams {
 	return &GetCollectionParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -64,6 +68,8 @@ type GetCollectionParams struct {
 	   Collection contract address
 	*/
 	Address string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -107,6 +113,11 @@ func (o *GetCollectionParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to get collection params.
+func (o *GetCollectionParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the get collection params
 func (o *GetCollectionParams) WithHTTPClient(client *http.Client) *GetCollectionParams {
 	o.SetHTTPClient(client)
@@ -135,6 +146,18 @@ func (o *GetCollectionParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 
 	// path param address

@@ -24,7 +24,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewListBalancesParams() *ListBalancesParams {
 	return &ListBalancesParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -32,7 +33,8 @@ func NewListBalancesParams() *ListBalancesParams {
 // with the ability to set a timeout on a request.
 func NewListBalancesParamsWithTimeout(timeout time.Duration) *ListBalancesParams {
 	return &ListBalancesParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -40,7 +42,8 @@ func NewListBalancesParamsWithTimeout(timeout time.Duration) *ListBalancesParams
 // with the ability to set a context for a request.
 func NewListBalancesParamsWithContext(ctx context.Context) *ListBalancesParams {
 	return &ListBalancesParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -48,7 +51,8 @@ func NewListBalancesParamsWithContext(ctx context.Context) *ListBalancesParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewListBalancesParamsWithHTTPClient(client *http.Client) *ListBalancesParams {
 	return &ListBalancesParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -64,6 +68,8 @@ type ListBalancesParams struct {
 	   Ethereum wallet address for user
 	*/
 	Owner string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -107,6 +113,11 @@ func (o *ListBalancesParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to list balances params.
+func (o *ListBalancesParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the list balances params
 func (o *ListBalancesParams) WithHTTPClient(client *http.Client) *ListBalancesParams {
 	o.SetHTTPClient(client)
@@ -135,6 +146,18 @@ func (o *ListBalancesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 
 	// path param owner

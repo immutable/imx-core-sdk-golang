@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewCreateWithdrawalParams() *CreateWithdrawalParams {
 	return &CreateWithdrawalParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewCreateWithdrawalParams() *CreateWithdrawalParams {
 // with the ability to set a timeout on a request.
 func NewCreateWithdrawalParamsWithTimeout(timeout time.Duration) *CreateWithdrawalParams {
 	return &CreateWithdrawalParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewCreateWithdrawalParamsWithTimeout(timeout time.Duration) *CreateWithdraw
 // with the ability to set a context for a request.
 func NewCreateWithdrawalParamsWithContext(ctx context.Context) *CreateWithdrawalParams {
 	return &CreateWithdrawalParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewCreateWithdrawalParamsWithContext(ctx context.Context) *CreateWithdrawal
 // with the ability to set a custom HTTPClient for a request.
 func NewCreateWithdrawalParamsWithHTTPClient(client *http.Client) *CreateWithdrawalParams {
 	return &CreateWithdrawalParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -78,6 +82,8 @@ type CreateWithdrawalParams struct {
 	   eth signature
 	*/
 	XImxEthSignature *string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -119,6 +125,11 @@ func (o *CreateWithdrawalParams) WithContext(ctx context.Context) *CreateWithdra
 // SetContext adds the context to the create withdrawal params
 func (o *CreateWithdrawalParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to create withdrawal params.
+func (o *CreateWithdrawalParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the create withdrawal params
@@ -171,6 +182,18 @@ func (o *CreateWithdrawalParams) WriteToRequest(r runtime.ClientRequest, reg str
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 	if o.CreateWithdrawalRequest != nil {
 		if err := r.SetBodyParam(o.CreateWithdrawalRequest); err != nil {

@@ -24,7 +24,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetTradeParams() *GetTradeParams {
 	return &GetTradeParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -32,7 +33,8 @@ func NewGetTradeParams() *GetTradeParams {
 // with the ability to set a timeout on a request.
 func NewGetTradeParamsWithTimeout(timeout time.Duration) *GetTradeParams {
 	return &GetTradeParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -40,7 +42,8 @@ func NewGetTradeParamsWithTimeout(timeout time.Duration) *GetTradeParams {
 // with the ability to set a context for a request.
 func NewGetTradeParamsWithContext(ctx context.Context) *GetTradeParams {
 	return &GetTradeParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -48,7 +51,8 @@ func NewGetTradeParamsWithContext(ctx context.Context) *GetTradeParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewGetTradeParamsWithHTTPClient(client *http.Client) *GetTradeParams {
 	return &GetTradeParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -64,6 +68,8 @@ type GetTradeParams struct {
 	   Trade ID
 	*/
 	ID string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -107,6 +113,11 @@ func (o *GetTradeParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to get trade params.
+func (o *GetTradeParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the get trade params
 func (o *GetTradeParams) WithHTTPClient(client *http.Client) *GetTradeParams {
 	o.SetHTTPClient(client)
@@ -135,6 +146,18 @@ func (o *GetTradeParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 
 	// path param id

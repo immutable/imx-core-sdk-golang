@@ -25,7 +25,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewListTradesParams() *ListTradesParams {
 	return &ListTradesParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -33,7 +34,8 @@ func NewListTradesParams() *ListTradesParams {
 // with the ability to set a timeout on a request.
 func NewListTradesParamsWithTimeout(timeout time.Duration) *ListTradesParams {
 	return &ListTradesParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -41,7 +43,8 @@ func NewListTradesParamsWithTimeout(timeout time.Duration) *ListTradesParams {
 // with the ability to set a context for a request.
 func NewListTradesParamsWithContext(ctx context.Context) *ListTradesParams {
 	return &ListTradesParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -49,7 +52,8 @@ func NewListTradesParamsWithContext(ctx context.Context) *ListTradesParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewListTradesParamsWithHTTPClient(client *http.Client) *ListTradesParams {
 	return &ListTradesParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -132,6 +136,8 @@ type ListTradesParams struct {
 	*/
 	PartybTokenType *string
 
+	AdditionalHeaderParams map[string]string
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -172,6 +178,11 @@ func (o *ListTradesParams) WithContext(ctx context.Context) *ListTradesParams {
 // SetContext adds the context to the list trades params
 func (o *ListTradesParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to list trades params.
+func (o *ListTradesParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the list trades params
@@ -323,6 +334,18 @@ func (o *ListTradesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 
 	if o.Cursor != nil {

@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetSignableCancelOrderParams() *GetSignableCancelOrderParams {
 	return &GetSignableCancelOrderParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewGetSignableCancelOrderParams() *GetSignableCancelOrderParams {
 // with the ability to set a timeout on a request.
 func NewGetSignableCancelOrderParamsWithTimeout(timeout time.Duration) *GetSignableCancelOrderParams {
 	return &GetSignableCancelOrderParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewGetSignableCancelOrderParamsWithTimeout(timeout time.Duration) *GetSigna
 // with the ability to set a context for a request.
 func NewGetSignableCancelOrderParamsWithContext(ctx context.Context) *GetSignableCancelOrderParams {
 	return &GetSignableCancelOrderParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewGetSignableCancelOrderParamsWithContext(ctx context.Context) *GetSignabl
 // with the ability to set a custom HTTPClient for a request.
 func NewGetSignableCancelOrderParamsWithHTTPClient(client *http.Client) *GetSignableCancelOrderParams {
 	return &GetSignableCancelOrderParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -66,6 +70,8 @@ type GetSignableCancelOrderParams struct {
 	   get a signable cancel order
 	*/
 	GetSignableCancelOrderRequest *models.GetSignableCancelOrderRequest
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -109,6 +115,11 @@ func (o *GetSignableCancelOrderParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to get signable cancel order params.
+func (o *GetSignableCancelOrderParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the get signable cancel order params
 func (o *GetSignableCancelOrderParams) WithHTTPClient(client *http.Client) *GetSignableCancelOrderParams {
 	o.SetHTTPClient(client)
@@ -137,6 +148,18 @@ func (o *GetSignableCancelOrderParams) WriteToRequest(r runtime.ClientRequest, r
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 	if o.GetSignableCancelOrderRequest != nil {
 		if err := r.SetBodyParam(o.GetSignableCancelOrderRequest); err != nil {

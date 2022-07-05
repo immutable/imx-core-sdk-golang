@@ -24,7 +24,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewListTokensParams() *ListTokensParams {
 	return &ListTokensParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -32,7 +33,8 @@ func NewListTokensParams() *ListTokensParams {
 // with the ability to set a timeout on a request.
 func NewListTokensParamsWithTimeout(timeout time.Duration) *ListTokensParams {
 	return &ListTokensParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -40,7 +42,8 @@ func NewListTokensParamsWithTimeout(timeout time.Duration) *ListTokensParams {
 // with the ability to set a context for a request.
 func NewListTokensParamsWithContext(ctx context.Context) *ListTokensParams {
 	return &ListTokensParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -48,7 +51,8 @@ func NewListTokensParamsWithContext(ctx context.Context) *ListTokensParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewListTokensParamsWithHTTPClient(client *http.Client) *ListTokensParams {
 	return &ListTokensParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -70,6 +74,8 @@ type ListTokensParams struct {
 	   Token symbols for the token, e.g. ?symbols=IMX,ETH
 	*/
 	Symbols *string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -113,6 +119,11 @@ func (o *ListTokensParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to list tokens params.
+func (o *ListTokensParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the list tokens params
 func (o *ListTokensParams) WithHTTPClient(client *http.Client) *ListTokensParams {
 	o.SetHTTPClient(client)
@@ -152,6 +163,18 @@ func (o *ListTokensParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 
 	if o.Address != nil {

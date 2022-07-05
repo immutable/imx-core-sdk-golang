@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewCreateOrderParams() *CreateOrderParams {
 	return &CreateOrderParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewCreateOrderParams() *CreateOrderParams {
 // with the ability to set a timeout on a request.
 func NewCreateOrderParamsWithTimeout(timeout time.Duration) *CreateOrderParams {
 	return &CreateOrderParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewCreateOrderParamsWithTimeout(timeout time.Duration) *CreateOrderParams {
 // with the ability to set a context for a request.
 func NewCreateOrderParamsWithContext(ctx context.Context) *CreateOrderParams {
 	return &CreateOrderParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewCreateOrderParamsWithContext(ctx context.Context) *CreateOrderParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewCreateOrderParamsWithHTTPClient(client *http.Client) *CreateOrderParams {
 	return &CreateOrderParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -78,6 +82,8 @@ type CreateOrderParams struct {
 	   eth signature
 	*/
 	XImxEthSignature *string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -119,6 +125,11 @@ func (o *CreateOrderParams) WithContext(ctx context.Context) *CreateOrderParams 
 // SetContext adds the context to the create order params
 func (o *CreateOrderParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to create order params.
+func (o *CreateOrderParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the create order params
@@ -171,6 +182,18 @@ func (o *CreateOrderParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 	if o.CreateOrderRequest != nil {
 		if err := r.SetBodyParam(o.CreateOrderRequest); err != nil {

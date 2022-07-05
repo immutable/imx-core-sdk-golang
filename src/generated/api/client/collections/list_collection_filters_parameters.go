@@ -25,7 +25,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewListCollectionFiltersParams() *ListCollectionFiltersParams {
 	return &ListCollectionFiltersParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -33,7 +34,8 @@ func NewListCollectionFiltersParams() *ListCollectionFiltersParams {
 // with the ability to set a timeout on a request.
 func NewListCollectionFiltersParamsWithTimeout(timeout time.Duration) *ListCollectionFiltersParams {
 	return &ListCollectionFiltersParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -41,7 +43,8 @@ func NewListCollectionFiltersParamsWithTimeout(timeout time.Duration) *ListColle
 // with the ability to set a context for a request.
 func NewListCollectionFiltersParamsWithContext(ctx context.Context) *ListCollectionFiltersParams {
 	return &ListCollectionFiltersParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -49,7 +52,8 @@ func NewListCollectionFiltersParamsWithContext(ctx context.Context) *ListCollect
 // with the ability to set a custom HTTPClient for a request.
 func NewListCollectionFiltersParamsWithHTTPClient(client *http.Client) *ListCollectionFiltersParams {
 	return &ListCollectionFiltersParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -77,6 +81,8 @@ type ListCollectionFiltersParams struct {
 	   Page size of the result
 	*/
 	PageSize *int64
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,6 +124,11 @@ func (o *ListCollectionFiltersParams) WithContext(ctx context.Context) *ListColl
 // SetContext adds the context to the list collection filters params
 func (o *ListCollectionFiltersParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to list collection filters params.
+func (o *ListCollectionFiltersParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the list collection filters params
@@ -170,6 +181,18 @@ func (o *ListCollectionFiltersParams) WriteToRequest(r runtime.ClientRequest, re
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 
 	// path param address

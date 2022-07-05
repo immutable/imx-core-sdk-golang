@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewCreateTransferParams() *CreateTransferParams {
 	return &CreateTransferParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewCreateTransferParams() *CreateTransferParams {
 // with the ability to set a timeout on a request.
 func NewCreateTransferParamsWithTimeout(timeout time.Duration) *CreateTransferParams {
 	return &CreateTransferParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewCreateTransferParamsWithTimeout(timeout time.Duration) *CreateTransferPa
 // with the ability to set a context for a request.
 func NewCreateTransferParamsWithContext(ctx context.Context) *CreateTransferParams {
 	return &CreateTransferParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewCreateTransferParamsWithContext(ctx context.Context) *CreateTransferPara
 // with the ability to set a custom HTTPClient for a request.
 func NewCreateTransferParamsWithHTTPClient(client *http.Client) *CreateTransferParams {
 	return &CreateTransferParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -78,6 +82,8 @@ type CreateTransferParams struct {
 	   eth signature
 	*/
 	XImxEthSignature *string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -119,6 +125,11 @@ func (o *CreateTransferParams) WithContext(ctx context.Context) *CreateTransferP
 // SetContext adds the context to the create transfer params
 func (o *CreateTransferParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to create transfer params.
+func (o *CreateTransferParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the create transfer params
@@ -171,6 +182,18 @@ func (o *CreateTransferParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 	if o.CreateTransferRequestV2 != nil {
 		if err := r.SetBodyParam(o.CreateTransferRequestV2); err != nil {

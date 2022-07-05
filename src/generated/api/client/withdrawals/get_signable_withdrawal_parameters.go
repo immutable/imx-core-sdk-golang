@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetSignableWithdrawalParams() *GetSignableWithdrawalParams {
 	return &GetSignableWithdrawalParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewGetSignableWithdrawalParams() *GetSignableWithdrawalParams {
 // with the ability to set a timeout on a request.
 func NewGetSignableWithdrawalParamsWithTimeout(timeout time.Duration) *GetSignableWithdrawalParams {
 	return &GetSignableWithdrawalParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewGetSignableWithdrawalParamsWithTimeout(timeout time.Duration) *GetSignab
 // with the ability to set a context for a request.
 func NewGetSignableWithdrawalParamsWithContext(ctx context.Context) *GetSignableWithdrawalParams {
 	return &GetSignableWithdrawalParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewGetSignableWithdrawalParamsWithContext(ctx context.Context) *GetSignable
 // with the ability to set a custom HTTPClient for a request.
 func NewGetSignableWithdrawalParamsWithHTTPClient(client *http.Client) *GetSignableWithdrawalParams {
 	return &GetSignableWithdrawalParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -66,6 +70,8 @@ type GetSignableWithdrawalParams struct {
 	   get details of signable withdrawal
 	*/
 	GetSignableWithdrawalRequest *models.GetSignableWithdrawalRequest
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -109,6 +115,11 @@ func (o *GetSignableWithdrawalParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to get signable withdrawal params.
+func (o *GetSignableWithdrawalParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the get signable withdrawal params
 func (o *GetSignableWithdrawalParams) WithHTTPClient(client *http.Client) *GetSignableWithdrawalParams {
 	o.SetHTTPClient(client)
@@ -137,6 +148,18 @@ func (o *GetSignableWithdrawalParams) WriteToRequest(r runtime.ClientRequest, re
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 	if o.GetSignableWithdrawalRequest != nil {
 		if err := r.SetBodyParam(o.GetSignableWithdrawalRequest); err != nil {

@@ -24,7 +24,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetUsersParams() *GetUsersParams {
 	return &GetUsersParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -32,7 +33,8 @@ func NewGetUsersParams() *GetUsersParams {
 // with the ability to set a timeout on a request.
 func NewGetUsersParamsWithTimeout(timeout time.Duration) *GetUsersParams {
 	return &GetUsersParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -40,7 +42,8 @@ func NewGetUsersParamsWithTimeout(timeout time.Duration) *GetUsersParams {
 // with the ability to set a context for a request.
 func NewGetUsersParamsWithContext(ctx context.Context) *GetUsersParams {
 	return &GetUsersParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -48,7 +51,8 @@ func NewGetUsersParamsWithContext(ctx context.Context) *GetUsersParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewGetUsersParamsWithHTTPClient(client *http.Client) *GetUsersParams {
 	return &GetUsersParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -64,6 +68,8 @@ type GetUsersParams struct {
 	   User
 	*/
 	User string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -107,6 +113,11 @@ func (o *GetUsersParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to get users params.
+func (o *GetUsersParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the get users params
 func (o *GetUsersParams) WithHTTPClient(client *http.Client) *GetUsersParams {
 	o.SetHTTPClient(client)
@@ -135,6 +146,18 @@ func (o *GetUsersParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 
 	// path param user

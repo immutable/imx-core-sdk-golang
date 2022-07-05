@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetSignableRegistrationParams() *GetSignableRegistrationParams {
 	return &GetSignableRegistrationParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewGetSignableRegistrationParams() *GetSignableRegistrationParams {
 // with the ability to set a timeout on a request.
 func NewGetSignableRegistrationParamsWithTimeout(timeout time.Duration) *GetSignableRegistrationParams {
 	return &GetSignableRegistrationParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewGetSignableRegistrationParamsWithTimeout(timeout time.Duration) *GetSign
 // with the ability to set a context for a request.
 func NewGetSignableRegistrationParamsWithContext(ctx context.Context) *GetSignableRegistrationParams {
 	return &GetSignableRegistrationParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewGetSignableRegistrationParamsWithContext(ctx context.Context) *GetSignab
 // with the ability to set a custom HTTPClient for a request.
 func NewGetSignableRegistrationParamsWithHTTPClient(client *http.Client) *GetSignableRegistrationParams {
 	return &GetSignableRegistrationParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -66,6 +70,8 @@ type GetSignableRegistrationParams struct {
 	   Register User
 	*/
 	GetSignableRegistrationRequest *models.GetSignableRegistrationRequest
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -109,6 +115,11 @@ func (o *GetSignableRegistrationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to get signable registration params.
+func (o *GetSignableRegistrationParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the get signable registration params
 func (o *GetSignableRegistrationParams) WithHTTPClient(client *http.Client) *GetSignableRegistrationParams {
 	o.SetHTTPClient(client)
@@ -137,6 +148,18 @@ func (o *GetSignableRegistrationParams) WriteToRequest(r runtime.ClientRequest, 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 	if o.GetSignableRegistrationRequest != nil {
 		if err := r.SetBodyParam(o.GetSignableRegistrationRequest); err != nil {

@@ -26,7 +26,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetSignableDepositParams() *GetSignableDepositParams {
 	return &GetSignableDepositParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -34,7 +35,8 @@ func NewGetSignableDepositParams() *GetSignableDepositParams {
 // with the ability to set a timeout on a request.
 func NewGetSignableDepositParamsWithTimeout(timeout time.Duration) *GetSignableDepositParams {
 	return &GetSignableDepositParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -42,7 +44,8 @@ func NewGetSignableDepositParamsWithTimeout(timeout time.Duration) *GetSignableD
 // with the ability to set a context for a request.
 func NewGetSignableDepositParamsWithContext(ctx context.Context) *GetSignableDepositParams {
 	return &GetSignableDepositParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -50,7 +53,8 @@ func NewGetSignableDepositParamsWithContext(ctx context.Context) *GetSignableDep
 // with the ability to set a custom HTTPClient for a request.
 func NewGetSignableDepositParamsWithHTTPClient(client *http.Client) *GetSignableDepositParams {
 	return &GetSignableDepositParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -66,6 +70,8 @@ type GetSignableDepositParams struct {
 	   Get details of signable deposit
 	*/
 	GetSignableDepositRequest *models.GetSignableDepositRequest
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -109,6 +115,11 @@ func (o *GetSignableDepositParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// AddCustomHeader provides option to add custom header parameters to get signable deposit params.
+func (o *GetSignableDepositParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
+}
+
 // WithHTTPClient adds the HTTPClient to the get signable deposit params
 func (o *GetSignableDepositParams) WithHTTPClient(client *http.Client) *GetSignableDepositParams {
 	o.SetHTTPClient(client)
@@ -137,6 +148,18 @@ func (o *GetSignableDepositParams) WriteToRequest(r runtime.ClientRequest, reg s
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 	if o.GetSignableDepositRequest != nil {
 		if err := r.SetBodyParam(o.GetSignableDepositRequest); err != nil {

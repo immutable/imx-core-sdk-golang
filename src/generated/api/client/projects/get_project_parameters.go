@@ -24,7 +24,8 @@ import (
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewGetProjectParams() *GetProjectParams {
 	return &GetProjectParams{
-		timeout: cr.DefaultTimeout,
+		timeout:                cr.DefaultTimeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -32,7 +33,8 @@ func NewGetProjectParams() *GetProjectParams {
 // with the ability to set a timeout on a request.
 func NewGetProjectParamsWithTimeout(timeout time.Duration) *GetProjectParams {
 	return &GetProjectParams{
-		timeout: timeout,
+		timeout:                timeout,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -40,7 +42,8 @@ func NewGetProjectParamsWithTimeout(timeout time.Duration) *GetProjectParams {
 // with the ability to set a context for a request.
 func NewGetProjectParamsWithContext(ctx context.Context) *GetProjectParams {
 	return &GetProjectParams{
-		Context: ctx,
+		Context:                ctx,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -48,7 +51,8 @@ func NewGetProjectParamsWithContext(ctx context.Context) *GetProjectParams {
 // with the ability to set a custom HTTPClient for a request.
 func NewGetProjectParamsWithHTTPClient(client *http.Client) *GetProjectParams {
 	return &GetProjectParams{
-		HTTPClient: client,
+		HTTPClient:             client,
+		AdditionalHeaderParams: make(map[string]string),
 	}
 }
 
@@ -76,6 +80,8 @@ type GetProjectParams struct {
 	   Project ID
 	*/
 	ID string
+
+	AdditionalHeaderParams map[string]string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -117,6 +123,11 @@ func (o *GetProjectParams) WithContext(ctx context.Context) *GetProjectParams {
 // SetContext adds the context to the get project params
 func (o *GetProjectParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// AddCustomHeader provides option to add custom header parameters to get project params.
+func (o *GetProjectParams) AddCustomHeader(key string, value string) {
+	o.AdditionalHeaderParams[key] = value
 }
 
 // WithHTTPClient adds the HTTPClient to the get project params
@@ -169,6 +180,18 @@ func (o *GetProjectParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
 	}
+
+	for key, val := range o.AdditionalHeaderParams {
+		if err := r.SetHeaderParam(key, val); err != nil {
+			return err
+		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
+	}
+
 	var res []error
 
 	// header param IMX-Signature
