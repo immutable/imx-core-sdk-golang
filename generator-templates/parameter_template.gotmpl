@@ -219,14 +219,15 @@ func ({{ .ReceiverName }} *{{ pascalize .Name }}Params) WriteToRequest(r runtime
     return err
   }
 
-  if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-{{{ $GOLANG_SDK_VERSION }}}"); err != nil {
-		return err
-	}
-
   for key, val := range {{ .ReceiverName }}.AdditionalHeaderParams {
 		if err := r.SetHeaderParam(key, val); err != nil {
 			return err
 		}
+	}
+
+  // Add SDK version header.
+  if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-{{{ $GOLANG_SDK_VERSION }}}"); err != nil {
+		return err
 	}
 
   var res []error

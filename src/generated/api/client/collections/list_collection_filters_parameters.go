@@ -182,14 +182,15 @@ func (o *ListCollectionFiltersParams) WriteToRequest(r runtime.ClientRequest, re
 		return err
 	}
 
-	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-"); err != nil {
-		return err
-	}
-
 	for key, val := range o.AdditionalHeaderParams {
 		if err := r.SetHeaderParam(key, val); err != nil {
 			return err
 		}
+	}
+
+	// Add SDK version header.
+	if err := r.SetHeaderParam("x-sdk-version", "imx-core-sdk-golang-0.1.0"); err != nil {
+		return err
 	}
 
 	var res []error
