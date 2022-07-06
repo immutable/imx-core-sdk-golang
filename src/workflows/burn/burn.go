@@ -65,7 +65,7 @@ func GetBurn(ctx context.Context, api transfers.ClientService, transferId string
 	params.SetID(transferId)
 	response, err := api.GetTransfer(params)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error when calling `Api.GetTransfer`: %v", err)
 	}
 	return response.GetPayload(), nil
 }
