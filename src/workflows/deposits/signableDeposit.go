@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"immutable.com/imx-core-sdk-golang/api/client/deposits"
 	"immutable.com/imx-core-sdk-golang/api/models"
-	"immutable.com/imx-core-sdk-golang/workflows/types"
+	"immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
 func GetSignableDeposit(
@@ -22,43 +22,26 @@ func GetSignableDeposit(
 	return signableDepositOK.GetPayload(), nil
 }
 
-func GetSignableDepositRequestForEth(amount, user string) *models.GetSignableDepositRequest {
+func NewSignableDepositRequestForEth(amount, user string) *models.GetSignableDepositRequest {
 	return &models.GetSignableDepositRequest{
 		Amount: &amount,
-		Token: &models.SignableToken{
-			Data: map[string]interface{}{
-				"decimals": 18,
-			},
-			Type: string(types.ETHType),
-		},
-		User: &user,
+		Token:  utils.NewSignableTokenEth(),
+		User:   &user,
 	}
 }
 
-func GetSignableDepositRequestForERC20(amount, tokenAddress, user string, decimals uint8) *models.GetSignableDepositRequest {
+func NewSignableDepositRequestForERC20(amount, tokenAddress, user, decimals string) *models.GetSignableDepositRequest {
 	return &models.GetSignableDepositRequest{
 		Amount: &amount,
-		Token: &models.SignableToken{
-			Data: map[string]interface{}{
-				"decimals":      decimals,
-				"token_address": tokenAddress,
-			},
-			Type: string(types.ERC20Type),
-		},
-		User: &user,
+		Token:  utils.NewSignableTokenERC20(decimals, tokenAddress),
+		User:   &user,
 	}
 }
 
-func GetSignableDepositRequestForERC721(amount, tokenId, tokenAddress, user string) *models.GetSignableDepositRequest {
+func NewSignableDepositRequestForERC721(amount, tokenId, tokenAddress, user string) *models.GetSignableDepositRequest {
 	return &models.GetSignableDepositRequest{
 		Amount: &amount,
-		Token: &models.SignableToken{
-			Data: map[string]interface{}{
-				"token_id":      tokenId,
-				"token_address": tokenAddress,
-			},
-			Type: string(types.ERC721Type),
-		},
-		User: &user,
+		Token:  utils.NewSignableTokenERC721(tokenId, tokenAddress),
+		User:   &user,
 	}
 }

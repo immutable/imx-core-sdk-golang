@@ -2,6 +2,7 @@ package trades
 
 import (
 	"context"
+	"encoding/json"
 	"immutable.com/imx-core-sdk-golang/api/client/trades"
 	"immutable.com/imx-core-sdk-golang/api/models"
 	"immutable.com/imx-core-sdk-golang/signers"
@@ -25,7 +26,8 @@ func Demo_TradesWorkflow(ctx context.Context, tradesApi trades.ClientService, l1
 		log.Fatalf("error calling trades workflow: %v", err)
 	}
 
-	log.Printf("trade response:\n%v\n", tradeResponse)
+	val, _ := json.MarshalIndent(tradeResponse, "", "  ")
+	log.Printf("trade response:\n%s\n", val)
 
 	log.Println("Running Demo_TradesWorkflow completed")
 	log.Println("-------------------------------------------------------")

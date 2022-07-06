@@ -29,7 +29,7 @@ func (d *ETHDeposit) Execute(ctx context.Context, ethClient *ethereum.Client, ap
 	if err != nil {
 		return nil, fmt.Errorf("Error when parsing deposit amount: %v\n", err)
 	}
-	signableDepositRequest := GetSignableDepositRequestForEth(amount.String(), l1signer.GetAddress())
+	signableDepositRequest := NewSignableDepositRequestForEth(amount.String(), l1signer.GetAddress())
 	signableDeposit, err := GetSignableDeposit(ctx, apis.Deposits, signableDepositRequest)
 	if err != nil {
 		return nil, err
