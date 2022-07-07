@@ -47,6 +47,6 @@ func main() {
 
 	onboarding.Demo_UserRegistrationWorkflow(ctx, apiClient, l1signer)
 	deposits.Demo_DepositWorkflow(ctx, ethClient, apiClient, l1signer)
-	trades.Demo_TradesWorkflow(ctx, apiClient.Trades, l1signer, l2signer)
-	burn.Demo_BurnWorkflow(ctx, apiClient.Transfers, l1signer, l2signer)
+	trades.Demo_TradesWorkflow(ctx, apiClient, l1signer, l2signer)
+	burn.Demo_BurnWorkflow(ctx, apiClient, l1signer, l2signer)
 }

@@ -3,16 +3,17 @@ package burn
 import (
 	"context"
 	"encoding/json"
-	"immutable.com/imx-core-sdk-golang/api/client/transfers"
+	"log"
+	"strconv"
+
+	"immutable.com/imx-core-sdk-golang/api/client"
 	"immutable.com/imx-core-sdk-golang/signers"
 	burnWorkflow "immutable.com/imx-core-sdk-golang/workflows/burn"
 	"immutable.com/imx-core-sdk-golang/workflows/types"
 	"immutable.com/imx-core-sdk-golang/workflows/utils"
-	"log"
-	"strconv"
 )
 
-func Demo_BurnWorkflow(ctx context.Context, transfersApi transfers.ClientService, l1signer signers.L1Signer, l2signer signers.L2Signer) {
+func Demo_BurnWorkflow(ctx context.Context, api *client.ImmutableXAPI, l1signer signers.L1Signer, l2signer signers.L2Signer) {
 
 	log.Println("-------------------------------------------------------")
 	log.Println("Running Demo_BurnWorkflow")
@@ -24,15 +25,15 @@ func Demo_BurnWorkflow(ctx context.Context, transfersApi transfers.ClientService
 		Token:  signableToken,
 	}
 
-	burnResponse, err := burnWorkflow.Burn(ctx, transfersApi, l1signer, l2signer, tradeRequest)
+	burnResponse, err := burnWorkflow.Burn(ctx, api, l1signer, l2signer, tradeRequest)
 	if err != nil {
 		log.Fatalf("error calling burn workflow: %v", err)
 	}
 	val, _ := json.MarshalIndent(burnResponse, "", "  ")
 	log.Printf("Burn response:\n%s\n", val)
 
-	transferId := strconv.FormatInt(*burnResponse.TransferID, 10)
-	transfer, err := burnWorkflow.GetBurn(ctx, transfersApi, transferId)
+	transferId := strconv.FormatInt(*burnResponse.TransferID, 10) // GetBurn method requires transferId as a string
+	transfer, err := burnWorkflow.GetBurn(ctx, api, transferId)
 	if err != nil {
 		log.Fatalf("error calling GetBurn workflow: %v", err)
 	}
