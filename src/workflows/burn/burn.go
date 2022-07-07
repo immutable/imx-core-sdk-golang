@@ -8,7 +8,6 @@ import (
 	"immutable.com/imx-core-sdk-golang/api/models"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/workflows/types"
-	"immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
 // BurnAddress 0x00 where tokens are sent to be removed from circulation
@@ -39,7 +38,7 @@ func Burn(
 	}
 	data := signableResponse.GetPayload()
 
-	ethSignature, starkSignature, err := utils.CreateSignatures(data.SignableMessage, data.PayloadHash, l1signer, l2signer)
+	ethSignature, starkSignature, err := signers.CreateSignatures(data.SignableMessage, data.PayloadHash, l1signer, l2signer)
 	if err != nil {
 		return nil, err
 	}
