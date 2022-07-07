@@ -3,6 +3,7 @@ package trades
 import (
 	"context"
 	"fmt"
+	"immutable.com/imx-core-sdk-golang/api/client"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"immutable.com/imx-core-sdk-golang/api/client/trades"
@@ -10,9 +11,11 @@ import (
 	"immutable.com/imx-core-sdk-golang/signers"
 )
 
+// CreateTrade submits a matched order to the CreateTrade endpoint.
+// https://docs.x.immutable.com/reference#/operations/createTrade
 func CreateTrade(
 	ctx context.Context,
-	tradesApi trades.ClientService,
+	api *client.ImmutableXAPI,
 	l1signer signers.L1Signer,
 	l2signer signers.L2Signer,
 	request models.GetSignableTradeRequest,
@@ -22,9 +25,9 @@ func CreateTrade(
 	request.User = &ethAddress
 	getSignableTradeParams := trades.NewGetSignableTradeParamsWithContext(ctx)
 	getSignableTradeParams.SetGetSignableTradeRequest(&request)
-	getSignableTradeOk, err := tradesApi.GetSignableTrade(getSignableTradeParams)
+	getSignableTradeOk, err := api.Trades.GetSignableTrade(getSignableTradeParams)
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `TradesApi.GetSignableTrade`: %v", err)
+		return nil, fmt.Errorf("error when calling `Trades.GetSignableTrade`: %v", err)
 	}
 	signableTrade := getSignableTradeOk.GetPayload()
 
@@ -58,9 +61,9 @@ func CreateTrade(
 	})
 	createTradeParams.SetXImxEthAddress(&ethAddress)
 	createTradeParams.SetXImxEthSignature(&ethSignatureEncodedInHex)
-	tradeResponseOK, err := tradesApi.CreateTrade(createTradeParams)
+	tradeResponseOK, err := api.Trades.CreateTrade(createTradeParams)
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `TradesApi.CreateTrade`: %v", err)
+		return nil, fmt.Errorf("error when calling `Trades.CreateTrade`: %v", err)
 	}
 	return tradeResponseOK.GetPayload(), nil
 }

@@ -44,7 +44,7 @@ func (d *ERC721Deposit) Execute(ctx context.Context, ethClient *ethereum.Client,
 	}
 
 	// Get signable deposit details
-	signableDepositRequest := GetSignableDepositRequestForERC721("1", d.TokenId, d.TokenAddress, l1signer.GetAddress())
+	signableDepositRequest := NewSignableDepositRequestForERC721("1", d.TokenId, d.TokenAddress, l1signer.GetAddress())
 	signableDeposit, err := GetSignableDeposit(ctx, apis.Deposits, signableDepositRequest)
 	if err != nil {
 		return nil, err

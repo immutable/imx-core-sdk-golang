@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"strconv"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -55,7 +56,7 @@ func (d *ERC20Deposit) Execute(ctx context.Context, ethClient *ethereum.Client, 
 	}
 
 	// Get signable deposit details
-	signableDepositRequest := GetSignableDepositRequestForERC20(amount.String(), d.TokenAddress, l1signer.GetAddress(), *decimals)
+	signableDepositRequest := NewSignableDepositRequestForERC20(amount.String(), d.TokenAddress, l1signer.GetAddress(), strconv.Itoa(int(*decimals)))
 	signableDeposit, err := GetSignableDeposit(ctx, apis.Deposits, signableDepositRequest)
 	if err != nil {
 		return nil, err
