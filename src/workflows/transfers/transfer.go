@@ -9,7 +9,7 @@ import (
 	"immutable.com/imx-core-sdk-golang/signers"
 )
 
-// CreateTransfer transfers the given models.SignableToken from Sender to Receiver.
+// CreateTransfer transfers the request's models.SignableToken from Sender to Receiver.
 func CreateTransfer(
 	ctx context.Context,
 	api *client.ImmutableXAPI,

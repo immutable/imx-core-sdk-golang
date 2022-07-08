@@ -34,7 +34,7 @@ func Demo_BatchTransferWorkflow(ctx context.Context, api *client.ImmutableXAPI, 
 		Token:    signableToken2,
 	}
 
-	tradeRequest := models.GetSignableTransferRequest{
+	batchTransferRequest := models.GetSignableTransferRequest{
 		SenderEtherKey: &sender,
 		SignableRequests: []*models.SignableTransferDetails{
 			&transferRequest1,
@@ -42,7 +42,7 @@ func Demo_BatchTransferWorkflow(ctx context.Context, api *client.ImmutableXAPI, 
 		},
 	}
 
-	response, err := transfersWorkflow.CreateBatchTransfer(ctx, api, l1signer, l2signer, tradeRequest)
+	response, err := transfersWorkflow.CreateBatchTransfer(ctx, api, l1signer, l2signer, batchTransferRequest)
 	if err != nil {
 		log.Fatalf("error calling batch transfer workflow: %v", err)
 	}

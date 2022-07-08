@@ -54,7 +54,7 @@ func CreateBatchTransfer(
 	return response.GetPayload(), nil
 }
 
-// GetSignedTransferRequests iterates through signableTransfers, sign each payloadHash and returns an array of pointers to models.TransferRequest.
+// GetSignedTransferRequests iterates through signableTransfers, signs each payloadHash and returns an array of pointers to models.TransferRequest.
 func GetSignedTransferRequests(signableTransfers []*models.SignableTransferResponseDetails, l2signer signers.L2Signer) ([]*models.TransferRequest, error) {
 	mapped := make([]*models.TransferRequest, len(signableTransfers))
 	for i, transfer := range signableTransfers {

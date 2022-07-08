@@ -21,14 +21,14 @@ func Demo_TransferWorkflow(ctx context.Context, api *client.ImmutableXAPI, l1sig
 	amount := "100000000"
 	sender := l1signer.GetAddress()
 	receiver := "Set receiver address here"
-	tradeRequest := models.GetSignableTransferRequestV1{
+	transferRequest := models.GetSignableTransferRequestV1{
 		Amount:   &amount,
 		Sender:   &sender,
 		Token:    signableToken,
 		Receiver: &receiver,
 	}
 
-	response, err := transfersWorkflow.CreateTransfer(ctx, api, l1signer, l2signer, tradeRequest)
+	response, err := transfersWorkflow.CreateTransfer(ctx, api, l1signer, l2signer, transferRequest)
 	if err != nil {
 		log.Fatalf("error calling transfer workflow: %v", err)
 	}
