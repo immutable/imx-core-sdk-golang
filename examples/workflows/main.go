@@ -9,6 +9,7 @@ import (
 	"immutable.com/imx-core-sdk-golang/examples/workflows/deposits"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/onboarding"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/trades"
+	"immutable.com/imx-core-sdk-golang/examples/workflows/transfers"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
 	"immutable.com/imx-core-sdk-golang/factories"
 	"immutable.com/imx-core-sdk-golang/signers/stark"
@@ -49,4 +50,6 @@ func main() {
 	deposits.Demo_DepositWorkflow(ctx, ethClient, apiClient, l1signer)
 	trades.Demo_TradesWorkflow(ctx, apiClient, l1signer, l2signer)
 	burn.Demo_BurnWorkflow(ctx, apiClient, l1signer, l2signer)
+	transfers.Demo_TransferWorkflow(ctx, apiClient, l1signer, l2signer)
+	transfers.Demo_BatchTransferWorkflow(ctx, apiClient, l1signer, l2signer)
 }

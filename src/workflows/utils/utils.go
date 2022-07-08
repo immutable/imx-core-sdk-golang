@@ -5,6 +5,8 @@ import (
 	"immutable.com/imx-core-sdk-golang/workflows/types"
 )
 
+// NewSignableTokenEth returns a new ETH type token.
+// https://docs.x.immutable.com/docs/token-data-object#type-eth
 func NewSignableTokenEth() *models.SignableToken {
 	return &models.SignableToken{
 		Data: map[string]interface{}{
@@ -14,6 +16,8 @@ func NewSignableTokenEth() *models.SignableToken {
 	}
 }
 
+// NewSignableTokenERC20 returns a new ERC20 type token.
+// https://docs.x.immutable.com/docs/token-data-object#type-erc20
 func NewSignableTokenERC20(decimals, tokenAddress string) *models.SignableToken {
 	return &models.SignableToken{
 		Data: map[string]interface{}{
@@ -24,6 +28,8 @@ func NewSignableTokenERC20(decimals, tokenAddress string) *models.SignableToken 
 	}
 }
 
+// NewSignableTokenERC721 returns a new ERC721 type token.
+// https://docs.x.immutable.com/docs/token-data-object#type-erc721
 func NewSignableTokenERC721(tokenId, tokenAddress string) *models.SignableToken {
 	return &models.SignableToken{
 		Data: map[string]interface{}{
