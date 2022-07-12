@@ -12,7 +12,6 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	. "github.com/ethereum/go-ethereum/core/types"
 	"immutable.com/imx-core-sdk-golang/api/client"
-	"immutable.com/imx-core-sdk-golang/api/client/encoding"
 	"immutable.com/imx-core-sdk-golang/api/client/tokens"
 	"immutable.com/imx-core-sdk-golang/api/client/users"
 	"immutable.com/imx-core-sdk-golang/api/models"
@@ -20,8 +19,10 @@ import (
 	"immutable.com/imx-core-sdk-golang/utils"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
 	"immutable.com/imx-core-sdk-golang/workflows/types"
+	helpers "immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
+// Execute performs the deposit workflow on the ERC20Deposit.
 func (d *ERC20Deposit) Execute(ctx context.Context, ethClient *ethereum.Client, apis *client.ImmutableXAPI, l1signer signers.L1Signer) (*Transaction, error) {
 	if d.Type != types.ERC20Type {
 		return nil, errors.New("invalid token type")
@@ -63,25 +64,11 @@ func (d *ERC20Deposit) Execute(ctx context.Context, ethClient *ethereum.Client, 
 	}
 
 	// Perform encoding on asset details to get an assetType (required for stark contract request)
-	encodeParams := encoding.NewEncodeAssetParamsWithContext(ctx)
-	encodeParams.SetAssetType("asset")
-	encodeParams.SetEncodeAssetRequest(&models.EncodeAssetRequest{
-		Token: &models.EncodeAssetRequestToken{
-			Data: &models.EncodeAssetTokenData{
-				TokenAddress: d.TokenAddress,
-			},
-			Type: string(d.Type),
-		},
-	})
-	encodedAsset, err := apis.Encoding.EncodeAsset(encodeParams)
+	assetType, err := helpers.GetEncodedAssetTypeForERC20(ctx, apis, "", d.TokenAddress)
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `Encoding.EncodeAsset`: %v", err)
+		return nil, err
 	}
 
-	assetType, ok := new(big.Int).SetString(*encodedAsset.GetPayload().AssetType, 10)
-	if !ok {
-		return nil, fmt.Errorf("error converting encoded asset type to bigint: %v\n", *encodedAsset.GetPayload().AssetType)
-	}
 	starkKey, err := utils.HexToInt(*signableDeposit.StarkKey)
 	if err != nil {
 		return nil, fmt.Errorf("error converting StarkKey to bigint: %v\n", signableDeposit.StarkKey)
