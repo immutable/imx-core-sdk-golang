@@ -54,4 +54,5 @@ func main() {
 	transfers.Demo_TransferWorkflow(ctx, apiClient, l1signer, l2signer)
 	transfers.Demo_BatchTransferWorkflow(ctx, apiClient, l1signer, l2signer)
 	withdrawals.Demo_PrepareWithdrawalWorkflow(ctx, apiClient, l1signer, l2signer)
+	withdrawals.Demo_CompleteWithdrawalWorkflow(ctx, ethClient, apiClient, l1signer, l2signer)
 }
