@@ -8,20 +8,18 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	. "github.com/ethereum/go-ethereum/core/types"
 	"immutable.com/imx-core-sdk-golang/api/client"
-	"immutable.com/imx-core-sdk-golang/api/client/users"
-	"immutable.com/imx-core-sdk-golang/api/models"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/utils"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
+	"immutable.com/imx-core-sdk-golang/workflows/registration"
 	"immutable.com/imx-core-sdk-golang/workflows/types"
 	helpers "immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
 // Execute performs the deposit workflow on the ETHDeposit.
-func (d *ETHDeposit) Execute(ctx context.Context, ethClient *ethereum.Client, apis *client.ImmutableXAPI, l1signer signers.L1Signer) (*Transaction, error) {
+func (d *ETHDeposit) Execute(ctx context.Context, ethClient *ethereum.Client, api *client.ImmutableXAPI, l1signer signers.L1Signer) (*Transaction, error) {
 	if d.Type != types.ETHType {
 		return nil, errors.New("invalid token type")
 	}
@@ -31,19 +29,20 @@ func (d *ETHDeposit) Execute(ctx context.Context, ethClient *ethereum.Client, ap
 		return nil, fmt.Errorf("Error when parsing deposit amount: %v\n", err)
 	}
 	signableDepositRequest := NewSignableDepositRequestForEth(amount.String(), l1signer.GetAddress())
-	signableDeposit, err := GetSignableDeposit(ctx, apis.Deposits, signableDepositRequest)
+	signableDeposit, err := GetSignableDeposit(ctx, api.Deposits, signableDepositRequest)
 	if err != nil {
 		return nil, err
 	}
 
-	assetType, err := helpers.GetEncodedAssetTypeForEth(ctx, apis)
+	assetType, err := helpers.GetEncodedAssetTypeForEth(ctx, api)
 	if err != nil {
 		return nil, err
 	}
 
-	starkKey, err := utils.HexToInt(*signableDeposit.StarkKey)
+	starkKeyHex := *signableDeposit.StarkKey
+	starkKey, err := utils.HexToInt(starkKeyHex)
 	if err != nil {
-		return nil, fmt.Errorf("error converting StarkKey to bigint: %v\n", *signableDeposit.StarkKey)
+		return nil, fmt.Errorf("error converting StarkKey to bigint: %s\n", starkKeyHex)
 	}
 	isRegistered, _ := ethClient.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	// Note: if we reach here, it means we are registered off-chain.
@@ -53,7 +52,7 @@ func (d *ETHDeposit) Execute(ctx context.Context, ethClient *ethereum.Client, ap
 	if isRegistered {
 		return depositEth(ctx, ethClient, l1signer, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, amount)
 	} else {
-		return registerAndDepositEth(ctx, ethClient, l1signer, apis.Users, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, amount)
+		return registerAndDepositEth(ctx, ethClient, l1signer, api, starkKeyHex, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, amount)
 	}
 }
 
@@ -61,37 +60,33 @@ func registerAndDepositEth(
 	ctx context.Context,
 	ethClient *ethereum.Client,
 	l1signer signers.L1Signer,
-	userApi users.ClientService,
-	starkPublicKey *big.Int,
+	api *client.ImmutableXAPI,
+	starkKeyHex string,
+	starkKey *big.Int,
 	vaultId *big.Int,
 	assetType *big.Int,
 	amount *big.Int,
 ) (*Transaction, error) {
 	etherKey := l1signer.GetAddress()
-	starkKey := hexutil.EncodeBig(starkPublicKey)
-	params := users.NewGetSignableRegistrationParamsWithContext(ctx)
-	params.SetGetSignableRegistrationRequest(&models.GetSignableRegistrationRequest{
-		EtherKey: &etherKey,
-		StarkKey: &starkKey,
-	})
-	signableRegistration, err := userApi.GetSignableRegistration(params)
+	signableRegistration, err := registration.GetSignableRegistrationOnchain(ctx, api, etherKey, starkKeyHex)
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `UserApi.GetSignableRegistration`: %v", err)
+		return nil, err
 	}
+
 	auth, err := ethClient.BuildTransactOpts(ctx, l1signer)
 	if err != nil {
 		return nil, err
 	}
 
-	operatorSignature, err := utils.HexToByteArray(*signableRegistration.GetPayload().OperatorSignature)
+	operatorSignature, err := utils.HexToByteArray(*signableRegistration.OperatorSignature)
 	if err != nil {
 		return nil, err
 	}
 	auth.Value = amount
 	tnx, err := ethClient.CoreContract.RegisterAndDepositEth(
 		auth,
-		common.HexToAddress(l1signer.GetAddress()),
-		starkPublicKey,
+		common.HexToAddress(etherKey),
+		starkKey,
 		operatorSignature,
 		assetType,
 		vaultId,
