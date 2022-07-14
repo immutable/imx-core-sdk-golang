@@ -9,21 +9,19 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	. "github.com/ethereum/go-ethereum/core/types"
 	"immutable.com/imx-core-sdk-golang/api/client"
 	"immutable.com/imx-core-sdk-golang/api/client/tokens"
-	"immutable.com/imx-core-sdk-golang/api/client/users"
-	"immutable.com/imx-core-sdk-golang/api/models"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/utils"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
+	"immutable.com/imx-core-sdk-golang/workflows/registration"
 	"immutable.com/imx-core-sdk-golang/workflows/types"
 	helpers "immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
 // Execute performs the deposit workflow on the ERC20Deposit.
-func (d *ERC20Deposit) Execute(ctx context.Context, ethClient *ethereum.Client, apis *client.ImmutableXAPI, l1signer signers.L1Signer) (*Transaction, error) {
+func (d *ERC20Deposit) Execute(ctx context.Context, ethClient *ethereum.Client, api *client.ImmutableXAPI, l1signer signers.L1Signer) (*Transaction, error) {
 	if d.Type != types.ERC20Type {
 		return nil, errors.New("invalid token type")
 	}
@@ -31,7 +29,7 @@ func (d *ERC20Deposit) Execute(ctx context.Context, ethClient *ethereum.Client, 
 	// Get decimals for this specific ERC20
 	getTokenParams := tokens.NewGetTokenParamsWithContext(ctx)
 	getTokenParams.SetAddress(d.TokenAddress)
-	token, err := apis.Tokens.GetToken(getTokenParams)
+	token, err := api.Tokens.GetToken(getTokenParams)
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `Tokens.GetToken`: %v", err)
 	}
@@ -58,20 +56,21 @@ func (d *ERC20Deposit) Execute(ctx context.Context, ethClient *ethereum.Client, 
 
 	// Get signable deposit details
 	signableDepositRequest := NewSignableDepositRequestForERC20(amount.String(), d.TokenAddress, l1signer.GetAddress(), strconv.Itoa(int(*decimals)))
-	signableDeposit, err := GetSignableDeposit(ctx, apis.Deposits, signableDepositRequest)
+	signableDeposit, err := GetSignableDeposit(ctx, api.Deposits, signableDepositRequest)
 	if err != nil {
 		return nil, err
 	}
 
 	// Perform encoding on asset details to get an assetType (required for stark contract request)
-	assetType, err := helpers.GetEncodedAssetTypeForERC20(ctx, apis, "", d.TokenAddress)
+	assetType, err := helpers.GetEncodedAssetTypeForERC20(ctx, api, "", d.TokenAddress)
 	if err != nil {
 		return nil, err
 	}
 
-	starkKey, err := utils.HexToInt(*signableDeposit.StarkKey)
+	starkKeyHex := *signableDeposit.StarkKey
+	starkKey, err := utils.HexToInt(starkKeyHex)
 	if err != nil {
-		return nil, fmt.Errorf("error converting StarkKey to bigint: %v\n", signableDeposit.StarkKey)
+		return nil, fmt.Errorf("error converting StarkKey to bigint: %s\n", starkKeyHex)
 	}
 
 	isRegistered, _ := ethClient.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
@@ -82,7 +81,7 @@ func (d *ERC20Deposit) Execute(ctx context.Context, ethClient *ethereum.Client, 
 	if isRegistered {
 		return depositERC20(ctx, ethClient, l1signer, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, amount)
 	} else {
-		return registerAndDepositERC20(ctx, ethClient, l1signer, apis.Users, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, amount)
+		return registerAndDepositERC20(ctx, ethClient, l1signer, api, starkKeyHex, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, amount)
 	}
 }
 
@@ -90,7 +89,7 @@ func depositERC20(
 	ctx context.Context,
 	ethClient *ethereum.Client,
 	l1signer signers.L1Signer,
-	starkPublicKey *big.Int,
+	starkKey *big.Int,
 	vaultId *big.Int,
 	assetType *big.Int,
 	quantizedAmount *big.Int,
@@ -99,7 +98,7 @@ func depositERC20(
 	if err != nil {
 		return nil, err
 	}
-	tnx, err := ethClient.CoreContract.DepositERC20(auth, starkPublicKey, assetType, vaultId, quantizedAmount)
+	tnx, err := ethClient.CoreContract.DepositERC20(auth, starkKey, assetType, vaultId, quantizedAmount)
 	if err != nil {
 		return nil, err
 	}
@@ -110,22 +109,17 @@ func registerAndDepositERC20(
 	ctx context.Context,
 	ethClient *ethereum.Client,
 	l1signer signers.L1Signer,
-	userApi users.ClientService,
-	starkPublicKey *big.Int,
+	api *client.ImmutableXAPI,
+	starkKeyHex string,
+	starkKey *big.Int,
 	vaultId *big.Int,
 	assetType *big.Int,
 	quantizedAmount *big.Int,
 ) (*Transaction, error) {
 	etherKey := l1signer.GetAddress()
-	starkKey := hexutil.EncodeBig(starkPublicKey)
-	params := users.NewGetSignableRegistrationParamsWithContext(ctx)
-	params.SetGetSignableRegistrationRequest(&models.GetSignableRegistrationRequest{
-		EtherKey: &etherKey,
-		StarkKey: &starkKey,
-	})
-	signableRegistration, err := userApi.GetSignableRegistration(params)
+	signableRegistration, err := registration.GetSignableRegistrationOnchain(ctx, api, etherKey, starkKeyHex)
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `UserApi.GetSignableRegistration`: %v", err)
+		return nil, err
 	}
 
 	auth, err := ethClient.BuildTransactOpts(ctx, l1signer)
@@ -133,15 +127,15 @@ func registerAndDepositERC20(
 		return nil, err
 	}
 
-	operatorSignature, err := utils.HexToByteArray(*signableRegistration.GetPayload().OperatorSignature)
+	operatorSignature, err := utils.HexToByteArray(*signableRegistration.OperatorSignature)
 	if err != nil {
 		return nil, err
 	}
 
 	tnx, err := ethClient.CoreContract.RegisterAndDepositERC20(
 		auth,
-		common.HexToAddress(l1signer.GetAddress()),
-		starkPublicKey,
+		common.HexToAddress(etherKey),
+		starkKey,
 		operatorSignature,
 		assetType,
 		vaultId,

@@ -8,20 +8,18 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	. "github.com/ethereum/go-ethereum/core/types"
 	"immutable.com/imx-core-sdk-golang/api/client"
-	"immutable.com/imx-core-sdk-golang/api/client/users"
-	"immutable.com/imx-core-sdk-golang/api/models"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/utils"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
+	"immutable.com/imx-core-sdk-golang/workflows/registration"
 	"immutable.com/imx-core-sdk-golang/workflows/types"
 	helpers "immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
 // Execute performs the deposit workflow on the ERC721Deposit.
-func (d *ERC721Deposit) Execute(ctx context.Context, ethClient *ethereum.Client, apis *client.ImmutableXAPI, l1signer signers.L1Signer) (*Transaction, error) {
+func (d *ERC721Deposit) Execute(ctx context.Context, ethClient *ethereum.Client, api *client.ImmutableXAPI, l1signer signers.L1Signer) (*Transaction, error) {
 	if d.Type != types.ERC721Type {
 		return nil, errors.New("invalid token type")
 	}
@@ -33,7 +31,7 @@ func (d *ERC721Deposit) Execute(ctx context.Context, ethClient *ethereum.Client,
 	}
 	tokenId, ok := new(big.Int).SetString(d.TokenId, 10)
 	if !ok {
-		return nil, fmt.Errorf("error converting tokentId to bigint: %v\n", d.TokenId)
+		return nil, fmt.Errorf("error converting tokenId to bigint: %v\n", d.TokenId)
 	}
 	ierc721Contract, err := ethClient.NewIERC721Contract(ctx, d.TokenAddress)
 	if err != nil {
@@ -46,20 +44,22 @@ func (d *ERC721Deposit) Execute(ctx context.Context, ethClient *ethereum.Client,
 
 	// Get signable deposit details
 	signableDepositRequest := NewSignableDepositRequestForERC721("1", d.TokenId, d.TokenAddress, l1signer.GetAddress())
-	signableDeposit, err := GetSignableDeposit(ctx, apis.Deposits, signableDepositRequest)
+	signableDeposit, err := GetSignableDeposit(ctx, api.Deposits, signableDepositRequest)
 	if err != nil {
 		return nil, err
 	}
 
 	// Perform encoding on asset details to get an assetType (required for stark contract request)
-	assetType, err := helpers.GetEncodedAssetTypeForERC721(ctx, apis, d.TokenId, d.TokenAddress)
+	assetType, err := helpers.GetEncodedAssetTypeForERC721(ctx, api, d.TokenId, d.TokenAddress)
 	if err != nil {
 		return nil, err
 	}
 
-	starkKey, err := utils.HexToInt(*signableDeposit.StarkKey)
+	// Passing starkKeyHex to register method because it may be padded and converting back from Int loses the padding
+	starkKeyHex := *signableDeposit.StarkKey
+	starkKey, err := utils.HexToInt(starkKeyHex)
 	if err != nil {
-		return nil, fmt.Errorf("error converting StarkKey to bigint: %v\n", signableDeposit.StarkKey)
+		return nil, fmt.Errorf("error converting StarkKey to bigint: %s\n", starkKeyHex)
 	}
 
 	isRegistered, _ := ethClient.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
@@ -70,7 +70,7 @@ func (d *ERC721Deposit) Execute(ctx context.Context, ethClient *ethereum.Client,
 	if isRegistered {
 		return depositERC721(ctx, ethClient, l1signer, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, tokenId)
 	} else {
-		return registerAndDepositERC721(ctx, ethClient, l1signer, apis.Users, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, tokenId)
+		return registerAndDepositERC721(ctx, ethClient, l1signer, api, starkKeyHex, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, tokenId)
 	}
 }
 
@@ -98,22 +98,17 @@ func registerAndDepositERC721(
 	ctx context.Context,
 	ethClient *ethereum.Client,
 	l1signer signers.L1Signer,
-	userApi users.ClientService,
-	starkPublicKey *big.Int,
+	api *client.ImmutableXAPI,
+	starkKeyHex string,
+	starkKey *big.Int,
 	vaultId *big.Int,
 	assetType *big.Int,
 	tokenId *big.Int,
 ) (*Transaction, error) {
 	etherKey := l1signer.GetAddress()
-	starkKey := hexutil.EncodeBig(starkPublicKey)
-	params := users.NewGetSignableRegistrationParamsWithContext(ctx)
-	params.SetGetSignableRegistrationRequest(&models.GetSignableRegistrationRequest{
-		EtherKey: &etherKey,
-		StarkKey: &starkKey,
-	})
-	signableRegistration, err := userApi.GetSignableRegistration(params)
+	signableRegistration, err := registration.GetSignableRegistrationOnchain(ctx, api, etherKey, starkKeyHex)
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `UserApi.GetSignableRegistration`: %v", err)
+		return nil, err
 	}
 
 	auth, err := ethClient.BuildTransactOpts(ctx, l1signer)
@@ -121,14 +116,14 @@ func registerAndDepositERC721(
 		return nil, err
 	}
 
-	operatorSignature, err := utils.HexToByteArray(*signableRegistration.GetPayload().OperatorSignature)
+	operatorSignature, err := utils.HexToByteArray(*signableRegistration.OperatorSignature)
 	if err != nil {
 		return nil, err
 	}
 	tnx, err := ethClient.RegistrationContract.RegisterAndDepositNft(
 		auth,
-		common.HexToAddress(l1signer.GetAddress()),
-		starkPublicKey,
+		common.HexToAddress(etherKey),
+		starkKey,
 		operatorSignature,
 		assetType,
 		vaultId,
