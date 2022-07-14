@@ -50,7 +50,7 @@ func MintTokensWorkflow(ctx context.Context,
 	for requestIndex, eachMintRequest := range unsignedMintRequest {
 		mintRequestInBytes, err := json.Marshal(eachMintRequest)
 		if err != nil {
-			return nil, fmt.Errorf("error eachMintRequest MintRequest: %v", err)
+			return nil, fmt.Errorf("error in json marshaling eachMintRequest: %v", err)
 		}
 		requestHash := crypto.Keccak256Hash(mintRequestInBytes)
 		authSignatureInBytes, err := l1signer.SignMessage(requestHash.String())

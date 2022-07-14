@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"immutable.com/imx-core-sdk-golang/api/client"
+	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/workflows/minting"
 )
@@ -54,9 +55,9 @@ func Demo_MintingTokens(ctx context.Context, api *client.ImmutableXAPI, l1signer
 		log.Fatalf("error in minting.MintTokensWorkflow: %v", err)
 	}
 
-	// mintTokensResponseStr, err := utils.PrettyStruct(mintTokensResponse)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	log.Printf("Mint Tokens response:\n%v\n", mintTokensResponse)
+	mintTokensResponseStr, err := utils.PrettyStruct(mintTokensResponse)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Mint Tokens response:\n%v\n", mintTokensResponseStr)
 }
