@@ -4,8 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
-
 	"github.com/ethereum/go-ethereum/crypto"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -15,20 +13,23 @@ import (
 	"immutable.com/imx-core-sdk-golang/signers"
 )
 
+// Note: 	These structs need to be in the order defined as below and should match the
+//   		implementation in imx-engine to pass the validation step while minting tokens.
+
 type MintFee struct {
 	Recipient  *string  `json:"recipient"`
 	Percentage *float64 `json:"percentage" validate:"max=100,gt=0"`
 }
 
-type MintableERC721TokenData struct {
+type MintableTokenData struct {
 	ID        *string    `json:"id"`
 	Blueprint *string    `json:"blueprint"`
 	Royalties []*MintFee `json:"royalties,omitempty"` // token-level overridable fees (optional)
 }
 
 type User struct {
-	User   *string                    `json:"ether_key"`
-	Tokens []*MintableERC721TokenData `json:"tokens"`
+	User   *string              `json:"ether_key"`
+	Tokens []*MintableTokenData `json:"tokens"`
 }
 
 type UnsignedMintRequest struct {
@@ -38,65 +39,63 @@ type UnsignedMintRequest struct {
 	AuthSignature   string     `json:"auth_signature" validate:"required"`
 }
 
+// MintTokensWorkflow assists in minting tokens to the given imx user.
 func MintTokensWorkflow(ctx context.Context,
 	api *client.ImmutableXAPI,
 	l1signer signers.L1Signer,
 	unsignedMintRequest []*UnsignedMintRequest) (*models.MintTokensResponse, error) {
 
-	var mintRequest []*models.MintRequest
-	for _, eachMintRequst := range unsignedMintRequest {
+	mintRequest := make([]*models.MintRequest, len(unsignedMintRequest))
+	for requestIndex, eachMintRequst := range unsignedMintRequest {
 		mintRequestInBytes, err := json.Marshal(eachMintRequst)
-		log.Printf(string(mintRequestInBytes))
+		if err != nil {
+			return nil, fmt.Errorf("error eachMintRequst MintRequest: %v", err)
+		}
 		requestHash := crypto.Keccak256Hash(mintRequestInBytes)
 		authSignatureInBytes, err := l1signer.SignMessage(requestHash.String())
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("error in signing eachMintRequst message: %v", err)
 		}
 
-		authSignatureEncodedInHex := hexutil.Encode(authSignatureInBytes)
-		log.Printf("Auth Signature: %v", authSignatureEncodedInHex)
-
-		var mintFees []*models.MintFee
-		for _, eachMintFee := range eachMintRequst.Royalties {
-			mintFees = append(mintFees, &models.MintFee{
+		mintFees := make([]*models.MintFee, len(eachMintRequst.Royalties))
+		for index, eachMintFee := range eachMintRequst.Royalties {
+			mintFees[index] = &models.MintFee{
 				Percentage: eachMintFee.Percentage,
 				Recipient:  eachMintFee.Recipient,
-			})
+			}
 		}
 
-		var mintToUsers []*models.MintUser
-		for _, eachMintUser := range eachMintRequst.Users {
-			var mintTokens []*models.MintTokenDataV2
-			for _, eachMintToken := range eachMintUser.Tokens {
+		mintToUsers := make([]*models.MintUser, len(eachMintRequst.Users))
+		for userIndex, eachMintUser := range eachMintRequst.Users {
+			mintTokens := make([]*models.MintTokenDataV2, len(eachMintUser.Tokens))
+			for tokenIndex, eachMintToken := range eachMintUser.Tokens {
 
-				var mintFeesPerToken []*models.MintFee
-				for _, eachMintFeePerToken := range eachMintToken.Royalties {
-					mintFeesPerToken = append(mintFeesPerToken, &models.MintFee{
+				mintFeesPerToken := make([]*models.MintFee, len(eachMintToken.Royalties))
+				for royaltyIndex, eachMintFeePerToken := range eachMintToken.Royalties {
+					mintFeesPerToken[royaltyIndex] = &models.MintFee{
 						Percentage: eachMintFeePerToken.Percentage,
 						Recipient:  eachMintFeePerToken.Recipient,
-					})
+					}
 				}
 
-				mintTokens = append(mintTokens, &models.MintTokenDataV2{
+				mintTokens[tokenIndex] = &models.MintTokenDataV2{
 					Blueprint: *eachMintToken.Blueprint,
 					ID:        eachMintToken.ID,
 					Royalties: mintFeesPerToken,
-				})
+				}
 			}
-			mintToUsers = append(mintToUsers, &models.MintUser{
+			mintToUsers[userIndex] = &models.MintUser{
 				Tokens: mintTokens,
 				User:   eachMintUser.User,
-			})
+			}
 		}
 
-		mintRequest = append(mintRequest, &models.MintRequest{
+		authSignatureEncodedInHex := hexutil.Encode(authSignatureInBytes)
+		mintRequest[requestIndex] = &models.MintRequest{
 			AuthSignature:   &authSignatureEncodedInHex,
 			ContractAddress: eachMintRequst.ContractAddress,
 			Royalties:       mintFees,
 			Users:           mintToUsers,
-		})
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling MintRequest: %v", err)
 		}
 	}
 

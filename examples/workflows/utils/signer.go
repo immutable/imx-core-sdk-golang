@@ -36,6 +36,7 @@ func (b *BaseL1Signer) GetAddress() string {
 	return address.Hex()
 }
 
+// SignMessage signs the given message using the private key and returns the signature.
 func (b *BaseL1Signer) SignMessage(message string) ([]byte, error) {
 	hashBytes := []byte(message)
 	return crypto.Sign(accounts.TextHash(hashBytes), b.privateKey)

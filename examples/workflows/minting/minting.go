@@ -3,7 +3,6 @@ package minting
 import (
 	"context"
 	"log"
-	"strings"
 
 	"immutable.com/imx-core-sdk-golang/api/client"
 	"immutable.com/imx-core-sdk-golang/signers"
@@ -16,7 +15,7 @@ var (
 
 func Demo_MintingTokens(ctx context.Context, api *client.ImmutableXAPI, l1signer signers.L1Signer) {
 
-	ethAddress := strings.ToLower(l1signer.GetAddress())
+	ethAddress := l1signer.GetAddress()
 	tokenId := "5"
 	blueprint := "123"
 	var royaltyPercentage float64 = 1
@@ -31,7 +30,7 @@ func Demo_MintingTokens(ctx context.Context, api *client.ImmutableXAPI, l1signer
 		Users: []*minting.User{
 			{
 				User: &ethAddress,
-				Tokens: []*minting.MintableERC721TokenData{
+				Tokens: []*minting.MintableTokenData{
 					{
 						ID: &tokenId,
 						Royalties: []*minting.MintFee{
@@ -46,12 +45,13 @@ func Demo_MintingTokens(ctx context.Context, api *client.ImmutableXAPI, l1signer
 			},
 		},
 	}
-	var request []*minting.UnsignedMintRequest
-	request = append(request, &mintableToken)
+
+	request := make([]*minting.UnsignedMintRequest, 1)
+	request[0] = &mintableToken
 
 	mintTokensResponse, err := minting.MintTokensWorkflow(ctx, api, l1signer, request)
 	if err != nil {
-		log.Fatalf("error generating signature from MintRequest data: %v", err)
+		log.Fatalf("error in minting.MintTokensWorkflow: %v", err)
 	}
 
 	// mintTokensResponseStr, err := utils.PrettyStruct(mintTokensResponse)
