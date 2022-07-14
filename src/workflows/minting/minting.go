@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+
 	"github.com/ethereum/go-ethereum/crypto"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -46,27 +47,27 @@ func MintTokensWorkflow(ctx context.Context,
 	unsignedMintRequest []*UnsignedMintRequest) (*models.MintTokensResponse, error) {
 
 	mintRequest := make([]*models.MintRequest, len(unsignedMintRequest))
-	for requestIndex, eachMintRequst := range unsignedMintRequest {
-		mintRequestInBytes, err := json.Marshal(eachMintRequst)
+	for requestIndex, eachMintRequest := range unsignedMintRequest {
+		mintRequestInBytes, err := json.Marshal(eachMintRequest)
 		if err != nil {
-			return nil, fmt.Errorf("error eachMintRequst MintRequest: %v", err)
+			return nil, fmt.Errorf("error eachMintRequest MintRequest: %v", err)
 		}
 		requestHash := crypto.Keccak256Hash(mintRequestInBytes)
 		authSignatureInBytes, err := l1signer.SignMessage(requestHash.String())
 		if err != nil {
-			return nil, fmt.Errorf("error in signing eachMintRequst message: %v", err)
+			return nil, fmt.Errorf("error in signing eachMintRequest message: %v", err)
 		}
 
-		mintFees := make([]*models.MintFee, len(eachMintRequst.Royalties))
-		for index, eachMintFee := range eachMintRequst.Royalties {
+		mintFees := make([]*models.MintFee, len(eachMintRequest.Royalties))
+		for index, eachMintFee := range eachMintRequest.Royalties {
 			mintFees[index] = &models.MintFee{
 				Percentage: eachMintFee.Percentage,
 				Recipient:  eachMintFee.Recipient,
 			}
 		}
 
-		mintToUsers := make([]*models.MintUser, len(eachMintRequst.Users))
-		for userIndex, eachMintUser := range eachMintRequst.Users {
+		mintToUsers := make([]*models.MintUser, len(eachMintRequest.Users))
+		for userIndex, eachMintUser := range eachMintRequest.Users {
 			mintTokens := make([]*models.MintTokenDataV2, len(eachMintUser.Tokens))
 			for tokenIndex, eachMintToken := range eachMintUser.Tokens {
 
@@ -93,7 +94,7 @@ func MintTokensWorkflow(ctx context.Context,
 		authSignatureEncodedInHex := hexutil.Encode(authSignatureInBytes)
 		mintRequest[requestIndex] = &models.MintRequest{
 			AuthSignature:   &authSignatureEncodedInHex,
-			ContractAddress: eachMintRequst.ContractAddress,
+			ContractAddress: eachMintRequest.ContractAddress,
 			Royalties:       mintFees,
 			Users:           mintToUsers,
 		}
