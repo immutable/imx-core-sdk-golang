@@ -3,57 +3,50 @@ package minting
 import (
 	"context"
 	"log"
+	"strings"
 
 	"immutable.com/imx-core-sdk-golang/api/client"
-	"immutable.com/imx-core-sdk-golang/api/models"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/workflows/minting"
 )
 
 var (
-	contractAddress = "0x4B089f5006778FeF128506427235937D60B74DFB"
+	contractAddress string = "" // Provide your collection contract address
 )
 
 func Demo_MintingTokens(ctx context.Context, api *client.ImmutableXAPI, l1signer signers.L1Signer) {
 
-	ethAddress := l1signer.GetAddress()
-	tokenId := "4"
-	var royaltyPercentage float64 = 2
-
-	var request []*models.MintRequest
-	mintableToken := models.MintRequest{
+	ethAddress := strings.ToLower(l1signer.GetAddress())
+	tokenId := "5"
+	blueprint := "123"
+	var royaltyPercentage float64 = 1
+	var mintableToken = minting.UnsignedMintRequest{
 		ContractAddress: &contractAddress,
-		Royalties: []*models.MintFee{
+		Royalties: []*minting.MintFee{
 			{
 				Percentage: &royaltyPercentage,
 				Recipient:  &ethAddress,
 			},
 		},
-		Users: []*models.MintUser{
+		Users: []*minting.User{
 			{
 				User: &ethAddress,
-				Tokens: []*models.MintTokenDataV2{
+				Tokens: []*minting.MintableERC721TokenData{
 					{
 						ID: &tokenId,
-						Royalties: []*models.MintFee{
+						Royalties: []*minting.MintFee{
 							{
 								Percentage: &royaltyPercentage,
 								Recipient:  &ethAddress,
 							},
 						},
-						Blueprint: `{
-							"name": "Forest NFT",
-							"description": "This is your 4th nft",
-							"image_url":"https://gateway.pinata.cloud/ipfs/QmUWHMh2moaTWks7c9k3VxVGjp3Pk4chYeWhdJYYcna4BA",
-							"attack": 423,
-							"collectable": true,
-							"class": "EnumValue4"   
-						  }`,
+						Blueprint: &blueprint,
 					},
 				},
 			},
 		},
 	}
+	var request []*minting.UnsignedMintRequest
 	request = append(request, &mintableToken)
 
 	mintTokensResponse, err := minting.MintTokensWorkflow(ctx, api, l1signer, request)

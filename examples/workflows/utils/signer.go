@@ -2,10 +2,9 @@ package utils
 
 import (
 	"crypto/ecdsa"
+	"github.com/ethereum/go-ethereum/accounts"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"immutable.com/imx-core-sdk-golang/signers"
@@ -37,13 +36,9 @@ func (b *BaseL1Signer) GetAddress() string {
 	return address.Hex()
 }
 
-// SignMessage signs the given message using the private key and returns the signature.
 func (b *BaseL1Signer) SignMessage(message string) ([]byte, error) {
-	bytes, err := common.ParseHexOrString(message)
-	if err != nil {
-		return nil, err
-	}
-	return crypto.Sign(accounts.TextHash(bytes), b.privateKey)
+	hashBytes := []byte(message)
+	return crypto.Sign(accounts.TextHash(hashBytes), b.privateKey)
 }
 
 // SignTx signs the given transaction using this signer and private key. Returns the signed transaction.
