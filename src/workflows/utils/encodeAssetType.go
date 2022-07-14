@@ -12,7 +12,7 @@ import (
 
 const (
 	defaultAssetType  = "asset"
-	mintabelAssetType = "mintable-asset"
+	mintableAssetType = "mintable-asset"
 )
 
 // GetEncodedAssetTypeForEth returns encoded AssetType for ETH.
@@ -72,7 +72,7 @@ func GetEncodedMintableAssetTypeForERC721(
 		},
 		Type: string(types.ERC721Type),
 	}
-	return GetEncodedAssetType(ctx, api, encodeAssetRequestToken, mintabelAssetType)
+	return GetEncodedAssetType(ctx, api, encodeAssetRequestToken, mintableAssetType)
 }
 
 // GetEncodedAssetType performs encoding on asset details to get an AssetType (required for stark contract request)
