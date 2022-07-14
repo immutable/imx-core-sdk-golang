@@ -26,6 +26,14 @@ func Demo_CompleteWithdrawalWorkflow(ctx context.Context, ethClient *ethereum.Cl
 		transaction, err = erc20Withdrawal.CompleteWithdrawal(ctx, ethClient, api, l1signer, l2signer.GetAddress())
 	*/
 
+	/*
+		// Uncomment for ERC721
+		tokenId := "ERC721 Token Id Here"
+		tokenAddress := "ERC721 Token Address Here"
+		erc721Withdrawal := withdrawalsWorkflow.NewERC721Withdrawal(tokenId, tokenAddress)
+		transaction, err = erc721Withdrawal.CompleteWithdrawal(ctx, ethClient, api, l1signer, l2signer.GetAddress())
+	*/
+
 	if err != nil {
 		log.Fatalf("error calling complete withdrawal workflow: %v", err)
 	}
