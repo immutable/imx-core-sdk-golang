@@ -28,6 +28,16 @@ func Demo_PrepareWithdrawalWorkflow(ctx context.Context, api *client.ImmutableXA
 		Token:  signableToken,
 	}
 
+	/*
+		// Uncomment for ERC721
+		signableToken := utils.NewSignableTokenERC721("7", "0x0fb969a08c7c39ba99c1628b59c0b7e5611bd396")
+		amount := "1"
+		withdrawalRequest := models.GetSignableWithdrawalRequest{
+			Amount: &amount,
+			Token:  signableToken,
+		}
+	*/
+
 	response, err := withdrawalsWorkflow.PrepareWithdrawal(ctx, api, l1signer, l2signer, withdrawalRequest)
 	if err != nil {
 		log.Fatalf("error calling prepare withdrawal workflow: %v", err)
