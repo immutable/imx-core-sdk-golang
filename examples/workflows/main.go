@@ -7,6 +7,7 @@ import (
 	"immutable.com/imx-core-sdk-golang/config"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/burn"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/deposits"
+	"immutable.com/imx-core-sdk-golang/examples/workflows/minting"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/onboarding"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/orders"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/trades"
@@ -49,6 +50,8 @@ func main() {
 	}
 
 	onboarding.Demo_UserRegistrationWorkflow(ctx, apiClient, l1signer)
+	minting.Demo_MintingTokens(ctx, apiClient, l1signer)
+
 	deposits.Demo_DepositWorkflow(ctx, ethClient, apiClient, l1signer)
 	trades.Demo_TradesWorkflow(ctx, apiClient, l1signer, l2signer)
 	burn.Demo_BurnWorkflow(ctx, apiClient, l1signer, l2signer)

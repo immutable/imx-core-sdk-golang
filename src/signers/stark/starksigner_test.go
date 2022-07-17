@@ -7,7 +7,6 @@ import (
 	"testing"
 
 	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -80,11 +79,8 @@ func (b *BaseL1Signer) GetAddress() string {
 }
 
 func (b *BaseL1Signer) SignMessage(message string) ([]byte, error) {
-	bytes, err := common.ParseHexOrString(message)
-	if err != nil {
-		return nil, err
-	}
-	return crypto.Sign(accounts.TextHash(bytes), b.privateKey)
+	hashBytes := []byte(message)
+	return crypto.Sign(accounts.TextHash(hashBytes), b.privateKey)
 }
 
 func (b *BaseL1Signer) SignTx(tx *types.Transaction) (*types.Transaction, error) {
