@@ -22,7 +22,7 @@ const (
 func GenerateStarkSigner(signer signers.L1Signer) (*StarkSigner, error) {
 	seed, err := generateSeed(signer, SeedStarkMessage)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to generate seed using l1signer: %v", err)
+		return nil, fmt.Errorf("failed to generate seed using l1signer: %v", err)
 	}
 
 	starkPath := generateStarkPath([]byte("starkex"), []byte("immutablex"), hexutil.MustDecode(signer.GetAddress()), "1")
@@ -73,12 +73,6 @@ func grind(key *big.Int) *big.Int {
 	}
 
 	return new(big.Int).Rem(key, order)
-}
-
-func prefixMessageDigest(hashBytes []byte) []byte {
-	ext := []byte("\x19Ethereum Signed Message:\n")
-	len := []byte(fmt.Sprintf("%d", len(hashBytes)))
-	return append(ext, append(len, hashBytes...)...)
 }
 
 func generateSeed(signer signers.L1Signer, seedMessage string) ([]byte, error) {
