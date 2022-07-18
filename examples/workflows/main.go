@@ -27,8 +27,8 @@ const (
 func main() {
 	ctx := context.Background()
 	cfg := config.GetConfig(config.Ropsten, alchemyApiKey)
-	apiClient := factories.NewApiClient(cfg)
-	ethClient, err := factories.NewEthereumClient(context.Background(), cfg, ethereum.DefaultGasParams)
+	apiClient := factories.NewAPIClient(&cfg)
+	ethClient, err := factories.NewEthereumClient(context.Background(), &cfg, ethereum.DefaultGasParams)
 	if err != nil {
 		log.Fatalf("error dialing ethereum client: %v\n", err)
 	}

@@ -8,7 +8,7 @@ import (
 
 type Config struct {
 	EthereumClientEndpoint      string
-	CoreApiEndpoint             url.URL
+	CoreAPIEndpoint             url.URL
 	RegistrationContractAddress string
 	StarkContractAddress        string
 }
@@ -25,7 +25,7 @@ func getBaseConfigs() map[Network]Config {
 	return map[Network]Config{
 		Dev: {
 			EthereumClientEndpoint: "https://eth-ropsten.alchemyapi.io/v2/",
-			CoreApiEndpoint: url.URL{
+			CoreAPIEndpoint: url.URL{
 				Scheme: "https",
 				Host:   "api.dev.x.immutable.com",
 			},
@@ -34,7 +34,7 @@ func getBaseConfigs() map[Network]Config {
 		},
 		Ropsten: {
 			EthereumClientEndpoint: "https://eth-ropsten.alchemyapi.io/v2/",
-			CoreApiEndpoint: url.URL{
+			CoreAPIEndpoint: url.URL{
 				Scheme: "https",
 				Host:   "api.ropsten.x.immutable.com",
 			},
@@ -43,7 +43,7 @@ func getBaseConfigs() map[Network]Config {
 		},
 		MainNet: {
 			EthereumClientEndpoint: "https://eth-mainnet.alchemyapi.io/v2/",
-			CoreApiEndpoint: url.URL{
+			CoreAPIEndpoint: url.URL{
 				Scheme: "https",
 				Host:   "api.x.immutable.com",
 			},
@@ -53,8 +53,8 @@ func getBaseConfigs() map[Network]Config {
 	}
 }
 
-func GetApiUrl(network Network) url.URL {
-	return getBaseConfigs()[network].CoreApiEndpoint
+func GetAPIURL(network Network) url.URL {
+	return getBaseConfigs()[network].CoreAPIEndpoint
 }
 
 func GetConfig(network Network, alchemyKey string) Config {
@@ -64,7 +64,7 @@ func GetConfig(network Network, alchemyKey string) Config {
 	return baseConfig
 }
 
-func NewTransportConfig(coreEndPoint url.URL) *client.TransportConfig {
+func NewTransportConfig(coreEndPoint *url.URL) *client.TransportConfig {
 	return &client.TransportConfig{
 		Host:     coreEndPoint.Host,
 		BasePath: coreEndPoint.Path,

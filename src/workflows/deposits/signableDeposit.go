@@ -11,12 +11,12 @@ import (
 
 func GetSignableDeposit(
 	ctx context.Context,
-	depositsApi deposits.ClientService,
+	depositsAPI deposits.ClientService,
 	request *models.GetSignableDepositRequest,
 ) (*models.GetSignableDepositResponse, error) {
 	signableDepositParams := deposits.NewGetSignableDepositParamsWithContext(ctx)
 	signableDepositParams.SetGetSignableDepositRequest(request)
-	signableDepositOK, err := depositsApi.GetSignableDeposit(signableDepositParams)
+	signableDepositOK, err := depositsAPI.GetSignableDeposit(signableDepositParams)
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `Deposits.GetSignableDeposit`: %v", err)
 	}
@@ -39,10 +39,10 @@ func NewSignableDepositRequestForERC20(amount, tokenAddress, user, decimals stri
 	}
 }
 
-func NewSignableDepositRequestForERC721(amount, tokenId, tokenAddress, user string) *models.GetSignableDepositRequest {
+func NewSignableDepositRequestForERC721(amount, tokenID, tokenAddress, user string) *models.GetSignableDepositRequest {
 	return &models.GetSignableDepositRequest{
 		Amount: &amount,
-		Token:  utils.NewSignableTokenERC721(tokenId, tokenAddress),
+		Token:  utils.NewSignableTokenERC721(tokenID, tokenAddress),
 		User:   &user,
 	}
 }

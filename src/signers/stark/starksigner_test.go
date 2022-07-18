@@ -70,7 +70,7 @@ func TestStarkSigner_GetAddress(t *testing.T) {
 
 type BaseL1Signer struct {
 	privateKey *ecdsa.PrivateKey
-	chainId    *big.Int
+	chainID    *big.Int
 }
 
 func (b *BaseL1Signer) GetAddress() string {
@@ -84,11 +84,11 @@ func (b *BaseL1Signer) SignMessage(message string) ([]byte, error) {
 }
 
 func (b *BaseL1Signer) SignTx(tx *types.Transaction) (*types.Transaction, error) {
-	signer := types.LatestSignerForChainID(b.chainId)
+	signer := types.LatestSignerForChainID(b.chainID)
 	return types.SignTx(tx, signer, b.privateKey)
 }
 
-func GetL1Signer(privateKey string, chainId *big.Int) (signers.L1Signer, error) {
+func GetL1Signer(privateKey string, chainID *big.Int) (signers.L1Signer, error) {
 	privateKey, err := utils.TrimHexPrefix(privateKey)
 	if err != nil {
 		return nil, err
@@ -98,5 +98,5 @@ func GetL1Signer(privateKey string, chainId *big.Int) (signers.L1Signer, error) 
 		return nil, err
 	}
 
-	return &BaseL1Signer{privateKey: privKey, chainId: chainId}, nil
+	return &BaseL1Signer{privateKey: privKey, chainID: chainID}, nil
 }

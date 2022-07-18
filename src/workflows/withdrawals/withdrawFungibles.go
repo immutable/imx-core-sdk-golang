@@ -8,7 +8,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-	. "github.com/ethereum/go-ethereum/core/types"
+	eth "github.com/ethereum/go-ethereum/core/types"
 	"immutable.com/imx-core-sdk-golang/api/client"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/utils"
@@ -25,7 +25,7 @@ func (w *ETHWithdrawal) CompleteWithdrawal(
 	api *client.ImmutableXAPI,
 	l1signer signers.L1Signer,
 	starkKeyHex string,
-) (*Transaction, error) {
+) (*eth.Transaction, error) {
 	if w.Type != types.ETHType {
 		return nil, errors.New("invalid token type")
 	}
@@ -45,12 +45,12 @@ func (w *ERC20Withdrawal) CompleteWithdrawal(
 	api *client.ImmutableXAPI,
 	l1signer signers.L1Signer,
 	starkKeyHex string,
-) (*Transaction, error) {
+) (*eth.Transaction, error) {
 	if w.Type != types.ERC20Type {
 		return nil, errors.New("invalid token type")
 	}
 
-	assetType, err := helpers.GetEncodedAssetTypeForERC20(ctx, api, w.TokenId, w.TokenAddress)
+	assetType, err := helpers.GetEncodedAssetTypeForERC20(ctx, api, w.TokenID, w.TokenAddress)
 	if err != nil {
 		return nil, err
 	}
@@ -65,10 +65,10 @@ func completeFungiblesWithdrawal(
 	l1signer signers.L1Signer,
 	starkKeyHex string,
 	assetType *big.Int,
-) (*Transaction, error) {
+) (*eth.Transaction, error) {
 	starkKey, err := utils.HexToInt(starkKeyHex)
 	if err != nil {
-		return nil, fmt.Errorf("error converting StarkKeyHex to bigint: %s\n", starkKeyHex)
+		return nil, fmt.Errorf("error converting StarkKeyHex to bigint: %s", starkKeyHex)
 	}
 
 	isRegistered, _ := ethClient.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
@@ -80,7 +80,7 @@ func completeFungiblesWithdrawal(
 	}
 }
 
-func withdrawFungibles(ctx context.Context, ethClient *ethereum.Client, l1signer signers.L1Signer, starkKey, assetType *big.Int) (*Transaction, error) {
+func withdrawFungibles(ctx context.Context, ethClient *ethereum.Client, l1signer signers.L1Signer, starkKey, assetType *big.Int) (*eth.Transaction, error) {
 	auth, err := ethClient.BuildTransactOpts(ctx, l1signer)
 	if err != nil {
 		return nil, err
@@ -100,7 +100,7 @@ func registerAndWithdrawFungibles(
 	starkKeyHex string,
 	starkKey *big.Int,
 	assetType *big.Int,
-) (*Transaction, error) {
+) (*eth.Transaction, error) {
 	etherKey := l1signer.GetAddress()
 	signableRegistration, err := registration.GetSignableRegistrationOnchain(ctx, api, etherKey, starkKeyHex)
 	if err != nil {

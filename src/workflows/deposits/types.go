@@ -7,7 +7,7 @@ import (
 	"immutable.com/imx-core-sdk-golang/api/client"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
-	. "immutable.com/imx-core-sdk-golang/workflows/types"
+	imx "immutable.com/imx-core-sdk-golang/workflows/types"
 )
 
 type TokenDeposit interface {
@@ -15,43 +15,43 @@ type TokenDeposit interface {
 }
 
 type ETHDeposit struct {
-	Type   TokenTypeEnum
+	Type   imx.TokenTypeEnum
 	Amount string
 }
 
 type ERC20Deposit struct {
-	Type         TokenTypeEnum
+	Type         imx.TokenTypeEnum
 	Amount       string
 	TokenAddress string
 	Symbol       string
 }
 
 type ERC721Deposit struct {
-	Type         TokenTypeEnum
-	TokenId      string
+	Type         imx.TokenTypeEnum
+	TokenID      string
 	TokenAddress string
 }
 
 func NewETHDeposit(amount string) *ETHDeposit {
 	this := ETHDeposit{}
-	this.Type = ETHType
+	this.Type = imx.ETHType
 	this.Amount = amount
 	return &this
 }
 
-func NewERC20Deposit(amount string, tokenAddress string, symbol string) *ERC20Deposit {
+func NewERC20Deposit(amount, tokenAddress, symbol string) *ERC20Deposit {
 	this := ERC20Deposit{}
-	this.Type = ERC20Type
+	this.Type = imx.ERC20Type
 	this.Amount = amount
 	this.TokenAddress = tokenAddress
 	this.Symbol = symbol
 	return &this
 }
 
-func NewERC721Deposit(tokenId string, tokenAddress string) *ERC721Deposit {
+func NewERC721Deposit(tokenID, tokenAddress string) *ERC721Deposit {
 	this := ERC721Deposit{}
-	this.Type = ERC721Type
-	this.TokenId = tokenId
+	this.Type = imx.ERC721Type
+	this.TokenID = tokenID
 	this.TokenAddress = tokenAddress
 	return &this
 }

@@ -44,8 +44,8 @@ type UnsignedMintRequest struct {
 func MintTokensWorkflow(ctx context.Context,
 	api *client.ImmutableXAPI,
 	l1signer signers.L1Signer,
-	unsignedMintRequest []*UnsignedMintRequest) (*models.MintTokensResponse, error) {
-
+	unsignedMintRequest []*UnsignedMintRequest,
+) (*models.MintTokensResponse, error) {
 	mintRequest := make([]*models.MintRequest, len(unsignedMintRequest))
 	for requestIndex, eachMintRequest := range unsignedMintRequest {
 		mintRequestInBytes, err := json.Marshal(eachMintRequest)
@@ -70,7 +70,6 @@ func MintTokensWorkflow(ctx context.Context,
 		for userIndex, eachMintUser := range eachMintRequest.Users {
 			mintTokens := make([]*models.MintTokenDataV2, len(eachMintUser.Tokens))
 			for tokenIndex, eachMintToken := range eachMintUser.Tokens {
-
 				mintFeesPerToken := make([]*models.MintFee, len(eachMintToken.Royalties))
 				for royaltyIndex, eachMintFeePerToken := range eachMintToken.Royalties {
 					mintFeesPerToken[royaltyIndex] = &models.MintFee{

@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"io/ioutil"
+	"io"
 	"math/big"
 	"net/http"
 	"time"
@@ -34,7 +34,7 @@ type gasPriceResponse struct {
 }
 
 // FetchGasPrice will query EGS for the current gas prices and return the price for the specified speed.
-func FetchGasPrice(apiKey string, speed string) (*big.Int, error) {
+func FetchGasPrice(apiKey, speed string) (*big.Int, error) {
 	var gsnURL = "https://ethgasstation.info/api/ethgasAPI.json?api-key=" + apiKey
 
 	for i := 0; i < Retries; i++ {
@@ -57,7 +57,7 @@ func queryAPI(url string) (*gasPriceResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*Timeout)
 	defer cancel()
 
-	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, http.NoBody)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func queryAPI(url string) (*gasPriceResponse, error) {
 
 	defer func() { _ = res.Body.Close() }()
 
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}

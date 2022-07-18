@@ -7,7 +7,7 @@ import (
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
 )
 
-func NewEthereumClient(ctx context.Context, env config.Config, gasParams ethereum.GasParams) (*ethereum.Client, error) {
+func NewEthereumClient(ctx context.Context, env *config.Config, gasParams ethereum.GasParams) (*ethereum.Client, error) {
 	ethClient, err := ethereum.NewEthereumClient(env.EthereumClientEndpoint, gasParams)
 	if err != nil {
 		return nil, err
