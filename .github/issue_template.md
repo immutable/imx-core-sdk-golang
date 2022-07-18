@@ -9,7 +9,7 @@ Issue tracker is **ONLY** used for reporting bugs.
 <!--- Tell us what happens instead of the expected behavior -->
 
 ## Possible Solution
-<!--- Not obligatory, but suggest a fix/reason for the bug, -->
+<!--- Not obligatory, but suggest a fix/reason for the bug -->
 
 ## Steps to Reproduce
 <!--- Provide a link to a live example, or an unambiguous set of steps to -->
