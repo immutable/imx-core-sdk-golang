@@ -228,6 +228,14 @@ func ({{ .ReceiverName }} *{{ pascalize .Name }}Reader) ReadResponse(response ru
     {{- if $.Responses}}
     default:
     {{- end }}
+      body, err := io.ReadAll(response.Body())
+      if err == nil {
+        var message map[string]interface{}
+        err = json.Unmarshal(body, &message)
+        if err == nil {
+          return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", message, response.Code())	
+        }
+      }
       return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
   {{- end }}
   {{- if .Responses}}

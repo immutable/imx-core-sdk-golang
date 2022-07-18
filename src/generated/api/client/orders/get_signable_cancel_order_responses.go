@@ -6,6 +6,7 @@ package orders
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 
@@ -30,6 +31,14 @@ func (o *GetSignableCancelOrderReader) ReadResponse(response runtime.ClientRespo
 		}
 		return result, nil
 	default:
+		body, err := io.ReadAll(response.Body())
+		if err == nil {
+			var message map[string]interface{}
+			err = json.Unmarshal(body, &message)
+			if err == nil {
+				return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", message, response.Code())
+			}
+		}
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
 }
