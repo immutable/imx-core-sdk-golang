@@ -13,7 +13,6 @@ import (
 )
 
 func Demo_TransferWorkflow(ctx context.Context, api *client.ImmutableXAPI, l1signer signers.L1Signer, l2signer signers.L2Signer) {
-
 	log.Println("-------------------------------------------------------")
 	log.Println("Running Demo_TransferWorkflow")
 

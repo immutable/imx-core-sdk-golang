@@ -28,6 +28,7 @@ linters-settings:
       - octalLiteral
       - whyNoLint
       - wrapperFunc
+      - commentedOutCode
   gocognit:
     # minimal code complexity to report, 30 by default (but we recommend 10-20)
     min-complexity: 36
@@ -62,6 +63,7 @@ issues:
     # https://github.com/golangci/golangci-lint/issues/166
     - "shadow: declaration of .err. shadows declaration"
     - "shadow: declaration of .ctx. shadows declaration"
+    - "ST1003: should not use underscores in Go names"
 
 linters:
   # please, do not use `enable-all`: it's deprecated and will be removed soon.
@@ -111,6 +113,8 @@ linters:
 run:
   skip-dirs:
 #    - "generated/"
+
+  skip-dirs-use-default: false
 
 # golangci.com configuration
 # https://github.com/golangci/golangci/wiki/Configuration

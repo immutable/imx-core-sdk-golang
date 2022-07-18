@@ -2,8 +2,9 @@ package utils
 
 import (
 	"crypto/ecdsa"
-	"github.com/ethereum/go-ethereum/accounts"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/accounts"
 
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"

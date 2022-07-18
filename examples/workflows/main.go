@@ -21,12 +21,12 @@ import (
 
 const (
 	signerPrivateKey string = "" // Provide your wallet private key here
-	alchemyApiKey    string = "" // Provide your alchemy key here
+	alchemyAPIKey    string = "" // Provide your alchemy key here
 )
 
 func main() {
 	ctx := context.Background()
-	cfg := config.GetConfig(config.Ropsten, alchemyApiKey)
+	cfg := config.GetConfig(config.Ropsten, alchemyAPIKey)
 	apiClient := factories.NewAPIClient(&cfg)
 	ethClient, err := factories.NewEthereumClient(context.Background(), &cfg, ethereum.DefaultGasParams)
 	if err != nil {
@@ -34,12 +34,12 @@ func main() {
 	}
 	defer ethClient.Client.Close()
 
-	chainId, err := ethClient.Client.ChainID(ctx)
+	chainID, err := ethClient.Client.ChainID(ctx)
 	if err != nil {
 		log.Fatalf("error obtaining chain id: %v\n", err)
 	}
 
-	l1signer, err := utils.NewBaseL1Signer(signerPrivateKey, chainId)
+	l1signer, err := utils.NewBaseL1Signer(signerPrivateKey, chainID)
 	if err != nil {
 		log.Fatalf("error in creating BaseL1Signer: %v\n", err)
 	}
