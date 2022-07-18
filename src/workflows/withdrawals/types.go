@@ -2,6 +2,7 @@ package withdrawals
 
 import (
 	"context"
+
 	eth "github.com/ethereum/go-ethereum/core/types"
 	"immutable.com/imx-core-sdk-golang/api/client"
 	"immutable.com/imx-core-sdk-golang/signers"

@@ -3,6 +3,8 @@ package withdrawals
 import (
 	"context"
 	"fmt"
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	. "github.com/ethereum/go-ethereum/core/types"
@@ -12,7 +14,6 @@ import (
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
 	"immutable.com/imx-core-sdk-golang/workflows/registration"
 	helpers "immutable.com/imx-core-sdk-golang/workflows/utils"
-	"math/big"
 )
 
 func (w *ERC721Withdrawal) withdrawMintedNft(
@@ -22,7 +23,6 @@ func (w *ERC721Withdrawal) withdrawMintedNft(
 	l1signer signers.L1Signer,
 	starkKeyHex string,
 ) (*Transaction, error) {
-
 	assetType, err := helpers.GetEncodedAssetTypeForERC721(ctx, api, w.TokenId, w.TokenAddress)
 	if err != nil {
 		return nil, err

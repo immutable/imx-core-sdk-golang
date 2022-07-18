@@ -3,6 +3,7 @@ package deposits
 import (
 	"context"
 	"fmt"
+
 	"immutable.com/imx-core-sdk-golang/api/client/deposits"
 	"immutable.com/imx-core-sdk-golang/api/models"
 	"immutable.com/imx-core-sdk-golang/workflows/utils"

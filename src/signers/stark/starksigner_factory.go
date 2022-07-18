@@ -4,12 +4,12 @@ import (
 	"crypto/sha256"
 	"encoding/binary"
 	"fmt"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	"math/big"
 	"path"
 
 	"github.com/aarbt/hdkeys"
 	"github.com/dontpanicdao/caigo"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/utils"
 )
