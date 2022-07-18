@@ -3,11 +3,12 @@ package utils
 import (
 	"context"
 	"fmt"
+	"math/big"
+
 	"immutable.com/imx-core-sdk-golang/api/client"
 	"immutable.com/imx-core-sdk-golang/api/client/encoding"
 	"immutable.com/imx-core-sdk-golang/api/models"
 	"immutable.com/imx-core-sdk-golang/workflows/types"
-	"math/big"
 )
 
 const (
@@ -82,7 +83,6 @@ func GetEncodedAssetType(
 	encodeAssetRequestToken *models.EncodeAssetRequestToken,
 	assetType string,
 ) (*big.Int, error) {
-
 	encodeParams := encoding.NewEncodeAssetParamsWithContext(ctx)
 	encodeParams.SetAssetType(assetType)
 	encodeParams.SetEncodeAssetRequest(&models.EncodeAssetRequest{

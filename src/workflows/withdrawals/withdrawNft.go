@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	. "github.com/ethereum/go-ethereum/core/types"
@@ -16,7 +18,6 @@ import (
 	"immutable.com/imx-core-sdk-golang/workflows/registration"
 	"immutable.com/imx-core-sdk-golang/workflows/types"
 	helpers "immutable.com/imx-core-sdk-golang/workflows/utils"
-	"math/big"
 )
 
 // CompleteWithdrawal performs the complete withdrawal workflow on ERC721Withdrawal

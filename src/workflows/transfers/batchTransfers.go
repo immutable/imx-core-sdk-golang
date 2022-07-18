@@ -3,6 +3,7 @@ package transfers
 import (
 	"context"
 	"fmt"
+
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"immutable.com/imx-core-sdk-golang/api/client"
 	"immutable.com/imx-core-sdk-golang/api/client/transfers"

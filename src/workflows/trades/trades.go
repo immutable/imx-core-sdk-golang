@@ -3,9 +3,9 @@ package trades
 import (
 	"context"
 	"fmt"
-	"immutable.com/imx-core-sdk-golang/api/client"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"immutable.com/imx-core-sdk-golang/api/client"
 	"immutable.com/imx-core-sdk-golang/api/client/trades"
 	"immutable.com/imx-core-sdk-golang/api/models"
 	"immutable.com/imx-core-sdk-golang/signers"

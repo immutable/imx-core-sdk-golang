@@ -3,6 +3,7 @@ package withdrawals
 import (
 	"context"
 	"fmt"
+
 	"immutable.com/imx-core-sdk-golang/api/client"
 	"immutable.com/imx-core-sdk-golang/api/client/withdrawals"
 	"immutable.com/imx-core-sdk-golang/api/models"

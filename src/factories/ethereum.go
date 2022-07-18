@@ -2,6 +2,7 @@ package factories
 
 import (
 	"context"
+
 	"immutable.com/imx-core-sdk-golang/config"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
 )

@@ -2,6 +2,7 @@ package signers
 
 import (
 	"fmt"
+
 	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
