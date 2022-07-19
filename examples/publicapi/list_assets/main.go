@@ -30,14 +30,14 @@ func main() {
 
 	listAssetsResponse, err := httpClient.Assets.ListAssets(listAssetParams)
 	if err != nil {
-		fmt.Errorf("error: %v", err.Error())
+		log.Panic(err)
 	}
 
 	if listAssetsResponse != nil {
 		if listAssetsResponse.Payload != nil {
 			res, err := PrettyStruct((*listAssetsResponse.Payload).Result)
 			if err != nil {
-				log.Fatal(err)
+				log.Panic(err)
 			}
 			fmt.Println(res)
 		}
