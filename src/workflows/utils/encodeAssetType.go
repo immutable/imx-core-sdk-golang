@@ -31,12 +31,12 @@ func GetEncodedAssetTypeForEth(
 func GetEncodedAssetTypeForERC20(
 	ctx context.Context,
 	api *client.ImmutableXAPI,
-	tokenId, tokenAddress string,
+	tokenID, tokenAddress string,
 ) (*big.Int, error) {
 	encodeAssetRequestToken := &models.EncodeAssetRequestToken{
 		Data: &models.EncodeAssetTokenData{
 			TokenAddress: tokenAddress,
-			TokenID:      tokenId,
+			TokenID:      tokenID,
 		},
 		Type: string(types.ERC20Type),
 	}
@@ -47,12 +47,12 @@ func GetEncodedAssetTypeForERC20(
 func GetEncodedAssetTypeForERC721(
 	ctx context.Context,
 	api *client.ImmutableXAPI,
-	tokenId, tokenAddress string,
+	tokenID, tokenAddress string,
 ) (*big.Int, error) {
 	encodeAssetRequestToken := &models.EncodeAssetRequestToken{
 		Data: &models.EncodeAssetTokenData{
 			TokenAddress: tokenAddress,
-			TokenID:      tokenId,
+			TokenID:      tokenID,
 		},
 		Type: string(types.ERC721Type),
 	}
@@ -63,11 +63,11 @@ func GetEncodedAssetTypeForERC721(
 func GetEncodedMintableAssetTypeForERC721(
 	ctx context.Context,
 	api *client.ImmutableXAPI,
-	tokenId, tokenAddress, blueprint string,
+	tokenID, tokenAddress, blueprint string,
 ) (*big.Int, error) {
 	encodeAssetRequestToken := &models.EncodeAssetRequestToken{
 		Data: &models.EncodeAssetTokenData{
-			ID:           tokenId,
+			ID:           tokenID,
 			TokenAddress: tokenAddress,
 			Blueprint:    blueprint,
 		},
@@ -95,7 +95,7 @@ func GetEncodedAssetType(
 
 	encodedAssetType, ok := new(big.Int).SetString(*encodedAsset.GetPayload().AssetType, 10)
 	if !ok {
-		return nil, fmt.Errorf("error converting encoded asset type to bigint: %v\n", *encodedAsset.GetPayload().AssetType)
+		return nil, fmt.Errorf("error converting encoded asset type to bigint: %v", *encodedAsset.GetPayload().AssetType)
 	}
 	return encodedAssetType, nil
 }

@@ -11,7 +11,6 @@ import (
 )
 
 func Demo_CompleteWithdrawalWorkflow(ctx context.Context, ethClient *ethereum.Client, api *client.ImmutableXAPI, l1signer signers.L1Signer, l2signer signers.L2Signer) {
-
 	log.Println("-------------------------------------------------------")
 	log.Println("Running Demo_CompleteWithdrawalWorkflow")
 

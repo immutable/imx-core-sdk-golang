@@ -2,8 +2,9 @@ package utils
 
 import (
 	"crypto/ecdsa"
-	"github.com/ethereum/go-ethereum/accounts"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/accounts"
 
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -14,11 +15,11 @@ import (
 // BaseL1Signer is an L1Signer implementation to assist for demo code.
 type BaseL1Signer struct {
 	privateKey *ecdsa.PrivateKey
-	chainId    *big.Int
+	chainID    *big.Int
 }
 
-// NewBaseL1Signer creates a new BaseL1Signer object with the given user's privateKey and chainId.
-func NewBaseL1Signer(privateKeyInHex string, chainId *big.Int) (signers.L1Signer, error) {
+// NewBaseL1Signer creates a new BaseL1Signer object with the given user's privateKey and chainID.
+func NewBaseL1Signer(privateKeyInHex string, chainID *big.Int) (signers.L1Signer, error) {
 	privateKey, err := coreutils.TrimHexPrefix(privateKeyInHex)
 	if err != nil {
 		return nil, err
@@ -27,7 +28,7 @@ func NewBaseL1Signer(privateKeyInHex string, chainId *big.Int) (signers.L1Signer
 	if err != nil {
 		return nil, err
 	}
-	return &BaseL1Signer{privateKey: privateKeyInEcdsa, chainId: chainId}, nil
+	return &BaseL1Signer{privateKey: privateKeyInEcdsa, chainID: chainID}, nil
 }
 
 // GetAddress gets the address which is the public key associated with this signer.
@@ -44,6 +45,6 @@ func (b *BaseL1Signer) SignMessage(message string) ([]byte, error) {
 
 // SignTx signs the given transaction using this signer and private key. Returns the signed transaction.
 func (b *BaseL1Signer) SignTx(tx *types.Transaction) (*types.Transaction, error) {
-	signer := types.LatestSignerForChainID(b.chainId)
+	signer := types.LatestSignerForChainID(b.chainID)
 	return types.SignTx(tx, signer, b.privateKey)
 }

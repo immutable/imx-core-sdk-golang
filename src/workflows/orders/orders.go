@@ -16,8 +16,8 @@ func CreateOrder(ctx context.Context,
 	api *client.ImmutableXAPI,
 	l1signer signers.L1Signer,
 	l2signer signers.L2Signer,
-	request models.GetSignableOrderRequest) (*models.CreateOrderResponse, error) {
-
+	request models.GetSignableOrderRequest,
+) (*models.CreateOrderResponse, error) {
 	ethAddress := l1signer.GetAddress()
 
 	request.User = &ethAddress
@@ -36,7 +36,8 @@ func CreateOrder(ctx context.Context,
 
 	createOrderParams := orders.NewCreateOrderParamsWithContext(ctx)
 	createOrderParams.SetCreateOrderRequest(&models.CreateOrderRequest{
-		AmountBuy:           signableOrder.AmountBuy,   // Unquantized amount (listing price). For more info in quantum, see https://docs.starkware.co/starkex-v4/starkex-deep-dive/starkex-specific-concepts
+		AmountBuy: signableOrder.AmountBuy, // Unquantized amount (listing price).
+		// For more info in quantum, see https://docs.starkware.co/starkex-v4/starkex-deep-dive/starkex-specific-concepts
 		AmountSell:          signableOrder.AmountSell,  // Quantity to list for sale
 		AssetIDBuy:          signableOrder.AssetIDBuy,  // Token with which this asset can be bought with. For example Eth token can be used to buy this asset.
 		AssetIDSell:         signableOrder.AssetIDSell, // Token of the asset being listed for sale. For example, ERC720 is a NFT Token and ERC20 is a fungible token.
@@ -63,8 +64,8 @@ func CancelOrder(ctx context.Context,
 	api *client.ImmutableXAPI,
 	l1signer signers.L1Signer,
 	l2signer signers.L2Signer,
-	request models.GetSignableCancelOrderRequest) (*models.CancelOrderResponse, error) {
-
+	request models.GetSignableCancelOrderRequest,
+) (*models.CancelOrderResponse, error) {
 	getSignableCancelOrderParams := orders.NewGetSignableCancelOrderParamsWithContext(ctx)
 
 	getSignableCancelOrderParams.SetGetSignableCancelOrderRequest(&request)

@@ -36,10 +36,10 @@ func Burn(
 	return transfersWorkflow.CreateTransfer(ctx, api, l1signer, l2signer, transferRequest)
 }
 
-// GetBurn returns the status of the transfer given the transferId.
-func GetBurn(ctx context.Context, api *client.ImmutableXAPI, transferId string) (*models.Transfer, error) {
+// GetBurn returns the status of the transfer given the transferID.
+func GetBurn(ctx context.Context, api *client.ImmutableXAPI, transferID string) (*models.Transfer, error) {
 	params := transfers.NewGetTransferParamsWithContext(ctx)
-	params.SetID(transferId)
+	params.SetID(transferID)
 	response, err := api.Transfers.GetTransfer(params)
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `Transfers.GetTransfer`: %v", err)

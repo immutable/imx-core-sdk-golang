@@ -11,7 +11,6 @@ import (
 )
 
 func Demo_DepositWorkflow(ctx context.Context, ethClient *ethereum.Client, apis *client.ImmutableXAPI, l1signer signers.L1Signer) {
-
 	log.Println("-------------------------------------------------------")
 	log.Println("Running Demo_DepositWorkflow")
 

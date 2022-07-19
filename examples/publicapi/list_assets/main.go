@@ -20,9 +20,9 @@ func PrettyStruct(data interface{}) (string, error) {
 
 func main() {
 
-	apiUrl := config.GetApiUrl(config.Dev)
+	apiUrl := config.GetAPIURL(config.Dev)
 
-	httpClient := client.NewHTTPClientWithConfig(nil, config.NewTransportConfig(apiUrl))
+	httpClient := client.NewHTTPClientWithConfig(nil, config.NewTransportConfig(&apiUrl))
 	listAssetParams := assets.NewListAssetsParams()
 
 	// Add optional custom header parameters if required.

@@ -15,21 +15,20 @@ import (
 
 const (
 	tokenAddress = "" // Provide your token address here, which is also contract address.
-	tokenId      = "" // Provide the token id being listed for sale.
+	tokenID      = "" // Provide the token id being listed for sale.
 )
 
 func Demo_OrdersWorkflow(ctx context.Context, apiClient *client.ImmutableXAPI, l1signer signers.L1Signer, l2signer signers.L2Signer) {
-
 	log.Println("-------------------------------------------------------")
 	fnName := utils.GetCurrentFunctionName()
 	log.Println("Running ", fnName)
 
 	// Unquantized amount (listing price). See https://immutable.atlassian.net/wiki/spaces/PPS/pages/1895629681/Quantisation+Cheat+Sheet
-	amountInt, err := converters.ParseEtherToWei("0.3")
+	amountInt, _ := converters.ParseEtherToWei("0.3")
 	amountBuy := amountInt.String()
 	amountSell := "1"                                                    // Quantity to list for sale
 	ethAddress := l1signer.GetAddress()                                  // Address of the user listing for sale.
-	sellToken := coreUtils.NewSignableTokenERC721(tokenId, tokenAddress) // NFT Token
+	sellToken := coreUtils.NewSignableTokenERC721(tokenID, tokenAddress) // NFT Token
 	buyToken := coreUtils.NewSignableTokenEth()                          // The listed asset can be bought with Ethereum
 	createOrderRequest := models.GetSignableOrderRequest{
 		AmountBuy:           &amountBuy,

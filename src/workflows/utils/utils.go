@@ -30,10 +30,10 @@ func NewSignableTokenERC20(decimals, tokenAddress string) *models.SignableToken 
 
 // NewSignableTokenERC721 returns a new ERC721 type token.
 // https://docs.x.immutable.com/docs/token-data-object#type-erc721
-func NewSignableTokenERC721(tokenId, tokenAddress string) *models.SignableToken {
+func NewSignableTokenERC721(tokenID, tokenAddress string) *models.SignableToken {
 	return &models.SignableToken{
 		Data: map[string]interface{}{
-			"token_id":      tokenId,
+			"token_id":      tokenID,
 			"token_address": tokenAddress,
 		},
 		Type: string(types.ERC721Type),

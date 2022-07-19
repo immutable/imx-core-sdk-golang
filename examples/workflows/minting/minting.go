@@ -15,9 +15,8 @@ var (
 )
 
 func Demo_MintingTokens(ctx context.Context, api *client.ImmutableXAPI, l1signer signers.L1Signer) {
-
 	ethAddress := l1signer.GetAddress()
-	tokenId := "5"
+	tokenID := "5"
 	blueprint := "123"
 	var royaltyPercentage float64 = 1
 	var mintableToken = minting.UnsignedMintRequest{
@@ -33,7 +32,7 @@ func Demo_MintingTokens(ctx context.Context, api *client.ImmutableXAPI, l1signer
 				User: &ethAddress,
 				Tokens: []*minting.MintableTokenData{
 					{
-						ID: &tokenId,
+						ID: &tokenID,
 						Royalties: []*minting.MintFee{
 							{
 								Percentage: &royaltyPercentage,

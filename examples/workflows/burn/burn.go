@@ -14,7 +14,6 @@ import (
 )
 
 func Demo_BurnWorkflow(ctx context.Context, api *client.ImmutableXAPI, l1signer signers.L1Signer, l2signer signers.L2Signer) {
-
 	log.Println("-------------------------------------------------------")
 	log.Println("Running Demo_BurnWorkflow")
 
@@ -32,8 +31,8 @@ func Demo_BurnWorkflow(ctx context.Context, api *client.ImmutableXAPI, l1signer 
 	val, _ := json.MarshalIndent(burnResponse, "", "  ")
 	log.Printf("Burn response:\n%s\n", val)
 
-	transferId := strconv.FormatInt(*burnResponse.TransferID, 10) // GetBurn method requires transferId as a string
-	transfer, err := burnWorkflow.GetBurn(ctx, api, transferId)
+	transferID := strconv.FormatInt(*burnResponse.TransferID, 10) // GetBurn method requires transferID as a string
+	transfer, err := burnWorkflow.GetBurn(ctx, api, transferID)
 	if err != nil {
 		log.Fatalf("error calling GetBurn workflow: %v", err)
 	}

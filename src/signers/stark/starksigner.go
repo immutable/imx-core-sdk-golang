@@ -35,7 +35,7 @@ func (base *StarkSigner) SignMessage(message string) (string, error) {
 	return serializeSignature(r, s), nil
 }
 
-func (base *StarkSigner) VerifySignature(hash *big.Int, signature string, requiredSigner string) error {
+func (base *StarkSigner) VerifySignature(hash *big.Int, signature, requiredSigner string) error {
 	// All signatures must be 130 characters hex encoded 0x + 64 bytes with 2 characters each
 	requiredSigLength := len("0x") + 64*2
 	if len(signature) != requiredSigLength {
@@ -65,12 +65,12 @@ func (base *StarkSigner) GetAddress() string {
 	return fmt.Sprintf("0x%064x", base.publicKey)
 }
 
-func rsFromSig(signature string) (*big.Int, *big.Int) {
+func rsFromSig(signature string) (r, s *big.Int) {
 	sig := signature[2:]
 	size := 64
-	r := new(big.Int)
+	r = new(big.Int)
 	r.SetString(sig[0:size], 16)
-	s := new(big.Int)
+	s = new(big.Int)
 	s.SetString(sig[size:size*2], 16)
 	return r, s
 }

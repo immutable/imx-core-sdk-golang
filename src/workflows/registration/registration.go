@@ -16,10 +16,16 @@ import (
 )
 
 // RegisterOffchain performs user registration off chain.
-func RegisterOffchain(ctx context.Context, api *client.ImmutableXAPI, l1signer signers.L1Signer, l2signer signers.L2Signer, userEmail string) (*models.RegisterUserResponse, error) {
+func RegisterOffchain(
+	ctx context.Context,
+	api *client.ImmutableXAPI,
+	l1signer signers.L1Signer,
+	l2signer signers.L2Signer,
+	userEmail string,
+) (*models.RegisterUserResponse, error) {
 	if userEmail != "" {
 		if !isValidEmail(userEmail) {
-			return nil, fmt.Errorf("given userEmail is invalid: %v\n", userEmail)
+			return nil, fmt.Errorf("given userEmail is invalid: %v", userEmail)
 		}
 	}
 
@@ -34,7 +40,7 @@ func RegisterOffchain(ctx context.Context, api *client.ImmutableXAPI, l1signer s
 
 	signableRegistrationOffchain, err := api.Users.GetSignableRegistrationOffchain(signableRegistrationOffchainParams)
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `api.Users.GetSignableRegistrationOffchain`: %v\n", err)
+		return nil, fmt.Errorf("error when calling `api.Users.GetSignableRegistrationOffchain`: %v", err)
 	}
 
 	payload := signableRegistrationOffchain.GetPayload()
@@ -56,28 +62,28 @@ func RegisterOffchain(ctx context.Context, api *client.ImmutableXAPI, l1signer s
 func IsRegisteredOffChain(ctx context.Context, api *client.ImmutableXAPI, publicAddress string) ([]string, error) {
 	getUserParams := users.NewGetUsersParamsWithContext(ctx)
 	getUserParams.SetUser(publicAddress)
-	users, err := api.Users.GetUsers(getUserParams)
+	user, err := api.Users.GetUsers(getUserParams)
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `api.Users.GetUsers: %v", err)
 	}
-	return users.GetPayload().Accounts, nil
+	return user.GetPayload().Accounts, nil
 }
 
 func IsRegisteredOnChain(ctx context.Context, contract *contracts.Registration, starkPublicKey string) (*bool, error) {
 	starkKey, err := utils.HexToInt(starkPublicKey)
 	if err != nil {
-		return nil, fmt.Errorf("error converting StarkKey to bigint: %v\n", starkPublicKey)
+		return nil, fmt.Errorf("error converting StarkKey to bigint: %v", starkPublicKey)
 	}
 
 	isRegistered, err := contract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	if err != nil {
 		isRegistered = false
-		return &isRegistered, fmt.Errorf("error: %v\n", err)
+		return &isRegistered, fmt.Errorf("error: %v", err)
 	}
 	return &isRegistered, nil
 }
 
-func GetSignableRegistrationOnchain(ctx context.Context, api *client.ImmutableXAPI, etherKey string, starkKey string) (*models.GetSignableRegistrationResponse, error) {
+func GetSignableRegistrationOnchain(ctx context.Context, api *client.ImmutableXAPI, etherKey, starkKey string) (*models.GetSignableRegistrationResponse, error) {
 	signableRegistrationParams := users.NewGetSignableRegistrationParamsWithContext(ctx)
 
 	signableRegistrationParams.SetGetSignableRegistrationRequest(&models.GetSignableRegistrationRequest{
@@ -87,7 +93,7 @@ func GetSignableRegistrationOnchain(ctx context.Context, api *client.ImmutableXA
 
 	signableRegistration, err := api.Users.GetSignableRegistration(signableRegistrationParams)
 	if err != nil {
-		return nil, fmt.Errorf("Error when calling `api.Users.GetSignableRegistration`: %v\n", err)
+		return nil, fmt.Errorf("error when calling `api.Users.GetSignableRegistration`: %v", err)
 	}
 	return signableRegistration.GetPayload(), nil
 }
@@ -97,7 +103,7 @@ func isValidEmail(email string) bool {
 	return err == nil
 }
 
-func registerUser(ctx context.Context, api *client.ImmutableXAPI, etherKey string, etherSignature string, starkKey string, starkSignature string, userEmail string) (*models.RegisterUserResponse, error) {
+func registerUser(ctx context.Context, api *client.ImmutableXAPI, etherKey, etherSignature, starkKey, starkSignature, userEmail string) (*models.RegisterUserResponse, error) {
 	registerUserParams := users.NewRegisterUserParamsWithContext(ctx)
 	registerUserParams.SetRegisterUserRequest(&models.RegisterUserRequest{
 		Email:          userEmail,
@@ -109,7 +115,7 @@ func registerUser(ctx context.Context, api *client.ImmutableXAPI, etherKey strin
 
 	registerUserResponse, err := api.Users.RegisterUser(registerUserParams)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to RegisterUser, error: %v\n", err)
+		return nil, fmt.Errorf("failed to RegisterUser, error: %v", err)
 	}
 	return registerUserResponse.GetPayload(), nil
 }

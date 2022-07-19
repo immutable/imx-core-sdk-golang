@@ -250,7 +250,7 @@ func (e *Client) IsValidContract(ctx context.Context, address string) error {
 	if err != nil {
 		return ContractValidationError{EthClientError}
 	}
-	if len(bytecode) <= 0 {
+	if len(bytecode) == 0 {
 		return ContractValidationError{ContractInvalidError}
 	}
 	return nil
