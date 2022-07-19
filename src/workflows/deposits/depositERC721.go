@@ -18,8 +18,8 @@ import (
 	helpers "immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
-// Execute performs the deposit workflow on the ERC721Deposit.
-func (d *ERC721Deposit) Execute(ctx context.Context, ethClient *ethereum.Client, api *client.ImmutableXAPI, l1signer signers.L1Signer) (*eth.Transaction, error) {
+// Deposit performs the deposit workflow on the ERC721Deposit.
+func (d *ERC721Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client, api *client.ImmutableXAPI, l1signer signers.L1Signer) (*eth.Transaction, error) {
 	if d.Type != types.ERC721Type {
 		return nil, errors.New("invalid token type")
 	}
