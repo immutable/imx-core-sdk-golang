@@ -51,12 +51,12 @@ func Demo_MintingTokens(ctx context.Context, api *client.ImmutableXAPI, l1signer
 
 	mintTokensResponse, err := minting.MintTokensWorkflow(ctx, api, l1signer, request)
 	if err != nil {
-		log.Fatalf("error in minting.MintTokensWorkflow: %v", err)
+		log.Panicf("error in minting.MintTokensWorkflow: %v", err)
 	}
 
 	mintTokensResponseStr, err := utils.PrettyStruct(mintTokensResponse)
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
 	log.Printf("Mint Tokens response:\n%v\n", mintTokensResponseStr)
 }

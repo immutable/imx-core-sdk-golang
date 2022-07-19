@@ -45,7 +45,7 @@ func Demo_BatchTransferWorkflow(ctx context.Context, api *client.ImmutableXAPI, 
 
 	response, err := transfersWorkflow.CreateBatchTransfer(ctx, api, l1signer, l2signer, batchTransferRequest)
 	if err != nil {
-		log.Fatalf("error calling batch transfer workflow: %v", err)
+		log.Panicf("error calling batch transfer workflow: %v", err)
 	}
 	val, _ := json.MarshalIndent(response, "", "  ")
 	log.Printf("response:\n%s\n", val)

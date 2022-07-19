@@ -23,7 +23,7 @@ func Demo_TradesWorkflow(ctx context.Context, api *client.ImmutableXAPI, l1signe
 	tradeResponse, err := tradesWorkflow.CreateTrade(ctx, api, l1signer, l2signer, tradeRequest)
 
 	if err != nil {
-		log.Fatalf("error calling trades workflow: %v", err)
+		log.Panicf("error calling trades workflow: %v", err)
 	}
 
 	val, _ := json.MarshalIndent(tradeResponse, "", "  ")
