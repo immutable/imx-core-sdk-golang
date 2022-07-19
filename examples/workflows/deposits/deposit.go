@@ -33,7 +33,7 @@ func Demo_DepositWorkflow(ctx context.Context, ethClient *ethereum.Client, apis 
 	*/
 
 	if err != nil {
-		log.Fatalf("error calling deposit workflow: %v", err)
+		log.Panicf("error calling deposit workflow: %v", err)
 	}
 
 	log.Println("transaction hash:", transaction.Hash())

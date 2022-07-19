@@ -31,7 +31,7 @@ func Demo_TransferWorkflow(ctx context.Context, api *client.ImmutableXAPI, l1sig
 
 	response, err := transfersWorkflow.CreateTransfer(ctx, api, l1signer, l2signer, transferRequest)
 	if err != nil {
-		log.Fatalf("error calling transfer workflow: %v", err)
+		log.Panicf("error calling transfer workflow: %v", err)
 	}
 	val, _ := json.MarshalIndent(response, "", "  ")
 	log.Printf("response:\n%s\n", val)

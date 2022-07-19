@@ -34,7 +34,7 @@ func Demo_CompleteWithdrawalWorkflow(ctx context.Context, ethClient *ethereum.Cl
 	*/
 
 	if err != nil {
-		log.Fatalf("error calling complete withdrawal workflow: %v", err)
+		log.Panicf("error calling complete withdrawal workflow: %v", err)
 	}
 	log.Println("transaction hash:", transaction.Hash())
 

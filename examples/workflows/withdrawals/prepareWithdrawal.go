@@ -39,7 +39,7 @@ func Demo_PrepareWithdrawalWorkflow(ctx context.Context, api *client.ImmutableXA
 
 	response, err := withdrawalsWorkflow.PrepareWithdrawal(ctx, api, l1signer, l2signer, withdrawalRequest)
 	if err != nil {
-		log.Fatalf("error calling prepare withdrawal workflow: %v", err)
+		log.Panicf("error calling prepare withdrawal workflow: %v", err)
 	}
 	val, _ := json.MarshalIndent(response, "", "  ")
 	log.Printf("response:\n%s\n", val)

@@ -43,12 +43,12 @@ func Demo_OrdersWorkflow(ctx context.Context, apiClient *client.ImmutableXAPI, l
 	// Create order will list the given asset for sale.
 	createOrderResponse, err := ordersWorkflow.CreateOrder(ctx, apiClient, l1signer, l2signer, createOrderRequest)
 	if err != nil {
-		log.Fatalf("error calling CreateOrder workflow: %v", err)
+		log.Panicf("error calling CreateOrder workflow: %v", err)
 	}
 
 	createOrderResponseStr, err := utils.PrettyStruct(createOrderResponse)
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
 	log.Printf("CreateOrder response:\n%v\n", createOrderResponseStr)
 
@@ -59,12 +59,12 @@ func Demo_OrdersWorkflow(ctx context.Context, apiClient *client.ImmutableXAPI, l
 	// Cancel Order removes the listed asset from sale. Let's remove the above listed asset from sale.
 	cancelOrderResponse, err := ordersWorkflow.CancelOrder(ctx, apiClient, l1signer, l2signer, cancelOrderRequest)
 	if err != nil {
-		log.Fatalf("error calling CreateOrder workflow: %v", err)
+		log.Panicf("error calling CreateOrder workflow: %v", err)
 	}
 
 	cancelOrderResponseStr, err := utils.PrettyStruct(cancelOrderResponse)
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
 	log.Printf("CancelOrder response:\n%v\n", cancelOrderResponseStr)
 
