@@ -15,7 +15,7 @@ func Demo_DepositWorkflow(ctx context.Context, ethClient *ethereum.Client, apis 
 	log.Println("Running Demo_DepositWorkflow")
 
 	depositRequest := deposits.NewETHDeposit("0.03")
-	transaction, err := depositRequest.Execute(ctx, ethClient, apis, l1signer)
+	transaction, err := depositRequest.Deposit(ctx, ethClient, apis, l1signer)
 
 	/*
 		// Uncomment for ERC20
@@ -23,13 +23,13 @@ func Demo_DepositWorkflow(ctx context.Context, ethClient *ethereum.Client, apis 
 		tokenAddress := "Token address here"
 		symbol := "Token symbol"
 		depositERC20Request := deposits.NewERC20Deposit(amount, tokenAddress, symbol)
-		transaction, err := depositERC20Request.Execute(ctx, ethClient, apis, l1signer)
+		transaction, err := depositERC20Request.Deposit(ctx, ethClient, apis, l1signer)
 	*/
 
 	/*
 		// Uncomment for ERC721
 		depositERC721Request := deposits.NewERC721Deposit("7", "0x0fB969a08c7C39BA99c1628b59c0B7E5611BD396")
-		transaction, err := depositERC721Request.Execute(ctx, ethClient, apis, l1signer)
+		transaction, err := depositERC721Request.Deposit(ctx, ethClient, apis, l1signer)
 	*/
 
 	if err != nil {

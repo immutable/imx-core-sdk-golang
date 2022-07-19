@@ -20,8 +20,8 @@ import (
 	helpers "immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
-// Execute performs the deposit workflow on the ERC20Deposit.
-func (d *ERC20Deposit) Execute(ctx context.Context, ethClient *ethereum.Client, api *client.ImmutableXAPI, l1signer signers.L1Signer) (*eth.Transaction, error) {
+// Deposit performs the deposit workflow on the ERC20Deposit.
+func (d *ERC20Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client, api *client.ImmutableXAPI, l1signer signers.L1Signer) (*eth.Transaction, error) {
 	if d.Type != types.ERC20Type {
 		return nil, errors.New("invalid token type")
 	}

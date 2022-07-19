@@ -11,7 +11,7 @@ import (
 )
 
 type TokenDeposit interface {
-	Execute(ctx context.Context, ethClient *ethereum.Client, apis *client.ImmutableXAPI, l1signer signers.L1Signer) (*eth.Transaction, error)
+	Deposit(ctx context.Context, ethClient *ethereum.Client, apis *client.ImmutableXAPI, l1signer signers.L1Signer) (*eth.Transaction, error)
 }
 
 type ETHDeposit struct {

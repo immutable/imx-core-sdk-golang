@@ -18,8 +18,8 @@ import (
 	helpers "immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
-// Execute performs the deposit workflow on the ETHDeposit.
-func (d *ETHDeposit) Execute(ctx context.Context, ethClient *ethereum.Client, api *client.ImmutableXAPI, l1signer signers.L1Signer) (*eth.Transaction, error) {
+// Deposit performs the deposit workflow on the ETHDeposit.
+func (d *ETHDeposit) Deposit(ctx context.Context, ethClient *ethereum.Client, api *client.ImmutableXAPI, l1signer signers.L1Signer) (*eth.Transaction, error) {
 	if d.Type != types.ETHType {
 		return nil, errors.New("invalid token type")
 	}
