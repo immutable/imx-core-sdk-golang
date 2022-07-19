@@ -30,23 +30,23 @@ func main() {
 	apiClient := factories.NewAPIClient(&cfg)
 	ethClient, err := factories.NewEthereumClient(context.Background(), &cfg, ethereum.DefaultGasParams)
 	if err != nil {
-		log.Fatalf("error dialing ethereum client: %v\n", err)
+		log.Panicf("error dialing ethereum client: %v\n", err)
 	}
 	defer ethClient.Client.Close()
 
 	chainID, err := ethClient.Client.ChainID(ctx)
 	if err != nil {
-		log.Fatalf("error obtaining chain id: %v\n", err)
+		log.Panicf("error obtaining chain id: %v\n", err)
 	}
 
 	l1signer, err := utils.NewBaseL1Signer(signerPrivateKey, chainID)
 	if err != nil {
-		log.Fatalf("error in creating BaseL1Signer: %v\n", err)
+		log.Panicf("error in creating BaseL1Signer: %v\n", err)
 	}
 
 	l2signer, err := stark.GenerateStarkSigner(l1signer)
 	if err != nil {
-		log.Fatalf("error in creating StarkSigner: %v\n", err)
+		log.Panicf("error in creating StarkSigner: %v\n", err)
 	}
 
 	onboarding.Demo_UserRegistrationWorkflow(ctx, apiClient, l1signer)
