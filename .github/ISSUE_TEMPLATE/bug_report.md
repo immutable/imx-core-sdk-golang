@@ -1,4 +1,9 @@
-Issue tracker is **ONLY** used for reporting bugs.
+Bug Report **ONLY** used for reporting bugs.
+
+| Name         | About                              | Title | Labels | Assignees |
+|--------------|------------------------------------|-------|--------|-----------|
+| Bug report 🐞| Create a report to help us improve | ''    | bug    | ''        |
+
 
 <!--- Provide a general summary of the issue in the Title above -->
 
