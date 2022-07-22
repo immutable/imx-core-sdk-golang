@@ -3,15 +3,17 @@ package stark
 import (
 	"crypto/sha256"
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"math/big"
 	"path"
+	"path/filepath"
+	"runtime"
 
 	"github.com/aarbt/hdkeys"
 	"github.com/dontpanicdao/caigo"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"immutable.com/imx-core-sdk-golang/signers"
-	"immutable.com/imx-core-sdk-golang/utils"
 )
 
 const (
@@ -35,7 +37,7 @@ func GenerateStarkSigner(signer signers.L1Signer) (*StarkSigner, error) {
 	childPrivateKey := childKey.Serialize()[46:]
 	privateStarkKey := grind(new(big.Int).SetBytes(childPrivateKey))
 
-	dir, err := utils.CurrentDirname()
+	dir, err := currentDirname()
 	if err != nil {
 		return nil, err
 	}
@@ -94,4 +96,13 @@ func generateStarkPath(layer, application, eth []byte, index string) string {
 	d := (binary.BigEndian.Uint64(eth[12:]) & ((1<<31 - 1) << 31)) >> 31
 
 	return fmt.Sprintf("m/2645'/%d'/%d'/%d'/%d'/%s", a, b, c, d, index)
+}
+
+// currentDirname gets the full directory path of the caller of this function.
+func currentDirname() (string, error) {
+	_, filename, _, ok := runtime.Caller(1) // Caller 1 will get this function callers path.
+	if !ok {
+		return "", errors.New("unable to get the current filename")
+	}
+	return filepath.Dir(filename), nil
 }
