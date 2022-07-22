@@ -2,7 +2,6 @@ package withdrawals
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"math/big"
 
@@ -16,7 +15,6 @@ import (
 	"immutable.com/imx-core-sdk-golang/utils"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
 	"immutable.com/imx-core-sdk-golang/workflows/registration"
-	"immutable.com/imx-core-sdk-golang/workflows/types"
 	helpers "immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
@@ -28,10 +26,6 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 	l1signer signers.L1Signer,
 	starkKeyHex string,
 ) (*eth.Transaction, error) {
-	if w.Type != types.ERC721Type {
-		return nil, errors.New("invalid token type")
-	}
-
 	getMintableTokenParams := mints.NewGetMintableTokenDetailsByClientTokenIDParamsWithContext(ctx)
 	getMintableTokenParams.SetTokenID(w.TokenID)
 	getMintableTokenParams.SetTokenAddress(w.TokenAddress)

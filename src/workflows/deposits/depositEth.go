@@ -2,7 +2,6 @@ package deposits
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"math/big"
 
@@ -14,16 +13,11 @@ import (
 	"immutable.com/imx-core-sdk-golang/utils"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
 	"immutable.com/imx-core-sdk-golang/workflows/registration"
-	"immutable.com/imx-core-sdk-golang/workflows/types"
 	helpers "immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
 // Deposit performs the deposit workflow on the ETHDeposit.
 func (d *ETHDeposit) Deposit(ctx context.Context, ethClient *ethereum.Client, api *client.ImmutableXAPI, l1signer signers.L1Signer) (*eth.Transaction, error) {
-	if d.Type != types.ETHType {
-		return nil, errors.New("invalid token type")
-	}
-
 	amount, err := utils.ParseEtherToWei(d.Amount)
 	if err != nil {
 		return nil, fmt.Errorf("error when parsing deposit amount: %v", err)

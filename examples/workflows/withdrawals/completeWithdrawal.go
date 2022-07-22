@@ -14,8 +14,7 @@ func Demo_CompleteWithdrawalWorkflow(ctx context.Context, ethClient *ethereum.Cl
 	log.Println("-------------------------------------------------------")
 	log.Println("Running Demo_CompleteWithdrawalWorkflow")
 
-	ethWithdrawal := withdrawalsWorkflow.NewETHWithdrawal()
-	transaction, err := ethWithdrawal.CompleteWithdrawal(ctx, ethClient, api, l1signer, l2signer.GetAddress())
+	transaction, err := withdrawalsWorkflow.CompleteEthWithdrawal(ctx, ethClient, api, l1signer, l2signer.GetAddress())
 
 	/*
 		// Uncomment for ERC20
