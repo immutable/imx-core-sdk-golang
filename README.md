@@ -32,7 +32,14 @@ go get immutable.com/imx-core-sdk-golang
 
 ### Configuration
 
-A configuration object is required to be passed into Core SDK requests. This can be obtained by using the `GetConfig` function available within the Core SDK. You are required to select the Ethereum network. The Immutable X platform currently supports `ropsten` for testing and `mainnet` for production.
+A configuration object is required to setup the environment for which the Core SDK requests are made. This can be obtained by using the `GetConfig` function available within the `config` package of Core SDK. 
+
+Select one of the following Ethereum networks Immutable X platform currently supports.
+
+| Ethereum Network | Description  |  
+|------------------|--------------|
+| Ropsten          | Test Network |
+| Mainnet          | Production   | 
 
 ```golang
 import "immutable.com/imx-core-sdk-golang/config"
