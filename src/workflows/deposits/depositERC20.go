@@ -2,7 +2,6 @@ package deposits
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"math/big"
 	"strconv"
@@ -16,16 +15,11 @@ import (
 	"immutable.com/imx-core-sdk-golang/utils"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
 	"immutable.com/imx-core-sdk-golang/workflows/registration"
-	"immutable.com/imx-core-sdk-golang/workflows/types"
 	helpers "immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
 // Deposit performs the deposit workflow on the ERC20Deposit.
 func (d *ERC20Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client, api *client.ImmutableXAPI, l1signer signers.L1Signer) (*eth.Transaction, error) {
-	if d.Type != types.ERC20Type {
-		return nil, errors.New("invalid token type")
-	}
-
 	// Get decimals for this specific ERC20
 	getTokenParams := tokens.NewGetTokenParamsWithContext(ctx)
 	getTokenParams.SetAddress(d.TokenAddress)

@@ -2,7 +2,6 @@ package withdrawals
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"math/big"
 
@@ -14,22 +13,17 @@ import (
 	"immutable.com/imx-core-sdk-golang/utils"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
 	"immutable.com/imx-core-sdk-golang/workflows/registration"
-	"immutable.com/imx-core-sdk-golang/workflows/types"
 	helpers "immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
-// CompleteWithdrawal performs the complete withdrawal workflow on ETHWithdrawal
-func (w *ETHWithdrawal) CompleteWithdrawal(
+// CompleteEthWithdrawal performs the complete withdrawal workflow for ETH
+func CompleteEthWithdrawal(
 	ctx context.Context,
 	ethClient *ethereum.Client,
 	api *client.ImmutableXAPI,
 	l1signer signers.L1Signer,
 	starkKeyHex string,
 ) (*eth.Transaction, error) {
-	if w.Type != types.ETHType {
-		return nil, errors.New("invalid token type")
-	}
-
 	assetType, err := helpers.GetEncodedAssetTypeForEth(ctx, api)
 	if err != nil {
 		return nil, err
@@ -46,10 +40,6 @@ func (w *ERC20Withdrawal) CompleteWithdrawal(
 	l1signer signers.L1Signer,
 	starkKeyHex string,
 ) (*eth.Transaction, error) {
-	if w.Type != types.ERC20Type {
-		return nil, errors.New("invalid token type")
-	}
-
 	assetType, err := helpers.GetEncodedAssetTypeForERC20(ctx, api, w.TokenID, w.TokenAddress)
 	if err != nil {
 		return nil, err

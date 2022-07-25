@@ -21,8 +21,7 @@ func Demo_DepositWorkflow(ctx context.Context, ethClient *ethereum.Client, apis 
 		// Uncomment for ERC20
 		amount := "Amount to deposit"
 		tokenAddress := "Token address here"
-		symbol := "Token symbol"
-		depositERC20Request := deposits.NewERC20Deposit(amount, tokenAddress, symbol)
+		depositERC20Request := deposits.NewERC20Deposit(amount, tokenAddress)
 		transaction, err := depositERC20Request.Deposit(ctx, ethClient, apis, l1signer)
 	*/
 
