@@ -52,6 +52,13 @@ func main() {
 }
 ```
 
+#### L1 Signer
+
+The L1 signer is based on your ethereum wallet ([Getting started > Wallet](https://docs.x.immutable.com/docs/getting-started-guide/#wallet)).
+To use most workflow functions, you will need to implement an L1 signer using your ethereum wallet.
+Your implementation must satisfy [L1Signer interface](src/signers/signers.go).
+See [BaseL1Signer](examples/workflows/utils/signer.go) for a sample implementation of L1 Signer.
+
 #### L2 Signer
 
 Some methods require an L2 signer as a parameter. The Core SDK expects you will generate your own L2 signer.
