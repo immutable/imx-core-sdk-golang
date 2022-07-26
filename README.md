@@ -237,7 +237,8 @@ A workflow is a combination of API and contract calls required for more complica
    }
 ```
 
-The workflow can be found in the [workflows directory](src/workflows/).
+The workflows can be found in the [workflows directory](src/workflows/).
+Sample usages of workflows can be found in [examples](examples/workflows)
 
 ### Available Workflows
 
