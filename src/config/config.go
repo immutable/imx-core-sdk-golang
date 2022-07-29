@@ -24,13 +24,13 @@ const (
 func getBaseConfigs() map[Network]Config {
 	return map[Network]Config{
 		Dev: {
-			EthereumClientEndpoint: "https://eth-ropsten.alchemyapi.io/v2/",
+			EthereumClientEndpoint: "https://eth-goerli.g.alchemy.com/v2/",
 			CoreAPIEndpoint: url.URL{
 				Scheme: "https",
 				Host:   "api.dev.x.immutable.com",
 			},
-			RegistrationContractAddress: "0x7EB840223a3b1E0e8D54bF8A6cd83df5AFfC88B2",
-			StarkContractAddress:        "0xd05323731807A35599BF9798a1DE15e89d6D6eF1",
+			RegistrationContractAddress: "0x2F76E4e48A5f9e517765B70a4DEc67781d35A199",
+			StarkContractAddress:        "0x3e6e01355bB66925a65D372bf9c9f3835d9964fA",
 		},
 		Ropsten: {
 			EthereumClientEndpoint: "https://eth-ropsten.alchemyapi.io/v2/",
