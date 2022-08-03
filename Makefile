@@ -29,9 +29,14 @@ get-openapi-ropsten:
 generate-api:
 	rm -rf src/$(GENERATED_CODE_DIR) && \
     mkdir -p src/$(GENERATED_CODE_DIR) && \
-	SIGIL_DELIMS={{{,}}} gliderlabs-sigil -f ${GENERATOR_TEMPLATES_DIR}/parameter_template.gotmpl GOLANG_SDK_VERSION=${VERSION_STR} > ${GENERATOR_TEMPLATES_DIR}/template/client/parameter.gotmpl; \
-	cd src/$(GENERATED_CODE_DIR); go mod init immutable.com/imx-core-sdk-golang/api; \
-    swagger generate client -f $(CURRENT_DIR)/openapi.json -T $(CURRENT_DIR)/generator-templates/template && \
-	go mod tidy
+	SIGIL_DELIMS={{{{,}}}} gliderlabs-sigil -f ${GENERATOR_TEMPLATES_DIR}/api_template.mustache GOLANG_SDK_VERSION=${VERSION_STR} > ${GENERATOR_TEMPLATES_DIR}/templates/api.mustache; \
+	docker run --rm -v $(shell pwd):/app openapitools/openapi-generator-cli generate \
+		-i ./app/openapi.json \
+		-c ./app/go-client-config.yaml \
+		-t ./app/generator-templates/templates \
+		-o /app/src/generated/api
+
+	
+
 
 	

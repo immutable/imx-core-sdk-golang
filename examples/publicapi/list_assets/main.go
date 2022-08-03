@@ -1,13 +1,13 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 
-	"immutable.com/imx-core-sdk-golang/api/client"
-	"immutable.com/imx-core-sdk-golang/api/client/assets"
-	"immutable.com/imx-core-sdk-golang/config"
+	"immutable.com/imx-core-sdk-golang/api"
 )
 
 func PrettyStruct(data interface{}) (string, error) {
@@ -19,27 +19,24 @@ func PrettyStruct(data interface{}) (string, error) {
 }
 
 func main() {
-
-	apiUrl := config.GetAPIURL(config.Dev)
-
-	httpClient := client.NewHTTPClientWithConfig(nil, config.NewTransportConfig(&apiUrl))
-	listAssetParams := assets.NewListAssetsParams()
-
-	// Add optional custom header parameters if required.
-	listAssetParams.AddCustomHeader("client_id", "123")
-
-	listAssetsResponse, err := httpClient.Assets.ListAssets(listAssetParams)
+	configuration := api.NewConfiguration()
+	apiClient := api.NewAPIClient(configuration)
+	listAssetsResponse, r, err := apiClient.AssetsApi.ListAssets(context.Background()).Execute()
 	if err != nil {
-		log.Panic(err)
+		fmt.Fprintf(os.Stderr, "Error when calling `AssetsApi.ListAssets``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListAssets`: ListAssetsResponse
+	fmt.Fprintf(os.Stdout, "Response from `AssetsApi.ListAssets`: %v\n", listAssetsResponse)
 
 	if listAssetsResponse != nil {
-		if listAssetsResponse.Payload != nil {
-			res, err := PrettyStruct((*listAssetsResponse.Payload).Result)
+		if listAssetsResponse.Result != nil {
+			res, err := PrettyStruct(listAssetsResponse.Result)
 			if err != nil {
 				log.Panic(err)
 			}
 			fmt.Println(res)
 		}
 	}
+
 }

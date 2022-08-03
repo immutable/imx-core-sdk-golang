@@ -1,0 +1,11 @@
+generatorName: go
+inputSpec: openapi.json
+gitHost: immutable.com
+gitUserId: ""
+gitRepoId: imx-core-sdk-golang-openapi-generator
+enablePostProcessFile: true
+additionalProperties:
+  enumClassPrefix: "true"
+  packageName: api
+  generateInterfaces: true
+  isGoSubmodule: true
