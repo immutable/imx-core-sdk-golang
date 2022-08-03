@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"immutable.com/imx-core-sdk-golang/api"
+	"immutable.com/imx-core-sdk-golang/config"
 )
 
 func PrettyStruct(data interface{}) (string, error) {
@@ -19,10 +20,14 @@ func PrettyStruct(data interface{}) (string, error) {
 }
 
 func main() {
+
 	configuration := api.NewConfiguration()
 	configuration.Debug = true // Enables debug logging.
 	apiClient := api.NewAPIClient(configuration)
-	listAssetsResponse, r, err := apiClient.AssetsApi.ListAssets(context.Background()).Execute()
+
+	// Using context value to switch/specify the server before sending request. If nothig is specified default server will be used which will be first one in the open api spec list.
+	ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Ropsten)
+	listAssetsResponse, r, err := apiClient.AssetsApi.ListAssets(ctx).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `AssetsApi.ListAssets``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
