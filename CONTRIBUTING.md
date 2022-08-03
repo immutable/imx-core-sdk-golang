@@ -9,9 +9,8 @@ First of all, thanks for being here! We greatly appreciate all community feedbac
 ## Contribution guidelines
 ### Coding conventions
 The code should:
-* Have meaningful variable names.
+* Follow these [Golang guidelines](./GOLANG_GUIDELINES.md)
 * Have no lint issues.
-* Have meaningful slugs, file names, directory names and directory structure.
 * Be easy to fix, refactor and scale.
 
 Do you want to contribute to Immutable X documentation?
@@ -46,50 +45,15 @@ suggestion: Description # if you want to suggest a better way to implement a fea
 
 ## Send a pull request with changes
 
+For those unfamiliar with git, please follow the instructions [here](http://localhost:3000/docs/contributing#send-a-pull-request-pr-with-changes) on how to create a new pull request for this repository (replace `imx-docs` with `imx-core-sdk-golang`).
+
 To ensure high quality contributions, please follow the guidelines below:
 * **Size:** Please keep pull requests small where possible (aim for 200-400 lines of code). Immutable prefers small pull requests to effectively review them.
 * **Status checks:** Verify all status checks are passing. If a status check is failing, and you believe that the failure is unrelated to your change, please leave a comment on the pull request explaining why you believe the failure is unrelated. A maintainer will re-run the status check for you. If we conclude that the failure was a false positive, then we will open an issue to track that problem with our status check suite.
 * Please fill out all fields in the [PR template](https://github.com/immutable/imx-core-sdk-golang/blob/main/.github/pull_request_template.md).
+* Update the README if required
 
-#### 1. Fork the [Immutable Golang Core SDK repository](https://github.com/immutable/imx-core-sdk-golang)
-> To learn how to fork a repository, check out [GitHub's documentation on forking a repository](https://help.github.com/en/articles/fork-a-repo)
-
-
-#### 2. Clone the forked repository:
-```shell
-git clone git@github.com:[your_github_handle]/imx-core-sdk-golang
-```
-
-#### 3. Navigate to the cloned folder:
-```shell
-cd imx-core-sdk-golang
-```
-
-#### 4. Link your cloned repository to the upstream repository:
-```shell
-git remote add upstream git@github.com:immutable/imx-core-sdk-golang.git
-```
-
-> For further help, see [GitHub Docs: Configuring a remote for a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/configuring-a-remote-for-a-fork).
-
-#### 5. If you have already cloned the imx-core-sdk-golang repository, ensure that your fork is up to date with with the latest upstream changes. 
-> For further help, refer to [GitHub Docs: Syncing a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork).
-```shell
-git checkout main
-git fetch upstream
-git merge upstream/main
-```
-
-#### 6. Create a new branch for your changes
-```shell
-git checkout -b [new_branch_name]
-```
-
-#### 7. Commit your changes while ensuring you follow our Git guidelines
-```shell
-git commit -m "feat: brief description of changes [Fixes #420]"
-```
-
+### Commit messages
 In the commit message, please reference the issue it resolves. For help, see [GitHub Docs: Linking a pull request to an issue using a keyword](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue).
 
 Commit messages should follow the below pattern:
@@ -99,13 +63,3 @@ refactor: Description # if code is refactored
 docs: Description # if documentation is added
 lint: Description # if a lint issue is fixed
 ```
-
-#### 8. Push your changes
-```shell
-git push
-```
-
-#### 9. The community maintainers / Immutable X team will review your PR
-
-One of the community maintainers or the IMX team will review your PR and either accept it as it is, or add their comments as part of their review. Accepted PRs will get approved and merged into the `main` branch.
-
