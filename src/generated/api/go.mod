@@ -1,4 +1,4 @@
-module immutable.com/imx-core-sdk-golang-openapi-generator/api
+module immutable.com/imx-core-sdk-golang/api
 
 go 1.13
 

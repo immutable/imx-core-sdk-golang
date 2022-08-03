@@ -2,7 +2,7 @@ generatorName: go
 inputSpec: openapi.json
 gitHost: immutable.com
 gitUserId: ""
-gitRepoId: imx-core-sdk-golang-openapi-generator
+gitRepoId: imx-core-sdk-golang
 enablePostProcessFile: true
 additionalProperties:
   enumClassPrefix: "true"
