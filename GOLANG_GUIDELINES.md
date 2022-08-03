@@ -34,7 +34,7 @@
 
 Use lowercase and underscore.
 
-Good:
+:white_check_mark: Good:
 ```
 full_withdrawal.go
 ```
@@ -56,14 +56,14 @@ full_withdrawal.go
 * When renaming an imported package, the local name should follow the same guidelines as package names
 * For more information, please see https://go.dev/blog/package-names
 
-Good:
+:white_check_mark: Good:
 ```
 package reconcil
 package launchdarkly // single word, no underscores or mixed Caps.
 package trade
 ```
 
-Bad:
+:x: Bad:
 ```
 package onchaineventreconcil
 package onchain_event_reconcil
@@ -76,7 +76,7 @@ package trades
 * To document a type, variable, constant, function, or even a package, write a regular comment directly preceding its declaration, with no intervening blank line.
 * All packages, public functions, variables must have comments.
 
-Good:
+:white_check_mark: Good:
 ```
 // Package sort provides primitives for sorting slices and user-defined
 // collections.
@@ -86,7 +86,7 @@ package sort
 * Comments should explain "why", not "how".
 * For more details, see https://go.dev/blog/godoc
 
-Good:
+:white_check_mark: Good:
 ```
 // check if all users have correct names
 for _, user := range users {
@@ -94,7 +94,7 @@ for _, user := range users {
 }
 ```
 
-Bad:
+:x: Bad:
 ```
 // loop through users
 for _, user := range users {
@@ -114,7 +114,7 @@ WET = "Write everything twice"
 Only the following things must be DRY:
 * Code that does not contain business logic
 
-Good:
+:white_check_mark: Good:
 ```
 package newrelic
 
@@ -126,7 +126,7 @@ func Start(handler ...) {
 
 * Code containing atomic business logic
 
-Bad (expose checking assets contained in a vault to be fungible or non-fungible. Leave room for missing this check in new places that require crediting a vault):
+:x: Bad (expose checking assets contained in a vault to be fungible or non-fungible. Leave room for missing this check in new places that require crediting a vault):
 ```
 if vault is fungible {
   CreditFungibleVault()
@@ -140,7 +140,7 @@ func CreditFungibleVault(...)
 func CreditNonFungibleVault(...)
 ```
 
-Good (treat checking fungibility of an asset in a vault as part of crediting a vault. Eliminate error margin for missing this check):
+:white_check_mark: Good (treat checking fungibility of an asset in a vault as part of crediting a vault. Eliminate error margin for missing this check):
 ```
 ...
 // atomic business logic
@@ -162,7 +162,7 @@ func CreditVault(vaultId, amount uint64) error {
 
 * By default, pass by value and avoid mutation.
 
-Good:
+:white_check_mark: Good:
 ```
 var newSlice:...
 for _, elem := range slice {
@@ -182,7 +182,7 @@ func transformV(v Atype) Btype {
 v1 := transformV(v) // use return value and different type
 ```
 
-Bad (reference by pointer and mutation):
+:x: Bad (reference by pointer and mutation):
 ```
 for i, _ := range slice {
   slice[i].someField = ... // reference by pointer and in place mutation
@@ -200,7 +200,7 @@ func ..(v *Atype) {
 * Usage of Golang context to carry (`context.WithValue` and `context.Value`) implicit values is discouraged.
 * Usage of `fromContext` for 3rd party module is allowed.
 
-Good:
+:white_check_mark: Good:
 ```
 // pass v in 
 func (ctx context.Context, v string) {
@@ -214,7 +214,7 @@ func (ctx context.Context) {
 }
 ```
 
-Bad:
+:x: Bad:
 ```
 func (ctx context.Context) {
   ctx := context.WithValue(r.Context(), key, val)
@@ -228,7 +228,7 @@ func (ctx context.Context) {
 ## Errors
 * Never hide them
 
-Good:
+:white_check_mark: Good:
 ```
 if err := someFunction(...); err != nil {
 ... // handle the error here.
@@ -240,14 +240,14 @@ if err != nil {
 }
 ```
 
-Bad:
+:x: Bad:
 ```
 returnValue, _ := someFunction(...)
 ```
 
 * 500 http status indicates reduced service availability and will trigger alerts. Do NOT produce user facing errors as internal errors
 
-Good:
+:white_check_mark: Good:
 ```
 // This error is user facing. It should be expressed as a bad request (status 400) on the http layer.
 type UserDoesNotOwnAsset struct {
@@ -259,7 +259,7 @@ if !doesUserOwnThisAsset(user, asset) {
 }
 ```
 
-Bad (validation error is treated as critical error):
+:x: Bad (validation error is treated as critical error):
 ```
 // This Error is user facing. It should be expressed as a bad request (status 400) on the http layer.
 type UserDoesNotOwnAsset struct {
@@ -276,7 +276,7 @@ if !doesUserOwnThisAsset(user, asset) {
 * Packages should be stateless by default.
 * This is unless there is no alternative (ie. lambda function handler top level var will be cached for much better performance)
 
-Good (lambda handler):
+:white_check_mark: Good (lambda handler):
 ```
 package main
 
@@ -294,7 +294,7 @@ func main() {
 
 * Avoid exposing package level var to prevent it from being mutated.
 
-Good:
+:white_check_mark: Good:
 ```
 package ...
 
@@ -307,7 +307,7 @@ func New() *Config {
 }
 ```
 
-Bad:
+:x: Bad:
 ```
 package abc
 
@@ -323,7 +323,7 @@ Source files should exhibit this order:
 * Types
 * Funcs (in call order)
 
-Bad (funcs not in call order):
+:x: Bad (funcs not in call order):
 ```
 package abc
 
@@ -336,7 +336,7 @@ func (c Car) Start() {
 }
 ```
 
-Good (funcs in correct order):
+:white_check_mark: Good (funcs in correct order):
 ```
 package ...
 
@@ -360,7 +360,7 @@ func startEngine() {}
     * Comments within funcs that split up logical blocks of code
 * Gofmt will enforce [Godoc](https://pkg.go.dev/golang.org/x/tools/cmd/godoc) commenting rules
 
-Bad (no comments):
+:x: Bad (no comments):
 ```
 func (c *Controller) carrySnapshotForward(ctx context.Context, srcBlockNum, destBlockNum, limit uint64) error {
 	count, err := c.GetSnapshotBalanceCount(ctx, srcBlockNum)
@@ -392,7 +392,7 @@ func (c *Controller) carrySnapshotForward(ctx context.Context, srcBlockNum, dest
 }
 ```
 
-Good (Godoc and inline comments):
+:white_check_mark: Good (Godoc and inline comments):
 ```
 // CarrySnapshotForward will upsert all existing snapshots to the new specified block
 func (c *Controller) CarrySnapshotForward(ctx context.Context, srcBlockNum, destBlockNum, limit uint64) error {
@@ -446,7 +446,7 @@ func (c *Controller) CarrySnapshotForward(ctx context.Context, srcBlockNum, dest
     * Treat them as dumb types that don’t need member funcs at all, including getters
 * Getters do not have the prefix “Get” in the func names
 
-Good (private member variables for sophisticated types):
+:white_check_mark: Good (private member variables for sophisticated types):
 ```
 type MySmartType struct{
   data string
@@ -465,7 +465,7 @@ func (mst MySmartType) Data() string {
 }
 ```
 
-Bad (public member variables for sophisticated types):
+:x: Bad (public member variables for sophisticated types):
 ```
 type MySmartType struct{
   Data string
@@ -480,14 +480,14 @@ func (mst MySmartType) SomeLogic() {}
 * Acronyms must have single capitalization
     * Linter will complain about common acronyms, but not unique ones like IMX
 
-Good (acronym single capitalization):
+:white_check_mark: Good (acronym single capitalization):
 ```
 myIMX := ""
 imxForYou := ""
 IMXForYou := ""
 ```
 
-Bad (acronym multiple capitalization):
+:x: Bad (acronym multiple capitalization):
 ```
 myImx := ""
 ImxForYou := ""
@@ -498,7 +498,7 @@ ImxForYou := ""
     * `PascalCase` for public constants
     * Common prefixes for the same context
 
-Good (constants with a common prefix):
+:white_check_mark: Good (constants with a common prefix):
 ```
 package store
 
@@ -509,7 +509,7 @@ const (
 )
 ```
 
-Bad (no prefix for constants with the same context):
+:x: Bad (no prefix for constants with the same context):
 ```
 package store
 
@@ -523,12 +523,12 @@ const (
 ## Don’t stutter
 When implementing package-level APIs, make sure your public functions and variables don’t stutter when prefixed with the package name.
 
-Good (public function does not repeat package name (does not stutter)):
+:white_check_mark: Good (public function does not repeat package name (does not stutter)):
 ```
 log.Info()
 ```
 
-Bad (public function repeats package name (stutters)):
+:x: Bad (public function repeats package name (stutters)):
 ```
 log.LogInfo() // Stutter
 ```
@@ -536,7 +536,7 @@ log.LogInfo() // Stutter
 ## Slice capacity
 Specify slice capacity where possible in order to allocate memory for the container up front. This minimizes subsequent allocations (by copying and resizing of the underlying array) as elements are added.
 
-Good (slice capacity pre-allocated):
+:white_check_mark: Good (slice capacity pre-allocated):
 ```
 tokens := make([]tokens{}, len(orders))
 for i := range orders {
@@ -544,7 +544,7 @@ for i := range orders {
 }
 ```
 
-Bad (slice capacity not pre-allocated):
+:x: Bad (slice capacity not pre-allocated):
 ```
 tokens := []Token{}
 for i := range orders {
@@ -556,7 +556,7 @@ for i := range orders {
 * When specifying a slice to return in function declaration, the slice will be nil by default
 * It is fine to return nil slice, just make sure the calling code is aware of this
 
-Good (nil slice never returned):
+:white_check_mark: Good (nil slice never returned):
 ```
 func GetTokens(count int) (tokens []Tokens) {
   if count == 0 {
@@ -566,7 +566,7 @@ func GetTokens(count int) (tokens []Tokens) {
 }
 ```
 
-Bad (nil slice returned, unintentionally):
+:x: Bad (nil slice returned, unintentionally):
 ```
 func GetTokens(count int) (tokens []Tokens) {
   if count == 0 {
@@ -587,14 +587,14 @@ func GetTokens(count int) (tokens []Tokens) {
 * Do not use pointers to pointers
     * You will just never have a use case for it. Here is just an example:
 
-Bad (assigning a slice to a pointer):
+:x: Bad (assigning a slice to a pointer):
 ```
 func AllocToken(ptr *[]Token, count int) {
   *ptr = make([]Token{}, count)
 }
 ```
 
-Good (return slice):
+:white_check_mark: Good (return slice):
 ```
 func AllocToken(count int) []Token {
   return make([]Token{}, count)
@@ -626,7 +626,7 @@ type ReadWriter interface {
 * Injecting dependancies allows us to replace them with other implementations and mocks for testing
 * Data / metadata is not a dependancy and should be passed in through integral types or value objects (e.g. do not pass config around)
 
-Good (client is injected, config types are not introduced at all):
+:white_check_mark: Good (client is injected, config types are not introduced at all):
 ```
 type Executor struct {
   cloudClient cloud.Client
@@ -640,7 +640,7 @@ func New(client cloud.Client, retries int) *Executor {
 }
 ```
 
-Bad (config and client is nested into business logic type):
+:x: Bad (config and client is nested into business logic type):
 ```
 type Executor struct {
   awsClient aws.Client
@@ -685,14 +685,14 @@ if err != nil {
 * Tests should start with Test followed by the function name, ie. `TestMyFunction`
 * Tests should also include the state and expected outcome, delimited with underscores: TestMyFunction_WithThisState_HasThisResult
 
-Good (clearly specifies state and expected outcome):
+:white_check_mark: Good (clearly specifies state and expected outcome):
 ```
 func TestQualification_UsersAlreadyQualified_DoesNotDuplicateQualification(t *testing.T) {
   ...
 }
 ```
 
-Bad (does not clearly specify state and expected outcome):
+:x: Bad (does not clearly specify state and expected outcome):
 ```
 func TestQualificationUsersQualified(t *testing.T) {
   ...
