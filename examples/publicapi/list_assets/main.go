@@ -20,6 +20,7 @@ func PrettyStruct(data interface{}) (string, error) {
 
 func main() {
 	configuration := api.NewConfiguration()
+	configuration.Debug = true // Enables debug logging.
 	apiClient := api.NewAPIClient(configuration)
 	listAssetsResponse, r, err := apiClient.AssetsApi.ListAssets(context.Background()).Execute()
 	if err != nil {
@@ -27,8 +28,6 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
 	// response from `ListAssets`: ListAssetsResponse
-	fmt.Fprintf(os.Stdout, "Response from `AssetsApi.ListAssets`: %v\n", listAssetsResponse)
-
 	if listAssetsResponse != nil {
 		if listAssetsResponse.Result != nil {
 			res, err := PrettyStruct(listAssetsResponse.Result)

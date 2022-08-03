@@ -152,9 +152,6 @@ func (a *MintsApiService) GetMintExecute(r ApiGetMintRequest) (*Mint, *http.Resp
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -262,9 +259,6 @@ func (a *MintsApiService) GetMintableTokenDetailsByClientTokenIdExecute(r ApiGet
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -524,9 +518,6 @@ func (a *MintsApiService) ListMintsExecute(r ApiListMintsRequest) (*ListMintsRes
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -638,9 +629,6 @@ func (a *MintsApiService) MintTokensExecute(r ApiMintTokensRequest) (*MintTokens
 	}
 	// body params
 	localVarPostBody = r.mintTokensRequestV2
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

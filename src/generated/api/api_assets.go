@@ -137,9 +137,6 @@ func (a *AssetsApiService) GetAssetExecute(r ApiGetAssetRequest) (*Asset, *http.
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -399,9 +396,6 @@ func (a *AssetsApiService) ListAssetsExecute(r ApiListAssetsRequest) (*ListAsset
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

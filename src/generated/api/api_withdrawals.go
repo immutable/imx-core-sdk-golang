@@ -180,9 +180,6 @@ func (a *WithdrawalsApiService) CreateWithdrawalExecute(r ApiCreateWithdrawalReq
 	localVarHeaderParams["x-imx-eth-signature"] = parameterToString(*r.xImxEthSignature, "")
 	// body params
 	localVarPostBody = r.createWithdrawalRequest
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -294,9 +291,6 @@ func (a *WithdrawalsApiService) GetSignableWithdrawalExecute(r ApiGetSignableWit
 	}
 	// body params
 	localVarPostBody = r.getSignableWithdrawalRequest
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -400,9 +394,6 @@ func (a *WithdrawalsApiService) GetWithdrawalExecute(r ApiGetWithdrawalRequest) 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -682,9 +673,6 @@ func (a *WithdrawalsApiService) ListWithdrawalsExecute(r ApiListWithdrawalsReque
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

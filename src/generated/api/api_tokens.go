@@ -122,9 +122,6 @@ func (a *TokensApiService) GetTokenExecute(r ApiGetTokenRequest) (*TokenDetails,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -244,9 +241,6 @@ func (a *TokensApiService) ListTokensExecute(r ApiListTokensRequest) (*ListToken
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

@@ -158,9 +158,6 @@ func (a *UsersApiService) GetSignableRegistrationExecute(r ApiGetSignableRegistr
 	}
 	// body params
 	localVarPostBody = r.getSignableRegistrationRequest
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -272,9 +269,6 @@ func (a *UsersApiService) GetSignableRegistrationOffchainExecute(r ApiGetSignabl
 	}
 	// body params
 	localVarPostBody = r.getSignableRegistrationRequest
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -378,9 +372,6 @@ func (a *UsersApiService) GetUsersExecute(r ApiGetUsersRequest) (*GetUsersApiRes
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -492,9 +483,6 @@ func (a *UsersApiService) RegisterUserExecute(r ApiRegisterUserRequest) (*Regist
 	}
 	// body params
 	localVarPostBody = r.registerUserRequest
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

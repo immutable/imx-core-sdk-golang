@@ -11,11 +11,11 @@ See Makefile at root path to generate the code using these template files.
 
 ## Developer Notes 
 
-The `api.mustache` template file will be updated to include the custom header parameters.
+The `client.mustache` template file will be updated to include the custom header parameters.
 
 ### Generating Template File (for developer understanding only)
 
-The `templates/api.mustache` file will be generated from ``api_template.mustache`` file. This generating step will stamp the version number during the generation time.
+The `templates/client.mustache` file will be generated from ``client_template.mustache`` file. This generating step will stamp the version number during the generation time.
 
 For generating template file, using this tool https://github.com/gliderlabs/sigil
 

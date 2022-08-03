@@ -166,9 +166,6 @@ func (a *ProjectsApiService) CreateProjectExecute(r ApiCreateProjectRequest) (*C
 	localVarHeaderParams["IMX-Timestamp"] = parameterToString(*r.iMXTimestamp, "")
 	// body params
 	localVarPostBody = r.createProjectRequest
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -294,9 +291,6 @@ func (a *ProjectsApiService) GetProjectExecute(r ApiGetProjectRequest) (*Project
 	}
 	localVarHeaderParams["IMX-Signature"] = parameterToString(*r.iMXSignature, "")
 	localVarHeaderParams["IMX-Timestamp"] = parameterToString(*r.iMXTimestamp, "")
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -458,9 +452,6 @@ func (a *ProjectsApiService) GetProjectsExecute(r ApiGetProjectsRequest) (*GetPr
 	}
 	localVarHeaderParams["IMX-Signature"] = parameterToString(*r.iMXSignature, "")
 	localVarHeaderParams["IMX-Timestamp"] = parameterToString(*r.iMXTimestamp, "")
-
-	localVarHeaderParams["x-sdk-version"] = "imx-core-sdk-golang-0.1.0"
-	
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
