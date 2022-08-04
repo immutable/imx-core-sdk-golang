@@ -11,7 +11,7 @@ type Network int
 
 // The order of this enum should match with the order specified in the OpenApi Spec document.
 const (
-	//Dev     Network = iota // Dev testing network
+	// Dev     Network = iota // Dev testing network
 	Ropsten = iota // Staging network
 	MainNet        // Production network
 )
