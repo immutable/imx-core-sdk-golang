@@ -2,9 +2,6 @@ GENERATOR_TEMPLATES_DIR=generator-templates
 GENERATED_CODE_DIR=generated/api
 CURRENT_DIR = $(shell pwd)
 
-# Todo: Auto generate this version string from the release git tags.
-VERSION_STR="0.1.0"
-
 .PHONY: generate-openapi-prod
 generate-openapi-prod: get-openapi-prod generate-api
 
