@@ -7,5 +7,6 @@ enablePostProcessFile: true
 additionalProperties:
   enumClassPrefix: "true"
   packageName: api
+  packageVersion: 0.1.0
   generateInterfaces: true
   isGoSubmodule: true

@@ -28,9 +28,7 @@ get-openapi-ropsten:
 .PHONY: generate-api
 generate-api:
 	rm -rf src/$(GENERATED_CODE_DIR) && \
-    rm -f ${GENERATOR_TEMPLATES_DIR}/templates/client.mustache && \
-	mkdir -p src/$(GENERATED_CODE_DIR) && \
-	SIGIL_DELIMS={{{{,}}}} gliderlabs-sigil -f ${GENERATOR_TEMPLATES_DIR}/client_template.mustache GOLANG_SDK_VERSION=${VERSION_STR} > ${GENERATOR_TEMPLATES_DIR}/templates/client.mustache; \
+    mkdir -p src/$(GENERATED_CODE_DIR) && \
 	docker run --rm -v $(shell pwd):/app openapitools/openapi-generator-cli generate \
 		-i ./app/openapi.json \
 		-c ./app/go-client-config.yaml \
