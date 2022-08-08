@@ -15,12 +15,10 @@ import (
 
 // RegisterOffchain performs user registration off chain.
 func RegisterOffchain(ctx context.Context,
-	userApi api.UsersApi,
+	userAPI api.UsersApi,
 	l1signer signers.L1Signer,
 	l2signer signers.L2Signer,
-	userEmail string,
-) (*api.RegisterUserResponse, error) {
-
+	userEmail string) (*api.RegisterUserResponse, error) {
 	if userEmail != "" {
 		if !isValidEmail(userEmail) {
 			return nil, fmt.Errorf("given userEmail is invalid: %v", userEmail)
@@ -31,9 +29,9 @@ func RegisterOffchain(ctx context.Context,
 	starkKey := l2signer.GetAddress()
 
 	signableRegistrationRequest := api.NewGetSignableRegistrationRequest(etherKey, starkKey)
-	signableRegistrationOffchainResponse, httpResponse, err := userApi.GetSignableRegistrationOffchain(ctx).GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
+	signableRegistrationOffchainResponse, httpResponse, err := userAPI.GetSignableRegistrationOffchain(ctx).GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("Error when calling `UserApi.GetSignableRegistrationOffchain`: %v\nFull HTTP response: %v", err, httpResponse)
+		return nil, fmt.Errorf("error when calling `UserApi.GetSignableRegistrationOffchain`: %v, full HTTP response: %v", err, httpResponse)
 	}
 
 	ethSignature, err := l1signer.SignMessage(signableRegistrationOffchainResponse.SignableMessage)
@@ -49,9 +47,9 @@ func RegisterOffchain(ctx context.Context,
 	ethSignatureEncodedInHex := hexutil.Encode(ethSignature)
 
 	registerUserRequest := api.NewRegisterUserRequest(ethSignatureEncodedInHex, etherKey, starkKey, starkSignature)
-	registerUserResponse, httpResp, err := userApi.RegisterUser(ctx).RegisterUserRequest(*registerUserRequest).Execute()
+	registerUserResponse, httpResp, err := userAPI.RegisterUser(ctx).RegisterUserRequest(*registerUserRequest).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("Error when calling `UserApi.RegisterUser`: %v\nFull HTTP response: %v", err, httpResp)
+		return nil, fmt.Errorf("error when calling `UserApi.RegisterUser`: %v, full HTTP response: %v", err, httpResp)
 	}
 	return registerUserResponse, nil
 }
@@ -61,9 +59,9 @@ func isValidEmail(email string) bool {
 	return err == nil
 }
 
-func IsRegisteredOffChain(ctx context.Context, usersApi api.UsersApi, publicAddress string) ([]string, error) {
-	getUsersRequest := usersApi.GetUsers(ctx, publicAddress)
-	usersResponse, httpResp, err := usersApi.GetUsersExecute(getUsersRequest)
+func IsRegisteredOffChain(ctx context.Context, usersAPI api.UsersApi, publicAddress string) ([]string, error) {
+	getUsersRequest := usersAPI.GetUsers(ctx, publicAddress)
+	usersResponse, httpResp, err := usersAPI.GetUsersExecute(getUsersRequest)
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `api.Users.GetUsers: %v, full HTTP response %v", err, httpResp)
 	}
@@ -84,11 +82,11 @@ func IsRegisteredOnChain(ctx context.Context, contract *contracts.Registration, 
 	return &isRegistered, nil
 }
 
-func GetSignableRegistrationOnchain(ctx context.Context, apiClient api.UsersApi, etherKey, starkKey string) (*api.GetSignableRegistrationResponse, error) {
+func GetSignableRegistrationOnchain(ctx context.Context, usersAPI api.UsersApi, etherKey, starkKey string) (*api.GetSignableRegistrationResponse, error) {
 	signableRegistrationRequest := api.NewGetSignableRegistrationRequest(etherKey, starkKey)
-	getSignableRegistrationRequest := apiClient.GetSignableRegistration(ctx)
-	getSignableRegistrationRequest.GetSignableRegistrationRequest(*signableRegistrationRequest)
-	signableRegistrationResponse, httpResp, err := apiClient.GetSignableRegistrationExecute(getSignableRegistrationRequest)
+	apiGetSignableRegistrationRequest := usersAPI.GetSignableRegistration(ctx)
+	apiGetSignableRegistrationRequest.GetSignableRegistrationRequest(*signableRegistrationRequest)
+	signableRegistrationResponse, httpResp, err := usersAPI.GetSignableRegistrationExecute(apiGetSignableRegistrationRequest)
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `api.Users.GetSignableRegistration`: %v, full HTTP response %v", err, httpResp)
 	}

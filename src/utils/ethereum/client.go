@@ -82,7 +82,6 @@ func NewEthereumClientAndAttachContracts(
 	ctx context.Context,
 	cfg *config.Config,
 	gasParams GasParams) (*Client, error) {
-
 	ethClient, err := NewEthereumClient(cfg.EthereumClientEndpoint, gasParams)
 	if err != nil {
 		return nil, err
