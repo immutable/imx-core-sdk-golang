@@ -5,9 +5,6 @@ import (
 	"log"
 	"strings"
 
-	"immutable.com/imx-core-sdk-golang/examples/workflows/minting"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/onboarding"
-
 	"github.com/joho/godotenv"
 	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/config"
