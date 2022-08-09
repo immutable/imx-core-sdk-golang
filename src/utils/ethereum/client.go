@@ -78,6 +78,7 @@ type Client struct {
 	StarkContractAddress        ethcommon.Address
 }
 
+// NewEthereumClientAndAttachContracts creates a new ethereum client and attaches registration and core contracts to the client.
 func NewEthereumClientAndAttachContracts(
 	ctx context.Context,
 	cfg *config.Config,

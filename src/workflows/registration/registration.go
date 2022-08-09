@@ -13,7 +13,7 @@ import (
 	"immutable.com/imx-core-sdk-golang/utils"
 )
 
-// RegisterOffchain performs user registration off chain.
+// RegisterOffchain performs off chain user registration i.e, on the L2 network.
 func RegisterOffchain(ctx context.Context,
 	userAPI api.UsersApi,
 	l1signer signers.L1Signer,
@@ -59,15 +59,17 @@ func isValidEmail(email string) bool {
 	return err == nil
 }
 
-func IsRegisteredOffChain(ctx context.Context, usersAPI api.UsersApi, publicAddress string) ([]string, error) {
-	getUsersRequest := usersAPI.GetUsers(ctx, publicAddress)
-	usersResponse, httpResp, err := usersAPI.GetUsersExecute(getUsersRequest)
+// IsRegisteredOffChain checks if the given public address is already registered on the offchain (L2 network).
+func IsRegisteredOffChain(ctx context.Context, usersAPI api.UsersApi, publicAddress string) (*bool, error) {
+	usersResponse, httpResp, err := usersAPI.GetUsers(ctx, publicAddress).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `api.Users.GetUsers: %v, full HTTP response %v", err, httpResp)
 	}
-	return usersResponse.GetAccounts(), nil
+	isRegistered := len(usersResponse.GetAccounts()) > 0
+	return &isRegistered, nil
 }
 
+// IsRegisteredOnChain checks if the given public address is already registered on the onchain (L1 network).
 func IsRegisteredOnChain(ctx context.Context, contract *contracts.Registration, starkPublicKey string) (*bool, error) {
 	starkKey, err := utils.HexToInt(starkPublicKey)
 	if err != nil {
@@ -82,13 +84,13 @@ func IsRegisteredOnChain(ctx context.Context, contract *contracts.Registration, 
 	return &isRegistered, nil
 }
 
+// GetSignableRegistrationOnchain is a helper function to get the operator signature and payload hash to assist clients in the process of user registration.
 func GetSignableRegistrationOnchain(ctx context.Context, usersAPI api.UsersApi, etherKey, starkKey string) (*api.GetSignableRegistrationResponse, error) {
 	signableRegistrationRequest := api.NewGetSignableRegistrationRequest(etherKey, starkKey)
-	apiGetSignableRegistrationRequest := usersAPI.GetSignableRegistration(ctx)
-	apiGetSignableRegistrationRequest.GetSignableRegistrationRequest(*signableRegistrationRequest)
-	signableRegistrationResponse, httpResp, err := usersAPI.GetSignableRegistrationExecute(apiGetSignableRegistrationRequest)
+	signableRegistrationResponse, httpResp, err := usersAPI.GetSignableRegistration(ctx).
+		GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `api.Users.GetSignableRegistration`: %v, full HTTP response %v", err, httpResp)
+		return nil, fmt.Errorf("error in `GetSignableRegistration` or `GetSignableRegistrationRequest.Execute`: %v, full HTTP response %v", err, httpResp)
 	}
 	return signableRegistrationResponse, nil
 }

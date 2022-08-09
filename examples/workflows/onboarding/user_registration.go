@@ -6,7 +6,6 @@ import (
 	"log"
 
 	"immutable.com/imx-core-sdk-golang/api"
-
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/signers/stark"
 	"immutable.com/imx-core-sdk-golang/workflows/registration"
