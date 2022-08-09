@@ -21,8 +21,8 @@ type MintFee struct {
 }
 
 type MintableTokenData struct {
-	Id        string    `json:"id"`
-	Blueprint string    `json:"blueprint"`
+	ID        string    `json:"id"`
+	Blueprint *string   `json:"blueprint"`
 	Royalties []MintFee `json:"royalties,omitempty"` // token-level overridable fees (optional)
 }
 
@@ -76,8 +76,8 @@ func MintTokensWorkflow(ctx context.Context,
 				}
 
 				mintTokens[tokenIndex] = api.MintTokenDataV2{
-					Blueprint: &eachMintToken.Blueprint,
-					Id:        eachMintToken.Id,
+					Blueprint: eachMintToken.Blueprint,
+					Id:        eachMintToken.ID,
 					Royalties: mintFeesPerToken,
 				}
 			}

@@ -27,14 +27,14 @@ func DemoMintingTokens(ctx context.Context, mintsAPI api.MintsApi, l1signer sign
 				User: ethAddress,
 				Tokens: []minting.MintableTokenData{
 					{
-						Id: tokenId,
+						ID: tokenId,
 						Royalties: []minting.MintFee{
 							{
 								Percentage: royaltyPercentage,
 								Recipient:  ethAddress,
 							},
 						},
-						Blueprint: blueprint,
+						Blueprint: &blueprint,
 					},
 				},
 			},
