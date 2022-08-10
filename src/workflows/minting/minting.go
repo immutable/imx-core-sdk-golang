@@ -98,7 +98,7 @@ func MintTokensWorkflow(ctx context.Context,
 
 	mintTokensResponse, httpResp, err := mintsAPI.MintTokens(ctx).MintTokensRequestV2(mintRequest).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `api.Mints.MintTokens`: %v, full HTTP response: %v", err, httpResp.Body)
+		return nil, fmt.Errorf("error when calling `api.Mints.MintTokens`: %v, HTTP response body: %v", err, httpResp.Body)
 	}
 	return mintTokensResponse, nil
 }

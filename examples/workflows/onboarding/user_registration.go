@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"immutable.com/imx-core-sdk-golang/api"
+	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/signers/stark"
 	"immutable.com/imx-core-sdk-golang/workflows/registration"
@@ -13,7 +14,7 @@ import (
 
 func DemoUserRegistrationWorkflow(ctx context.Context, apiClient api.UsersApi, l1signer signers.L1Signer) {
 	log.Println("-------------------------------------------------------")
-	log.Println("Running Demo_UserRegistrationWorkflow")
+	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
 	l2signer, err := stark.GenerateStarkSigner(l1signer)
 	if err != nil {
@@ -37,6 +38,6 @@ func DemoUserRegistrationWorkflow(ctx context.Context, apiClient api.UsersApi, l
 	}
 	log.Println("registered accounts: ", accounts)
 
-	log.Println("Running DemoUserRegistrationWorkflow completed.")
+	log.Printf("Running %s completed.", utils.GetCurrentFunctionName())
 	log.Println("-------------------------------------------------------")
 }

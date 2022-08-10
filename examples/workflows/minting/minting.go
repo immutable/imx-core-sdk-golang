@@ -11,6 +11,9 @@ import (
 )
 
 func DemoMintingTokens(ctx context.Context, mintsAPI api.MintsApi, l1signer signers.L1Signer, tokenId string, tokenAddress string) {
+	log.Println("-------------------------------------------------------")
+	log.Printf("Running %s", utils.GetCurrentFunctionName())
+
 	ethAddress := l1signer.GetAddress()
 	blueprint := "123"
 	var royaltyPercentage float32 = 1
@@ -54,4 +57,7 @@ func DemoMintingTokens(ctx context.Context, mintsAPI api.MintsApi, l1signer sign
 		log.Panic(err)
 	}
 	log.Printf("Mint Tokens response:\n%v\n", mintTokensResponseStr)
+
+	log.Printf("Running %s completed.", utils.GetCurrentFunctionName())
+	log.Println("-------------------------------------------------------")
 }

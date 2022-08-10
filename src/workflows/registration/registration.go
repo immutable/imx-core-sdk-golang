@@ -31,7 +31,7 @@ func RegisterOffchain(ctx context.Context,
 	signableRegistrationRequest := api.NewGetSignableRegistrationRequest(etherKey, starkKey)
 	signableRegistrationOffchainResponse, httpResponse, err := userAPI.GetSignableRegistrationOffchain(ctx).GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `UserApi.GetSignableRegistrationOffchain`: %v, full HTTP response: %v", err, httpResponse.Body)
+		return nil, fmt.Errorf("error when calling `UserApi.GetSignableRegistrationOffchain`: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
 
 	ethSignature, err := l1signer.SignMessage(signableRegistrationOffchainResponse.SignableMessage)
@@ -49,7 +49,7 @@ func RegisterOffchain(ctx context.Context,
 	registerUserRequest := api.NewRegisterUserRequest(ethSignatureEncodedInHex, etherKey, starkKey, starkSignature)
 	registerUserResponse, httpResp, err := userAPI.RegisterUser(ctx).RegisterUserRequest(*registerUserRequest).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `UserApi.RegisterUser`: %v, full HTTP response: %v", err, httpResp.Body)
+		return nil, fmt.Errorf("error when calling `UserApi.RegisterUser`: %v, HTTP response body: %v", err, httpResp.Body)
 	}
 	return registerUserResponse, nil
 }
@@ -63,7 +63,7 @@ func isValidEmail(email string) bool {
 func IsRegisteredOffChain(ctx context.Context, usersAPI api.UsersApi, publicAddress string) (*bool, error) {
 	usersResponse, httpResp, err := usersAPI.GetUsers(ctx, publicAddress).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `api.Users.GetUsers: %v, full HTTP response %v", err, httpResp.Body)
+		return nil, fmt.Errorf("error when calling `api.Users.GetUsers: %v, HTTP response body: %v", err, httpResp.Body)
 	}
 	isRegistered := len(usersResponse.GetAccounts()) > 0
 	return &isRegistered, nil
@@ -90,7 +90,7 @@ func GetSignableRegistrationOnchain(ctx context.Context, usersAPI api.UsersApi, 
 	signableRegistrationResponse, httpResp, err := usersAPI.GetSignableRegistration(ctx).
 		GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error in `GetSignableRegistrationRequest.Execute`: %v, full HTTP response %v", err, httpResp.Body)
+		return nil, fmt.Errorf("error in `GetSignableRegistrationRequest.Execute`: %v, HTTP response body: %v", err, httpResp.Body)
 	}
 	return signableRegistrationResponse, nil
 }
