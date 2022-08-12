@@ -91,6 +91,7 @@ The Core SDK includes classes that interact with the Immutable X APIs.
 
 import (
     "context"
+	"fmt"
     "immutable.com/imx-core-sdk-golang/api"
     "immutable.com/imx-core-sdk-golang/config"
 )
@@ -100,9 +101,9 @@ func GetYourAsset(tokenID, tokenAddress string) (*api.Asset, error) {
     apiClient := api.NewAPIClient(configuration)
     ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Ropsten)
 
-    getAssetResponse, _, err := apiClient.AssetsApi.GetAsset(ctx, tokenAddress, tokenID).Execute()
+    getAssetResponse, httpResp, err := apiClient.AssetsApi.GetAsset(ctx, tokenAddress, tokenID).Execute()
     if err != nil {
-        return nil, err
+        return nil, fmt.Errorf("error when calling `GetAsset`: %v, HTTP response body: %v", err, httpResp.Body)
     }
 
     return getAssetResponse, nil
@@ -119,11 +120,14 @@ On project and collection methods that require authorisation, this signed timest
 
 ```golang
 // Example method to generate authorisation headers
-func getProjectOwnerAuthorisationHeaders(l1signer signers.L1Signer) (timestamp, signature string) {
+func getProjectOwnerAuthorisationHeaders(l1signer signers.L1Signer) (timestamp, signature string, err error) {
     timestamp = strconv.FormatInt(time.Now().Unix(), 10)
-    sigBytes, _ := l1signer.SignMessage(timestamp)
-    signature = hexutil.Encode(sigBytes)
-    return timestamp, signature
+    signedTimestamp, err := l1signer.SignMessage(timestamp)
+    if err != nil {
+        return "", "", err
+    }
+    signature = hexutil.Encode(signedTimestamp)
+    return timestamp, signature, nil
 }
 
 func CreateProject(l1signer signers.L1Signer, name, companyName, contactEmail string) (*api.CreateProjectResponse, error) {
@@ -131,16 +135,19 @@ func CreateProject(l1signer signers.L1Signer, name, companyName, contactEmail st
     apiClient := api.NewAPIClient(configuration)
     ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Ropsten)
 
-    timestamp, signature := getProjectOwnerAuthorisationHeaders(l1signer)
+    timestamp, signature, err := getProjectOwnerAuthorisationHeaders(l1signer)
+    if err != nil {
+        return nil, err
+    }
 
     createProjectRequest := api.NewCreateProjectRequest(companyName, contactEmail, name)
-    createProjectResponse, _, err := apiClient.ProjectsApi.CreateProject(ctx).
+    createProjectResponse, httpResp, err := apiClient.ProjectsApi.CreateProject(ctx).
         CreateProjectRequest(*createProjectRequest).
         IMXTimestamp(timestamp).
         IMXSignature(signature).
         Execute()
     if err != nil {
-      return nil, err
+        return nil, fmt.Errorf("error when calling `CreateProject`: %v, HTTP response body: %v", err, httpResp.Body)
     }
 
     return createProjectResponse, nil
