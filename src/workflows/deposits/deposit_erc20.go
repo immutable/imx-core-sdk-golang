@@ -54,7 +54,7 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client, 
 	}
 
 	// Perform encoding on asset details to get an assetType (required for stark contract request)
-	assetType, err := encode.GetEncodedAssetTypeForERC20(ctx, clientAPI.EncodingApi, nil, d.TokenAddress)
+	assetType, err := encode.GetEncodedAssetTypeForERC20(ctx, clientAPI.EncodingApi, d.TokenAddress)
 	if err != nil {
 		return nil, err
 	}

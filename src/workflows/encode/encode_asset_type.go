@@ -27,12 +27,11 @@ func GetEncodedAssetTypeForEth(
 func GetEncodedAssetTypeForERC20(
 	ctx context.Context,
 	encodingAPI api.EncodingApi,
-	tokenID *string, tokenAddress string) (*big.Int, error) {
+	tokenAddress string) (*big.Int, error) {
 	tokentype := string(tokens.ERC20Type)
 	encodeAssetRequestToken := &api.EncodeAssetRequestToken{
 		Data: &api.EncodeAssetTokenData{
 			TokenAddress: &tokenAddress,
-			TokenId:      tokenID,
 		},
 		Type: &tokentype,
 	}
