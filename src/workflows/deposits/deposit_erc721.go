@@ -10,6 +10,7 @@ import (
 	eth "github.com/ethereum/go-ethereum/core/types"
 	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/signers"
+	"immutable.com/imx-core-sdk-golang/tokens"
 	"immutable.com/imx-core-sdk-golang/utils"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
 	"immutable.com/imx-core-sdk-golang/workflows/encode"
@@ -37,7 +38,7 @@ func (d *ERC721Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client,
 	}
 
 	// Get signable deposit details
-	signableDepositRequest := NewSignableDepositRequestForERC721("1", d.TokenID, d.TokenAddress, l1signer.GetAddress())
+	signableDepositRequest := newSignableDepositRequestForERC721("1", d.TokenID, d.TokenAddress, l1signer.GetAddress())
 	signableDeposit, err := getSignableDeposit(ctx, clientAPI.DepositsApi, signableDepositRequest)
 	if err != nil {
 		return nil, err
@@ -65,6 +66,14 @@ func (d *ERC721Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client,
 		return depositERC721(ctx, ethClient, l1signer, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, tokenID)
 	} else {
 		return registerAndDepositERC721(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, tokenID)
+	}
+}
+
+func newSignableDepositRequestForERC721(amount, tokenID, tokenAddress, user string) *api.GetSignableDepositRequest {
+	return &api.GetSignableDepositRequest{
+		Amount: amount,
+		Token:  *tokens.NewSignableTokenERC721(tokenID, tokenAddress),
+		User:   user,
 	}
 }
 

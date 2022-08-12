@@ -10,6 +10,7 @@ import (
 	eth "github.com/ethereum/go-ethereum/core/types"
 	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/signers"
+	"immutable.com/imx-core-sdk-golang/tokens"
 	"immutable.com/imx-core-sdk-golang/utils"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
 	"immutable.com/imx-core-sdk-golang/workflows/encode"
@@ -22,7 +23,7 @@ func (d *ETHDeposit) Deposit(ctx context.Context, ethClient *ethereum.Client, cl
 	if err != nil {
 		return nil, fmt.Errorf("error when parsing deposit amount: %v", err)
 	}
-	signableDepositRequest := NewSignableDepositRequestForEth(amount.String(), l1signer.GetAddress())
+	signableDepositRequest := newSignableDepositRequestForEth(amount.String(), l1signer.GetAddress())
 	signableDeposit, err := getSignableDeposit(ctx, clientAPI.DepositsApi, signableDepositRequest)
 	if err != nil {
 		return nil, err
@@ -47,6 +48,14 @@ func (d *ETHDeposit) Deposit(ctx context.Context, ethClient *ethereum.Client, cl
 		return depositEth(ctx, ethClient, l1signer, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, amount)
 	} else {
 		return registerAndDepositEth(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, amount)
+	}
+}
+
+func newSignableDepositRequestForEth(amount, user string) *api.GetSignableDepositRequest {
+	return &api.GetSignableDepositRequest{
+		Amount: amount,
+		Token:  *tokens.NewSignableTokenEth(),
+		User:   user,
 	}
 }
 

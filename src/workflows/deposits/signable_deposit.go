@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"immutable.com/imx-core-sdk-golang/api"
-	"immutable.com/imx-core-sdk-golang/tokens"
 )
 
 func getSignableDeposit(
@@ -17,20 +16,4 @@ func getSignableDeposit(
 		return nil, fmt.Errorf("error when calling `Deposits.GetSignableDeposit`: %v, HTTP response body: %v", err, httpResp.Body)
 	}
 	return signableDepositResponse, nil
-}
-
-func NewSignableDepositRequestForEth(amount, user string) *api.GetSignableDepositRequest {
-	return &api.GetSignableDepositRequest{
-		Amount: amount,
-		Token:  *tokens.NewSignableTokenEth(),
-		User:   user,
-	}
-}
-
-func NewSignableDepositRequestForERC721(amount, tokenID, tokenAddress, user string) *api.GetSignableDepositRequest {
-	return &api.GetSignableDepositRequest{
-		Amount: amount,
-		Token:  *tokens.NewSignableTokenERC721(tokenID, tokenAddress),
-		User:   user,
-	}
 }
