@@ -70,7 +70,10 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client, 
 	// Above call will return an error user is not registered but this is for on-chain
 	// we should swallow this error to allow the register and deposit flow to execute.
 
-	quantizedAmount, _ := new(big.Int).SetString(signableDepositResponse.Amount, 10)
+	quantizedAmount, success := new(big.Int).SetString(signableDepositResponse.Amount, 10)
+	if success != true {
+		return nil, fmt.Errorf("error converting string value '%s' to bigint", signableDepositResponse.Amount)
+	}
 
 	if isRegistered {
 		return depositERC20(ctx, ethClient, l1signer, starkKey, big.NewInt(int64(signableDepositResponse.VaultId)), assetType, quantizedAmount)
