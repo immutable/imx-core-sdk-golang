@@ -31,12 +31,11 @@ func GetEncodedAssetTypeForEth(
 func GetEncodedAssetTypeForERC20(
 	ctx context.Context,
 	api *client.ImmutableXAPI,
-	tokenID, tokenAddress string,
+	tokenAddress string,
 ) (*big.Int, error) {
 	encodeAssetRequestToken := &models.EncodeAssetRequestToken{
 		Data: &models.EncodeAssetTokenData{
 			TokenAddress: tokenAddress,
-			TokenID:      tokenID,
 		},
 		Type: string(types.ERC20Type),
 	}

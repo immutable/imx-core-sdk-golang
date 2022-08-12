@@ -40,7 +40,7 @@ func (w *ERC20Withdrawal) CompleteWithdrawal(
 	l1signer signers.L1Signer,
 	starkKeyHex string,
 ) (*eth.Transaction, error) {
-	assetType, err := helpers.GetEncodedAssetTypeForERC20(ctx, api, w.TokenID, w.TokenAddress)
+	assetType, err := helpers.GetEncodedAssetTypeForERC20(ctx, api, w.TokenAddress)
 	if err != nil {
 		return nil, err
 	}

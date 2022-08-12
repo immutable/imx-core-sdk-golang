@@ -28,11 +28,11 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client, 
 		return nil, fmt.Errorf("error when calling `Tokens.GetToken`: %v", err)
 	}
 
-	decimals, err := utils.FromStringToDecimal(*token.GetPayload().Decimals)
+	decimals, err := strconv.Atoi(*token.GetPayload().Decimals)
 	if err != nil {
 		return nil, fmt.Errorf("error parsing token decimals: %v", err)
 	}
-	amount := utils.ToWei(d.Amount, int(*decimals))
+	amount := utils.ToWei(d.Amount, decimals)
 
 	// Approve whether an amount of token from an account can be spent by a third-party account
 	auth, err := ethClient.BuildTransactOpts(ctx, l1signer)
@@ -49,14 +49,14 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client, 
 	}
 
 	// Get signable deposit details
-	signableDepositRequest := NewSignableDepositRequestForERC20(amount.String(), d.TokenAddress, l1signer.GetAddress(), strconv.Itoa(int(*decimals)))
+	signableDepositRequest := NewSignableDepositRequestForERC20(amount.String(), d.TokenAddress, l1signer.GetAddress(), decimals)
 	signableDeposit, err := GetSignableDeposit(ctx, api.Deposits, signableDepositRequest)
 	if err != nil {
 		return nil, err
 	}
 
 	// Perform encoding on asset details to get an assetType (required for stark contract request)
-	assetType, err := helpers.GetEncodedAssetTypeForERC20(ctx, api, "", d.TokenAddress)
+	assetType, err := helpers.GetEncodedAssetTypeForERC20(ctx, api, d.TokenAddress)
 	if err != nil {
 		return nil, err
 	}
@@ -72,10 +72,15 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client, 
 	// Above call will return an error user is not registered but this is for on-chain
 	// we should swallow this error to allow the register and deposit flow to execute.
 
-	if isRegistered {
-		return depositERC20(ctx, ethClient, l1signer, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, amount)
+	quantizedAmount, ok := new(big.Int).SetString(*signableDeposit.Amount, 10)
+	if !ok {
+		return nil, fmt.Errorf("error converting SignableDeposit.Amount to bigint")
 	}
-	return registerAndDepositERC20(ctx, ethClient, l1signer, api, starkKeyHex, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, amount)
+
+	if isRegistered {
+		return depositERC20(ctx, ethClient, l1signer, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, quantizedAmount)
+	}
+	return registerAndDepositERC20(ctx, ethClient, l1signer, api, starkKeyHex, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, quantizedAmount)
 }
 
 func depositERC20(

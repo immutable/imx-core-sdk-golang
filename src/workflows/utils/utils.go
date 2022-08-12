@@ -18,7 +18,7 @@ func NewSignableTokenEth() *models.SignableToken {
 
 // NewSignableTokenERC20 returns a new ERC20 type token.
 // https://docs.x.immutable.com/docs/token-data-object#type-erc20
-func NewSignableTokenERC20(decimals, tokenAddress string) *models.SignableToken {
+func NewSignableTokenERC20(decimals int, tokenAddress string) *models.SignableToken {
 	return &models.SignableToken{
 		Data: map[string]interface{}{
 			"decimals":      decimals,

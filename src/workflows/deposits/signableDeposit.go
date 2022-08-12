@@ -31,7 +31,7 @@ func NewSignableDepositRequestForEth(amount, user string) *models.GetSignableDep
 	}
 }
 
-func NewSignableDepositRequestForERC20(amount, tokenAddress, user, decimals string) *models.GetSignableDepositRequest {
+func NewSignableDepositRequestForERC20(amount, tokenAddress, user string, decimals int) *models.GetSignableDepositRequest {
 	return &models.GetSignableDepositRequest{
 		Amount: &amount,
 		Token:  utils.NewSignableTokenERC20(decimals, tokenAddress),

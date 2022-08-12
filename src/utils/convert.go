@@ -4,7 +4,6 @@ import (
 	"encoding/hex"
 	"fmt"
 	"math/big"
-	"strconv"
 	"strings"
 
 	"github.com/ethereum/go-ethereum/params"
@@ -91,13 +90,4 @@ func ToWei(iamount interface{}, decimals int) *big.Int {
 	wei.SetString(result.String(), 10)
 
 	return wei
-}
-
-func FromStringToDecimal(value string) (*uint8, error) {
-	decimals, err := strconv.ParseUint(value, 10, 8)
-	if err != nil {
-		return nil, err
-	}
-	result := uint8(decimals)
-	return &result, nil
 }
