@@ -11,27 +11,41 @@ import (
 	"immutable.com/imx-core-sdk-golang/workflows/deposits"
 )
 
-func DemoDepositWorkflow(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, l1signer signers.L1Signer) {
+func DemoDepositEthWorkflow(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, amount string, l1signer signers.L1Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
-	depositRequest := deposits.NewETHDeposit("0.03")
+	depositRequest := deposits.NewETHDeposit("5")
 	transaction, err := depositRequest.Deposit(ctx, ethClient, clientAPI, l1signer)
+	if err != nil {
+		log.Panicf("error calling deposit workflow: %v", err)
+	}
 
-	/*
-		// Uncomment for ERC20
-		amount := "Amount to deposit"
-		tokenAddress := "Token address here"
-		depositERC20Request := deposits.NewERC20Deposit(amount, tokenAddress)
-		transaction, err := depositERC20Request.Deposit(ctx, ethClient, clientAPI, l1signer)
-	*/
+	log.Println("transaction hash:", transaction.Hash())
+	log.Printf("Running %s completed.", utils.GetCurrentFunctionName())
+	log.Println("-------------------------------------------------------")
+}
 
-	/*
-		// Uncomment for ERC721
-		depositERC721Request := deposits.NewERC721Deposit("7", "0x0fB969a08c7C39BA99c1628b59c0B7E5611BD396")
-		transaction, err := depositERC721Request.Deposit(ctx, ethClient, clientAPI, l1signer)
-	*/
+func DemoDepositERC20Workflow(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, amount, tokenAddress string, l1signer signers.L1Signer) {
+	log.Println("-------------------------------------------------------")
+	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
+	transaction, err := deposits.NewERC20Deposit(amount, tokenAddress).Deposit(ctx, ethClient, clientAPI, l1signer)
+	if err != nil {
+		log.Panicf("error calling deposit workflow: %v", err)
+	}
+
+	log.Println("transaction hash:", transaction.Hash())
+	log.Printf("Running %s completed.", utils.GetCurrentFunctionName())
+	log.Println("-------------------------------------------------------")
+}
+
+func DemoDepositERC721Workflow(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, tokenId, tokenAddress string, l1signer signers.L1Signer) {
+	log.Println("-------------------------------------------------------")
+	log.Printf("Running %s", utils.GetCurrentFunctionName())
+
+	depositERC721Request := deposits.NewERC721Deposit(tokenId, tokenAddress)
+	transaction, err := depositERC721Request.Deposit(ctx, ethClient, clientAPI, l1signer)
 	if err != nil {
 		log.Panicf("error calling deposit workflow: %v", err)
 	}

@@ -61,10 +61,17 @@ func main() {
 		log.Panicf("error in creating StarkSigner: %v\n", err)
 	}
 
+	// User registration demo.
 	onboarding.DemoUserRegistrationWorkflow(ctx, apiClient.UsersApi, l1signer)
+
+	// Minting tokens demo
 	minting.DemoMintingTokens(ctx, apiClient.MintsApi, l1signer, envs["MINT_TOKEN_ID"], envs["MINT_TOKEN_ADDRESS"])
 
-	deposits.DemoDepositWorkflow(ctx, ethClient, apiClient, l1signer)
+	// Deposit tokens demo.
+	deposits.DemoDepositEthWorkflow(ctx, ethClient, apiClient, envs["DW_ETH_AMOUNT"], l1signer)
+	deposits.DemoDepositERC20Workflow(ctx, ethClient, apiClient, envs["DW_ERC20_AMOUNT"], envs["DW_ERC20TOKEN_ADDRESS"], l1signer)
+	deposits.DemoDepositERC721Workflow(ctx, ethClient, apiClient, envs["DW_ERC721TOKEN_ID"], envs["DW_ERC721TOKEN_ADDRESS"], l1signer)
+
 	// trades.Demo_TradesWorkflow(ctx, apiClient, l1signer, l2signer)
 	// burn.Demo_BurnWorkflow(ctx, apiClient, l1signer, l2signer)
 	// transfers.Demo_TransferWorkflow(ctx, apiClient, l1signer, l2signer)
@@ -72,23 +79,23 @@ func main() {
 
 	// Withdrawls Demo
 	// Will need to prepare withdrawal first and wait for to be ready to complete the withdrawal.
-	withdrawals.DemoPrepareEthWithdrawalWorkflow(ctx, apiClient, l1signer, l2signer)
-	withdrawals.DemoPrepareERC20WithdrawalWorkflow(ctx, apiClient, envs["WITHDRAWAL_ERC20TOKEN_ADDRESS"], l1signer, l2signer)
+	withdrawals.DemoPrepareEthWithdrawalWorkflow(ctx, apiClient, envs["DW_ETH_AMOUNT"], l1signer, l2signer)
+	withdrawals.DemoPrepareERC20WithdrawalWorkflow(ctx, apiClient, envs["DW_ERC20TOKEN_ADDRESS"], l1signer, l2signer)
 	withdrawals.DemoPrepareERC721WithdrawalWorkflow(ctx,
 		apiClient,
-		envs["WITHDRAWAL_ERC721TOKEN_ID"],
-		envs["WITHDRAWAL_ERC721TOKEN_ADDRESS"],
+		envs["DW_ERC721TOKEN_ID"],
+		envs["DW_ERC721TOKEN_ADDRESS"],
 		l1signer,
 		l2signer)
 
 	// Make sure the tokens are ready for withdrawal before performing complete withdrawal.
 	withdrawals.DemoCompleteEthWithdrawalWorkflow(ctx, ethClient, apiClient, l1signer, l2signer)
-	withdrawals.DemoCompleteERC20WithdrawalWorkflow(ctx, ethClient, apiClient, envs["WITHDRAWAL_ERC20TOKEN_ADDRESS"], l1signer, l2signer)
+	withdrawals.DemoCompleteERC20WithdrawalWorkflow(ctx, ethClient, apiClient, envs["DW_ERC20TOKEN_ADDRESS"], l1signer, l2signer)
 	withdrawals.DemoCompleteERC721WithdrawalWorkflow(ctx,
 		ethClient,
 		apiClient,
-		envs["WITHDRAWAL_ERC721TOKEN_ID"],
-		envs["WITHDRAWAL_ERC721TOKEN_ADDRESS"],
+		envs["DW_ERC721TOKEN_ID"],
+		envs["DW_ERC721TOKEN_ADDRESS"],
 		l1signer,
 		l2signer)
 

@@ -46,9 +46,9 @@ func (d *ETHDeposit) Deposit(ctx context.Context, ethClient *ethereum.Client, cl
 
 	if isRegistered {
 		return depositEth(ctx, ethClient, l1signer, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, amount)
-	} else {
-		return registerAndDepositEth(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, amount)
 	}
+
+	return registerAndDepositEth(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, amount)
 }
 
 func newSignableDepositRequestForEth(amount, user string) *api.GetSignableDepositRequest {

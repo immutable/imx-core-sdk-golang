@@ -52,9 +52,9 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 
 	if isRegistered {
 		return withdrawAndMintNft(ctx, ethClient, l1signer, starkKey, assetType, mintingBlob)
-	} else {
-		return registerAndWithdrawAndMintNft(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, assetType, mintingBlob)
 	}
+
+	return registerAndWithdrawAndMintNft(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, assetType, mintingBlob)
 }
 
 func withdrawAndMintNft(ctx context.Context, ethClient *ethereum.Client, l1signer signers.L1Signer, starkKey, assetType *big.Int, mintingBlob []byte) (*eth.Transaction, error) {

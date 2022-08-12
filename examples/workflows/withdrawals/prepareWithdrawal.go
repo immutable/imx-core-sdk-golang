@@ -17,14 +17,13 @@ const (
 )
 
 // DemoPrepareEthWithdrawalWorkflow contains sample code for preparing withdrawal of Eth tokens
-func DemoPrepareEthWithdrawalWorkflow(ctx context.Context, clientAPI *api.APIClient, l1signer signers.L1Signer, l2signer signers.L2Signer) {
+func DemoPrepareEthWithdrawalWorkflow(ctx context.Context, clientAPI *api.APIClient, amount string, l1signer signers.L1Signer, l2signer signers.L2Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
 	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
 	signableToken := tokens.NewSignableTokenEth()
-	amount := "0.03"
 	withdrawalRequest := api.GetSignableWithdrawalRequest{
 		Amount: amount,
 		Token:  *signableToken,
