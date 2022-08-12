@@ -8,8 +8,8 @@ type TokenType string
 
 const (
 	ETHType    TokenType = "ETH"
-	ERC20Type            = "ERC20"
-	ERC721Type           = "ERC721"
+	ERC20Type  TokenType = "ERC20"
+	ERC721Type TokenType = "ERC721"
 )
 
 // NewSignableTokenEth returns a new ETH type token.
@@ -26,7 +26,7 @@ func NewSignableTokenEth() *api.SignableToken {
 
 // NewSignableTokenERC20 returns a new ERC20 type token.
 // https://docs.x.immutable.com/docs/token-data-object#type-erc20
-func NewSignableTokenERC20(decimals, tokenAddress string) *api.SignableToken {
+func NewSignableTokenERC20(decimals int, tokenAddress string) *api.SignableToken {
 	var tokenType = string(ERC20Type)
 	return &api.SignableToken{
 		Data: map[string]interface{}{

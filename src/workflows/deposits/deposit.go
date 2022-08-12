@@ -2,6 +2,7 @@ package deposits
 
 import (
 	"context"
+	"strings"
 
 	eth "github.com/ethereum/go-ethereum/core/types"
 	"immutable.com/imx-core-sdk-golang/api"
@@ -41,7 +42,7 @@ func NewETHDeposit(amount string) *ETHDeposit {
 func NewERC20Deposit(amount, tokenAddress string) *ERC20Deposit {
 	this := ERC20Deposit{}
 	this.Amount = amount
-	this.TokenAddress = tokenAddress
+	this.TokenAddress = strings.ToLower(tokenAddress)
 	return &this
 }
 
