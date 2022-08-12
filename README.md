@@ -90,26 +90,22 @@ The Core SDK includes classes that interact with the Immutable X APIs.
 // Standard API request example usage
 
 import (
-   "immutable.com/imx-core-sdk-golang/api/client"
-   "immutable.com/imx-core-sdk-golang/api/client/assets"
-   "immutable.com/imx-core-sdk-golang/api/models"
-   "immutable.com/imx-core-sdk-golang/config"
+    "context"
+    "immutable.com/imx-core-sdk-golang/api"
+    "immutable.com/imx-core-sdk-golang/config"
 )
 
-func GetYourAsset(tokenID, tokenAddress string) (*models.Asset, error) {
-   apiUrl := config.GetAPIURL(config.Ropsten)
+func GetYourAsset(tokenID, tokenAddress string) (*api.Asset, error) {
+    configuration := api.NewConfiguration()
+    apiClient := api.NewAPIClient(configuration)
+    ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Ropsten)
 
-   httpClient := client.NewHTTPClientWithConfig(nil, config.NewTransportConfig(&apiUrl))
+    getAssetResponse, _, err := apiClient.AssetsApi.GetAsset(ctx, tokenAddress, tokenID).Execute()
+    if err != nil {
+        return nil, err
+    }
 
-   getAssetParams := assets.NewGetAssetParams()
-   getAssetParams.SetTokenID(tokenID)
-   getAssetParams.SetTokenAddress(tokenAddress)
-   getAssetResponse, err := httpClient.Assets.GetAsset(getAssetParams)
-   if err != nil {
-      return nil, err
-   }
-
-   return getAssetResponse.GetPayload(), nil
+    return getAssetResponse, nil
 }
 ```
 
@@ -124,32 +120,30 @@ On project and collection methods that require authorisation, this signed timest
 ```golang
 // Example method to generate authorisation headers
 func getProjectOwnerAuthorisationHeaders(l1signer signers.L1Signer) (timestamp, signature string) {
-   timestamp = strconv.FormatInt(time.Now().Unix(), 10)
-   sigBytes, _ := l1signer.SignMessage(timestamp)
-   signature = hexutil.Encode(sigBytes)
-   return timestamp, signature
+    timestamp = strconv.FormatInt(time.Now().Unix(), 10)
+    sigBytes, _ := l1signer.SignMessage(timestamp)
+    signature = hexutil.Encode(sigBytes)
+    return timestamp, signature
 }
 
-func CreateProject(l1signer signers.L1Signer, name, companyName, contactEmail string) (*models.CreateProjectResponse, error) {
-   apiUrl := config.GetAPIURL(config.Ropsten)
-   httpClient := client.NewHTTPClientWithConfig(nil, config.NewTransportConfig(&apiUrl))
+func CreateProject(l1signer signers.L1Signer, name, companyName, contactEmail string) (*api.CreateProjectResponse, error) {
+    configuration := api.NewConfiguration()
+    apiClient := api.NewAPIClient(configuration)
+    ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Ropsten)
 
-   timestamp, signature := getProjectOwnerAuthorisationHeaders(l1signer)
+    timestamp, signature := getProjectOwnerAuthorisationHeaders(l1signer)
 
-   createProjectParams := projects.NewCreateProjectParams()
-   createProjectParams.SetCreateProjectRequest(&models.CreateProjectRequest{
-      CompanyName:  &companyName,
-      ContactEmail: &contactEmail,
-      Name:         &name,
-   })
-   createProjectParams.SetIMXTimestamp(timestamp)
-   createProjectParams.SetIMXSignature(signature)
-   createProjectResponse, err := httpClient.Projects.CreateProject(createProjectParams)
-   if err != nil {
+    createProjectRequest := api.NewCreateProjectRequest(companyName, contactEmail, name)
+    createProjectResponse, _, err := apiClient.ProjectsApi.CreateProject(ctx).
+        CreateProjectRequest(*createProjectRequest).
+        IMXTimestamp(timestamp).
+        IMXSignature(signature).
+        Execute()
+    if err != nil {
       return nil, err
-   }
+    }
 
-   return createProjectResponse.GetPayload(), nil
+    return createProjectResponse, nil
 }
 ```
 
@@ -215,8 +209,9 @@ A workflow is a combination of API and contract calls required for more complica
 
 ```golang
    // User registration workflow example
-   cfg := config.GetConfig(config.Ropsten, alchemyAPIKey)
-   apiClient := factories.NewAPIClient(&cfg)
+   configuration := api.NewConfiguration()
+   apiClient := api.NewAPIClient(configuration)
+   ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Ropsten)
 
    // Setup L1 signer
    l1signer, err := utils.NewBaseL1Signer(signerPrivateKey, chainID)
@@ -230,7 +225,6 @@ A workflow is a combination of API and contract calls required for more complica
       log.Panicf("error in creating StarkSigner: %v", err)
    }
 
-   ctx := context.Background()
    response, err := registration.RegisterOffchain(ctx, apiClient, l1signer, l2signer, "user@email.com")
    if err != nil {
       log.Panicf("error in RegisterOffchain: %v", err)
