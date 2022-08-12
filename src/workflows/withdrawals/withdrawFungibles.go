@@ -65,9 +65,8 @@ func completeFungiblesWithdrawal(
 
 	if isRegistered {
 		return withdrawFungibles(ctx, ethClient, l1signer, starkKey, assetType)
-	} else {
-		return registerAndWithdrawFungibles(ctx, ethClient, l1signer, api, starkKeyHex, starkKey, assetType)
 	}
+	return registerAndWithdrawFungibles(ctx, ethClient, l1signer, api, starkKeyHex, starkKey, assetType)
 }
 
 func withdrawFungibles(ctx context.Context, ethClient *ethereum.Client, l1signer signers.L1Signer, starkKey, assetType *big.Int) (*eth.Transaction, error) {

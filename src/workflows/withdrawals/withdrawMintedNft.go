@@ -42,9 +42,8 @@ func (w *ERC721Withdrawal) withdrawMintedNft(
 
 	if isRegistered {
 		return withdrawMintedNft(ctx, ethClient, l1signer, starkKey, assetType, tokenID)
-	} else {
-		return registerAndWithdrawMintedNft(ctx, ethClient, l1signer, api, starkKeyHex, starkKey, assetType, tokenID)
 	}
+	return registerAndWithdrawMintedNft(ctx, ethClient, l1signer, api, starkKeyHex, starkKey, assetType, tokenID)
 }
 
 func withdrawMintedNft(ctx context.Context, ethClient *ethereum.Client, l1signer signers.L1Signer, starkKey, assetType, tokenID *big.Int) (*eth.Transaction, error) {
