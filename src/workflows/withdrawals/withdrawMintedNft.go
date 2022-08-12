@@ -8,22 +8,21 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	eth "github.com/ethereum/go-ethereum/core/types"
-	"immutable.com/imx-core-sdk-golang/api/client"
+	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/utils"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
+	"immutable.com/imx-core-sdk-golang/workflows/encode"
 	"immutable.com/imx-core-sdk-golang/workflows/registration"
-	helpers "immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
 func (w *ERC721Withdrawal) withdrawMintedNft(
 	ctx context.Context,
 	ethClient *ethereum.Client,
-	api *client.ImmutableXAPI,
+	clientAPI *api.APIClient,
 	l1signer signers.L1Signer,
-	starkKeyHex string,
-) (*eth.Transaction, error) {
-	assetType, err := helpers.GetEncodedAssetTypeForERC721(ctx, api, w.TokenID, w.TokenAddress)
+	starkKeyHex string) (*eth.Transaction, error) {
+	assetType, err := encode.GetEncodedAssetTypeForERC721(ctx, clientAPI.EncodingApi, w.TokenID, w.TokenAddress)
 	if err != nil {
 		return nil, err
 	}
@@ -33,7 +32,10 @@ func (w *ERC721Withdrawal) withdrawMintedNft(
 		return nil, fmt.Errorf("error converting StarkKeyHex to bigint: %s", starkKeyHex)
 	}
 
-	isRegistered, _ := ethClient.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
+	isRegistered, err := ethClient.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
+	if err != nil {
+		return nil, fmt.Errorf("error when calling 'ethClient.RegistrationContract.IsRegistered': %v", err)
+	}
 
 	tokenID, ok := new(big.Int).SetString(w.TokenID, 10)
 	if !ok {
@@ -43,7 +45,7 @@ func (w *ERC721Withdrawal) withdrawMintedNft(
 	if isRegistered {
 		return withdrawMintedNft(ctx, ethClient, l1signer, starkKey, assetType, tokenID)
 	} else {
-		return registerAndWithdrawMintedNft(ctx, ethClient, l1signer, api, starkKeyHex, starkKey, assetType, tokenID)
+		return registerAndWithdrawMintedNft(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, assetType, tokenID)
 	}
 }
 
@@ -63,14 +65,13 @@ func registerAndWithdrawMintedNft(
 	ctx context.Context,
 	ethClient *ethereum.Client,
 	l1signer signers.L1Signer,
-	api *client.ImmutableXAPI,
+	usersAPI api.UsersApi,
 	starkKeyHex string,
 	starkKey *big.Int,
 	assetType *big.Int,
-	tokenID *big.Int,
-) (*eth.Transaction, error) {
+	tokenID *big.Int) (*eth.Transaction, error) {
 	etherKey := l1signer.GetAddress()
-	signableRegistration, err := registration.GetSignableRegistrationOnchain(ctx, api, etherKey, starkKeyHex)
+	signableRegistration, err := registration.GetSignableRegistrationOnchain(ctx, usersAPI, etherKey, starkKeyHex)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +81,7 @@ func registerAndWithdrawMintedNft(
 		return nil, err
 	}
 
-	operatorSignature, err := utils.HexToByteArray(*signableRegistration.OperatorSignature)
+	operatorSignature, err := utils.HexToByteArray(signableRegistration.OperatorSignature)
 	if err != nil {
 		return nil, err
 	}

@@ -5,45 +5,88 @@ import (
 	"encoding/json"
 	"log"
 
-	"immutable.com/imx-core-sdk-golang/api/client"
-	"immutable.com/imx-core-sdk-golang/api/models"
+	"immutable.com/imx-core-sdk-golang/api"
+	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
 	"immutable.com/imx-core-sdk-golang/signers"
-	converters "immutable.com/imx-core-sdk-golang/utils"
-	"immutable.com/imx-core-sdk-golang/workflows/utils"
+	"immutable.com/imx-core-sdk-golang/tokens"
 	withdrawalsWorkflow "immutable.com/imx-core-sdk-golang/workflows/withdrawals"
 )
 
-func Demo_PrepareWithdrawalWorkflow(ctx context.Context, api *client.ImmutableXAPI, l1signer signers.L1Signer, l2signer signers.L2Signer) {
+const (
+	ERC20TokenDecimals = 18 // This is a fixed value for alomst all ERC20 tokens known.
+)
+
+// DemoPrepareEthWithdrawalWorkflow contains sample code for preparing withdrawal of Eth tokens
+func DemoPrepareEthWithdrawalWorkflow(ctx context.Context, clientAPI *api.APIClient, l1signer signers.L1Signer, l2signer signers.L2Signer) {
 	log.Println("-------------------------------------------------------")
-	log.Println("Running Demo_PrepareWithdrawalWorkflow")
+	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
 	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
-	signableToken := utils.NewSignableTokenEth()
-	amountInt, _ := converters.ParseEtherToWei("0.3")
-	amount := amountInt.String()
-	withdrawalRequest := models.GetSignableWithdrawalRequest{
-		Amount: &amount,
-		Token:  signableToken,
+	signableToken := tokens.NewSignableTokenEth()
+	amount := "0.03"
+	withdrawalRequest := api.GetSignableWithdrawalRequest{
+		Amount: amount,
+		Token:  *signableToken,
 	}
 
-	/*
-		// Uncomment for ERC721
-		signableToken := utils.NewSignableTokenERC721("7", "0x0fb969a08c7c39ba99c1628b59c0b7e5611bd396")
-		amount := "1"
-		withdrawalRequest := models.GetSignableWithdrawalRequest{
-			Amount: &amount,
-			Token:  signableToken,
-		}
-	*/
-
-	response, err := withdrawalsWorkflow.PrepareWithdrawal(ctx, api, l1signer, l2signer, withdrawalRequest)
+	response, err := withdrawalsWorkflow.PrepareEthWithdrawal(ctx, clientAPI.WithdrawalsApi, l1signer, l2signer, withdrawalRequest)
 	if err != nil {
-		log.Panicf("error calling prepare withdrawal workflow: %v", err)
+		log.Panicf("error calling withdrawalsWorkflow.PrepareEthWithdrawal workflow: %v", err)
 	}
 	val, _ := json.MarshalIndent(response, "", "  ")
 	log.Printf("response:\n%s\n", val)
 
-	log.Println("Running Demo_PrepareWithdrawalWorkflow completed")
+	log.Printf("Running %s completed.", utils.GetCurrentFunctionName())
+	log.Println("-------------------------------------------------------")
+}
+
+// DemoPrepareERC20WithdrawalWorkflow contains sample code for preparing withdrawal of ERC20 tokens
+func DemoPrepareERC20WithdrawalWorkflow(ctx context.Context, clientAPI *api.APIClient, tokenAddress string, l1signer signers.L1Signer, l2signer signers.L2Signer) {
+	log.Println("-------------------------------------------------------")
+	log.Printf("Running %s", utils.GetCurrentFunctionName())
+
+	// To declare tokens, use utils.NewSignableToken[type] method.
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
+	signableToken := tokens.NewSignableTokenERC20(ERC20TokenDecimals, tokenAddress)
+	amount := "5"
+	withdrawalRequest := api.GetSignableWithdrawalRequest{
+		Amount: amount,
+		Token:  *signableToken,
+	}
+
+	response, err := withdrawalsWorkflow.PrepareERC20Withdrawal(ctx, clientAPI.WithdrawalsApi, l1signer, l2signer, withdrawalRequest)
+	if err != nil {
+		log.Panicf("error calling withdrawalsWorkflow.PrepareERC20Withdrawal workflow: %v", err)
+	}
+	val, _ := json.MarshalIndent(response, "", "  ")
+	log.Printf("response:\n%s\n", val)
+
+	log.Printf("Running %s completed.", utils.GetCurrentFunctionName())
+	log.Println("-------------------------------------------------------")
+}
+
+// DemoPrepareERC721WithdrawalWorkflow contains sample code for preparing withdrawal of ERC721 tokens.
+func DemoPrepareERC721WithdrawalWorkflow(ctx context.Context, clientAPI *api.APIClient, tokenId, tokenAddress string, l1signer signers.L1Signer, l2signer signers.L2Signer) {
+	log.Println("-------------------------------------------------------")
+	log.Printf("Running %s", utils.GetCurrentFunctionName())
+
+	// To declare tokens, use utils.NewSignableToken[type] method.
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
+	signableToken := tokens.NewSignableTokenERC721(tokenId, tokenAddress)
+	amount := "1"
+	withdrawalRequest := api.GetSignableWithdrawalRequest{
+		Amount: amount,
+		Token:  *signableToken,
+	}
+
+	response, err := withdrawalsWorkflow.PrepareERC721Withdrawal(ctx, clientAPI.WithdrawalsApi, l1signer, l2signer, withdrawalRequest)
+	if err != nil {
+		log.Panicf("error calling withdrawalsWorkflow.PrepareERC721Withdrawal workflow: %v", err)
+	}
+	val, _ := json.MarshalIndent(response, "", "  ")
+	log.Printf("response:\n%s\n", val)
+
+	log.Printf("Running %s completed.", utils.GetCurrentFunctionName())
 	log.Println("-------------------------------------------------------")
 }

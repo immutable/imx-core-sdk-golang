@@ -4,49 +4,94 @@ import (
 	"context"
 	"fmt"
 
-	"immutable.com/imx-core-sdk-golang/api/client"
-	"immutable.com/imx-core-sdk-golang/api/client/withdrawals"
-	"immutable.com/imx-core-sdk-golang/api/models"
+	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/signers"
+	"immutable.com/imx-core-sdk-golang/utils"
 )
 
-// PrepareWithdrawal submits a withdrawal request to be included in the generation and submission of the next batch.
+// PrepareERC20Withdrawal submits a withdrawal request for ERC20 tokens to be included in the generation and submission of the next batch.
 // Upon batch confirmation (on-chain state update), the asset is available to be withdrawn by the initial owner / originator of the asset.
-func PrepareWithdrawal(
+//
+// Note: 	The ERC20 Amount value supplied along with GetSignableWithdrawalRequest should be the same value as you would use on IMX Marketplace UI.
+// 			Any Conversions required are done by SDK.
+func PrepareERC20Withdrawal(
 	ctx context.Context,
-	api *client.ImmutableXAPI,
+	withdrawalsAPI api.WithdrawalsApi,
 	l1signer signers.L1Signer,
 	l2signer signers.L2Signer,
-	request models.GetSignableWithdrawalRequest,
-) (*models.CreateWithdrawalResponse, error) {
-	ethAddress := l1signer.GetAddress()
-	request.User = &ethAddress
-	getSignableWithdrawalParams := withdrawals.NewGetSignableWithdrawalParamsWithContext(ctx)
-	getSignableWithdrawalParams.SetGetSignableWithdrawalRequest(&request)
-	signableResponse, err := api.Withdrawals.GetSignableWithdrawal(getSignableWithdrawalParams)
+	request api.GetSignableWithdrawalRequest) (*api.CreateWithdrawalResponse, error) {
+	// Convert ERC20 tokens amount to unquantized value.
+	request.Amount = utils.ToWei(request.Amount, (request.Token.Data["decimals"].(int))).String()
+
+	return prepareWithdrawalHelper(ctx, withdrawalsAPI, l1signer, l2signer, request)
+}
+
+// PrepareEthWithdrawal submits a withdrawal request for Eth tokens to be included in the generation and submission of the next batch.
+// Upon batch confirmation (on-chain state update), the asset is available to be withdrawn by the initial owner / originator of the asset.
+//
+// Note: 	The Eth Amount value supplied along with GetSignableWithdrawalRequest should be the same value as you would use on IMX Marketplace UI.
+// 			Any Conversions required are done by SDK.
+func PrepareEthWithdrawal(
+	ctx context.Context,
+	withdrawalsAPI api.WithdrawalsApi,
+	l1signer signers.L1Signer,
+	l2signer signers.L2Signer,
+	request api.GetSignableWithdrawalRequest) (*api.CreateWithdrawalResponse, error) {
+	// Convert Eth Amount to unquantized value.
+	amountInt, err := utils.ParseEtherToWei(request.Amount)
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `Withdrawals.GetSignableWithdrawal`: %v", err)
+		return nil, err
 	}
-	data := signableResponse.GetPayload()
-	ethSignature, starkSignature, err := signers.CreateSignatures(data.SignableMessage, data.PayloadHash, l1signer, l2signer)
+	request.Amount = amountInt.String()
+
+	return prepareWithdrawalHelper(ctx, withdrawalsAPI, l1signer, l2signer, request)
+}
+
+// PrepareERC721Withdrawal submits a withdrawal request for ERC721 tokens to be included in the generation and submission of the next batch.
+// Upon batch confirmation (on-chain state update), the asset is available to be withdrawn by the initial owner / originator of the asset.
+func PrepareERC721Withdrawal(
+	ctx context.Context,
+	withdrawalsAPI api.WithdrawalsApi,
+	l1signer signers.L1Signer,
+	l2signer signers.L2Signer,
+	request api.GetSignableWithdrawalRequest) (*api.CreateWithdrawalResponse, error) {
+
+	// No amount conversion required for ERC721 tokens as the value will be always 1 for NFTs.
+	return prepareWithdrawalHelper(ctx, withdrawalsAPI, l1signer, l2signer, request)
+}
+
+// prepareWithdrawalHelper submits a withdrawal request to be included in the generation and submission of the next batch.
+// Upon batch confirmation (on-chain state update), the asset is available to be withdrawn by the initial owner / originator of the asset.
+func prepareWithdrawalHelper(
+	ctx context.Context,
+	withdrawalsAPI api.WithdrawalsApi,
+	l1signer signers.L1Signer,
+	l2signer signers.L2Signer,
+	request api.GetSignableWithdrawalRequest) (*api.CreateWithdrawalResponse, error) {
+	ethAddress := l1signer.GetAddress()
+	request.User = ethAddress
+	signableResponse, httpResp, err := withdrawalsAPI.GetSignableWithdrawal(ctx).GetSignableWithdrawalRequest(request).Execute()
+	if err != nil {
+		return nil, fmt.Errorf("error when calling `Withdrawals.GetSignableWithdrawal`: %v, HTTP response body: %v", err, httpResp.Body)
+	}
+
+	ethSignature, starkSignature, err := signers.CreateSignatures(&signableResponse.SignableMessage, &signableResponse.PayloadHash, l1signer, l2signer)
 	if err != nil {
 		return nil, err
 	}
 
-	withdrawalParams := withdrawals.NewCreateWithdrawalParamsWithContext(ctx)
-	withdrawalParams.SetCreateWithdrawalRequest(&models.CreateWithdrawalRequest{
+	withdrawlRequest := api.CreateWithdrawalRequest{
 		Amount:         request.Amount,
-		AssetID:        data.AssetID,
-		Nonce:          data.Nonce,
-		StarkKey:       data.StarkKey,
-		StarkSignature: &starkSignature,
-		VaultID:        data.VaultID,
-	})
-	withdrawalParams.SetXImxEthAddress(&ethAddress)
-	withdrawalParams.SetXImxEthSignature(&ethSignature)
-	response, err := api.Withdrawals.CreateWithdrawal(withdrawalParams)
-	if err != nil {
-		return nil, fmt.Errorf("error when calling `Withdrawals.CreateWithdrawal`: %v", err)
+		AssetId:        signableResponse.AssetId,
+		Nonce:          signableResponse.Nonce,
+		StarkKey:       signableResponse.StarkKey,
+		StarkSignature: starkSignature,
+		VaultId:        signableResponse.VaultId,
 	}
-	return response.GetPayload(), nil
+	apiCreateWithdrawlRequest := withdrawalsAPI.CreateWithdrawal(ctx).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature)
+	withdrawlResponse, httpResp, err := apiCreateWithdrawlRequest.CreateWithdrawalRequest(withdrawlRequest).Execute()
+	if err != nil {
+		return nil, fmt.Errorf("error when calling `apiCreateWithdrawlRequest.CreateWithdrawalRequest`: %v, HTTP response body: %v", err, httpResp.Body)
+	}
+	return withdrawlResponse, nil
 }

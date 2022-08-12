@@ -8,54 +8,51 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	eth "github.com/ethereum/go-ethereum/core/types"
-	"immutable.com/imx-core-sdk-golang/api/client"
+	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/utils"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
+	"immutable.com/imx-core-sdk-golang/workflows/encode"
 	"immutable.com/imx-core-sdk-golang/workflows/registration"
-	helpers "immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
 // CompleteEthWithdrawal performs the complete withdrawal workflow for ETH
 func CompleteEthWithdrawal(
 	ctx context.Context,
 	ethClient *ethereum.Client,
-	api *client.ImmutableXAPI,
+	clientAPI *api.APIClient,
 	l1signer signers.L1Signer,
-	starkKeyHex string,
-) (*eth.Transaction, error) {
-	assetType, err := helpers.GetEncodedAssetTypeForEth(ctx, api)
+	starkKeyHex string) (*eth.Transaction, error) {
+	assetType, err := encode.GetEncodedAssetTypeForEth(ctx, clientAPI.EncodingApi)
 	if err != nil {
 		return nil, err
 	}
 
-	return completeFungiblesWithdrawal(ctx, ethClient, api, l1signer, starkKeyHex, assetType)
+	return completeFungiblesWithdrawal(ctx, ethClient, clientAPI, l1signer, starkKeyHex, assetType)
 }
 
 // CompleteWithdrawal performs the complete withdrawal workflow on ERC20Withdrawal
 func (w *ERC20Withdrawal) CompleteWithdrawal(
 	ctx context.Context,
 	ethClient *ethereum.Client,
-	api *client.ImmutableXAPI,
+	clientAPI *api.APIClient,
 	l1signer signers.L1Signer,
-	starkKeyHex string,
-) (*eth.Transaction, error) {
-	assetType, err := helpers.GetEncodedAssetTypeForERC20(ctx, api, w.TokenID, w.TokenAddress)
+	starkKeyHex string) (*eth.Transaction, error) {
+	assetType, err := encode.GetEncodedAssetTypeForERC20(ctx, clientAPI.EncodingApi, w.TokenAddress)
 	if err != nil {
 		return nil, err
 	}
 
-	return completeFungiblesWithdrawal(ctx, ethClient, api, l1signer, starkKeyHex, assetType)
+	return completeFungiblesWithdrawal(ctx, ethClient, clientAPI, l1signer, starkKeyHex, assetType)
 }
 
 func completeFungiblesWithdrawal(
 	ctx context.Context,
 	ethClient *ethereum.Client,
-	api *client.ImmutableXAPI,
+	clientAPI *api.APIClient,
 	l1signer signers.L1Signer,
 	starkKeyHex string,
-	assetType *big.Int,
-) (*eth.Transaction, error) {
+	assetType *big.Int) (*eth.Transaction, error) {
 	starkKey, err := utils.HexToInt(starkKeyHex)
 	if err != nil {
 		return nil, fmt.Errorf("error converting StarkKeyHex to bigint: %s", starkKeyHex)
@@ -66,7 +63,7 @@ func completeFungiblesWithdrawal(
 	if isRegistered {
 		return withdrawFungibles(ctx, ethClient, l1signer, starkKey, assetType)
 	} else {
-		return registerAndWithdrawFungibles(ctx, ethClient, l1signer, api, starkKeyHex, starkKey, assetType)
+		return registerAndWithdrawFungibles(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, assetType)
 	}
 }
 
@@ -86,13 +83,12 @@ func registerAndWithdrawFungibles(
 	ctx context.Context,
 	ethClient *ethereum.Client,
 	l1signer signers.L1Signer,
-	api *client.ImmutableXAPI,
+	usersAPI api.UsersApi,
 	starkKeyHex string,
 	starkKey *big.Int,
-	assetType *big.Int,
-) (*eth.Transaction, error) {
+	assetType *big.Int) (*eth.Transaction, error) {
 	etherKey := l1signer.GetAddress()
-	signableRegistration, err := registration.GetSignableRegistrationOnchain(ctx, api, etherKey, starkKeyHex)
+	signableRegistration, err := registration.GetSignableRegistrationOnchain(ctx, usersAPI, etherKey, starkKeyHex)
 	if err != nil {
 		return nil, err
 	}
@@ -102,13 +98,13 @@ func registerAndWithdrawFungibles(
 		return nil, err
 	}
 
-	operatorSignature, err := utils.HexToByteArray(*signableRegistration.OperatorSignature)
+	operatorSignature, err := utils.HexToByteArray(signableRegistration.OperatorSignature)
 	if err != nil {
 		return nil, err
 	}
-	tnx, err := ethClient.RegistrationContract.RegisterAndWithdraw(auth, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType)
+	transaction, err := ethClient.RegistrationContract.RegisterAndWithdraw(auth, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType)
 	if err != nil {
 		return nil, err
 	}
-	return tnx, nil
+	return transaction, nil
 }
