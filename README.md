@@ -90,26 +90,23 @@ The Core SDK includes classes that interact with the Immutable X APIs.
 // Standard API request example usage
 
 import (
-   "immutable.com/imx-core-sdk-golang/api/client"
-   "immutable.com/imx-core-sdk-golang/api/client/assets"
-   "immutable.com/imx-core-sdk-golang/api/models"
-   "immutable.com/imx-core-sdk-golang/config"
+    "context"
+	"fmt"
+    "immutable.com/imx-core-sdk-golang/api"
+    "immutable.com/imx-core-sdk-golang/config"
 )
 
-func GetYourAsset(tokenID, tokenAddress string) (*models.Asset, error) {
-   apiUrl := config.GetAPIURL(config.Ropsten)
+func GetYourAsset(tokenID, tokenAddress string) (*api.Asset, error) {
+    configuration := api.NewConfiguration()
+    apiClient := api.NewAPIClient(configuration)
+    ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Ropsten)
 
-   httpClient := client.NewHTTPClientWithConfig(nil, config.NewTransportConfig(&apiUrl))
+    getAssetResponse, httpResp, err := apiClient.AssetsApi.GetAsset(ctx, tokenAddress, tokenID).Execute()
+    if err != nil {
+        return nil, fmt.Errorf("error when calling `GetAsset`: %v, HTTP response body: %v", err, httpResp.Body)
+    }
 
-   getAssetParams := assets.NewGetAssetParams()
-   getAssetParams.SetTokenID(tokenID)
-   getAssetParams.SetTokenAddress(tokenAddress)
-   getAssetResponse, err := httpClient.Assets.GetAsset(getAssetParams)
-   if err != nil {
-      return nil, err
-   }
-
-   return getAssetResponse.GetPayload(), nil
+    return getAssetResponse, nil
 }
 ```
 
@@ -123,33 +120,37 @@ On project and collection methods that require authorisation, this signed timest
 
 ```golang
 // Example method to generate authorisation headers
-func getProjectOwnerAuthorisationHeaders(l1signer signers.L1Signer) (timestamp, signature string) {
-   timestamp = strconv.FormatInt(time.Now().Unix(), 10)
-   sigBytes, _ := l1signer.SignMessage(timestamp)
-   signature = hexutil.Encode(sigBytes)
-   return timestamp, signature
+func GetProjectOwnerAuthorisationHeaders(l1signer signers.L1Signer) (timestamp, signature string, err error) {
+    timestamp = strconv.FormatInt(time.Now().Unix(), 10)
+    signedTimestamp, err := l1signer.SignMessage(timestamp)
+    if err != nil {
+        return "", "", err
+    }
+    signature = hexutil.Encode(signedTimestamp)
+    return timestamp, signature, nil
 }
 
-func CreateProject(l1signer signers.L1Signer, name, companyName, contactEmail string) (*models.CreateProjectResponse, error) {
-   apiUrl := config.GetAPIURL(config.Ropsten)
-   httpClient := client.NewHTTPClientWithConfig(nil, config.NewTransportConfig(&apiUrl))
+func CreateProject(l1signer signers.L1Signer, name, companyName, contactEmail string) (*api.CreateProjectResponse, error) {
+    configuration := api.NewConfiguration()
+    apiClient := api.NewAPIClient(configuration)
+    ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Ropsten)
 
-   timestamp, signature := getProjectOwnerAuthorisationHeaders(l1signer)
+    timestamp, signature, err := GetProjectOwnerAuthorisationHeaders(l1signer)
+    if err != nil {
+        return nil, err
+    }
 
-   createProjectParams := projects.NewCreateProjectParams()
-   createProjectParams.SetCreateProjectRequest(&models.CreateProjectRequest{
-      CompanyName:  &companyName,
-      ContactEmail: &contactEmail,
-      Name:         &name,
-   })
-   createProjectParams.SetIMXTimestamp(timestamp)
-   createProjectParams.SetIMXSignature(signature)
-   createProjectResponse, err := httpClient.Projects.CreateProject(createProjectParams)
-   if err != nil {
-      return nil, err
-   }
+    createProjectRequest := api.NewCreateProjectRequest(companyName, contactEmail, name)
+    createProjectResponse, httpResp, err := apiClient.ProjectsApi.CreateProject(ctx).
+        CreateProjectRequest(*createProjectRequest).
+        IMXTimestamp(timestamp).
+        IMXSignature(signature).
+        Execute()
+    if err != nil {
+        return nil, fmt.Errorf("error when calling `CreateProject`: %v, HTTP response body: %v", err, httpResp.Body)
+    }
 
-   return createProjectResponse.GetPayload(), nil
+    return createProjectResponse, nil
 }
 ```
 
@@ -215,8 +216,9 @@ A workflow is a combination of API and contract calls required for more complica
 
 ```golang
    // User registration workflow example
-   cfg := config.GetConfig(config.Ropsten, alchemyAPIKey)
-   apiClient := factories.NewAPIClient(&cfg)
+   configuration := api.NewConfiguration()
+   apiClient := api.NewAPIClient(configuration)
+   ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Ropsten)
 
    // Setup L1 signer
    l1signer, err := utils.NewBaseL1Signer(signerPrivateKey, chainID)
@@ -230,7 +232,6 @@ A workflow is a combination of API and contract calls required for more complica
       log.Panicf("error in creating StarkSigner: %v", err)
    }
 
-   ctx := context.Background()
    response, err := registration.RegisterOffchain(ctx, apiClient, l1signer, l2signer, "user@email.com")
    if err != nil {
       log.Panicf("error in RegisterOffchain: %v", err)
