@@ -120,7 +120,7 @@ On project and collection methods that require authorisation, this signed timest
 
 ```golang
 // Example method to generate authorisation headers
-func getProjectOwnerAuthorisationHeaders(l1signer signers.L1Signer) (timestamp, signature string, err error) {
+func GetProjectOwnerAuthorisationHeaders(l1signer signers.L1Signer) (timestamp, signature string, err error) {
     timestamp = strconv.FormatInt(time.Now().Unix(), 10)
     signedTimestamp, err := l1signer.SignMessage(timestamp)
     if err != nil {
@@ -135,7 +135,7 @@ func CreateProject(l1signer signers.L1Signer, name, companyName, contactEmail st
     apiClient := api.NewAPIClient(configuration)
     ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Ropsten)
 
-    timestamp, signature, err := getProjectOwnerAuthorisationHeaders(l1signer)
+    timestamp, signature, err := GetProjectOwnerAuthorisationHeaders(l1signer)
     if err != nil {
         return nil, err
     }
