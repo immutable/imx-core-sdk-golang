@@ -61,14 +61,14 @@ func DemoCompleteERC721WithdrawalWorkflow(
 	ctx context.Context,
 	ethClient *ethereum.Client,
 	clientAPI *api.APIClient,
-	tokenId, tokenAddress string,
+	tokenID, tokenAddress string,
 	l1signer signers.L1Signer,
 	l2signer signers.L2Signer,
 ) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
-	erc721Withdrawal := withdrawalsWorkflow.NewERC721Withdrawal(tokenId, tokenAddress)
+	erc721Withdrawal := withdrawalsWorkflow.NewERC721Withdrawal(tokenID, tokenAddress)
 	transaction, err := erc721Withdrawal.CompleteWithdrawal(ctx, ethClient, clientAPI, l1signer, l2signer.GetAddress())
 
 	if err != nil {

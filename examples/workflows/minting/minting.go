@@ -10,7 +10,7 @@ import (
 	"immutable.com/imx-core-sdk-golang/workflows/minting"
 )
 
-func DemoMintingTokens(ctx context.Context, mintsAPI api.MintsApi, l1signer signers.L1Signer, tokenId, tokenAddress string) {
+func DemoMintingTokens(ctx context.Context, mintsAPI api.MintsApi, l1signer signers.L1Signer, tokenID, tokenAddress string) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
@@ -30,7 +30,7 @@ func DemoMintingTokens(ctx context.Context, mintsAPI api.MintsApi, l1signer sign
 				User: ethAddress,
 				Tokens: []minting.MintableTokenData{
 					{
-						ID: tokenId,
+						ID: tokenID,
 						Royalties: []minting.MintFee{
 							{
 								Percentage: royaltyPercentage,
