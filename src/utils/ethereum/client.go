@@ -11,6 +11,7 @@ import (
 	ethcommon "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"immutable.com/imx-core-sdk-golang/config"
 	"immutable.com/imx-core-sdk-golang/generated/contracts"
 	"immutable.com/imx-core-sdk-golang/signers"
 )
@@ -75,6 +76,24 @@ type Client struct {
 	EGSSpeed                    string
 	RegistrationContractAddress ethcommon.Address
 	StarkContractAddress        ethcommon.Address
+}
+
+// NewEthereumClientAndAttachContracts creates a new ethereum client and attaches registration and core contracts to the client.
+func NewEthereumClientAndAttachContracts(
+	ctx context.Context,
+	cfg *config.Config,
+	gasParams GasParams) (*Client, error) {
+	ethClient, err := NewEthereumClient(cfg.EthereumClientEndpoint, gasParams)
+	if err != nil {
+		return nil, err
+	}
+	if err := ethClient.AttachRegistrationContract(ctx, cfg.RegistrationContractAddress); err != nil {
+		return nil, err
+	}
+	if err := ethClient.AttachCoreContract(ctx, cfg.StarkContractAddress); err != nil {
+		return nil, err
+	}
+	return ethClient, nil
 }
 
 // NewEthereumClient returns a new ethereum client
