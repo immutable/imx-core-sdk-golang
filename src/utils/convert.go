@@ -3,10 +3,8 @@ package utils
 import (
 	"encoding/hex"
 	"fmt"
-	"math/big"
-	"strconv"
-
 	"github.com/shopspring/decimal"
+	"math/big"
 )
 
 // TrimHexPrefix removes the prefix `0x` from the given hex string.
@@ -56,13 +54,4 @@ func ToUnquantized(amount string, decimals int) (*big.Int, error) {
 	}
 
 	return denomination, nil
-}
-
-func FromStringToDecimal(value string) (*uint8, error) {
-	decimals, err := strconv.ParseUint(value, 10, 8)
-	if err != nil {
-		return nil, err
-	}
-	result := uint8(decimals)
-	return &result, nil
 }
