@@ -27,7 +27,7 @@ func DemoOrdersWorkflow(ctx context.Context, apiClient *api.APIClient, l1signer 
 	ethAddress := l1signer.GetAddress()                               // Address of the user listing for sale.
 	sellToken := tokens.NewSignableTokenERC721(tokenID, tokenAddress) // NFT Token
 	buyToken := tokens.NewSignableTokenEth()                          // The listed asset can be bought with Ethereum
-	createOrderRequest := api.GetSignableOrderRequest{
+	createOrderRequest := &api.GetSignableOrderRequest{
 		AmountBuy:  amountBuy.String(),
 		AmountSell: "1",
 		Fees:       nil,

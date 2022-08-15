@@ -12,8 +12,8 @@ import (
 // PrepareERC20Withdrawal submits a withdrawal request for ERC20 tokens to be included in the generation and submission of the next batch.
 // Upon batch confirmation (on-chain state update), the asset is available to be withdrawn by the initial owner / originator of the asset.
 //
-// Note: 	The ERC20 Amount value supplied along with GetSignableWithdrawalRequest should be the same value as you would use on IMX Marketplace UI.
-// 			Any Conversions required are done by SDK.
+// Note: The ERC20 Amount value supplied along with GetSignableWithdrawalRequest should be the same value as you would use on IMX Marketplace UI.
+// Any Conversions required are done by SDK.
 func PrepareERC20Withdrawal(
 	ctx context.Context,
 	withdrawalsAPI api.WithdrawalsApi,
@@ -33,8 +33,8 @@ func PrepareERC20Withdrawal(
 // PrepareEthWithdrawal submits a withdrawal request for Eth tokens to be included in the generation and submission of the next batch.
 // Upon batch confirmation (on-chain state update), the asset is available to be withdrawn by the initial owner / originator of the asset.
 //
-// Note: 	The Eth Amount value supplied along with GetSignableWithdrawalRequest should be the same value as you would use on IMX Marketplace UI.
-// 			Any Conversions required are done by SDK.
+// Note: The Eth Amount value supplied along with GetSignableWithdrawalRequest should be the same value as you would use on IMX Marketplace UI.
+// Any Conversions required are done by SDK.
 func PrepareEthWithdrawal(
 	ctx context.Context,
 	withdrawalsAPI api.WithdrawalsApi,
@@ -59,7 +59,6 @@ func PrepareERC721Withdrawal(
 	l1signer signers.L1Signer,
 	l2signer signers.L2Signer,
 	request api.GetSignableWithdrawalRequest) (*api.CreateWithdrawalResponse, error) {
-
 	// No amount conversion required for ERC721 tokens as the value will be always 1 for NFTs.
 	return prepareWithdrawalHelper(ctx, withdrawalsAPI, l1signer, l2signer, request)
 }

@@ -14,11 +14,11 @@ func CreateOrder(ctx context.Context,
 	apiClient *api.APIClient,
 	l1signer signers.L1Signer,
 	l2signer signers.L2Signer,
-	request api.GetSignableOrderRequest,
+	request *api.GetSignableOrderRequest,
 ) (*api.CreateOrderResponse, error) {
 	ethAddress := l1signer.GetAddress()
 	request.User = ethAddress
-	signableOrder, httpResponse, err := apiClient.OrdersApi.GetSignableOrder(ctx).GetSignableOrderRequestV3(request).Execute()
+	signableOrder, httpResponse, err := apiClient.OrdersApi.GetSignableOrder(ctx).GetSignableOrderRequestV3(*request).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `OrdersApi.GetSignableOrder`: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
@@ -69,8 +69,8 @@ func CancelOrder(ctx context.Context,
 	}
 
 	ethAddress := l1signer.GetAddress()
-	orderId := strconv.FormatInt(int64(request.OrderId), 10)
-	cancelOrderResponse, httpResponse, err := apiClient.OrdersApi.CancelOrder(ctx, orderId).
+	orderID := strconv.FormatInt(int64(request.OrderId), 10)
+	cancelOrderResponse, httpResponse, err := apiClient.OrdersApi.CancelOrder(ctx, orderID).
 		CancelOrderRequest(api.CancelOrderRequest{
 			OrderId:        request.OrderId,
 			StarkSignature: starkSignature,

@@ -3,8 +3,9 @@ package utils
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/shopspring/decimal"
 	"math/big"
+
+	"github.com/shopspring/decimal"
 )
 
 // EtherDecimals for Ether is expressed in 18 decimals
