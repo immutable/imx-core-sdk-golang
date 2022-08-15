@@ -7,68 +7,69 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"immutable.com/imx-core-sdk-golang/api/client"
-	"immutable.com/imx-core-sdk-golang/api/client/users"
-	"immutable.com/imx-core-sdk-golang/api/models"
+	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/generated/contracts"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/utils"
 )
 
-// RegisterOffchain performs user registration off chain.
-func RegisterOffchain(
-	ctx context.Context,
-	api *client.ImmutableXAPI,
+// RegisterOffchain performs off chain user registration i.e, on the L2 network.
+func RegisterOffchain(ctx context.Context,
+	userAPI api.UsersApi,
 	l1signer signers.L1Signer,
 	l2signer signers.L2Signer,
-	userEmail string,
-) (*models.RegisterUserResponse, error) {
+	userEmail string) (*api.RegisterUserResponse, error) {
 	if userEmail != "" {
 		if !isValidEmail(userEmail) {
 			return nil, fmt.Errorf("given userEmail is invalid: %v", userEmail)
 		}
 	}
 
-	signableRegistrationOffchainParams := users.NewGetSignableRegistrationOffchainParamsWithContext(ctx)
-
 	etherKey := l1signer.GetAddress()
 	starkKey := l2signer.GetAddress()
-	signableRegistrationOffchainParams.SetGetSignableRegistrationRequest(&models.GetSignableRegistrationRequest{
-		EtherKey: &etherKey,
-		StarkKey: &starkKey,
-	})
 
-	signableRegistrationOffchain, err := api.Users.GetSignableRegistrationOffchain(signableRegistrationOffchainParams)
+	signableRegistrationRequest := api.NewGetSignableRegistrationRequest(etherKey, starkKey)
+	signableRegistrationOffchainResponse, httpResponse, err := userAPI.GetSignableRegistrationOffchain(ctx).GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `api.Users.GetSignableRegistrationOffchain`: %v", err)
+		return nil, fmt.Errorf("error when calling `UserApi.GetSignableRegistrationOffchain`: %v, full HTTP response: %v", err, httpResponse.Body)
 	}
 
-	payload := signableRegistrationOffchain.GetPayload()
-	ethSignature, err := l1signer.SignMessage(*payload.SignableMessage)
+	ethSignature, err := l1signer.SignMessage(signableRegistrationOffchainResponse.SignableMessage)
 	if err != nil {
 		return nil, fmt.Errorf("error in l1signer.SignMessage for generating EthSignature from SignableMessage: %v", err)
 	}
 
-	starkSignature, err := l2signer.SignMessage(*payload.PayloadHash)
+	starkSignature, err := l2signer.SignMessage(signableRegistrationOffchainResponse.PayloadHash)
 	if err != nil {
 		return nil, fmt.Errorf("error in l2signer.SignMessage for generating StarkSignature from PayloadHash: %v", err)
 	}
 
 	ethSignatureEncodedInHex := hexutil.Encode(ethSignature)
 
-	return registerUser(ctx, api, etherKey, ethSignatureEncodedInHex, starkKey, starkSignature, userEmail)
-}
-
-func IsRegisteredOffChain(ctx context.Context, api *client.ImmutableXAPI, publicAddress string) ([]string, error) {
-	getUserParams := users.NewGetUsersParamsWithContext(ctx)
-	getUserParams.SetUser(publicAddress)
-	user, err := api.Users.GetUsers(getUserParams)
+	registerUserRequest := api.NewRegisterUserRequest(ethSignatureEncodedInHex, etherKey, starkKey, starkSignature)
+	registerUserResponse, httpResp, err := userAPI.RegisterUser(ctx).RegisterUserRequest(*registerUserRequest).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `api.Users.GetUsers: %v", err)
+		return nil, fmt.Errorf("error when calling `UserApi.RegisterUser`: %v, full HTTP response: %v", err, httpResp.Body)
 	}
-	return user.GetPayload().Accounts, nil
+	return registerUserResponse, nil
 }
 
+func isValidEmail(email string) bool {
+	_, err := mail.ParseAddress(email)
+	return err == nil
+}
+
+// IsRegisteredOffChain checks if the given public address is already registered on the offchain (L2 network).
+func IsRegisteredOffChain(ctx context.Context, usersAPI api.UsersApi, publicAddress string) (*bool, error) {
+	usersResponse, httpResp, err := usersAPI.GetUsers(ctx, publicAddress).Execute()
+	if err != nil {
+		return nil, fmt.Errorf("error when calling `api.Users.GetUsers: %v, full HTTP response %v", err, httpResp.Body)
+	}
+	isRegistered := len(usersResponse.GetAccounts()) > 0
+	return &isRegistered, nil
+}
+
+// IsRegisteredOnChain checks if the given public address is already registered on the onchain (L1 network).
 func IsRegisteredOnChain(ctx context.Context, contract *contracts.Registration, starkPublicKey string) (*bool, error) {
 	starkKey, err := utils.HexToInt(starkPublicKey)
 	if err != nil {
@@ -83,39 +84,13 @@ func IsRegisteredOnChain(ctx context.Context, contract *contracts.Registration, 
 	return &isRegistered, nil
 }
 
-func GetSignableRegistrationOnchain(ctx context.Context, api *client.ImmutableXAPI, etherKey, starkKey string) (*models.GetSignableRegistrationResponse, error) {
-	signableRegistrationParams := users.NewGetSignableRegistrationParamsWithContext(ctx)
-
-	signableRegistrationParams.SetGetSignableRegistrationRequest(&models.GetSignableRegistrationRequest{
-		EtherKey: &etherKey,
-		StarkKey: &starkKey,
-	})
-
-	signableRegistration, err := api.Users.GetSignableRegistration(signableRegistrationParams)
+// GetSignableRegistrationOnchain is a helper function to get the operator signature and payload hash to assist clients in the process of user registration.
+func GetSignableRegistrationOnchain(ctx context.Context, usersAPI api.UsersApi, etherKey, starkKey string) (*api.GetSignableRegistrationResponse, error) {
+	signableRegistrationRequest := api.NewGetSignableRegistrationRequest(etherKey, starkKey)
+	signableRegistrationResponse, httpResp, err := usersAPI.GetSignableRegistration(ctx).
+		GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `api.Users.GetSignableRegistration`: %v", err)
+		return nil, fmt.Errorf("error in `GetSignableRegistrationRequest.Execute`: %v, full HTTP response %v", err, httpResp.Body)
 	}
-	return signableRegistration.GetPayload(), nil
-}
-
-func isValidEmail(email string) bool {
-	_, err := mail.ParseAddress(email)
-	return err == nil
-}
-
-func registerUser(ctx context.Context, api *client.ImmutableXAPI, etherKey, etherSignature, starkKey, starkSignature, userEmail string) (*models.RegisterUserResponse, error) {
-	registerUserParams := users.NewRegisterUserParamsWithContext(ctx)
-	registerUserParams.SetRegisterUserRequest(&models.RegisterUserRequest{
-		Email:          userEmail,
-		EthSignature:   &etherSignature,
-		EtherKey:       &etherKey,
-		StarkKey:       &starkKey,
-		StarkSignature: &starkSignature,
-	})
-
-	registerUserResponse, err := api.Users.RegisterUser(registerUserParams)
-	if err != nil {
-		return nil, fmt.Errorf("failed to RegisterUser, error: %v", err)
-	}
-	return registerUserResponse.GetPayload(), nil
+	return signableRegistrationResponse, nil
 }
