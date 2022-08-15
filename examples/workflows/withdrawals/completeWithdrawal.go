@@ -12,7 +12,13 @@ import (
 )
 
 // DemoCompleteEthWithdrawalWorkflow contains sample code for completing withdrawal of Eth tokens
-func DemoCompleteEthWithdrawalWorkflow(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, l1signer signers.L1Signer, l2signer signers.L2Signer) {
+func DemoCompleteEthWithdrawalWorkflow(
+	ctx context.Context,
+	ethClient *ethereum.Client,
+	clientAPI *api.APIClient,
+	l1signer signers.L1Signer,
+	l2signer signers.L2Signer,
+) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
@@ -27,7 +33,14 @@ func DemoCompleteEthWithdrawalWorkflow(ctx context.Context, ethClient *ethereum.
 }
 
 // DemoCompleteERC20WithdrawalWorkflow contains sample code for completing withdrawal of ERC20 tokens
-func DemoCompleteERC20WithdrawalWorkflow(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, tokenAddress string, l1signer signers.L1Signer, l2signer signers.L2Signer) {
+func DemoCompleteERC20WithdrawalWorkflow(
+	ctx context.Context,
+	ethClient *ethereum.Client,
+	clientAPI *api.APIClient,
+	tokenAddress string,
+	l1signer signers.L1Signer,
+	l2signer signers.L2Signer,
+) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
@@ -44,7 +57,14 @@ func DemoCompleteERC20WithdrawalWorkflow(ctx context.Context, ethClient *ethereu
 }
 
 // DemoCompleteERC721WithdrawalWorkflow contains sample code for completing withdrawal of ERC721 tokens
-func DemoCompleteERC721WithdrawalWorkflow(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, tokenId, tokenAddress string, l1signer signers.L1Signer, l2signer signers.L2Signer) {
+func DemoCompleteERC721WithdrawalWorkflow(
+	ctx context.Context,
+	ethClient *ethereum.Client,
+	clientAPI *api.APIClient,
+	tokenId, tokenAddress string,
+	l1signer signers.L1Signer,
+	l2signer signers.L2Signer,
+) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 

@@ -18,7 +18,6 @@ import (
 )
 
 func main() {
-
 	var envs map[string]string
 	envs, err := godotenv.Read("../.env")
 	if err != nil {
@@ -101,5 +100,5 @@ func main() {
 		l1signer,
 		l2signer)
 
-	//orders.DemoOrdersWorkflow(ctx, apiClient, l1signer, l2signer)
+	// orders.DemoOrdersWorkflow(ctx, apiClient, l1signer, l2signer)
 }

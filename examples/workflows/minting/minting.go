@@ -10,7 +10,7 @@ import (
 	"immutable.com/imx-core-sdk-golang/workflows/minting"
 )
 
-func DemoMintingTokens(ctx context.Context, mintsAPI api.MintsApi, l1signer signers.L1Signer, tokenId string, tokenAddress string) {
+func DemoMintingTokens(ctx context.Context, mintsAPI api.MintsApi, l1signer signers.L1Signer, tokenId, tokenAddress string) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
