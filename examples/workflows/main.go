@@ -5,10 +5,12 @@ import (
 	"log"
 	"strings"
 
+	"immutable.com/imx-core-sdk-golang/examples/workflows/minting"
+	"immutable.com/imx-core-sdk-golang/examples/workflows/onboarding"
+
 	"github.com/joho/godotenv"
 	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/config"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/onboarding"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
 )
@@ -58,7 +60,7 @@ func main() {
 	// }
 
 	onboarding.DemoUserRegistrationWorkflow(ctx, apiClient.UsersApi, l1signer)
-	// minting.Demo_MintingTokens(ctx, apiClient, l1signer)
+	minting.DemoMintingTokens(ctx, apiClient.MintsApi, l1signer, envs["MINT_TOKEN_ID"], envs["MINT_TOKEN_ADDRESS"])
 
 	// deposits.Demo_DepositWorkflow(ctx, ethClient, apiClient, l1signer)
 	// trades.Demo_TradesWorkflow(ctx, apiClient, l1signer, l2signer)

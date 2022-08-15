@@ -4,39 +4,34 @@ import (
 	"context"
 	"log"
 
-	"immutable.com/imx-core-sdk-golang/api/client"
+	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/workflows/minting"
 )
 
-var (
-	contractAddress string = "" // Provide your collection contract address
-)
-
-func Demo_MintingTokens(ctx context.Context, api *client.ImmutableXAPI, l1signer signers.L1Signer) {
+func DemoMintingTokens(ctx context.Context, mintsAPI api.MintsApi, l1signer signers.L1Signer, tokenId string, tokenAddress string) {
 	ethAddress := l1signer.GetAddress()
-	tokenID := "5"
 	blueprint := "123"
-	var royaltyPercentage float64 = 1
+	var royaltyPercentage float32 = 1
 	var mintableToken = minting.UnsignedMintRequest{
-		ContractAddress: &contractAddress,
-		Royalties: []*minting.MintFee{
+		ContractAddress: tokenAddress,
+		Royalties: []minting.MintFee{
 			{
-				Percentage: &royaltyPercentage,
-				Recipient:  &ethAddress,
+				Percentage: royaltyPercentage,
+				Recipient:  ethAddress,
 			},
 		},
-		Users: []*minting.User{
+		Users: []minting.User{
 			{
-				User: &ethAddress,
-				Tokens: []*minting.MintableTokenData{
+				User: ethAddress,
+				Tokens: []minting.MintableTokenData{
 					{
-						ID: &tokenID,
-						Royalties: []*minting.MintFee{
+						ID: tokenId,
+						Royalties: []minting.MintFee{
 							{
-								Percentage: &royaltyPercentage,
-								Recipient:  &ethAddress,
+								Percentage: royaltyPercentage,
+								Recipient:  ethAddress,
 							},
 						},
 						Blueprint: &blueprint,
@@ -46,10 +41,10 @@ func Demo_MintingTokens(ctx context.Context, api *client.ImmutableXAPI, l1signer
 		},
 	}
 
-	request := make([]*minting.UnsignedMintRequest, 1)
-	request[0] = &mintableToken
+	request := make([]minting.UnsignedMintRequest, 1)
+	request[0] = mintableToken
 
-	mintTokensResponse, err := minting.MintTokensWorkflow(ctx, api, l1signer, request)
+	mintTokensResponse, err := minting.MintTokensWorkflow(ctx, mintsAPI, l1signer, request)
 	if err != nil {
 		log.Panicf("error in minting.MintTokensWorkflow: %v", err)
 	}

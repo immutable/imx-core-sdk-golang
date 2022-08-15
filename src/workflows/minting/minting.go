@@ -8,9 +8,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"immutable.com/imx-core-sdk-golang/api/client"
-	"immutable.com/imx-core-sdk-golang/api/client/mints"
-	"immutable.com/imx-core-sdk-golang/api/models"
+	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/signers"
 )
 
@@ -18,35 +16,34 @@ import (
 //   		implementation in imx-engine to pass the validation step while minting tokens.
 
 type MintFee struct {
-	Recipient  *string  `json:"recipient"`
-	Percentage *float64 `json:"percentage" validate:"max=100,gt=0"`
+	Recipient  string  `json:"recipient"`
+	Percentage float32 `json:"percentage" validate:"max=100,gt=0"`
 }
 
 type MintableTokenData struct {
-	ID        *string    `json:"id"`
-	Blueprint *string    `json:"blueprint"`
-	Royalties []*MintFee `json:"royalties,omitempty"` // token-level overridable fees (optional)
+	ID        string    `json:"id"`
+	Blueprint *string   `json:"blueprint"`
+	Royalties []MintFee `json:"royalties,omitempty"` // token-level overridable fees (optional)
 }
 
 type User struct {
-	User   *string              `json:"ether_key"`
-	Tokens []*MintableTokenData `json:"tokens"`
+	User   string              `json:"ether_key"`
+	Tokens []MintableTokenData `json:"tokens"`
 }
 
 type UnsignedMintRequest struct {
-	ContractAddress *string    `json:"contract_address" validate:"required,eth_addr"`
-	Royalties       []*MintFee `json:"royalties,omitempty" validate:"dive"` // contract-level (optional)
-	Users           []*User    `json:"users" validate:"required,dive,min=1"`
-	AuthSignature   string     `json:"auth_signature" validate:"required"`
+	ContractAddress string    `json:"contract_address" validate:"required,eth_addr"`
+	Royalties       []MintFee `json:"royalties,omitempty" validate:"dive"` // contract-level (optional)
+	Users           []User    `json:"users" validate:"required,dive,min=1"`
+	AuthSignature   string    `json:"auth_signature" validate:"required"`
 }
 
 // MintTokensWorkflow assists in minting tokens to the given imx user.
 func MintTokensWorkflow(ctx context.Context,
-	api *client.ImmutableXAPI,
+	mintsAPI api.MintsApi,
 	l1signer signers.L1Signer,
-	unsignedMintRequest []*UnsignedMintRequest,
-) (*models.MintTokensResponse, error) {
-	mintRequest := make([]*models.MintRequest, len(unsignedMintRequest))
+	unsignedMintRequest []UnsignedMintRequest) (*api.MintTokensResponse, error) {
+	mintRequest := make([]api.MintRequest, len(unsignedMintRequest))
 	for requestIndex, eachMintRequest := range unsignedMintRequest {
 		mintRequestInBytes, err := json.Marshal(eachMintRequest)
 		if err != nil {
@@ -58,52 +55,50 @@ func MintTokensWorkflow(ctx context.Context,
 			return nil, fmt.Errorf("error in signing eachMintRequest message: %v", err)
 		}
 
-		mintFees := make([]*models.MintFee, len(eachMintRequest.Royalties))
+		mintFees := make([]api.MintFee, len(eachMintRequest.Royalties))
 		for index, eachMintFee := range eachMintRequest.Royalties {
-			mintFees[index] = &models.MintFee{
+			mintFees[index] = api.MintFee{
 				Percentage: eachMintFee.Percentage,
 				Recipient:  eachMintFee.Recipient,
 			}
 		}
 
-		mintToUsers := make([]*models.MintUser, len(eachMintRequest.Users))
+		mintToUsers := make([]api.MintUser, len(eachMintRequest.Users))
 		for userIndex, eachMintUser := range eachMintRequest.Users {
-			mintTokens := make([]*models.MintTokenDataV2, len(eachMintUser.Tokens))
+			mintTokens := make([]api.MintTokenDataV2, len(eachMintUser.Tokens))
 			for tokenIndex, eachMintToken := range eachMintUser.Tokens {
-				mintFeesPerToken := make([]*models.MintFee, len(eachMintToken.Royalties))
+				mintFeesPerToken := make([]api.MintFee, len(eachMintToken.Royalties))
 				for royaltyIndex, eachMintFeePerToken := range eachMintToken.Royalties {
-					mintFeesPerToken[royaltyIndex] = &models.MintFee{
+					mintFeesPerToken[royaltyIndex] = api.MintFee{
 						Percentage: eachMintFeePerToken.Percentage,
 						Recipient:  eachMintFeePerToken.Recipient,
 					}
 				}
 
-				mintTokens[tokenIndex] = &models.MintTokenDataV2{
-					Blueprint: *eachMintToken.Blueprint,
-					ID:        eachMintToken.ID,
+				mintTokens[tokenIndex] = api.MintTokenDataV2{
+					Blueprint: eachMintToken.Blueprint,
+					Id:        eachMintToken.ID,
 					Royalties: mintFeesPerToken,
 				}
 			}
-			mintToUsers[userIndex] = &models.MintUser{
+			mintToUsers[userIndex] = api.MintUser{
 				Tokens: mintTokens,
 				User:   eachMintUser.User,
 			}
 		}
 
 		authSignatureEncodedInHex := hexutil.Encode(authSignatureInBytes)
-		mintRequest[requestIndex] = &models.MintRequest{
-			AuthSignature:   &authSignatureEncodedInHex,
+		mintRequest[requestIndex] = api.MintRequest{
+			AuthSignature:   authSignatureEncodedInHex,
 			ContractAddress: eachMintRequest.ContractAddress,
 			Royalties:       mintFees,
 			Users:           mintToUsers,
 		}
 	}
 
-	mintTokenParams := mints.NewMintTokensParamsWithContext(ctx)
-	mintTokenParams.SetMintTokensRequestV2(mintRequest)
-	mintTokensOk, err := api.Mints.MintTokens(mintTokenParams)
+	mintTokensResponse, httpResp, err := mintsAPI.MintTokens(ctx).MintTokensRequestV2(mintRequest).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `api.Mints.MintTokens`: %v", err)
+		return nil, fmt.Errorf("error when calling `api.Mints.MintTokens`: %v, full HTTP response: %v", err, httpResp.Body)
 	}
-	return mintTokensOk.GetPayload(), nil
+	return mintTokensResponse, nil
 }
