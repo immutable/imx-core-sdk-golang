@@ -32,7 +32,7 @@ func main() {
 	}
 	apiClient := api.NewAPIClient(configuration)
 
-	// Using context value to switch/specify the server before sending request. If nothig is specified default server will be used which will be first one in the open api spec list.
+	// Using context value to switch/specify the server before sending request. If nothing is specified, the default server will be used which will be first one in the open api spec list.
 	ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Ropsten)
 
 	cfg := config.GetConfig(config.Ropsten, alchemyAPIKey)
