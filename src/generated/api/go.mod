@@ -6,7 +6,7 @@ require (
 	github.com/go-openapi/errors v0.20.2
 	github.com/go-openapi/runtime v0.24.1
 	github.com/go-openapi/strfmt v0.21.3
-	github.com/go-openapi/swag v0.21.1
+	github.com/go-openapi/swag v0.22.0
 	github.com/go-openapi/validate v0.22.0
 )
 
@@ -28,4 +28,5 @@ require (
 	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
