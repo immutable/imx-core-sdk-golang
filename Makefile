@@ -33,6 +33,3 @@ generate-api:
 		-o /app/src/generated/api
 
 	
-
-
-	
