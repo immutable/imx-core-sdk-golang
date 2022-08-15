@@ -83,7 +83,7 @@ func prepareWithdrawalHelper(
 		return nil, err
 	}
 
-	withdrawlRequest := api.CreateWithdrawalRequest{
+	withdrawalRequest := api.CreateWithdrawalRequest{
 		Amount:         request.Amount,
 		AssetId:        signableResponse.AssetId,
 		Nonce:          signableResponse.Nonce,
@@ -91,10 +91,10 @@ func prepareWithdrawalHelper(
 		StarkSignature: starkSignature,
 		VaultId:        signableResponse.VaultId,
 	}
-	apiCreateWithdrawlRequest := withdrawalsAPI.CreateWithdrawal(ctx).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature)
-	withdrawlResponse, httpResp, err := apiCreateWithdrawlRequest.CreateWithdrawalRequest(withdrawlRequest).Execute()
+	apiCreateWithdrawalRequest := withdrawalsAPI.CreateWithdrawal(ctx).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature)
+	withdrawalResponse, httpResp, err := apiCreateWithdrawalRequest.CreateWithdrawalRequest(withdrawalRequest).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `apiCreateWithdrawlRequest.CreateWithdrawalRequest`: %v, HTTP response body: %v", err, httpResp.Body)
+		return nil, fmt.Errorf("error when calling `apiCreateWithdrawalRequest.CreateWithdrawalRequest`: %v, HTTP response body: %v", err, httpResp.Body)
 	}
-	return withdrawlResponse, nil
+	return withdrawalResponse, nil
 }

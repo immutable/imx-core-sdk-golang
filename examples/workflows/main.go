@@ -76,7 +76,7 @@ func main() {
 	// transfers.DemoTransferWorkflow(ctx, apiClient, l1signer, l2signer)
 	// transfers.DemoBatchTransferWorkflow(ctx, apiClient, l1signer, l2signer)
 
-	// Withdrawls Demo
+	// Withdrawals Demo
 	// After prepare withdrawal workflow is performed. Must wait for getWithdrawal endpoint
 	// https://docs.x.immutable.com/reference/#/operations/getWithdrawal to return "rollup_status": "confirmed"
 	// before calling complete withdrawal workflow.
