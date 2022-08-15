@@ -21,7 +21,7 @@ func PrepareERC20Withdrawal(
 	l2signer signers.L2Signer,
 	request api.GetSignableWithdrawalRequest) (*api.CreateWithdrawalResponse, error) {
 	// Convert ERC20 tokens amount to unquantized value.
-	unquantized, err := utils.ToUnquantized(request.Amount, (request.Token.Data["decimals"].(int)))
+	unquantized, err := utils.ToUnquantized(request.Amount, request.Token.Data["decimals"].(int))
 	if err != nil {
 		return nil, err
 	}

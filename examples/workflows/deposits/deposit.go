@@ -15,7 +15,7 @@ func DemoDepositEthWorkflow(ctx context.Context, ethClient *ethereum.Client, cli
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
-	depositRequest := deposits.NewETHDeposit("5")
+	depositRequest := deposits.NewETHDeposit(amount)
 	transaction, err := depositRequest.Deposit(ctx, ethClient, clientAPI, l1signer)
 	if err != nil {
 		log.Panicf("error calling deposit workflow: %v", err)

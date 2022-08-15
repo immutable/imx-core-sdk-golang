@@ -7,7 +7,7 @@ import (
 	"math/big"
 )
 
-// Ether is expressed in 18 decimals
+// EtherDecimals for Ether is expressed in 18 decimals
 const EtherDecimals = 18
 
 // TrimHexPrefix removes the prefix `0x` from the given hex string.
