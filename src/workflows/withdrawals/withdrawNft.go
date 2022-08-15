@@ -45,10 +45,10 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 		return nil, fmt.Errorf("error converting StarkKeyHex to bigint: %s", starkKeyHex)
 	}
 
-	isRegistered, err := ethClient.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
-	if err != nil {
-		return nil, fmt.Errorf("error when calling 'ethClient.RegistrationContract.IsRegistered': %v", err)
-	}
+	isRegistered, _ := ethClient.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
+	// Note: if we reach here, it means we are registered off-chain.
+	// Above call will return an error user is not registered but this is for on-chain
+	// we should swallow this error to allow the register and deposit flow to execute.
 
 	if isRegistered {
 		return withdrawAndMintNft(ctx, ethClient, l1signer, starkKey, assetType, mintingBlob)

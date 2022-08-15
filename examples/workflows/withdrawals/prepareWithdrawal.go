@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	ERC20TokenDecimals = 18 // This is a fixed value for alomst all ERC20 tokens known.
+	ERC20TokenDecimals = 18 // This is a fixed value for alomst all known ERC20 tokens.
 )
 
 // DemoPrepareEthWithdrawalWorkflow contains sample code for preparing withdrawal of Eth tokens

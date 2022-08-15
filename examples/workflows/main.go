@@ -20,7 +20,7 @@ import (
 func main() {
 
 	var envs map[string]string
-	envs, err := godotenv.Read(".env")
+	envs, err := godotenv.Read("../.env")
 	if err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
@@ -37,9 +37,9 @@ func main() {
 	apiClient := api.NewAPIClient(configuration)
 
 	// Using context value to switch/specify the server before sending request. If nothing is specified, the default server will be used which will be first one in the open api spec list.
-	ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Ropsten)
+	ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
 
-	cfg := config.GetConfig(config.Ropsten, alchemyAPIKey)
+	cfg := config.GetConfig(config.Sandbox, alchemyAPIKey)
 	ethClient, err := ethereum.NewEthereumClientAndAttachContracts(ctx, &cfg, ethereum.DefaultGasParams)
 	if err != nil {
 		log.Panicf("error dialing ethereum client: %v\n", err)
@@ -78,7 +78,9 @@ func main() {
 	// transfers.Demo_BatchTransferWorkflow(ctx, apiClient, l1signer, l2signer)
 
 	// Withdrawls Demo
-	// Will need to prepare withdrawal first and wait for to be ready to complete the withdrawal.
+	// After prepare withdrawal workflow is performed. Must wait for getWithdrawal endpoint
+	// https://docs.x.immutable.com/reference/#/operations/getWithdrawal to return "rollup_status": "confirmed"
+	// before calling complete withdrawal workflow.
 	withdrawals.DemoPrepareEthWithdrawalWorkflow(ctx, apiClient, envs["DW_ETH_AMOUNT"], l1signer, l2signer)
 	withdrawals.DemoPrepareERC20WithdrawalWorkflow(ctx, apiClient, envs["DW_ERC20TOKEN_ADDRESS"], l1signer, l2signer)
 	withdrawals.DemoPrepareERC721WithdrawalWorkflow(ctx,

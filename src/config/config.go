@@ -11,20 +11,13 @@ type Network int
 
 // The order of this enum should match with the order specified in the OpenApi Spec document.
 const (
-	// Dev     Network = iota // Dev testing network
-	Ropsten = iota // Staging network
+	Sandbox = iota // Sandbox network
 	MainNet        // Production network
 )
 
 func getBaseConfigs() map[Network]Config {
 	return map[Network]Config{
-		// Dev: {
-		// 	EthereumClientEndpoint:      "https://eth-goerli.g.alchemy.com/v2/",
-		// 	CoreAPIEndpoint:             "https://api.dev.x.immutable.com",
-		// 	RegistrationContractAddress: "0x2F76E4e48A5f9e517765B70a4DEc67781d35A199",
-		// 	StarkContractAddress:        "0x3e6e01355bB66925a65D372bf9c9f3835d9964fA",
-		// },
-		Ropsten: {
+		Sandbox: {
 			EthereumClientEndpoint:      "https://eth-ropsten.alchemyapi.io/v2/",
 			CoreAPIEndpoint:             "https://api.ropsten.x.immutable.com",
 			RegistrationContractAddress: "0x6C21EC8DE44AE44D0992ec3e2d9f1aBb6207D864",
