@@ -1,7 +1,7 @@
 package types
 
 import (
-	"immutable.com/imx-core-sdk-golang/api/models"
+	"immutable.com/imx-core-sdk-golang/api"
 )
 
 type GetSignableBurnRequest struct {
@@ -10,5 +10,5 @@ type GetSignableBurnRequest struct {
 	// Ethereum address of the user
 	Sender string
 	// Token to burn
-	Token *models.SignableToken
+	Token *api.SignableToken
 }

@@ -5,9 +5,7 @@ import (
 	"fmt"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"immutable.com/imx-core-sdk-golang/api/client"
-	"immutable.com/imx-core-sdk-golang/api/client/trades"
-	"immutable.com/imx-core-sdk-golang/api/models"
+	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/signers"
 )
 
@@ -15,55 +13,50 @@ import (
 // https://docs.x.immutable.com/reference#/operations/createTrade
 func CreateTrade(
 	ctx context.Context,
-	api *client.ImmutableXAPI,
+	apiClient *api.APIClient,
 	l1signer signers.L1Signer,
 	l2signer signers.L2Signer,
-	request models.GetSignableTradeRequest,
-) (*models.CreateTradeResponse, error) {
+	request api.GetSignableTradeRequest,
+) (*api.CreateTradeResponse, error) {
 	ethAddress := l1signer.GetAddress()
-
-	request.User = &ethAddress
-	getSignableTradeParams := trades.NewGetSignableTradeParamsWithContext(ctx)
-	getSignableTradeParams.SetGetSignableTradeRequest(&request)
-	getSignableTradeOk, err := api.Trades.GetSignableTrade(getSignableTradeParams)
+	request.User = ethAddress
+	signableTrade, httpResponse, err := apiClient.TradesApi.GetSignableTrade(ctx).GetSignableTradeRequest(request).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `Trades.GetSignableTrade`: %v", err)
+		return nil, fmt.Errorf("error when calling `TradesApi.GetSignableTrade`: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
-	signableTrade := getSignableTradeOk.GetPayload()
 
-	ethSignature, err := l1signer.SignMessage(*signableTrade.SignableMessage)
+	ethSignature, err := l1signer.SignMessage(signableTrade.SignableMessage)
 	if err != nil {
 		return nil, fmt.Errorf("error generating EthSignature from SignableMessage: %v", err)
 	}
 	ethSignatureEncodedInHex := hexutil.Encode(ethSignature)
 
-	starkSignature, err := l2signer.SignMessage(*signableTrade.PayloadHash)
+	starkSignature, err := l2signer.SignMessage(signableTrade.PayloadHash)
 	if err != nil {
 		return nil, fmt.Errorf("error generating StarkSignature from PayloadHash: %v", err)
 	}
 
-	createTradeParams := trades.NewCreateTradeParamsWithContext(ctx)
-	createTradeParams.SetCreateTradeRequest(&models.CreateTradeRequestV1{
-		AmountBuy:           signableTrade.AmountBuy,
-		AmountSell:          signableTrade.AmountSell,
-		AssetIDBuy:          signableTrade.AssetIDBuy,
-		AssetIDSell:         signableTrade.AssetIDSell,
-		ExpirationTimestamp: signableTrade.ExpirationTimestamp,
-		FeeInfo:             signableTrade.FeeInfo,
-		Fees:                request.Fees,
-		IncludeFees:         true,
-		Nonce:               signableTrade.Nonce,
-		OrderID:             request.OrderID,
-		StarkKey:            signableTrade.StarkKey,
-		StarkSignature:      &starkSignature,
-		VaultIDBuy:          signableTrade.VaultIDBuy,
-		VaultIDSell:         signableTrade.VaultIDSell,
-	})
-	createTradeParams.SetXImxEthAddress(&ethAddress)
-	createTradeParams.SetXImxEthSignature(&ethSignatureEncodedInHex)
-	tradeResponseOK, err := api.Trades.CreateTrade(createTradeParams)
+	includeFees := true
+	createTradeResponse, httpResponse, err := apiClient.TradesApi.CreateTrade(ctx).
+		CreateTradeRequest(api.CreateTradeRequestV1{
+			AmountBuy:           signableTrade.AmountBuy,
+			AmountSell:          signableTrade.AmountSell,
+			AssetIdBuy:          signableTrade.AssetIdBuy,
+			AssetIdSell:         signableTrade.AssetIdSell,
+			ExpirationTimestamp: signableTrade.ExpirationTimestamp,
+			FeeInfo:             signableTrade.FeeInfo,
+			Fees:                request.Fees,
+			IncludeFees:         &includeFees,
+			Nonce:               signableTrade.Nonce,
+			OrderId:             request.OrderId,
+			StarkKey:            signableTrade.StarkKey,
+			StarkSignature:      starkSignature,
+			VaultIdBuy:          signableTrade.VaultIdBuy,
+			VaultIdSell:         signableTrade.VaultIdSell,
+		}).
+		XImxEthAddress(ethAddress).XImxEthSignature(ethSignatureEncodedInHex).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `Trades.CreateTrade`: %v", err)
+		return nil, fmt.Errorf("error when calling `TradesApi.CreateTrade`: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
-	return tradeResponseOK.GetPayload(), nil
+	return createTradeResponse, nil
 }
