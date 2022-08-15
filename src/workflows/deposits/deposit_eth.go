@@ -8,32 +8,33 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	eth "github.com/ethereum/go-ethereum/core/types"
-	"immutable.com/imx-core-sdk-golang/api/client"
+	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/signers"
+	"immutable.com/imx-core-sdk-golang/tokens"
 	"immutable.com/imx-core-sdk-golang/utils"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
+	"immutable.com/imx-core-sdk-golang/workflows/encode"
 	"immutable.com/imx-core-sdk-golang/workflows/registration"
-	helpers "immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
 // Deposit performs the deposit workflow on the ETHDeposit.
-func (d *ETHDeposit) Deposit(ctx context.Context, ethClient *ethereum.Client, api *client.ImmutableXAPI, l1signer signers.L1Signer) (*eth.Transaction, error) {
+func (d *ETHDeposit) Deposit(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, l1signer signers.L1Signer) (*eth.Transaction, error) {
 	amount, err := utils.ParseEtherToWei(d.Amount)
 	if err != nil {
 		return nil, fmt.Errorf("error when parsing deposit amount: %v", err)
 	}
-	signableDepositRequest := NewSignableDepositRequestForEth(amount.String(), l1signer.GetAddress())
-	signableDeposit, err := GetSignableDeposit(ctx, api.Deposits, signableDepositRequest)
+	signableDepositRequest := newSignableDepositRequestForEth(amount.String(), l1signer.GetAddress())
+	signableDeposit, err := getSignableDeposit(ctx, clientAPI.DepositsApi, signableDepositRequest)
 	if err != nil {
 		return nil, err
 	}
 
-	assetType, err := helpers.GetEncodedAssetTypeForEth(ctx, api)
+	assetType, err := encode.GetEncodedAssetTypeForEth(ctx, clientAPI.EncodingApi)
 	if err != nil {
 		return nil, err
 	}
 
-	starkKeyHex := *signableDeposit.StarkKey
+	starkKeyHex := signableDeposit.StarkKey
 	starkKey, err := utils.HexToInt(starkKeyHex)
 	if err != nil {
 		return nil, fmt.Errorf("error converting StarkKey to bigint: %s", starkKeyHex)
@@ -44,24 +45,31 @@ func (d *ETHDeposit) Deposit(ctx context.Context, ethClient *ethereum.Client, ap
 	// we should swallow this error to allow the register and deposit flow to execute.
 
 	if isRegistered {
-		return depositEth(ctx, ethClient, l1signer, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, amount)
+		return depositEth(ctx, ethClient, l1signer, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, amount)
 	}
-	return registerAndDepositEth(ctx, ethClient, l1signer, api, starkKeyHex, starkKey, big.NewInt(*signableDeposit.VaultID), assetType, amount)
+	return registerAndDepositEth(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, amount)
+}
+
+func newSignableDepositRequestForEth(amount, user string) *api.GetSignableDepositRequest {
+	return &api.GetSignableDepositRequest{
+		Amount: amount,
+		Token:  *tokens.NewSignableTokenEth(),
+		User:   user,
+	}
 }
 
 func registerAndDepositEth(
 	ctx context.Context,
 	ethClient *ethereum.Client,
 	l1signer signers.L1Signer,
-	api *client.ImmutableXAPI,
+	usersAPI api.UsersApi,
 	starkKeyHex string,
 	starkKey *big.Int,
 	vaultID *big.Int,
 	assetType *big.Int,
-	amount *big.Int,
-) (*eth.Transaction, error) {
+	amount *big.Int) (*eth.Transaction, error) {
 	etherKey := l1signer.GetAddress()
-	signableRegistration, err := registration.GetSignableRegistrationOnchain(ctx, api, etherKey, starkKeyHex)
+	signableRegistration, err := registration.GetSignableRegistrationOnchain(ctx, usersAPI, etherKey, starkKeyHex)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +79,7 @@ func registerAndDepositEth(
 		return nil, err
 	}
 
-	operatorSignature, err := utils.HexToByteArray(*signableRegistration.OperatorSignature)
+	operatorSignature, err := utils.HexToByteArray(signableRegistration.OperatorSignature)
 	if err != nil {
 		return nil, err
 	}
@@ -97,8 +105,7 @@ func depositEth(
 	starkPublicKey *big.Int,
 	vaultID *big.Int,
 	assetType *big.Int,
-	amount *big.Int,
-) (*eth.Transaction, error) {
+	amount *big.Int) (*eth.Transaction, error) {
 	auth, err := ethClient.BuildTransactOpts(ctx, l1signer)
 	auth.Value = amount
 	if err != nil {

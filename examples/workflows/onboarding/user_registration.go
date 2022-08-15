@@ -6,21 +6,22 @@ import (
 	"log"
 
 	"immutable.com/imx-core-sdk-golang/api"
+	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/signers/stark"
 	"immutable.com/imx-core-sdk-golang/workflows/registration"
 )
 
-func DemoUserRegistrationWorkflow(ctx context.Context, apiClient api.UsersApi, l1signer signers.L1Signer) {
+func DemoUserRegistrationWorkflow(ctx context.Context, usersAPI api.UsersApi, l1signer signers.L1Signer) {
 	log.Println("-------------------------------------------------------")
-	log.Println("Running Demo_UserRegistrationWorkflow")
+	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
 	l2signer, err := stark.GenerateStarkSigner(l1signer)
 	if err != nil {
 		log.Panicf("error in creating StarkSigner: %v\n", err)
 	}
 
-	response, err := registration.RegisterOffchain(ctx, apiClient, l1signer, l2signer, "")
+	response, err := registration.RegisterOffchain(ctx, usersAPI, l1signer, l2signer, "")
 	if err != nil {
 		log.Panicf("error in creating StarkSigner: %v\n", err)
 	}
@@ -31,12 +32,13 @@ func DemoUserRegistrationWorkflow(ctx context.Context, apiClient api.UsersApi, l
 	}
 	log.Println("registration success, response: ", string(val))
 
-	accounts, err := registration.IsRegisteredOffChain(ctx, apiClient, l1signer.GetAddress())
+	// Get the accounts registered on offchain.
+	usersResponse, httpResp, err := usersAPI.GetUsers(ctx, l1signer.GetAddress()).Execute()
 	if err != nil {
-		log.Panicf("error in IsRegisteredOffChain function: %v\n", err)
+		log.Panicf("error when calling `usersAPI.GetUsers: %v, HTTP response body: %v", err, httpResp.Body)
 	}
-	log.Println("registered accounts: ", accounts)
+	log.Println("registered accounts: ", usersResponse.GetAccounts())
 
-	log.Println("Running DemoUserRegistrationWorkflow completed.")
+	log.Printf("Running %s completed.", utils.GetCurrentFunctionName())
 	log.Println("-------------------------------------------------------")
 }
