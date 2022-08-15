@@ -60,7 +60,7 @@ func main() {
 	// }
 
 	onboarding.DemoUserRegistrationWorkflow(ctx, apiClient.UsersApi, l1signer)
-	minting.DemoMintingTokens(ctx, apiClient.MintsApi, l1signer, envs["TOKEN_ID"], envs["TOKEN_ADDRESS"])
+	minting.DemoMintingTokens(ctx, apiClient.MintsApi, l1signer, envs["MINT_TOKEN_ID"], envs["MINT_TOKEN_ADDRESS"])
 
 	// deposits.Demo_DepositWorkflow(ctx, ethClient, apiClient, l1signer)
 	// trades.Demo_TradesWorkflow(ctx, apiClient, l1signer, l2signer)
