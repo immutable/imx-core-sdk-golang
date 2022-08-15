@@ -4,13 +4,12 @@ import (
 	"context"
 	"log"
 
-	"immutable.com/imx-core-sdk-golang/api/client"
-	"immutable.com/imx-core-sdk-golang/api/models"
+	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
 	"immutable.com/imx-core-sdk-golang/signers"
+	"immutable.com/imx-core-sdk-golang/tokens"
 	converters "immutable.com/imx-core-sdk-golang/utils"
 	ordersWorkflow "immutable.com/imx-core-sdk-golang/workflows/orders"
-	coreUtils "immutable.com/imx-core-sdk-golang/workflows/utils"
 )
 
 const (
@@ -18,28 +17,25 @@ const (
 	tokenID      = "" // Provide the token id being listed for sale.
 )
 
-func Demo_OrdersWorkflow(ctx context.Context, apiClient *client.ImmutableXAPI, l1signer signers.L1Signer, l2signer signers.L2Signer) {
+func DemoOrdersWorkflow(ctx context.Context, apiClient *api.APIClient, l1signer signers.L1Signer, l2signer signers.L2Signer) {
 	log.Println("-------------------------------------------------------")
-	fnName := utils.GetCurrentFunctionName()
-	log.Println("Running ", fnName)
+	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
 	// The amount (listing price) should be in Wei for Eth tokens, see https://docs.starkware.co/starkex-v4/starkex-deep-dive/starkex-specific-concepts
 	// and https://eth-converter.com/
-	amountInt, _ := converters.ToUnquantized("0.3", converters.EtherDecimals)
-	amountBuy := amountInt.String()
-	amountSell := "1"                                                    // Quantity to list for sale
-	ethAddress := l1signer.GetAddress()                                  // Address of the user listing for sale.
-	sellToken := coreUtils.NewSignableTokenERC721(tokenID, tokenAddress) // NFT Token
-	buyToken := coreUtils.NewSignableTokenEth()                          // The listed asset can be bought with Ethereum
-	createOrderRequest := models.GetSignableOrderRequest{
-		AmountBuy:           &amountBuy,
-		AmountSell:          &amountSell,
-		ExpirationTimestamp: 0,
-		Fees:                nil,
-		TokenBuy:            buyToken,
-		TokenSell:           sellToken,
-		User:                &ethAddress,
+	amountBuy, _ := converters.ToUnquantized("0.3", converters.EtherDecimals)
+	ethAddress := l1signer.GetAddress()                               // Address of the user listing for sale.
+	sellToken := tokens.NewSignableTokenERC721(tokenID, tokenAddress) // NFT Token
+	buyToken := tokens.NewSignableTokenEth()                          // The listed asset can be bought with Ethereum
+	createOrderRequest := api.GetSignableOrderRequest{
+		AmountBuy:  amountBuy.String(),
+		AmountSell: "1",
+		Fees:       nil,
+		TokenBuy:   *buyToken,
+		TokenSell:  *sellToken,
+		User:       ethAddress,
 	}
+	createOrderRequest.SetExpirationTimestamp(0)
 
 	// Create order will list the given asset for sale.
 	createOrderResponse, err := ordersWorkflow.CreateOrder(ctx, apiClient, l1signer, l2signer, createOrderRequest)
@@ -53,8 +49,8 @@ func Demo_OrdersWorkflow(ctx context.Context, apiClient *client.ImmutableXAPI, l
 	}
 	log.Printf("CreateOrder response:\n%v\n", createOrderResponseStr)
 
-	cancelOrderRequest := models.GetSignableCancelOrderRequest{
-		OrderID: createOrderResponse.OrderID,
+	cancelOrderRequest := api.GetSignableCancelOrderRequest{
+		OrderId: createOrderResponse.OrderId,
 	}
 
 	// Cancel Order removes the listed asset from sale. Let's remove the above listed asset from sale.
@@ -69,6 +65,6 @@ func Demo_OrdersWorkflow(ctx context.Context, apiClient *client.ImmutableXAPI, l
 	}
 	log.Printf("CancelOrder response:\n%v\n", cancelOrderResponseStr)
 
-	log.Println("Running Demo_OrdersWorkflow completed")
+	log.Printf("Running %s completed.", utils.GetCurrentFunctionName())
 	log.Println("-------------------------------------------------------")
 }

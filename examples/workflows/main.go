@@ -72,10 +72,10 @@ func main() {
 	deposits.DemoDepositERC20Workflow(ctx, ethClient, apiClient, envs["DW_ERC20_AMOUNT"], envs["DW_ERC20TOKEN_ADDRESS"], l1signer)
 	deposits.DemoDepositERC721Workflow(ctx, ethClient, apiClient, envs["DW_ERC721TOKEN_ID"], envs["DW_ERC721TOKEN_ADDRESS"], l1signer)
 
-	// trades.Demo_TradesWorkflow(ctx, apiClient, l1signer, l2signer)
-	// burn.Demo_BurnWorkflow(ctx, apiClient, l1signer, l2signer)
-	// transfers.Demo_TransferWorkflow(ctx, apiClient, l1signer, l2signer)
-	// transfers.Demo_BatchTransferWorkflow(ctx, apiClient, l1signer, l2signer)
+	// trades.DemoTradesWorkflow(ctx, apiClient, l1signer, l2signer)
+	// burn.DemoBurnWorkflow(ctx, apiClient, l1signer, l2signer)
+	// transfers.DemoTransferWorkflow(ctx, apiClient, l1signer, l2signer)
+	// transfers.DemoBatchTransferWorkflow(ctx, apiClient, l1signer, l2signer)
 
 	// Withdrawls Demo
 	// After prepare withdrawal workflow is performed. Must wait for getWithdrawal endpoint
@@ -101,5 +101,5 @@ func main() {
 		l1signer,
 		l2signer)
 
-	// orders.Demo_OrdersWorkflow(ctx, apiClient, l1signer, l2signer)
+	//orders.DemoOrdersWorkflow(ctx, apiClient, l1signer, l2signer)
 }
