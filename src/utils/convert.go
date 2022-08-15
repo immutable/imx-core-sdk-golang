@@ -7,6 +7,9 @@ import (
 	"math/big"
 )
 
+// Ether is expressed in 18 decimals
+const EtherDecimals = 18
+
 // TrimHexPrefix removes the prefix `0x` from the given hex string.
 func TrimHexPrefix(hexString string) (string, error) {
 	if len(hexString) < 2 {
@@ -47,11 +50,11 @@ func ToUnquantized(amount string, decimals int) (*big.Int, error) {
 	mul := decimal.NewFromFloat(float64(10)).Pow(decimal.NewFromFloat(float64(decimals)))
 	result := amountInDecimals.Mul(mul)
 
-	denomination := new(big.Int)
-	denomination, ok := denomination.SetString(result.String(), 10)
+	unquantizedValue := new(big.Int)
+	unquantizedValue, ok := unquantizedValue.SetString(result.String(), 10)
 	if !ok {
 		return nil, fmt.Errorf("failed to convert amount to big.Int")
 	}
 
-	return denomination, nil
+	return unquantizedValue, nil
 }

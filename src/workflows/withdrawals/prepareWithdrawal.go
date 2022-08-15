@@ -42,7 +42,7 @@ func PrepareEthWithdrawal(
 	l2signer signers.L2Signer,
 	request api.GetSignableWithdrawalRequest) (*api.CreateWithdrawalResponse, error) {
 	// Convert Eth Amount to unquantized value.
-	amountInt, err := utils.ToUnquantized(request.Amount, 18)
+	amountInt, err := utils.ToUnquantized(request.Amount, utils.EtherDecimals)
 	if err != nil {
 		return nil, err
 	}
