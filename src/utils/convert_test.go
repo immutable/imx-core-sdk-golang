@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestToUnquantized(t *testing.T) {
+func TestToDenomination(t *testing.T) {
 	type fields struct {
 		amount   string
 		decimals int
@@ -54,7 +54,7 @@ func TestToUnquantized(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			actual, err := ToUnquantized(tt.fields.amount, tt.fields.decimals)
+			actual, err := ToDenomination(tt.fields.amount, tt.fields.decimals)
 			assert.Nil(t, err)
 			assert.Equal(t, tt.want, actual.String())
 		})

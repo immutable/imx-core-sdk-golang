@@ -27,7 +27,7 @@ func DemoBurnWorkflow(ctx context.Context, apiClient *api.APIClient, l1signer si
 
 	/*
 		signableToken := tokens.NewSignableTokenERC20(18, "0x73f99ca65b1a0aef2d4591b1b543d789860851bf")
-		ftcToBurn, _ := converters.ToUnquantized(".025", 18)
+		ftcToBurn, _ := converters.ToDenomination(".025", 18)
 		burnRequest := types.GetSignableBurnRequest{
 			 Amount: ftcToBurn.String(),
 			 Sender: l1signer.GetAddress(),

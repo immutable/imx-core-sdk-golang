@@ -23,7 +23,7 @@ func DemoOrdersWorkflow(ctx context.Context, apiClient *api.APIClient, l1signer 
 
 	// The amount (listing price) should be in Wei for Eth tokens, see https://docs.starkware.co/starkex-v4/starkex-deep-dive/starkex-specific-concepts
 	// and https://eth-converter.com/
-	amountBuy, _ := converters.ToUnquantized("0.3", converters.EtherDecimals)
+	amountBuy, _ := converters.ToDenomination("0.3", converters.EtherDecimals)
 	ethAddress := l1signer.GetAddress()                               // Address of the user listing for sale.
 	sellToken := tokens.NewSignableTokenERC721(tokenID, tokenAddress) // NFT Token
 	buyToken := tokens.NewSignableTokenEth()                          // The listed asset can be bought with Ethereum
