@@ -36,10 +36,10 @@ A configuration object is required to setup the environment for which the Core S
 
 Select one of the following Ethereum networks Immutable X platform currently supports.
 
-| Environment | Description          |  
-|-------------|----------------------|
-| Sandbox     | Ropsten Test Network |
-| Mainnet     | Production           | 
+| Environment | Description   |  
+|-------------|---------------|
+| Sandbox     | Test Network  |
+| Mainnet     | Production    | 
 
 ```golang
 import "immutable.com/imx-core-sdk-golang/config"
