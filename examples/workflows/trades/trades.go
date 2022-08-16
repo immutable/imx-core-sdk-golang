@@ -17,7 +17,7 @@ func DemoTradesWorkflow(ctx context.Context, apiClient *api.APIClient, l1signer 
 
 	tradeRequest := api.GetSignableTradeRequest{
 		Fees:    nil,
-		OrderId: 0, // Requires orders workflow to generate an order id
+		OrderId: 0, // Order ID to execute the trade on.
 	}
 	tradeRequest.SetExpirationTimestamp(0)
 	tradeResponse, err := tradesWorkflow.CreateTrade(ctx, apiClient, l1signer, l2signer, tradeRequest)

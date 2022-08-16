@@ -25,6 +25,25 @@ func DemoBurnWorkflow(ctx context.Context, apiClient *api.APIClient, l1signer si
 		Token:  signableToken,
 	}
 
+	/*
+		signableToken := tokens.NewSignableTokenERC20(18, "0x73f99ca65b1a0aef2d4591b1b543d789860851bf")
+		ftcToBurn, _ := converters.ToUnquantized(".025", 18)
+		burnRequest := types.GetSignableBurnRequest{
+			 Amount: ftcToBurn.String(),
+			 Sender: l1signer.GetAddress(),
+			 Token:  signableToken,
+		}
+	*/
+
+	/*
+		signableToken := tokens.NewSignableTokenERC721("token id to burn", "token contract address")
+		burnRequest := types.GetSignableBurnRequest{
+			 Amount: "1",
+			 Sender: l1signer.GetAddress(),
+			 Token:  signableToken,
+		}
+	*/
+
 	burnResponse, err := burnWorkflow.Burn(ctx, apiClient, l1signer, l2signer, burnRequest)
 	if err != nil {
 		log.Panicf("error calling burn workflow: %v", err)
