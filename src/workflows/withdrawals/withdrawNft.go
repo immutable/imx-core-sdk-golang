@@ -48,7 +48,7 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 	isRegistered, _ := ethClient.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	// Note: if we reach here, it means we are registered off-chain.
 	// Above call will return an error user is not registered but this is for on-chain
-	// we should swallow this error to allow the register and deposit flow to execute.
+	// we should swallow this error to allow the register and withdraw flow to execute.
 
 	if isRegistered {
 		return withdrawAndMintNft(ctx, ethClient, l1signer, starkKey, assetType, mintingBlob)
