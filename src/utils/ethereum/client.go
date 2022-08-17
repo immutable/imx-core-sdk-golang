@@ -222,7 +222,7 @@ func (e *Client) EstimateGasPrice(ctx context.Context) (*big.Int, error) {
 	defer cancel()
 
 	if e.EGSAPIKey != "" {
-		price, err := FetchGasPrice(e.EGSAPIKey, e.EGSSpeed)
+		price, err := fetchGasPrice(e.EGSAPIKey, e.EGSSpeed)
 		if err != nil {
 			// log? - ignore for now and use node price
 		} else {

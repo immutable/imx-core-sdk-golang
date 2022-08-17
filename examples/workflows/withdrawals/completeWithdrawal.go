@@ -4,39 +4,58 @@ import (
 	"context"
 	"log"
 
-	"immutable.com/imx-core-sdk-golang/api/client"
+	"immutable.com/imx-core-sdk-golang/api"
+	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/utils/ethereum"
 	withdrawalsWorkflow "immutable.com/imx-core-sdk-golang/workflows/withdrawals"
 )
 
-func Demo_CompleteWithdrawalWorkflow(ctx context.Context, ethClient *ethereum.Client, api *client.ImmutableXAPI, l1signer signers.L1Signer, l2signer signers.L2Signer) {
+// DemoCompleteEthWithdrawalWorkflow contains sample code for completing withdrawal of Eth tokens
+func DemoCompleteEthWithdrawalWorkflow(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, l1signer signers.L1Signer, l2signer signers.L2Signer) {
 	log.Println("-------------------------------------------------------")
-	log.Println("Running Demo_CompleteWithdrawalWorkflow")
+	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
-	transaction, err := withdrawalsWorkflow.CompleteEthWithdrawal(ctx, ethClient, api, l1signer, l2signer.GetAddress())
+	transaction, err := withdrawalsWorkflow.CompleteEthWithdrawal(ctx, ethClient, clientAPI, l1signer, l2signer.GetAddress())
+	if err != nil {
+		log.Panicf("error calling withdrawalsWorkflow.CompleteEthWithdrawal workflow: %v", err)
+	}
+	log.Println("transaction hash:", transaction.Hash())
 
-	/*
-		// Uncomment for ERC20
-		tokenId := "ERC20 Token Id Here"
-		tokenAddress := "ERC20 Token Address Here"
-		erc20Withdrawal := withdrawalsWorkflow.NewERC20Withdrawal(tokenId, tokenAddress)
-		transaction, err = erc20Withdrawal.CompleteWithdrawal(ctx, ethClient, api, l1signer, l2signer.GetAddress())
-	*/
+	log.Printf("Running %s completed.", utils.GetCurrentFunctionName())
+	log.Println("-------------------------------------------------------")
+}
 
-	/*
-		// Uncomment for ERC721
-		tokenId := "ERC721 Token Id Here"
-		tokenAddress := "ERC721 Token Address Here"
-		erc721Withdrawal := withdrawalsWorkflow.NewERC721Withdrawal(tokenId, tokenAddress)
-		transaction, err = erc721Withdrawal.CompleteWithdrawal(ctx, ethClient, api, l1signer, l2signer.GetAddress())
-	*/
+// DemoCompleteERC20WithdrawalWorkflow contains sample code for completing withdrawal of ERC20 tokens
+func DemoCompleteERC20WithdrawalWorkflow(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, tokenAddress string, l1signer signers.L1Signer, l2signer signers.L2Signer) {
+	log.Println("-------------------------------------------------------")
+	log.Printf("Running %s", utils.GetCurrentFunctionName())
+
+	erc20Withdrawal := withdrawalsWorkflow.NewERC20Withdrawal(tokenAddress)
+	transaction, err := erc20Withdrawal.CompleteWithdrawal(ctx, ethClient, clientAPI, l1signer, l2signer.GetAddress())
 
 	if err != nil {
 		log.Panicf("error calling complete withdrawal workflow: %v", err)
 	}
 	log.Println("transaction hash:", transaction.Hash())
 
-	log.Println("Running Demo_CompleteWithdrawalWorkflow completed")
+	log.Printf("Running %s completed.", utils.GetCurrentFunctionName())
+	log.Println("-------------------------------------------------------")
+}
+
+// DemoCompleteERC721WithdrawalWorkflow contains sample code for completing withdrawal of ERC721 tokens
+func DemoCompleteERC721WithdrawalWorkflow(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, tokenId, tokenAddress string, l1signer signers.L1Signer, l2signer signers.L2Signer) {
+	log.Println("-------------------------------------------------------")
+	log.Printf("Running %s", utils.GetCurrentFunctionName())
+
+	erc721Withdrawal := withdrawalsWorkflow.NewERC721Withdrawal(tokenId, tokenAddress)
+	transaction, err := erc721Withdrawal.CompleteWithdrawal(ctx, ethClient, clientAPI, l1signer, l2signer.GetAddress())
+
+	if err != nil {
+		log.Panicf("error calling complete withdrawal workflow: %v", err)
+	}
+	log.Println("transaction hash:", transaction.Hash())
+
+	log.Printf("Running %s completed.", utils.GetCurrentFunctionName())
 	log.Println("-------------------------------------------------------")
 }

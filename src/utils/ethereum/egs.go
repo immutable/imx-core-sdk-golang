@@ -34,7 +34,7 @@ type gasPriceResponse struct {
 }
 
 // FetchGasPrice will query EGS for the current gas prices and return the price for the specified speed.
-func FetchGasPrice(apiKey, speed string) (*big.Int, error) {
+func fetchGasPrice(apiKey, speed string) (*big.Int, error) {
 	var gsnURL = "https://ethgasstation.info/api/ethgasAPI.json?api-key=" + apiKey
 
 	for i := 0; i < Retries; i++ {
