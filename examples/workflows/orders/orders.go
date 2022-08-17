@@ -23,7 +23,8 @@ func Demo_OrdersWorkflow(ctx context.Context, apiClient *client.ImmutableXAPI, l
 	fnName := utils.GetCurrentFunctionName()
 	log.Println("Running ", fnName)
 
-	// Unquantized amount (listing price). See https://immutable.atlassian.net/wiki/spaces/PPS/pages/1895629681/Quantisation+Cheat+Sheet
+	// The amount (listing price) should be in Wei for Eth tokens, see https://docs.starkware.co/starkex-v4/starkex-deep-dive/starkex-specific-concepts
+	// and https://eth-converter.com/
 	amountInt, _ := converters.ToUnquantized("0.3", converters.EtherDecimals)
 	amountBuy := amountInt.String()
 	amountSell := "1"                                                    // Quantity to list for sale
