@@ -31,7 +31,7 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client, 
 	if err != nil {
 		return nil, fmt.Errorf("error parsing token decimals: %v", err)
 	}
-	amount, err := utils.ToUnquantized(d.Amount, decimals)
+	amount, err := utils.ToDenomination(d.Amount, decimals)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +75,7 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client, 
 	// we should swallow this error to allow the register and deposit flow to execute.
 
 	quantizedAmount, success := new(big.Int).SetString(signableDepositResponse.Amount, 10)
-	if success != true {
+	if !success {
 		return nil, fmt.Errorf("error converting string value '%s' to bigint", signableDepositResponse.Amount)
 	}
 

@@ -3,11 +3,12 @@ package utils
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/shopspring/decimal"
 	"math/big"
+
+	"github.com/shopspring/decimal"
 )
 
-// Ether is expressed in 18 decimals
+// EtherDecimals for Ether is expressed in 18 decimals
 const EtherDecimals = 18
 
 // TrimHexPrefix removes the prefix `0x` from the given hex string.
@@ -39,9 +40,9 @@ func HexToByteArray(hexString string) ([]byte, error) {
 	return hex.DecodeString(hexString)
 }
 
-// ToUnquantized converts amount to denomination based on decimals.
+// ToDenomination converts amount to denomination based on decimals.
 // e.g. set decimals to 18 to convert amount in eth to wei.
-func ToUnquantized(amount string, decimals int) (*big.Int, error) {
+func ToDenomination(amount string, decimals int) (*big.Int, error) {
 	amountInDecimals, err := decimal.NewFromString(amount)
 	if err != nil {
 		return nil, err
@@ -50,11 +51,11 @@ func ToUnquantized(amount string, decimals int) (*big.Int, error) {
 	mul := decimal.NewFromFloat(float64(10)).Pow(decimal.NewFromFloat(float64(decimals)))
 	result := amountInDecimals.Mul(mul)
 
-	unquantizedValue := new(big.Int)
-	unquantizedValue, ok := unquantizedValue.SetString(result.String(), 10)
+	denomination := new(big.Int)
+	denomination, ok := denomination.SetString(result.String(), 10)
 	if !ok {
 		return nil, fmt.Errorf("failed to convert amount to big.Int")
 	}
 
-	return unquantizedValue, nil
+	return denomination, nil
 }

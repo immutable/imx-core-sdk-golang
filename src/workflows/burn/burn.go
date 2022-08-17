@@ -4,9 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"immutable.com/imx-core-sdk-golang/api/client"
-	"immutable.com/imx-core-sdk-golang/api/client/transfers"
-	"immutable.com/imx-core-sdk-golang/api/models"
+	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/signers"
 	transfersWorkflow "immutable.com/imx-core-sdk-golang/workflows/transfers"
 	"immutable.com/imx-core-sdk-golang/workflows/types"
@@ -21,28 +19,26 @@ const BurnAddress = "0x0000000000000000000000000000000000000000"
 // Using the transfer functions with the burn address as a recipient will also work just the same.
 func Burn(
 	ctx context.Context,
-	api *client.ImmutableXAPI,
+	apiClient *api.APIClient,
 	l1signer signers.L1Signer,
 	l2signer signers.L2Signer,
 	request types.GetSignableBurnRequest,
-) (*models.CreateTransferResponseV1, error) {
+) (*api.CreateTransferResponseV1, error) {
 	burnAddress := BurnAddress
-	transferRequest := models.GetSignableTransferRequestV1{
-		Amount:   &request.Amount,
-		Sender:   &request.Sender,
-		Token:    request.Token,
-		Receiver: &burnAddress,
+	transferRequest := api.GetSignableTransferRequestV1{
+		Amount:   request.Amount,
+		Sender:   request.Sender,
+		Token:    *request.Token,
+		Receiver: burnAddress,
 	}
-	return transfersWorkflow.CreateTransfer(ctx, api, l1signer, l2signer, transferRequest)
+	return transfersWorkflow.CreateTransfer(ctx, apiClient, l1signer, l2signer, transferRequest)
 }
 
 // GetBurn returns the status of the transfer given the transferID.
-func GetBurn(ctx context.Context, api *client.ImmutableXAPI, transferID string) (*models.Transfer, error) {
-	params := transfers.NewGetTransferParamsWithContext(ctx)
-	params.SetID(transferID)
-	response, err := api.Transfers.GetTransfer(params)
+func GetBurn(ctx context.Context, apiClient *api.APIClient, transferID string) (*api.Transfer, error) {
+	response, httpResponse, err := apiClient.TransfersApi.GetTransfer(ctx, transferID).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `Transfers.GetTransfer`: %v", err)
+		return nil, fmt.Errorf("error when calling `TransfersApi.GetTransfer`: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
-	return response.GetPayload(), nil
+	return response, nil
 }

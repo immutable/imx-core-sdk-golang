@@ -36,10 +36,10 @@ A configuration object is required to setup the environment for which the Core S
 
 Select one of the following Ethereum networks Immutable X platform currently supports.
 
-| Ethereum Network | Description  |  
-|------------------|--------------|
-| Ropsten          | Test Network |
-| Mainnet          | Production   | 
+| Environment | Description   |  
+|-------------|---------------|
+| Sandbox     | Test Network  |
+| Mainnet     | Production    | 
 
 ```golang
 import "immutable.com/imx-core-sdk-golang/config"
@@ -47,7 +47,7 @@ import "immutable.com/imx-core-sdk-golang/config"
 const alchemyAPIKey = "alchemy api key"
 
 func main() {
-   cfg := config.GetConfig(config.Ropsten, alchemyAPIKey)
+   cfg := config.GetConfig(config.Sandbox, alchemyAPIKey)
    ...
 }
 ```
@@ -99,7 +99,7 @@ import (
 func GetYourAsset(tokenID, tokenAddress string) (*api.Asset, error) {
     configuration := api.NewConfiguration()
     apiClient := api.NewAPIClient(configuration)
-    ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Ropsten)
+    ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
 
     getAssetResponse, httpResp, err := apiClient.AssetsApi.GetAsset(ctx, tokenAddress, tokenID).Execute()
     if err != nil {
@@ -133,7 +133,7 @@ func GetProjectOwnerAuthorisationHeaders(l1signer signers.L1Signer) (timestamp, 
 func CreateProject(l1signer signers.L1Signer, name, companyName, contactEmail string) (*api.CreateProjectResponse, error) {
     configuration := api.NewConfiguration()
     apiClient := api.NewAPIClient(configuration)
-    ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Ropsten)
+    ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
 
     timestamp, signature, err := GetProjectOwnerAuthorisationHeaders(l1signer)
     if err != nil {
@@ -185,7 +185,7 @@ The Core SDK provides interfaces for all smart contracts required to interact wi
 // This example is only to demonstrate using the generated smart contract clients
 // We recommend using the workflows to deposit NFT
 func DepositNft(l1signer signers.L1Signer, starkKey, assetType, vaultID, tokenID *big.Int) {
-   cfg := config.GetConfig(config.Ropsten, "alchemy api key")
+   cfg := config.GetConfig(config.Sandbox, "alchemy api key")
    client, err := ethclient.Dial(cfg.EthereumClientEndpoint)
    if err != nil {
       log.Panic(err)
@@ -218,7 +218,7 @@ A workflow is a combination of API and contract calls required for more complica
    // User registration workflow example
    configuration := api.NewConfiguration()
    apiClient := api.NewAPIClient(configuration)
-   ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Ropsten)
+   ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
 
    // Setup L1 signer
    l1signer, err := utils.NewBaseL1Signer(signerPrivateKey, chainID)

@@ -8,9 +8,13 @@ import (
 	"github.com/joho/godotenv"
 	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/config"
+	"immutable.com/imx-core-sdk-golang/examples/workflows/burn"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/deposits"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/minting"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/onboarding"
+	"immutable.com/imx-core-sdk-golang/examples/workflows/orders"
+	"immutable.com/imx-core-sdk-golang/examples/workflows/trades"
+	"immutable.com/imx-core-sdk-golang/examples/workflows/transfers"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
 	"immutable.com/imx-core-sdk-golang/examples/workflows/withdrawals"
 	"immutable.com/imx-core-sdk-golang/signers/stark"
@@ -18,7 +22,6 @@ import (
 )
 
 func main() {
-
 	var envs map[string]string
 	envs, err := godotenv.Read("../.env")
 	if err != nil {
@@ -36,7 +39,8 @@ func main() {
 	}
 	apiClient := api.NewAPIClient(configuration)
 
-	// Using context value to switch/specify the server before sending request. If nothing is specified, the default server will be used which will be first one in the open api spec list.
+	// Using context value to switch/specify the server before sending request.
+	// If nothing is specified, the default server will be used which will be first one in the open api spec list.
 	ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
 
 	cfg := config.GetConfig(config.Sandbox, alchemyAPIKey)
@@ -72,12 +76,12 @@ func main() {
 	deposits.DemoDepositERC20Workflow(ctx, ethClient, apiClient, envs["DW_ERC20_AMOUNT"], envs["DW_ERC20TOKEN_ADDRESS"], l1signer)
 	deposits.DemoDepositERC721Workflow(ctx, ethClient, apiClient, envs["DW_ERC721TOKEN_ID"], envs["DW_ERC721TOKEN_ADDRESS"], l1signer)
 
-	// trades.Demo_TradesWorkflow(ctx, apiClient, l1signer, l2signer)
-	// burn.Demo_BurnWorkflow(ctx, apiClient, l1signer, l2signer)
-	// transfers.Demo_TransferWorkflow(ctx, apiClient, l1signer, l2signer)
-	// transfers.Demo_BatchTransferWorkflow(ctx, apiClient, l1signer, l2signer)
+	trades.DemoTradesWorkflow(ctx, apiClient, l1signer, l2signer)
+	burn.DemoBurnWorkflow(ctx, apiClient, l1signer, l2signer)
+	transfers.DemoTransferWorkflow(ctx, apiClient, l1signer, l2signer)
+	transfers.DemoBatchTransferWorkflow(ctx, apiClient, l1signer, l2signer)
 
-	// Withdrawls Demo
+	// Withdrawals Demo
 	// After prepare withdrawal workflow is performed. Must wait for getWithdrawal endpoint
 	// https://docs.x.immutable.com/reference/#/operations/getWithdrawal to return "rollup_status": "confirmed"
 	// before calling complete withdrawal workflow.
@@ -101,5 +105,5 @@ func main() {
 		l1signer,
 		l2signer)
 
-	// orders.Demo_OrdersWorkflow(ctx, apiClient, l1signer, l2signer)
+	orders.DemoOrdersWorkflow(ctx, apiClient, l1signer, l2signer)
 }

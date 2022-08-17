@@ -19,7 +19,7 @@ import (
 
 // Deposit performs the deposit workflow on the ETHDeposit.
 func (d *ETHDeposit) Deposit(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, l1signer signers.L1Signer) (*eth.Transaction, error) {
-	amount, err := utils.ToUnquantized(d.Amount, utils.EtherDecimals)
+	amount, err := utils.ToDenomination(d.Amount, utils.EtherDecimals)
 	if err != nil {
 		return nil, fmt.Errorf("error when parsing deposit amount: %v", err)
 	}
