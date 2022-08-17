@@ -6,13 +6,11 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
+	"github.com/joho/godotenv"
 	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/config"
-)
-
-const (
-	AlchemyAPIKey = "Provide your alchemy API Key"
 )
 
 func PrettyStruct(data interface{}) (string, error) {
@@ -25,8 +23,18 @@ func PrettyStruct(data interface{}) (string, error) {
 
 func main() {
 
+	var envs map[string]string
+	envs, err := godotenv.Read("../../.env")
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
+
+	enableDebugLogging := strings.EqualFold(envs["DEBUG_LOGGING"], "true")
 	configuration := api.NewConfiguration()
-	configuration.Debug = true // Enables debug logging.
+	// Enable debug logging.
+	if enableDebugLogging {
+		configuration.Debug = true
+	}
 
 	// Multiple ways to configure the server
 	// 1. Set default host on config
@@ -43,7 +51,8 @@ func main() {
 
 	/*
 		// Alternatively add to configuration servers then it can be selectable with context value as below.
-		mainnetConfig := config.GetConfig(config.MainNet, AlchemyAPIKey)
+		alchemyAPIKey := envs["ALCHEMY_API_KEY"]
+		mainnetConfig := config.GetConfig(config.MainNet, alchemyAPIKey)
 		configuration.Servers = append(configuration.Servers, api.ServerConfiguration{
 			URL:         mainnetConfig.CoreAPIEndpoint,
 			Description: "Production Server",
@@ -51,7 +60,7 @@ func main() {
 	*/
 
 	// Using context value to switch/specify the server before sending request. If nothing is specified, the default server will be used which will be first one in the open api spec list.
-	ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Ropsten)
+	ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
 
 	apiClient := api.NewAPIClient(configuration)
 	listAssetsResponse, r, err := apiClient.AssetsApi.ListAssets(ctx).Execute()

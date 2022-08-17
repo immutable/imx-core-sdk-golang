@@ -36,8 +36,8 @@ func CreateOrder(ctx context.Context,
 
 	createOrderParams := orders.NewCreateOrderParamsWithContext(ctx)
 	createOrderParams.SetCreateOrderRequest(&models.CreateOrderRequest{
-		AmountBuy: signableOrder.AmountBuy, // Unquantized amount (listing price).
-		// For more info in quantum, see https://docs.starkware.co/starkex-v4/starkex-deep-dive/starkex-specific-concepts
+		AmountBuy: signableOrder.AmountBuy, // The amount (listing price) should be in Wei for Eth tokens,
+		// see https://docs.starkware.co/starkex-v4/starkex-deep-dive/starkex-specific-concepts and and https://eth-converter.com/
 		AmountSell:          signableOrder.AmountSell,  // Quantity to list for sale
 		AssetIDBuy:          signableOrder.AssetIDBuy,  // Token with which this asset can be bought with. For example Eth token can be used to buy this asset.
 		AssetIDSell:         signableOrder.AssetIDSell, // Token of the asset being listed for sale. For example, ERC720 is a NFT Token and ERC20 is a fungible token.

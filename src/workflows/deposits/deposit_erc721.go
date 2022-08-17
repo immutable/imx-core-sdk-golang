@@ -64,9 +64,9 @@ func (d *ERC721Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client,
 
 	if isRegistered {
 		return depositERC721(ctx, ethClient, l1signer, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, tokenID)
-	} else {
-		return registerAndDepositERC721(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, tokenID)
 	}
+
+	return registerAndDepositERC721(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, tokenID)
 }
 
 func newSignableDepositRequestForERC721(amount, tokenID, tokenAddress, user string) *api.GetSignableDepositRequest {

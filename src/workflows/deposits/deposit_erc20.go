@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math/big"
+	"strconv"
 
 	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/tokens"
@@ -26,11 +27,14 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client, 
 		return nil, fmt.Errorf("error when calling `Tokens.GetToken`: %v, http reponse body: %v", err, httpResp.Body)
 	}
 
-	decimals, err := utils.FromStringToDecimal(token.Decimals)
+	decimals, err := strconv.Atoi(token.Decimals)
 	if err != nil {
 		return nil, fmt.Errorf("error parsing token decimals: %v", err)
 	}
-	amount := utils.ToWei(d.Amount, int(*decimals))
+	amount, err := utils.ToUnquantized(d.Amount, decimals)
+	if err != nil {
+		return nil, err
+	}
 
 	// Approve whether an amount of token from an account can be spent by a third-party account
 	auth, err := ethClient.BuildTransactOpts(ctx, l1signer)
@@ -47,7 +51,7 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client, 
 	}
 
 	// Get signable deposit details
-	signableDepositRequest := newSignableDepositRequestForERC20(amount.String(), d.TokenAddress, l1signer.GetAddress(), int(*decimals))
+	signableDepositRequest := newSignableDepositRequestForERC20(amount.String(), d.TokenAddress, l1signer.GetAddress(), decimals)
 	signableDepositResponse, err := getSignableDeposit(ctx, clientAPI.DepositsApi, signableDepositRequest)
 	if err != nil {
 		return nil, err
@@ -77,9 +81,9 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client, 
 
 	if isRegistered {
 		return depositERC20(ctx, ethClient, l1signer, starkKey, big.NewInt(int64(signableDepositResponse.VaultId)), assetType, quantizedAmount)
-	} else {
-		return registerAndDepositERC20(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, big.NewInt(int64(signableDepositResponse.VaultId)), assetType, quantizedAmount)
 	}
+
+	return registerAndDepositERC20(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, big.NewInt(int64(signableDepositResponse.VaultId)), assetType, quantizedAmount)
 }
 
 func newSignableDepositRequestForERC20(amount, tokenAddress, user string, decimals int) *api.GetSignableDepositRequest {

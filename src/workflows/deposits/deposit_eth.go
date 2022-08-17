@@ -19,7 +19,7 @@ import (
 
 // Deposit performs the deposit workflow on the ETHDeposit.
 func (d *ETHDeposit) Deposit(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, l1signer signers.L1Signer) (*eth.Transaction, error) {
-	amount, err := utils.ParseEtherToWei(d.Amount)
+	amount, err := utils.ToUnquantized(d.Amount, utils.EtherDecimals)
 	if err != nil {
 		return nil, fmt.Errorf("error when parsing deposit amount: %v", err)
 	}
@@ -46,9 +46,9 @@ func (d *ETHDeposit) Deposit(ctx context.Context, ethClient *ethereum.Client, cl
 
 	if isRegistered {
 		return depositEth(ctx, ethClient, l1signer, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, amount)
-	} else {
-		return registerAndDepositEth(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, amount)
 	}
+
+	return registerAndDepositEth(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, amount)
 }
 
 func newSignableDepositRequestForEth(amount, user string) *api.GetSignableDepositRequest {
