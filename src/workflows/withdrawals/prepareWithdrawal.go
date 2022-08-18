@@ -6,66 +6,11 @@ import (
 
 	"immutable.com/imx-core-sdk-golang/api"
 	"immutable.com/imx-core-sdk-golang/signers"
-	"immutable.com/imx-core-sdk-golang/utils"
 )
 
-// PrepareERC20Withdrawal submits a withdrawal request for ERC20 tokens to be included in the generation and submission of the next batch.
+// PrepareWithdrawal submits a withdrawal request for ETH, ERC20 and ERC721 tokens to be included in the generation and submission of the next batch.
 // Upon batch confirmation (on-chain state update), the asset is available to be withdrawn by the initial owner / originator of the asset.
-//
-// Note: The ERC20 Amount value supplied along with GetSignableWithdrawalRequest should be the same value as you would use on IMX Marketplace UI.
-// Any Conversions required are done by SDK.
-func PrepareERC20Withdrawal(
-	ctx context.Context,
-	withdrawalsAPI api.WithdrawalsApi,
-	l1signer signers.L1Signer,
-	l2signer signers.L2Signer,
-	request api.GetSignableWithdrawalRequest) (*api.CreateWithdrawalResponse, error) {
-	// Convert ERC20 tokens amount to unquantized value.
-	unquantized, err := utils.ToDenomination(request.Amount, request.Token.Data["decimals"].(int))
-	if err != nil {
-		return nil, err
-	}
-	request.Amount = unquantized.String()
-
-	return prepareWithdrawalHelper(ctx, withdrawalsAPI, l1signer, l2signer, request)
-}
-
-// PrepareEthWithdrawal submits a withdrawal request for Eth tokens to be included in the generation and submission of the next batch.
-// Upon batch confirmation (on-chain state update), the asset is available to be withdrawn by the initial owner / originator of the asset.
-//
-// Note: The Eth Amount value supplied along with GetSignableWithdrawalRequest should be the same value as you would use on IMX Marketplace UI.
-// Any Conversions required are done by SDK.
-func PrepareEthWithdrawal(
-	ctx context.Context,
-	withdrawalsAPI api.WithdrawalsApi,
-	l1signer signers.L1Signer,
-	l2signer signers.L2Signer,
-	request api.GetSignableWithdrawalRequest) (*api.CreateWithdrawalResponse, error) {
-	// Convert Eth Amount to unquantized value.
-	amountInt, err := utils.ToDenomination(request.Amount, utils.EtherDecimals)
-	if err != nil {
-		return nil, err
-	}
-	request.Amount = amountInt.String()
-
-	return prepareWithdrawalHelper(ctx, withdrawalsAPI, l1signer, l2signer, request)
-}
-
-// PrepareERC721Withdrawal submits a withdrawal request for ERC721 tokens to be included in the generation and submission of the next batch.
-// Upon batch confirmation (on-chain state update), the asset is available to be withdrawn by the initial owner / originator of the asset.
-func PrepareERC721Withdrawal(
-	ctx context.Context,
-	withdrawalsAPI api.WithdrawalsApi,
-	l1signer signers.L1Signer,
-	l2signer signers.L2Signer,
-	request api.GetSignableWithdrawalRequest) (*api.CreateWithdrawalResponse, error) {
-	// No amount conversion required for ERC721 tokens as the value will be always 1 for NFTs.
-	return prepareWithdrawalHelper(ctx, withdrawalsAPI, l1signer, l2signer, request)
-}
-
-// prepareWithdrawalHelper submits a withdrawal request to be included in the generation and submission of the next batch.
-// Upon batch confirmation (on-chain state update), the asset is available to be withdrawn by the initial owner / originator of the asset.
-func prepareWithdrawalHelper(
+func PrepareWithdrawal(
 	ctx context.Context,
 	withdrawalsAPI api.WithdrawalsApi,
 	l1signer signers.L1Signer,
