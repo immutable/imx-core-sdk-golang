@@ -7,6 +7,11 @@
 </div>
 
 ---
+**The Golang SDK Interface is under active development and hasn't hit v1.0 yet.**
+
+Its public interface shouldn't be considered final, and we may need to release breaking changes as we push towards v1.0.
+
+---
 # Immutable Core SDK Golang
 
 The Immutable Core SDK Golang provides convenient access to the Immutable API's and Ethereum contract methods for applications written on the Immutable X platform.
@@ -41,7 +46,7 @@ Select one of the following Ethereum networks Immutable X platform currently sup
 | Sandbox     | Test Network  |
 | Mainnet     | Production    | 
 
-```golang
+```go
 import "immutable.com/imx-core-sdk-golang/config"
 
 const alchemyAPIKey = "alchemy api key"
@@ -63,7 +68,7 @@ See [BaseL1Signer](examples/workflows/utils/signer.go) for a sample implementati
 
 Some methods require an L2 signer as a parameter. The Core SDK expects you will generate your own L2 signer.
 
-```golang
+```go
 import (
    "immutable.com/imx-core-sdk-golang/signers/stark"
    ...
@@ -86,7 +91,7 @@ func main() {
 
 The Core SDK includes classes that interact with the Immutable X APIs.
 
-```golang
+```go
 // Standard API request example usage
 
 import (
@@ -118,7 +123,7 @@ Some methods require authorisation by the project owner, which consists of a Uni
 
 On project and collection methods that require authorisation, this signed timestamp string can typically be passed as the `IMXSignature` and `IMXTimestamp` parameters.
 
-```golang
+```go
 // Example method to generate authorisation headers
 func GetProjectOwnerAuthorisationHeaders(l1signer signers.L1Signer) (timestamp, signature string, err error) {
     timestamp = strconv.FormatInt(time.Now().Unix(), 10)
@@ -181,7 +186,7 @@ The Core SDK provides interfaces for all smart contracts required to interact wi
 
 [See all smart contract available in the Core SDK](#smart-contract-autogeneration)
 
-```golang
+```go
 // This example is only to demonstrate using the generated smart contract clients
 // We recommend using the workflows to deposit NFT
 func DepositNft(l1signer signers.L1Signer, starkKey, assetType, vaultID, tokenID *big.Int) {
@@ -214,7 +219,7 @@ func DepositNft(l1signer signers.L1Signer, starkKey, assetType, vaultID, tokenID
 
 A workflow is a combination of API and contract calls required for more complicated functionality.
 
-```golang
+```go
    // User registration workflow example
    configuration := api.NewConfiguration()
    apiClient := api.NewAPIClient(configuration)
