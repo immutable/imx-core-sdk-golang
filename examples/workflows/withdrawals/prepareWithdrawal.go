@@ -9,6 +9,7 @@ import (
 	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
 	"immutable.com/imx-core-sdk-golang/signers"
 	"immutable.com/imx-core-sdk-golang/tokens"
+	converter "immutable.com/imx-core-sdk-golang/utils"
 	withdrawalsWorkflow "immutable.com/imx-core-sdk-golang/workflows/withdrawals"
 )
 
@@ -21,15 +22,21 @@ func DemoPrepareEthWithdrawalWorkflow(ctx context.Context, clientAPI *api.APICli
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
+	// Convert Eth Amount to its denomination.
+	ethTokenValue, err := converter.ToDenomination(amount, converter.EtherDecimals)
+	if err != nil {
+		log.Panicf("error converting Eth amount: %v", err)
+	}
+
 	// To declare tokens, use utils.NewSignableToken[type] method.
 	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
 	signableToken := tokens.NewSignableTokenEth()
 	withdrawalRequest := api.GetSignableWithdrawalRequest{
-		Amount: amount,
+		Amount: ethTokenValue.String(),
 		Token:  *signableToken,
 	}
 
-	response, err := withdrawalsWorkflow.PrepareEthWithdrawal(ctx, clientAPI.WithdrawalsApi, l1signer, l2signer, withdrawalRequest)
+	response, err := withdrawalsWorkflow.PrepareWithdrawal(ctx, clientAPI.WithdrawalsApi, l1signer, l2signer, withdrawalRequest)
 	if err != nil {
 		log.Panicf("error calling withdrawalsWorkflow.PrepareEthWithdrawal workflow: %v", err)
 	}
@@ -47,14 +54,22 @@ func DemoPrepareERC20WithdrawalWorkflow(ctx context.Context, clientAPI *api.APIC
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
 	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
-	signableToken := tokens.NewSignableTokenERC20(ERC20TokenDecimals, tokenAddress)
+
 	amount := "5"
+	// Convert ERC20 token amount to its denomination.
+	erc20TokenValue, err := converter.ToDenomination(amount, ERC20TokenDecimals)
+	if err != nil {
+		log.Panicf("error converting ERC20 amount: %v", err)
+	}
+
+	signableToken := tokens.NewSignableTokenERC20(ERC20TokenDecimals, tokenAddress)
+
 	withdrawalRequest := api.GetSignableWithdrawalRequest{
-		Amount: amount,
+		Amount: erc20TokenValue.String(),
 		Token:  *signableToken,
 	}
 
-	response, err := withdrawalsWorkflow.PrepareERC20Withdrawal(ctx, clientAPI.WithdrawalsApi, l1signer, l2signer, withdrawalRequest)
+	response, err := withdrawalsWorkflow.PrepareWithdrawal(ctx, clientAPI.WithdrawalsApi, l1signer, l2signer, withdrawalRequest)
 	if err != nil {
 		log.Panicf("error calling withdrawalsWorkflow.PrepareERC20Withdrawal workflow: %v", err)
 	}
@@ -79,7 +94,7 @@ func DemoPrepareERC721WithdrawalWorkflow(ctx context.Context, clientAPI *api.API
 		Token:  *signableToken,
 	}
 
-	response, err := withdrawalsWorkflow.PrepareERC721Withdrawal(ctx, clientAPI.WithdrawalsApi, l1signer, l2signer, withdrawalRequest)
+	response, err := withdrawalsWorkflow.PrepareWithdrawal(ctx, clientAPI.WithdrawalsApi, l1signer, l2signer, withdrawalRequest)
 	if err != nil {
 		log.Panicf("error calling withdrawalsWorkflow.PrepareERC721Withdrawal workflow: %v", err)
 	}
