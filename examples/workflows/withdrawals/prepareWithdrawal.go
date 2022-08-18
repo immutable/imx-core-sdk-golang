@@ -38,7 +38,7 @@ func DemoPrepareEthWithdrawalWorkflow(ctx context.Context, clientAPI *api.APICli
 
 	response, err := withdrawalsWorkflow.PrepareWithdrawal(ctx, clientAPI.WithdrawalsApi, l1signer, l2signer, withdrawalRequest)
 	if err != nil {
-		log.Panicf("error calling withdrawalsWorkflow.PrepareEthWithdrawal workflow: %v", err)
+		log.Panicf("error calling withdrawalsWorkflow.PrepareWithdrawal workflow: %v", err)
 	}
 	val, _ := json.MarshalIndent(response, "", "  ")
 	log.Printf("response:\n%s\n", val)
@@ -71,7 +71,7 @@ func DemoPrepareERC20WithdrawalWorkflow(ctx context.Context, clientAPI *api.APIC
 
 	response, err := withdrawalsWorkflow.PrepareWithdrawal(ctx, clientAPI.WithdrawalsApi, l1signer, l2signer, withdrawalRequest)
 	if err != nil {
-		log.Panicf("error calling withdrawalsWorkflow.PrepareERC20Withdrawal workflow: %v", err)
+		log.Panicf("error calling withdrawalsWorkflow.PrepareWithdrawal workflow: %v", err)
 	}
 	val, _ := json.MarshalIndent(response, "", "  ")
 	log.Printf("response:\n%s\n", val)
@@ -96,7 +96,7 @@ func DemoPrepareERC721WithdrawalWorkflow(ctx context.Context, clientAPI *api.API
 
 	response, err := withdrawalsWorkflow.PrepareWithdrawal(ctx, clientAPI.WithdrawalsApi, l1signer, l2signer, withdrawalRequest)
 	if err != nil {
-		log.Panicf("error calling withdrawalsWorkflow.PrepareERC721Withdrawal workflow: %v", err)
+		log.Panicf("error calling withdrawalsWorkflow.PrepareWithdrawal workflow: %v", err)
 	}
 	val, _ := json.MarshalIndent(response, "", "  ")
 	log.Printf("response:\n%s\n", val)
