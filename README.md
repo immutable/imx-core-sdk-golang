@@ -7,7 +7,7 @@
 </div>
 
 ---
-**The Golang SDK Interface is under active development and hasn't hit v1.0 yet.**
+**The Golang SDK interface is under active development and hasn't hit v1.0 yet.**
 
 Its public interface shouldn't be considered final, and we may need to release breaking changes as we push towards v1.0.
 
@@ -16,17 +16,17 @@ Its public interface shouldn't be considered final, and we may need to release b
 
 The Immutable Core SDK Golang provides convenient access to the Immutable X API and Ethereum contract methods for applications written on the Immutable X platform.
 
-Currently, our SDK supports interactions with our application-specific rollup based on StarkWare's StarkEx. In the future, we'll be adding StarkNet support across our platform.
+Currently, our SDK supports interactions with our application-specific rollup based on StarkWare's [StarkEx](https://starkware.co/starkex/). In the future, we'll be adding [StarkNet](https://starknet.io/) support across our platform.
 
 ## Documentation
 
-See the [Developer guides](https://docs.x.immutable.com) for information on building on Immutable X.
+See the [developer docs](https://docs.x.immutable.com) for information on building on Immutable X.
 
-See the [API reference documentation](https://docs.x.immutable.com/reference) for more information on our API's.
+See the [API reference documentation](https://docs.x.immutable.com/reference) for more information on our APIs.
 
 ## Installation
 
-TODO: revisit after package deployment
+[//]: # (TODO: Revisit after package deployment)
 
 ```sh
 go get immutable.com/imx-core-sdk-golang 
@@ -63,12 +63,12 @@ func main() {
 
 The L1 signer is based on your Ethereum wallet ([Getting started > Wallet](https://docs.x.immutable.com/docs/getting-started-guide/#wallet)).
 To use most workflow functions, you will need to implement an L1 signer using your Ethereum wallet.
-Your implementation must satisfy [L1Signer interface](src/signers/signers.go).
+Your implementation must satisfy the [L1Signer interface](src/signers/signers.go).
 See [BaseL1Signer](examples/workflows/utils/signer.go) for a sample implementation of L1 Signer.
 
 #### L2 Signer
 
-Some methods require an L2 signer as a parameter. The Core SDK expects you will generate your own L2 signer.
+Some methods require an L2 signer as a parameter. The Core SDK expects you to generate your own L2 signer.
 
 ```go
 import (
@@ -183,7 +183,7 @@ The following methods require project owner authorisation:
 
 ### Contract requests
 
-Immutable X is built as a ZK-rollup in partnership with StarkWare. We chose ZK-rollups because it is the only L2 scaling solution that has the same security guarantees as layer 1 Ethereum. The upshot of this is that you can mint or trade NFTs on Immutable X with zero gas costs whilst not compromising on security. This mechanism is the first true “layer 2” for NFTs on Ethereum.
+Immutable X is built as a ZK-rollup in partnership with StarkWare. We chose ZK-rollups because it is the only L2 scaling solution that has the same security guarantees as layer 1 Ethereum. The upshot of this is that you can mint or trade NFTs on Immutable X with zero gas costs whilst not compromising on security -- the first true “layer 2” for NFTs on Ethereum.
 
 The Core SDK provides interfaces for all smart contracts required to interact with the Immutable X platform.
 
