@@ -7,26 +7,26 @@
 </div>
 
 ---
-**The Golang SDK Interface is under active development and hasn't hit v1.0 yet.**
+**The Golang SDK interface is under active development and hasn't hit v1.0 yet.**
 
 Its public interface shouldn't be considered final, and we may need to release breaking changes as we push towards v1.0.
 
 ---
 # Immutable Core SDK Golang
 
-The Immutable Core SDK Golang provides convenient access to the Immutable API's and Ethereum contract methods for applications written on the Immutable X platform.
+The Immutable Core SDK Golang provides convenient access to the Immutable X API and Ethereum contract methods for applications written on the Immutable X platform.
 
-Currently, our SDK supports interactions with our application-specific rollup based on StarkWare's StarkEx. In the future, we'll be adding StarkNet support across our platform.
+Currently, our SDK supports interactions with our application-specific rollup based on StarkWare's [StarkEx](https://starkware.co/starkex/). In the future, we'll be adding [StarkNet](https://starknet.io/) support across our platform.
 
 ## Documentation
 
-See the [Developer guides](https://docs.x.immutable.com) for information on building on Immutable X.
+See the [developer docs](https://docs.x.immutable.com) for information on building on Immutable X.
 
-See the [API reference documentation](https://docs.x.immutable.com/reference) for more information on our API's.
+See the [API reference documentation](https://docs.x.immutable.com/reference) for more information on our APIs.
 
 ## Installation
 
-TODO: revisit after package deployment
+[//]: # (TODO: Revisit after package deployment)
 
 ```sh
 go get immutable.com/imx-core-sdk-golang 
@@ -43,7 +43,7 @@ Select one of the following Ethereum networks Immutable X platform currently sup
 
 | Environment | Description   |  
 |-------------|---------------|
-| Sandbox     | Test Network  |
+| Sandbox     | Test network  |
 | Mainnet     | Production    | 
 
 ```go
@@ -57,16 +57,18 @@ func main() {
 }
 ```
 
+### How to generate the required signers
+
 #### L1 Signer
 
-The L1 signer is based on your ethereum wallet ([Getting started > Wallet](https://docs.x.immutable.com/docs/getting-started-guide/#wallet)).
-To use most workflow functions, you will need to implement an L1 signer using your ethereum wallet.
-Your implementation must satisfy [L1Signer interface](src/signers/signers.go).
+The L1 signer is based on your Ethereum wallet ([Getting started > Wallet](https://docs.x.immutable.com/docs/getting-started-guide/#wallet)).
+To use most workflow functions, you will need to implement an L1 signer using your Ethereum wallet.
+Your implementation must satisfy the [L1Signer interface](src/signers/signers.go).
 See [BaseL1Signer](examples/workflows/utils/signer.go) for a sample implementation of L1 Signer.
 
 #### L2 Signer
 
-Some methods require an L2 signer as a parameter. The Core SDK expects you will generate your own L2 signer.
+Some methods require an L2 signer as a parameter. The Core SDK expects you to generate your own L2 signer.
 
 ```go
 import (
@@ -87,7 +89,7 @@ func main() {
 }
 ```
 
-### Standard API Requests
+### Standard API requests
 
 The Core SDK includes classes that interact with the Immutable X APIs.
 
@@ -122,6 +124,7 @@ View the [OpenAPI spec](openapi.json) for a full list of API requests available 
 Some methods require authorisation by the project owner, which consists of a Unix epoch timestamp signed with your ETH key and included in the request header.
 
 On project and collection methods that require authorisation, this signed timestamp string can typically be passed as the `IMXSignature` and `IMXTimestamp` parameters.
+See [here](#how-to-generate-the-required-signers) for how to generate the signers required.
 
 ```go
 // Example method to generate authorisation headers
@@ -178,13 +181,13 @@ The following methods require project owner authorisation:
 - updateMetadataSchemaByName
 
 
-### Contract Requests
+### Contract requests
 
-Immutable X is built as a ZK-rollup in partnership with StarkWare. We chose the ZK-rollups because it is the only solution capable of scale without compromise. This means whenever you mint or trade an NFT on Immutable X, you pay zero gas, and the validity of all transactions are directly enforced by Ethereum’s security using zero-knowledge proofs -- the first “layer 2” for NFTs on Ethereum.
+Immutable X is built as a ZK-rollup in partnership with StarkWare. We chose ZK-rollups because it is the only L2 scaling solution that has the same security guarantees as layer 1 Ethereum. The upshot of this is that you can mint or trade NFTs on Immutable X with zero gas costs whilst not compromising on security -- the first true “layer 2” for NFTs on Ethereum.
 
 The Core SDK provides interfaces for all smart contracts required to interact with the Immutable X platform.
 
-[See all smart contract available in the Core SDK](#smart-contract-autogeneration)
+[See all smart contracts available in the Core SDK](#smart-contract-autogeneration)
 
 ```go
 // This example is only to demonstrate using the generated smart contract clients
@@ -220,33 +223,49 @@ func DepositNft(l1signer signers.L1Signer, starkKey, assetType, vaultID, tokenID
 A workflow is a combination of API and contract calls required for more complicated functionality.
 
 ```go
-   // User registration workflow example
-   configuration := api.NewConfiguration()
-   apiClient := api.NewAPIClient(configuration)
-   ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
+package onboarding
 
-   // Setup L1 signer
-   l1signer, err := utils.NewBaseL1Signer(signerPrivateKey, chainID)
-   if err != nil {
-      log.Panicf("error in creating BaseL1Signer: %v", err)
-   }
+import (
+	"context"
+	"fmt"
+	"immutable.com/imx-core-sdk-golang/api"
+	"immutable.com/imx-core-sdk-golang/config"
+	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
+	"immutable.com/imx-core-sdk-golang/signers/stark"
+	"immutable.com/imx-core-sdk-golang/workflows/registration"
+	"math/big"
+)
 
-   // Setup L2 signer
-   l2signer, err := stark.GenerateStarkSigner(l1signer)
-   if err != nil {
-      log.Panicf("error in creating StarkSigner: %v", err)
-   }
+func Register(signerPrivateKey string, chainID *big.Int) (*api.RegisterUserResponse, error) {
+	// User registration workflow example
+	configuration := api.NewConfiguration()
+	apiClient := api.NewAPIClient(configuration)
+	ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
 
-   response, err := registration.RegisterOffchain(ctx, apiClient, l1signer, l2signer, "user@email.com")
-   if err != nil {
-      log.Panicf("error in RegisterOffchain: %v", err)
-   }
+	// Setup L1 signer
+	l1signer, err := utils.NewBaseL1Signer(signerPrivateKey, chainID)
+	if err != nil {
+		return nil, fmt.Errorf("error in creating BaseL1Signer: %v", err)
+	}
+
+	// Setup L2 signer
+	l2signer, err := stark.GenerateStarkSigner(l1signer)
+	if err != nil {
+		return nil, fmt.Errorf("error in creating StarkSigner: %v", err)
+	}
+
+	response, err := registration.RegisterOffchain(ctx, apiClient.UsersApi, l1signer, l2signer, "user@email.com")
+	if err != nil {
+		return nil, fmt.Errorf("error in RegisterOffchain: %v", err)
+	}
+	return response, nil
+}
 ```
 
 The workflows can be found in the [workflows directory](src/workflows/).
-Sample usages of workflows can be found in [examples](examples/workflows)
+Sample usage of workflows can be found in [examples](examples/workflows).
 
-### Available Workflows
+### Available workflows
 
 | Workflow                  | Description                                         |
 |---------------------------|-----------------------------------------------------|
@@ -265,18 +284,18 @@ Sample usages of workflows can be found in [examples](examples/workflows)
 | `CancelOrder`             | Cancel an order.                                    |
 | `CreateTrade`             | Create a trade to buy an asset.                     |
 
-## Autogenerated Code
+## Autogenerated code
 
 Parts of the Core SDK are automagically generated.
 
-### API Autogenerated Code
+### API autogenerated code
 
 We use OpenAPI (formally known as Swagger) to auto-generate the API clients that connect to the public APIs.
 The OpenAPI spec is retrieved from https://api.x.immutable.com/openapi and also saved in the repo.
 
 ### Smart contract autogeneration
 
-The Immutable solidity contracts can be found under `contracts` folder. Contract bindings in golang is generated using [abigen](https://geth.ethereum.org/docs/dapp/native-bindings#abigen-go-binding-generator).
+The Immutable Solidity contracts can be found in the `contracts` folder. Contract bindings in Golang are generated using [abigen](https://geth.ethereum.org/docs/dapp/native-bindings#abigen-go-binding-generator).
 
 #### Core
 
@@ -301,13 +320,13 @@ Standard interface for interacting with ERC20 contracts, taken from [OpenZeppeli
 Standard interface for interacting with ERC721 contracts, taken from [OpenZeppelin](https://docs.openzeppelin.com/contracts/4.x/api/token/erc721#IERC721).
 
 
-## Getting Help
+## Getting help
 
 Immutable X is open to all to build on, with no approvals required. If you want to talk to us to learn more, or apply for developer grants, click below:
 
 [Contact us](https://www.immutable.com/contact)
 
-### Project Support
+### Project support
 
 To get help from other developers, discuss ideas, and stay up-to-date on what's happening, become a part of our community on Discord.
 
