@@ -22,7 +22,6 @@ func PrettyStruct(data interface{}) (string, error) {
 }
 
 func main() {
-
 	var envs map[string]string
 	envs, err := godotenv.Read("../../.env")
 	if err != nil {
@@ -59,7 +58,8 @@ func main() {
 		})
 	*/
 
-	// Using context value to switch/specify the server before sending request. If nothing is specified, the default server will be used which will be first one in the open api spec list.
+	// Using context value to switch/specify the server before sending request.
+	// If nothing is specified, the default server will be used which will be first one in the open api spec list.
 	ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
 
 	apiClient := api.NewAPIClient(configuration)
