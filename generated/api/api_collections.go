@@ -108,7 +108,7 @@ type ApiCreateCollectionRequest struct {
 	createCollectionRequest *CreateCollectionRequest
 }
 
-// String created by signing wallet address and timestamp. See https://docs.x.github.com/immutable/docs/generate-imx-signature
+// String created by signing wallet address and timestamp. See https://docs.x.immutable.com/immutable/docs/generate-imx-signature
 func (r ApiCreateCollectionRequest) IMXSignature(iMXSignature string) ApiCreateCollectionRequest {
 	r.iMXSignature = &iMXSignature
 	return r

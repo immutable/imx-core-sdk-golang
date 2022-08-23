@@ -13,7 +13,7 @@ const (
 )
 
 // NewSignableTokenEth returns a new ETH type token.
-// https://docs.x.github.com/immutable/docs/token-data-object#type-eth
+// https://docs.x.immutable.com/immutable/docs/token-data-object#type-eth
 func NewSignableTokenEth() *api.SignableToken {
 	var tokenType = string(ETHType)
 	return &api.SignableToken{
@@ -25,7 +25,7 @@ func NewSignableTokenEth() *api.SignableToken {
 }
 
 // NewSignableTokenERC20 returns a new ERC20 type token.
-// https://docs.x.github.com/immutable/docs/token-data-object#type-erc20
+// https://docs.x.immutable.com/immutable/docs/token-data-object#type-erc20
 func NewSignableTokenERC20(decimals int, tokenAddress string) *api.SignableToken {
 	var tokenType = string(ERC20Type)
 	return &api.SignableToken{
@@ -38,7 +38,7 @@ func NewSignableTokenERC20(decimals int, tokenAddress string) *api.SignableToken
 }
 
 // NewSignableTokenERC721 returns a new ERC721 type token.
-// https://docs.x.github.com/immutable/docs/token-data-object#type-erc721
+// https://docs.x.immutable.com/immutable/docs/token-data-object#type-erc721
 func NewSignableTokenERC721(tokenID, tokenAddress string) *api.SignableToken {
 	var tokenType = string(ERC721Type)
 	return &api.SignableToken{

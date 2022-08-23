@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Filterable** | **bool** | Sets the metadata as filterable | 
 **Name** | **string** | Name of the metadata key | 
-**Type** | **string** | Type of the metadata. Values: \&quot;enum\&quot;, \&quot;text\&quot;, \&quot;boolean\&quot;, \&quot;continuous\&quot;, \&quot;discrete\&quot; | Default: \&quot;text\&quot;. Src: https://docs.x.github.com/immutable/docs/asset-metadata#property-type-mapping | 
+**Type** | **string** | Type of the metadata. Values: \&quot;enum\&quot;, \&quot;text\&quot;, \&quot;boolean\&quot;, \&quot;continuous\&quot;, \&quot;discrete\&quot; | Default: \&quot;text\&quot;. Src: https://docs.x.immutable.com/immutable/docs/asset-metadata#property-type-mapping | 
 
 ## Methods
 

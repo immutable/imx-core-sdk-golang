@@ -21,7 +21,7 @@ type MetadataSchemaProperty struct {
 	Filterable bool `json:"filterable"`
 	// Name of the metadata key
 	Name string `json:"name"`
-	// Type of the metadata. Values: \"enum\", \"text\", \"boolean\", \"continuous\", \"discrete\" | Default: \"text\". Src: https://docs.x.github.com/immutable/docs/asset-metadata#property-type-mapping
+	// Type of the metadata. Values: \"enum\", \"text\", \"boolean\", \"continuous\", \"discrete\" | Default: \"text\". Src: https://docs.x.immutable.com/immutable/docs/asset-metadata#property-type-mapping
 	Type string `json:"type"`
 }
 

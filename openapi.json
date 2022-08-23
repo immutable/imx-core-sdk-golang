@@ -279,7 +279,7 @@
           },
           {
             "type": "string",
-            "description": "String created by signing wallet address and timestamp. See https://docs.x.github.com/immutable/docs/generate-imx-signature",
+            "description": "String created by signing wallet address and timestamp. See https://docs.x.immutable.com/immutable/docs/generate-imx-signature",
             "name": "IMX-Signature",
             "in": "header",
             "required": true
@@ -4509,7 +4509,7 @@
           "type": "string"
         },
         "type": {
-          "description": "Type of the metadata. Values: \"enum\", \"text\", \"boolean\", \"continuous\", \"discrete\" | Default: \"text\".\nSrc: https://docs.x.github.com/immutable/docs/asset-metadata#property-type-mapping",
+          "description": "Type of the metadata. Values: \"enum\", \"text\", \"boolean\", \"continuous\", \"discrete\" | Default: \"text\".\nSrc: https://docs.x.immutable.com/immutable/docs/asset-metadata#property-type-mapping",
           "type": "string"
         }
       }
@@ -4529,7 +4529,7 @@
           "type": "string"
         },
         "type": {
-          "description": "Type of the metadata. Values: \"enum\", \"text\", \"boolean\", \"continuous\", \"discrete\" | Default: \"text\". Src: https://docs.x.github.com/immutable/docs/asset-metadata#property-type-mapping",
+          "description": "Type of the metadata. Values: \"enum\", \"text\", \"boolean\", \"continuous\", \"discrete\" | Default: \"text\". Src: https://docs.x.immutable.com/immutable/docs/asset-metadata#property-type-mapping",
           "type": "string",
           "enum": [
             "enum",
@@ -4949,7 +4949,7 @@
       "type": "object",
       "properties": {
         "data": {
-          "description": "Token data. See https://docs.x.github.com/immutable/docs/token-data-object\""
+          "description": "Token data. See https://docs.x.immutable.com/immutable/docs/token-data-object\""
         },
         "type": {
           "description": "Type of token",

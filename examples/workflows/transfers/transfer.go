@@ -17,7 +17,7 @@ func DemoTransferWorkflow(ctx context.Context, apiClient *api.APIClient, l1signe
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
-	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.github.com/immutable/docs/token-data-object
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/immutable/docs/token-data-object
 	signableToken := tokens.NewSignableTokenEth()
 	amount := "100000000"
 	sender := l1signer.GetAddress()

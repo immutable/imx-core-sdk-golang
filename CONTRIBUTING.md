@@ -3,7 +3,7 @@
 First of all, thanks for being here! We greatly appreciate all community feedback and contributions to this repository.
 
 ## Alternative ways to get in touch
-* Ask usage questions in our [forum](https://forum.github.com/immutable/).
+* Ask usage questions in our [forum](https://https://forum.immutable.com/).
 * Get involved with discussions on the #dev-discussion channel on [Discord](https://discord.com/invite/immutablex).
 
 ## Contribution guidelines
@@ -33,7 +33,7 @@ You should create an issue to open discussions:
 There is usually no need to create an issue when:
 * An issue or open PR for the topic already exists - please continue or reopen the existing thread to keep all the discussion in one place.
 * The PR is relatively small and obvious (e.g. small fixes, typos, etc) - if the changes do not require a discussion, simply filling out the PR description template will suffice.
-* Requesting development help - if you run into any issues and require help setting up or using this SDK, feel free to reach out on [Discord](https://discord.com/invite/immutablex) in our #dev-discussion channel where we or the rest of the dev community will be happy to answer questions, or post a message on our [forum](https://forum.github.com/immutable/).
+* Requesting development help - if you run into any issues and require help setting up or using this SDK, feel free to reach out on [Discord](https://discord.com/invite/immutablex) in our #dev-discussion channel where we or the rest of the dev community will be happy to answer questions, or post a message on our [forum](https://https://forum.immutable.com/).
 * Providing comments or general feedback - we generally use Github issues for actionable feedback or tasks (e.g. feature requests or bugs), but we welcome all forms of feedback. We would love to see you share your thoughts and comments in our Discord channel and engage with the rest of the community.
 
 Issue titles should follow the below pattern:

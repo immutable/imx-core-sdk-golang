@@ -17,7 +17,7 @@ import (
 
 // SignableToken struct for SignableToken
 type SignableToken struct {
-	// Token data. See https://docs.x.github.com/immutable/docs/token-data-object\"
+	// Token data. See https://docs.x.immutable.com/immutable/docs/token-data-object\"
 	Data map[string]interface{} `json:"data,omitempty"`
 	// Type of token
 	Type *string `json:"type,omitempty"`

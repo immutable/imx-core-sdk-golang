@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Data** | Pointer to **map[string]interface{}** | Token data. See https://docs.x.github.com/immutable/docs/token-data-object\&quot; | [optional] 
+**Data** | Pointer to **map[string]interface{}** | Token data. See https://docs.x.immutable.com/immutable/docs/token-data-object\&quot; | [optional] 
 **Type** | Pointer to **string** | Type of token | [optional] 
 
 ## Methods

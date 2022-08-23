@@ -204,7 +204,7 @@ paths:
       description: Create collection
       operationId: createCollection
       parameters:
-      - description: String created by signing wallet address and timestamp. See https://docs.x.github.com/immutable/docs/generate-imx-signature
+      - description: String created by signing wallet address and timestamp. See https://docs.x.immutable.com/immutable/docs/generate-imx-signature
         in: header
         name: IMX-Signature
         required: true
@@ -4267,7 +4267,7 @@ components:
           type: string
         type:
           description: "Type of the metadata. Values: \"enum\", \"text\", \"boolean\"\
-            , \"continuous\", \"discrete\" | Default: \"text\".\nSrc: https://docs.x.github.com/immutable/docs/asset-metadata#property-type-mapping"
+            , \"continuous\", \"discrete\" | Default: \"text\".\nSrc: https://docs.x.immutable.com/immutable/docs/asset-metadata#property-type-mapping"
           type: string
       required:
       - filterable
@@ -4288,7 +4288,7 @@ components:
           type: string
         type:
           description: "Type of the metadata. Values: \"enum\", \"text\", \"boolean\"\
-            , \"continuous\", \"discrete\" | Default: \"text\". Src: https://docs.x.github.com/immutable/docs/asset-metadata#property-type-mapping"
+            , \"continuous\", \"discrete\" | Default: \"text\". Src: https://docs.x.immutable.com/immutable/docs/asset-metadata#property-type-mapping"
           enum:
           - enum
           - text
@@ -4804,7 +4804,7 @@ components:
         type: ETH/ERC20/ERC721
       properties:
         data:
-          description: Token data. See https://docs.x.github.com/immutable/docs/token-data-object"
+          description: Token data. See https://docs.x.immutable.com/immutable/docs/token-data-object"
           type: object
         type:
           description: Type of token
