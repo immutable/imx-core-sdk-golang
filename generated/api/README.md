@@ -21,13 +21,13 @@ go get golang.org/x/net/context
 
 Put the package under your project folder and add the following in import:
 
-```golang
-import api "github.com/immutable/imx-core-sdk-golang/generated/api"
+```go
+import api "github.com/immutable/imx-core-sdk-golang/imx/generated/api"
 ```
 
 To use a proxy, set the environment variable `HTTP_PROXY`:
 
-```golang
+```go
 os.Setenv("HTTP_PROXY", "http://proxy_name:proxy_port")
 ```
 
@@ -39,7 +39,7 @@ Default configuration comes with `Servers` field that contains server objects as
 
 For using other server than the one defined on index 0 set context value `sw.ContextServerIndex` of type `int`.
 
-```golang
+```go
 ctx := context.WithValue(context.Background(), api.ContextServerIndex, 1)
 ```
 
@@ -47,7 +47,7 @@ ctx := context.WithValue(context.Background(), api.ContextServerIndex, 1)
 
 Templated server URL is formatted using default variables from configuration or from context value `sw.ContextServerVariables` of type `map[string]string`.
 
-```golang
+```go
 ctx := context.WithValue(context.Background(), api.ContextServerVariables, map[string]string{
 	"basePath": "v2",
 })

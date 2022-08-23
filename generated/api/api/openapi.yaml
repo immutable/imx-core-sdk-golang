@@ -6,7 +6,7 @@ info:
   title: Immutable X API
   version: "0.1"
 servers:
-- url: https://api.ropsten.x.immutable.com
+- url: https://api.ropsten.x.immutable.com/
 paths:
   /v1/assets:
     get:
