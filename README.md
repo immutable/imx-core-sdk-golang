@@ -234,39 +234,40 @@ A workflow is a combination of API and contract calls required for more complica
 package onboarding
 
 import (
-	"context"
-	"fmt"
-	"immutable.com/imx-core-sdk-golang/api"
-	"immutable.com/imx-core-sdk-golang/config"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
-	"immutable.com/imx-core-sdk-golang/signers/stark"
-	"immutable.com/imx-core-sdk-golang/workflows/registration"
-	"math/big"
+    "context"
+    "fmt"
+    "math/big"
+
+    "github.com/immutable/imx-core-sdk-golang/config"
+    "github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
+    "github.com/immutable/imx-core-sdk-golang/generated/api"
+    "github.com/immutable/imx-core-sdk-golang/signers/stark"
+    "github.com/immutable/imx-core-sdk-golang/workflows/registration"
 )
 
 func Register(signerPrivateKey string, chainID *big.Int) (*api.RegisterUserResponse, error) {
-	// User registration workflow example
-	configuration := api.NewConfiguration()
-	apiClient := api.NewAPIClient(configuration)
-	ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
+    // User registration workflow example
+    configuration := api.NewConfiguration()
+    apiClient := api.NewAPIClient(configuration)
+    ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
 
-	// Setup L1 signer
-	l1signer, err := utils.NewBaseL1Signer(signerPrivateKey, chainID)
-	if err != nil {
-		return nil, fmt.Errorf("error in creating BaseL1Signer: %v", err)
-	}
+    // Setup L1 signer
+    l1signer, err := utils.NewBaseL1Signer(signerPrivateKey, chainID)
+    if err != nil {
+        return nil, fmt.Errorf("error in creating BaseL1Signer: %v", err)
+    }
 
-	// Setup L2 signer
-	l2signer, err := stark.GenerateStarkSigner(l1signer)
-	if err != nil {
-		return nil, fmt.Errorf("error in creating StarkSigner: %v", err)
-	}
+    // Setup L2 signer
+    l2signer, err := stark.GenerateStarkSigner(l1signer)
+    if err != nil {
+        return nil, fmt.Errorf("error in creating StarkSigner: %v", err)
+    }
 
-	response, err := registration.RegisterOffchain(ctx, apiClient.UsersApi, l1signer, l2signer, "user@email.com")
-	if err != nil {
-		return nil, fmt.Errorf("error in RegisterOffchain: %v", err)
-	}
-	return response, nil
+    response, err := registration.RegisterOffchain(ctx, apiClient.UsersApi, l1signer, l2signer, "user@email.com")
+    if err != nil {
+        return nil, fmt.Errorf("error in RegisterOffchain: %v", err)
+    }
+    return response, nil
 }
 ```
 
