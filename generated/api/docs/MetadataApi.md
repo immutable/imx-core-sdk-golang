@@ -27,7 +27,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "github.com/immutable/imx-core-sdk-golang/imx/generated/api"
+    openapiclient "github.com/immutable/imx-core-sdk-golang/generated/api"
     
 )
 
@@ -104,7 +104,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "github.com/immutable/imx-core-sdk-golang/imx/generated/api"
+    openapiclient "github.com/immutable/imx-core-sdk-golang/generated/api"
     
 )
 
@@ -175,7 +175,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "github.com/immutable/imx-core-sdk-golang/imx/generated/api"
+    openapiclient "github.com/immutable/imx-core-sdk-golang/generated/api"
     
 )
 
