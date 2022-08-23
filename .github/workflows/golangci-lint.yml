@@ -16,7 +16,7 @@ jobs:
       matrix:
         workdir:
           - config
-          - workflows
+          - workflows/*
           - examples/workflows
           - examples/publicapi/list_assets
     steps:
