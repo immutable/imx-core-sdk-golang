@@ -6,12 +6,11 @@ import (
 	"log"
 	"strconv"
 
-	"immutable.com/imx-core-sdk-golang/api"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
-	"immutable.com/imx-core-sdk-golang/signers"
-	"immutable.com/imx-core-sdk-golang/tokens"
-	burnWorkflow "immutable.com/imx-core-sdk-golang/workflows/burn"
-	"immutable.com/imx-core-sdk-golang/workflows/types"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
+	"github.com/immutable/imx-core-sdk-golang/generated/api"
+	"github.com/immutable/imx-core-sdk-golang/signers"
+	"github.com/immutable/imx-core-sdk-golang/tokens"
+	burnWorkflow "github.com/immutable/imx-core-sdk-golang/workflows/burn"
 )
 
 func DemoBurnWorkflow(ctx context.Context, apiClient *api.APIClient, l1signer signers.L1Signer, l2signer signers.L2Signer) {
@@ -19,7 +18,7 @@ func DemoBurnWorkflow(ctx context.Context, apiClient *api.APIClient, l1signer si
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
 	signableToken := tokens.NewSignableTokenEth()
-	burnRequest := types.GetSignableBurnRequest{
+	burnRequest := burnWorkflow.GetSignableBurnRequest{
 		Amount: "100000000",
 		Sender: l1signer.GetAddress(),
 		Token:  signableToken,
@@ -28,7 +27,7 @@ func DemoBurnWorkflow(ctx context.Context, apiClient *api.APIClient, l1signer si
 	/*
 		signableToken := tokens.NewSignableTokenERC20(18, "0x73f99ca65b1a0aef2d4591b1b543d789860851bf")
 		ftcToBurn, _ := converters.ToDenomination(".025", 18)
-		burnRequest := types.GetSignableBurnRequest{
+		burnRequest := burnWorkflow.GetSignableBurnRequest{
 			 Amount: ftcToBurn.String(),
 			 Sender: l1signer.GetAddress(),
 			 Token:  signableToken,
@@ -37,7 +36,7 @@ func DemoBurnWorkflow(ctx context.Context, apiClient *api.APIClient, l1signer si
 
 	/*
 		signableToken := tokens.NewSignableTokenERC721("token id to burn", "token contract address")
-		burnRequest := types.GetSignableBurnRequest{
+		burnRequest := burnWorkflow.GetSignableBurnRequest{
 			 Amount: "1",
 			 Sender: l1signer.GetAddress(),
 			 Token:  signableToken,

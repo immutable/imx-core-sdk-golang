@@ -1,0 +1,5254 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: support@github.com/immutable/
+    name: Immutable API Support
+  title: Immutable X API
+  version: "0.1"
+servers:
+- url: https://api.ropsten.x.github.com/immutable/
+paths:
+  /v1/assets:
+    get:
+      description: Get a list of assets
+      operationId: listAssets
+      parameters:
+      - description: Page size of the result
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: Property to sort by
+        in: query
+        name: order_by
+        schema:
+          enum:
+          - updated_at
+          - name
+          type: string
+      - description: Direction to sort (asc/desc)
+        in: query
+        name: direction
+        schema:
+          type: string
+      - description: Ethereum address of the user who owns these assets
+        in: query
+        name: user
+        schema:
+          type: string
+      - description: Status of these assets
+        in: query
+        name: status
+        schema:
+          type: string
+      - description: Name of the asset to search
+        in: query
+        name: name
+        schema:
+          type: string
+      - description: "JSON-encoded metadata filters for these asset. Example: {'proto':['1147'],'quality':['Meteorite']}"
+        in: query
+        name: metadata
+        schema:
+          type: string
+      - description: Set flag to true to fetch an array of sell order details with
+          accepted status associated with the asset
+        in: query
+        name: sell_orders
+        schema:
+          type: boolean
+      - description: Set flag to true to fetch an array of buy order details  with
+          accepted status associated with the asset
+        in: query
+        name: buy_orders
+        schema:
+          type: boolean
+      - description: Set flag to include fees associated with the asset
+        in: query
+        name: include_fees
+        schema:
+          type: boolean
+      - description: Collection contract address
+        in: query
+        name: collection
+        schema:
+          type: string
+      - description: "Minimum timestamp for when these assets were last updated, in\
+          \ ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z'"
+        in: query
+        name: updated_min_timestamp
+        schema:
+          type: string
+      - description: "Maximum timestamp for when these assets were last updated, in\
+          \ ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z'"
+        in: query
+        name: updated_max_timestamp
+        schema:
+          type: string
+      - description: Comma separated string of fee percentages that are to be paired
+          with auxiliary_fee_recipients
+        in: query
+        name: auxiliary_fee_percentages
+        schema:
+          type: string
+      - description: Comma separated string of fee recipients that are to be paired
+          with auxiliary_fee_percentages
+        in: query
+        name: auxiliary_fee_recipients
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAssetsResponse'
+          description: OK
+      summary: Get a list of assets
+      tags:
+      - assets
+  /v1/assets/{token_address}/{token_id}:
+    get:
+      description: Get details of an asset
+      operationId: getAsset
+      parameters:
+      - description: Address of the ERC721 contract
+        in: path
+        name: token_address
+        required: true
+        schema:
+          type: string
+      - description: Either ERC721 token ID or internal IMX ID
+        in: path
+        name: token_id
+        required: true
+        schema:
+          type: string
+      - description: Set flag to include fees associated with the asset
+        in: query
+        name: include_fees
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+          description: OK
+      summary: Get details of an asset
+      tags:
+      - assets
+  /v1/collections:
+    get:
+      description: Get a list of collections
+      operationId: listCollections
+      parameters:
+      - description: Page size of the result
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: Property to sort by
+        in: query
+        name: order_by
+        schema:
+          enum:
+          - '"name"'
+          - '"address"'
+          - '"project_id"'
+          - '"created_at"'
+          - '"updated_at"'
+          type: string
+      - description: Direction to sort (asc/desc)
+        in: query
+        name: direction
+        schema:
+          type: string
+      - description: "List of collections not to be included, separated by commas"
+        in: query
+        name: blacklist
+        schema:
+          type: string
+      - description: "List of collections to be included, separated by commas"
+        in: query
+        name: whitelist
+        schema:
+          type: string
+      - description: Keyword to search in collection name and description
+        in: query
+        name: keyword
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListCollectionsResponse'
+          description: OK
+      summary: Get a list of collections
+      tags:
+      - collections
+    post:
+      description: Create collection
+      operationId: createCollection
+      parameters:
+      - description: String created by signing wallet address and timestamp. See https://docs.x.github.com/immutable/docs/generate-imx-signature
+        in: header
+        name: IMX-Signature
+        required: true
+        schema:
+          type: string
+      - description: Unix Epoc timestamp
+        in: header
+        name: IMX-Timestamp
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCollectionRequest'
+        description: create a collection
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+          description: Created
+          headers:
+            Collection_Limit_Reset:
+              description: The expiry date of the current four-week window.
+              schema:
+                type: string
+            Collection_Limit:
+              description: The collection limit available to the project for each
+                four-week window.
+              schema:
+                type: string
+            Collection_Remaining:
+              description: The amount of collections remaining for current four-week
+                window.
+              schema:
+                type: string
+      summary: Create collection
+      tags:
+      - collections
+      x-codegen-request-body-name: CreateCollectionRequest
+  /v1/collections/{address}:
+    get:
+      description: Get details of a collection at the given address
+      operationId: getCollection
+      parameters:
+      - description: Collection contract address
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+          description: OK
+      summary: Get details of a collection at the given address
+      tags:
+      - collections
+    patch:
+      description: Update collection
+      operationId: updateCollection
+      parameters:
+      - description: Collection contract address
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+      - description: String created by signing wallet address and timestamp
+        in: header
+        name: IMX-Signature
+        required: true
+        schema:
+          type: string
+      - description: Unix Epoc timestamp
+        in: header
+        name: IMX-Timestamp
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCollectionRequest'
+        description: update a collection
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+          description: OK
+      summary: Update collection
+      tags:
+      - collections
+      x-codegen-request-body-name: UpdateCollectionRequest
+  /v1/collections/{address}/filters:
+    get:
+      description: Get a list of collection filters
+      operationId: listCollectionFilters
+      parameters:
+      - description: Collection contract address
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+      - description: Page size of the result
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Next page token
+        in: query
+        name: next_page_token
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionFilter'
+          description: OK
+      summary: Get a list of collection filters
+      tags:
+      - collections
+  /v1/collections/{address}/metadata-schema:
+    get:
+      description: Get collection metadata schema
+      operationId: getMetadataSchema
+      parameters:
+      - description: Collection contract address
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/MetadataSchemaProperty'
+                type: array
+          description: OK
+      summary: Get collection metadata schema
+      tags:
+      - metadata
+    post:
+      description: Add metadata schema to collection
+      operationId: addMetadataSchemaToCollection
+      parameters:
+      - description: Collection contract address
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+      - description: String created by signing wallet address and timestamp
+        in: header
+        name: IMX-Signature
+        required: true
+        schema:
+          type: string
+      - description: Unix Epoc timestamp
+        in: header
+        name: IMX-Timestamp
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddMetadataSchemaToCollectionRequest'
+        description: add metadata schema to a collection
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+          description: Created
+      summary: Add metadata schema to collection
+      tags:
+      - metadata
+      x-codegen-request-body-name: AddMetadataSchemaToCollectionRequest
+  /v1/collections/{address}/metadata-schema/{name}:
+    patch:
+      description: Update metadata schema by name
+      operationId: updateMetadataSchemaByName
+      parameters:
+      - description: Collection contract address
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+      - description: Metadata schema name
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: String created by signing wallet address and timestamp
+        in: header
+        name: IMX-Signature
+        required: true
+        schema:
+          type: string
+      - description: Unix Epoc timestamp
+        in: header
+        name: IMX-Timestamp
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataSchemaRequest'
+        description: update metadata schema
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+          description: OK
+      summary: Update metadata schema by name
+      tags:
+      - metadata
+      x-codegen-request-body-name: MetadataSchemaRequest
+  /v1/deposits:
+    get:
+      description: Get a list of deposits
+      operationId: listDeposits
+      parameters:
+      - description: Page size of the result
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: Property to sort by
+        in: query
+        name: order_by
+        schema:
+          type: string
+      - description: Direction to sort (asc/desc)
+        in: query
+        name: direction
+        schema:
+          type: string
+      - description: Ethereum address of the user who submitted this deposit
+        in: query
+        name: user
+        schema:
+          type: string
+      - description: Status of this deposit
+        in: query
+        name: status
+        schema:
+          type: string
+      - description: "Minimum timestamp for this deposit, in ISO 8601 UTC format.\
+          \ Example: '2022-05-27T00:10:22Z'"
+        in: query
+        name: updated_min_timestamp
+        schema:
+          type: string
+      - description: "Maximum timestamp for this deposit, in ISO 8601 UTC format.\
+          \ Example: '2022-05-27T00:10:22Z'"
+        in: query
+        name: updated_max_timestamp
+        schema:
+          type: string
+      - description: Token type of the deposited asset
+        in: query
+        name: token_type
+        schema:
+          type: string
+      - description: ERC721 Token ID of the minted asset
+        in: query
+        name: token_id
+        schema:
+          type: string
+      - description: Internal IMX ID of the minted asset
+        in: query
+        name: asset_id
+        schema:
+          type: string
+      - description: Token address of the deposited asset
+        in: query
+        name: token_address
+        schema:
+          type: string
+      - description: Token name of the deposited asset
+        in: query
+        name: token_name
+        schema:
+          type: string
+      - description: Min quantity for the deposited asset
+        in: query
+        name: min_quantity
+        schema:
+          type: string
+      - description: Max quantity for the deposited asset
+        in: query
+        name: max_quantity
+        schema:
+          type: string
+      - description: JSON-encoded metadata filters for the deposited asset
+        in: query
+        name: metadata
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDepositsResponse'
+          description: OK
+      summary: Get a list of deposits
+      tags:
+      - deposits
+  /v1/deposits/{id}:
+    get:
+      description: Get details of a deposit with the given ID
+      operationId: getDeposit
+      parameters:
+      - description: Deposit ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deposit'
+          description: OK
+      summary: Get details of a deposit with the given ID
+      tags:
+      - deposits
+  /v1/encode/{assetType}:
+    post:
+      description: Retrieves the Starkex Encoded format for a given asset so that
+        it can be used as parameter for Starkex smart contracts
+      operationId: encodeAsset
+      parameters:
+      - description: Asset type to be encoded. (asset/mintable-asset)
+        in: path
+        name: assetType
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EncodeAssetRequest'
+        description: Encode Asset
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodeAssetResponse'
+          description: OK
+      summary: Retrieves the Starkex Encoded format for a given asset
+      tags:
+      - encoding
+      x-codegen-request-body-name: EncodeAssetRequest
+  /v1/mintable-token/{token_address}/{token_id}:
+    get:
+      description: Get details of a mintable token with the given token address and
+        token ID
+      operationId: getMintableTokenDetailsByClientTokenId
+      parameters:
+      - description: Address of the ERC721 contract
+        in: path
+        name: token_address
+        required: true
+        schema:
+          type: string
+      - description: ERC721 token ID
+        in: path
+        name: token_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MintableTokenDetails'
+          description: OK
+      summary: Get details of a mintable token with the given token address and token
+        ID
+      tags:
+      - mints
+  /v1/mints:
+    get:
+      description: Get a list of mints
+      operationId: listMints
+      parameters:
+      - description: Page size of the result
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: Property to sort by
+        in: query
+        name: order_by
+        schema:
+          type: string
+      - description: Direction to sort (asc/desc)
+        in: query
+        name: direction
+        schema:
+          type: string
+      - description: Ethereum address of the user who submitted this mint
+        in: query
+        name: user
+        schema:
+          type: string
+      - description: Status of this mint
+        in: query
+        name: status
+        schema:
+          type: string
+      - description: "Minimum timestamp for this mint, in ISO 8601 UTC format. Example:\
+          \ '2022-05-27T00:10:22Z'"
+        in: query
+        name: min_timestamp
+        schema:
+          type: string
+      - description: "Maximum timestamp for this mint, in ISO 8601 UTC format. Example:\
+          \ '2022-05-27T00:10:22Z'"
+        in: query
+        name: max_timestamp
+        schema:
+          type: string
+      - description: Token type of the minted asset
+        in: query
+        name: token_type
+        schema:
+          type: string
+      - description: ERC721 Token ID of the minted asset
+        in: query
+        name: token_id
+        schema:
+          type: string
+      - description: Internal IMX ID of the minted asset
+        in: query
+        name: asset_id
+        schema:
+          type: string
+      - description: Token Name of the minted asset
+        in: query
+        name: token_name
+        schema:
+          type: string
+      - description: Token address of the minted asset
+        in: query
+        name: token_address
+        schema:
+          type: string
+      - description: Min quantity for the minted asset
+        in: query
+        name: min_quantity
+        schema:
+          type: string
+      - description: Max quantity for the minted asset
+        in: query
+        name: max_quantity
+        schema:
+          type: string
+      - description: JSON-encoded metadata filters for the minted asset
+        in: query
+        name: metadata
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListMintsResponse'
+          description: OK
+      summary: Get a list of mints
+      tags:
+      - mints
+  /v1/mints/{id}:
+    get:
+      description: Get details of a mint with the given ID
+      operationId: getMint
+      parameters:
+      - description: Mint ID. This is the transaction_id returned from listMints
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mint'
+          description: OK
+      summary: Get details of a mint with the given ID
+      tags:
+      - mints
+  /v1/orders:
+    get:
+      description: Get a list of orders
+      operationId: listOrders
+      parameters:
+      - description: Page size of the result
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: Property to sort by
+        in: query
+        name: order_by
+        schema:
+          enum:
+          - created_at
+          - expired_at
+          - sell_quantity
+          - buy_quantity
+          - buy_quantity_with_fees
+          - updated_at
+          type: string
+      - description: Direction to sort (asc/desc)
+        in: query
+        name: direction
+        schema:
+          type: string
+      - description: Ethereum address of the user who submitted this order
+        in: query
+        name: user
+        schema:
+          type: string
+      - description: Status of this order
+        in: query
+        name: status
+        schema:
+          enum:
+          - active
+          - filled
+          - cancelled
+          - expired
+          - inactive
+          type: string
+      - description: "Minimum created at timestamp for this order, in ISO 8601 UTC\
+          \ format. Example: '2022-05-27T00:10:22Z'"
+        in: query
+        name: min_timestamp
+        schema:
+          type: string
+      - description: "Maximum created at timestamp for this order, in ISO 8601 UTC\
+          \ format. Example: '2022-05-27T00:10:22Z'"
+        in: query
+        name: max_timestamp
+        schema:
+          type: string
+      - description: "Minimum updated at timestamp for this order, in ISO 8601 UTC\
+          \ format. Example: '2022-05-27T00:10:22Z'"
+        in: query
+        name: updated_min_timestamp
+        schema:
+          type: string
+      - description: "Maximum updated at timestamp for this order, in ISO 8601 UTC\
+          \ format. Example: '2022-05-27T00:10:22Z'"
+        in: query
+        name: updated_max_timestamp
+        schema:
+          type: string
+      - description: Token type of the asset this order buys
+        in: query
+        name: buy_token_type
+        schema:
+          type: string
+      - description: ERC721 Token ID of the asset this order buys
+        in: query
+        name: buy_token_id
+        schema:
+          type: string
+      - description: Internal IMX ID of the asset this order buys
+        in: query
+        name: buy_asset_id
+        schema:
+          type: string
+      - description: Token address of the asset this order buys
+        in: query
+        name: buy_token_address
+        schema:
+          type: string
+      - description: Token name of the asset this order buys
+        in: query
+        name: buy_token_name
+        schema:
+          type: string
+      - description: Min quantity for the asset this order buys
+        in: query
+        name: buy_min_quantity
+        schema:
+          type: string
+      - description: Max quantity for the asset this order buys
+        in: query
+        name: buy_max_quantity
+        schema:
+          type: string
+      - description: JSON-encoded metadata filters for the asset this order buys
+        in: query
+        name: buy_metadata
+        schema:
+          type: string
+      - description: Token type of the asset this order sells
+        in: query
+        name: sell_token_type
+        schema:
+          type: string
+      - description: ERC721 Token ID of the asset this order sells
+        in: query
+        name: sell_token_id
+        schema:
+          type: string
+      - description: Internal IMX ID of the asset this order sells
+        in: query
+        name: sell_asset_id
+        schema:
+          type: string
+      - description: Token address of the asset this order sells
+        in: query
+        name: sell_token_address
+        schema:
+          type: string
+      - description: Token name of the asset this order sells
+        in: query
+        name: sell_token_name
+        schema:
+          type: string
+      - description: Min quantity for the asset this order sells
+        in: query
+        name: sell_min_quantity
+        schema:
+          type: string
+      - description: Max quantity for the asset this order sells
+        in: query
+        name: sell_max_quantity
+        schema:
+          type: string
+      - description: JSON-encoded metadata filters for the asset this order sells
+        in: query
+        name: sell_metadata
+        schema:
+          type: string
+      - description: Comma separated string of fee percentages that are to be paired
+          with auxiliary_fee_recipients
+        in: query
+        name: auxiliary_fee_percentages
+        schema:
+          type: string
+      - description: Comma separated string of fee recipients that are to be paired
+          with auxiliary_fee_percentages
+        in: query
+        name: auxiliary_fee_recipients
+        schema:
+          type: string
+      - description: Set flag to true to include fee object for orders
+        in: query
+        name: include_fees
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ListOrdersResponse'
+          description: OK
+      summary: Get a list of orders
+      tags:
+      - orders
+    post:
+      description: Create an order
+      operationId: createOrder
+      parameters:
+      - description: eth address
+        in: header
+        name: x-imx-eth-address
+        required: true
+        schema:
+          type: string
+      - description: eth signature
+        in: header
+        name: x-imx-eth-signature
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+        description: create an order
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateOrderResponse'
+          description: OK
+      summary: Create an order
+      tags:
+      - orders
+      x-codegen-request-body-name: CreateOrderRequest
+  /v1/orders/{id}:
+    delete:
+      description: Cancel an order
+      operationId: cancelOrder
+      parameters:
+      - description: eth address
+        in: header
+        name: x-imx-eth-address
+        required: true
+        schema:
+          type: string
+      - description: eth signature
+        in: header
+        name: x-imx-eth-signature
+        required: true
+        schema:
+          type: string
+      - description: Order ID to cancel
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelOrderRequest'
+        description: cancel an order
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelOrderResponse'
+          description: OK
+      summary: Cancel an order
+      tags:
+      - orders
+      x-codegen-request-body-name: CancelOrderRequest
+    get:
+      description: Get details of an order with the given ID
+      operationId: getOrder
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Set flag to true to include fee body for the order
+        in: query
+        name: include_fees
+        schema:
+          type: boolean
+      - description: Comma separated string of fee percentages that are to be paired
+          with auxiliary_fee_recipients
+        in: query
+        name: auxiliary_fee_percentages
+        schema:
+          type: string
+      - description: Comma separated string of fee recipients that are to be paired
+          with auxiliary_fee_percentages
+        in: query
+        name: auxiliary_fee_recipients
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: OK
+      summary: Get details of an order with the given ID
+      tags:
+      - orders
+  /v1/projects:
+    get:
+      description: Get projects
+      operationId: getProjects
+      parameters:
+      - description: Page size of the result
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: Property to sort by
+        in: query
+        name: order_by
+        schema:
+          type: string
+      - description: Direction to sort (asc/desc)
+        in: query
+        name: direction
+        schema:
+          type: string
+      - description: String created by signing wallet address and timestamp
+        in: header
+        name: IMX-Signature
+        required: true
+        schema:
+          type: string
+      - description: Unix Epoc timestamp
+        in: header
+        name: IMX-Timestamp
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GetProjectsResponse'
+          description: OK
+      summary: Get projects
+      tags:
+      - projects
+    post:
+      description: Create a project
+      operationId: createProject
+      parameters:
+      - description: String created by signing wallet address and timestamp
+        in: header
+        name: IMX-Signature
+        required: true
+        schema:
+          type: string
+      - description: Unix Epoc timestamp
+        in: header
+        name: IMX-Timestamp
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProjectRequest'
+        description: create a project
+        required: true
+      responses:
+        "201":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CreateProjectResponse'
+          description: Created
+      summary: Create a project
+      tags:
+      - projects
+      x-codegen-request-body-name: CreateProjectRequest
+  /v1/projects/{id}:
+    get:
+      description: Get a project
+      operationId: getProject
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: String created by signing wallet address and timestamp
+        in: header
+        name: IMX-Signature
+        required: true
+        schema:
+          type: string
+      - description: Unix Epoc timestamp
+        in: header
+        name: IMX-Timestamp
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: OK
+      summary: Get a project
+      tags:
+      - projects
+  /v1/signable-cancel-order-details:
+    post:
+      description: Get details a signable cancel order
+      operationId: getSignableCancelOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetSignableCancelOrderRequest'
+        description: get a signable cancel order
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSignableCancelOrderResponse'
+          description: OK
+      summary: Get details a signable cancel order
+      tags:
+      - orders
+      x-codegen-request-body-name: GetSignableCancelOrderRequest
+  /v1/signable-deposit-details:
+    post:
+      description: Gets details of a signable deposit
+      operationId: getSignableDeposit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetSignableDepositRequest'
+        description: Get details of signable deposit
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSignableDepositResponse'
+          description: OK
+      summary: Gets details of a signable deposit
+      tags:
+      - deposits
+      x-codegen-request-body-name: GetSignableDepositRequest
+  /v1/signable-registration:
+    post:
+      description: Get operator signature to allow clients to register the user
+      operationId: getSignableRegistration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetSignableRegistrationRequest'
+        description: Register User
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSignableRegistrationResponse'
+          description: OK
+      summary: Get operator signature to allow clients to register the user
+      tags:
+      - users
+      x-codegen-request-body-name: GetSignableRegistrationRequest
+  /v1/signable-registration-offchain:
+    post:
+      description: Get encoded details to allow clients to register the user offchain
+      operationId: getSignableRegistrationOffchain
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetSignableRegistrationRequest'
+        description: Register User Offchain
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSignableRegistrationOffchainResponse'
+          description: OK
+      summary: Get encoded details to allow clients to register the user offchain
+      tags:
+      - users
+      x-codegen-request-body-name: GetSignableRegistrationRequest
+  /v1/signable-transfer-details:
+    post:
+      description: Gets details of a signable transfer
+      operationId: getSignableTransferV1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetSignableTransferRequestV1'
+        description: get details of signable transfer
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSignableTransferResponseV1'
+          description: OK
+      summary: Gets details of a signable transfer
+      tags:
+      - transfers
+      x-codegen-request-body-name: GetSignableTransferRequest
+  /v1/signable-withdrawal-details:
+    post:
+      description: Gets details of a signable withdrawal
+      operationId: getSignableWithdrawal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetSignableWithdrawalRequest'
+        description: get details of signable withdrawal
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSignableWithdrawalResponse'
+          description: OK
+      summary: Gets details of a signable withdrawal
+      tags:
+      - withdrawals
+      x-codegen-request-body-name: GetSignableWithdrawalRequest
+  /v1/tokens:
+    get:
+      description: Get a list of tokens
+      operationId: listTokens
+      parameters:
+      - description: Contract address of the token
+        in: query
+        name: address
+        schema:
+          type: string
+      - description: "Token symbols for the token, e.g. ?symbols=IMX,ETH"
+        in: query
+        name: symbols
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTokensResponse'
+          description: OK
+      summary: Get a list of tokens
+      tags:
+      - tokens
+  /v1/tokens/{address}:
+    get:
+      description: Get details of a token
+      operationId: getToken
+      parameters:
+      - description: Token Contract Address
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenDetails'
+          description: OK
+      summary: Get details of a token
+      tags:
+      - tokens
+  /v1/trades:
+    get:
+      description: Get a list of trades
+      operationId: listTrades
+      parameters:
+      - description: Party A's (buy order) order id
+        in: query
+        name: party_a_order_id
+        schema:
+          type: string
+      - description: Party A's (buy order) token type of currency used to buy
+        in: query
+        name: party_a_token_type
+        schema:
+          type: string
+      - description: Party A's (buy order) token address of currency used to buy
+        in: query
+        name: party_a_token_address
+        schema:
+          type: string
+      - description: Party B's (sell order) order id
+        in: query
+        name: party_b_order_id
+        schema:
+          type: string
+      - description: Party B's (sell order) token type of NFT sold - always ERC721
+        in: query
+        name: party_b_token_type
+        schema:
+          type: string
+      - description: Party B's (sell order) collection address of NFT sold
+        in: query
+        name: party_b_token_address
+        schema:
+          type: string
+      - description: Party B's (sell order) token id of NFT sold
+        in: query
+        name: party_b_token_id
+        schema:
+          type: string
+      - description: Page size of the result
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: Property to sort by
+        in: query
+        name: order_by
+        schema:
+          type: string
+      - description: Direction to sort (asc/desc)
+        in: query
+        name: direction
+        schema:
+          type: string
+      - description: "Minimum timestamp for this trade, in ISO 8601 UTC format. Example:\
+          \ '2022-05-27T00:10:22Z'"
+        in: query
+        name: min_timestamp
+        schema:
+          type: string
+      - description: "Maximum timestamp for this trade, in ISO 8601 UTC format. Example:\
+          \ '2022-05-27T00:10:22Z'"
+        in: query
+        name: max_timestamp
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTradesResponse'
+          description: OK
+      summary: Get a list of trades
+      tags:
+      - trades
+    post:
+      description: Create a Trade
+      operationId: createTrade
+      parameters:
+      - description: eth address
+        in: header
+        name: x-imx-eth-address
+        required: true
+        schema:
+          type: string
+      - description: eth signature
+        in: header
+        name: x-imx-eth-signature
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTradeRequestV1'
+        description: create a trade
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTradeResponse'
+          description: OK
+      summary: Create a Trade between two parties
+      tags:
+      - trades
+      x-codegen-request-body-name: CreateTradeRequest
+  /v1/trades/{id}:
+    get:
+      description: Get details of a trade with the given ID
+      operationId: getTrade
+      parameters:
+      - description: Trade ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trade'
+          description: OK
+      summary: Get details of a trade with the given ID
+      tags:
+      - trades
+  /v1/transfers:
+    get:
+      description: Get a list of transfers
+      operationId: listTransfers
+      parameters:
+      - description: Page size of the result
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: Property to sort by
+        in: query
+        name: order_by
+        schema:
+          enum:
+          - transaction_id
+          - updated_at
+          - created_at
+          - sender_ether_key
+          - receiver_ether_key
+          type: string
+      - description: Direction to sort (asc/desc)
+        in: query
+        name: direction
+        schema:
+          type: string
+      - description: Ethereum address of the user who submitted this transfer
+        in: query
+        name: user
+        schema:
+          type: string
+      - description: Ethereum address of the user who received this transfer
+        in: query
+        name: receiver
+        schema:
+          type: string
+      - description: Status of this transfer
+        in: query
+        name: status
+        schema:
+          enum:
+          - success
+          - failure
+          type: string
+      - description: "Minimum timestamp for this transfer, in ISO 8601 UTC format.\
+          \ Example: '2022-05-27T00:10:22Z'"
+        in: query
+        name: min_timestamp
+        schema:
+          type: string
+      - description: "Maximum timestamp for this transfer, in ISO 8601 UTC format.\
+          \ Example: '2022-05-27T00:10:22Z'"
+        in: query
+        name: max_timestamp
+        schema:
+          type: string
+      - description: Token type of the transferred asset
+        in: query
+        name: token_type
+        schema:
+          type: string
+      - description: ERC721 Token ID of the minted asset
+        in: query
+        name: token_id
+        schema:
+          type: string
+      - description: Internal IMX ID of the minted asset
+        in: query
+        name: asset_id
+        schema:
+          type: string
+      - description: Token address of the transferred asset
+        in: query
+        name: token_address
+        schema:
+          type: string
+      - description: Token name of the transferred asset
+        in: query
+        name: token_name
+        schema:
+          type: string
+      - description: Max quantity for the transferred asset
+        in: query
+        name: min_quantity
+        schema:
+          type: string
+      - description: Max quantity for the transferred asset
+        in: query
+        name: max_quantity
+        schema:
+          type: string
+      - description: JSON-encoded metadata filters for the transferred asset
+        in: query
+        name: metadata
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTransfersResponse'
+          description: OK
+      summary: Get a list of transfers
+      tags:
+      - transfers
+    post:
+      description: Create a new transfer request
+      operationId: createTransferV1
+      parameters:
+      - description: eth address
+        in: header
+        name: x-imx-eth-address
+        required: true
+        schema:
+          type: string
+      - description: eth signature
+        in: header
+        name: x-imx-eth-signature
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTransferRequestV1'
+        description: Create transfer
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTransferResponseV1'
+          description: OK
+      summary: Creates a transfer of tokens between two parties
+      tags:
+      - transfers
+      x-codegen-request-body-name: CreateTransferRequest
+  /v1/transfers/{id}:
+    get:
+      description: Get details of a transfer with the given ID
+      operationId: getTransfer
+      parameters:
+      - description: Transfer ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transfer'
+          description: OK
+      summary: Get details of a transfer with the given ID
+      tags:
+      - transfers
+  /v1/users:
+    post:
+      description: Registers a user
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUserRequest'
+        description: Register User
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterUserResponse'
+          description: OK
+      summary: Registers a user
+      tags:
+      - users
+      x-codegen-request-body-name: RegisterUserRequest
+  /v1/users/{user}:
+    get:
+      description: Get stark keys for a registered user
+      operationId: getUsers
+      parameters:
+      - description: User
+        in: path
+        name: user
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUsersApiResponse'
+          description: OK
+      summary: Get stark keys for a registered user
+      tags:
+      - users
+  /v1/withdrawals:
+    get:
+      description: Get a list of withdrawals
+      operationId: listWithdrawals
+      parameters:
+      - description: Withdrawal has been transferred to user's Layer 1 wallet
+        in: query
+        name: withdrawn_to_wallet
+        schema:
+          type: boolean
+      - description: Status of the on-chain batch confirmation for this withdrawal
+        in: query
+        name: rollup_status
+        schema:
+          type: string
+      - description: Page size of the result
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: Property to sort by
+        in: query
+        name: order_by
+        schema:
+          type: string
+      - description: Direction to sort (asc/desc)
+        in: query
+        name: direction
+        schema:
+          type: string
+      - description: Ethereum address of the user who submitted this withdrawal
+        in: query
+        name: user
+        schema:
+          type: string
+      - description: Status of this withdrawal
+        in: query
+        name: status
+        schema:
+          type: string
+      - description: "Minimum timestamp for this deposit, in ISO 8601 UTC format.\
+          \ Example: '2022-05-27T00:10:22Z'"
+        in: query
+        name: min_timestamp
+        schema:
+          type: string
+      - description: "Maximum timestamp for this deposit, in ISO 8601 UTC format.\
+          \ Example: '2022-05-27T00:10:22Z'"
+        in: query
+        name: max_timestamp
+        schema:
+          type: string
+      - description: Token type of the withdrawn asset
+        in: query
+        name: token_type
+        schema:
+          type: string
+      - description: ERC721 Token ID of the minted asset
+        in: query
+        name: token_id
+        schema:
+          type: string
+      - description: Internal IMX ID of the minted asset
+        in: query
+        name: asset_id
+        schema:
+          type: string
+      - description: Token address of the withdrawn asset
+        in: query
+        name: token_address
+        schema:
+          type: string
+      - description: Token name of the withdrawn asset
+        in: query
+        name: token_name
+        schema:
+          type: string
+      - description: Min quantity for the withdrawn asset
+        in: query
+        name: min_quantity
+        schema:
+          type: string
+      - description: Max quantity for the withdrawn asset
+        in: query
+        name: max_quantity
+        schema:
+          type: string
+      - description: JSON-encoded metadata filters for the withdrawn asset
+        in: query
+        name: metadata
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListWithdrawalsResponse'
+          description: OK
+      summary: Get a list of withdrawals
+      tags:
+      - withdrawals
+    post:
+      description: Creates a withdrawal
+      operationId: createWithdrawal
+      parameters:
+      - description: eth address
+        in: header
+        name: x-imx-eth-address
+        required: true
+        schema:
+          type: string
+      - description: eth signature
+        in: header
+        name: x-imx-eth-signature
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWithdrawalRequest'
+        description: create a withdrawal
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateWithdrawalResponse'
+          description: OK
+      summary: Creates a withdrawal of a token
+      tags:
+      - withdrawals
+      x-codegen-request-body-name: CreateWithdrawalRequest
+  /v1/withdrawals/{id}:
+    get:
+      description: Gets details of withdrawal with the given ID
+      operationId: getWithdrawal
+      parameters:
+      - description: Withdrawal ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Withdrawal'
+          description: OK
+      summary: Gets details of withdrawal with the given ID
+      tags:
+      - withdrawals
+  /v2/balances/{owner}:
+    get:
+      description: Get a list of balances for given user
+      operationId: listBalances
+      parameters:
+      - description: Ethereum wallet address for user
+        in: path
+        name: owner
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBalancesResponse'
+          description: OK
+      summary: Get a list of balances for given user
+      tags:
+      - balances
+  /v2/balances/{owner}/{address}:
+    get:
+      description: Fetches the token balances of the user
+      operationId: getBalance
+      parameters:
+      - description: Address of the owner/user
+        in: path
+        name: owner
+        required: true
+        schema:
+          type: string
+      - description: Token address
+        in: path
+        name: address
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Balance'
+          description: OK
+      summary: Fetches the token balances of the user
+      tags:
+      - balances
+  /v2/mints:
+    post:
+      description: Mint tokens in a batch with fees
+      operationId: mintTokens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/MintRequest'
+              type: array
+        description: details of tokens to mint
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MintTokensResponse'
+          description: OK
+          headers:
+            Mint_Limit_Reset:
+              description: The expiry date of the current four-week window.
+              schema:
+                type: string
+            Mint_Limit:
+              description: The mint limit available to the project for each four-week
+                window.
+              schema:
+                type: string
+            Mint_Remaining:
+              description: The amount of mints remaining for current four-week window.
+              schema:
+                type: string
+      summary: Mint Tokens V2
+      tags:
+      - mints
+      x-codegen-request-body-name: MintTokensRequestV2
+  /v2/signable-transfer-details:
+    post:
+      description: Gets bulk details of a signable transfer
+      operationId: getSignableTransfer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetSignableTransferRequest'
+        description: get details of signable transfer
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSignableTransferResponse'
+          description: OK
+      summary: Gets bulk details of a signable transfer
+      tags:
+      - transfers
+      x-codegen-request-body-name: GetSignableTransferRequestV2
+  /v2/transfers:
+    post:
+      description: Create a new transfer request
+      operationId: createTransfer
+      parameters:
+      - description: eth address
+        in: header
+        name: x-imx-eth-address
+        required: true
+        schema:
+          type: string
+      - description: eth signature
+        in: header
+        name: x-imx-eth-signature
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTransferRequest'
+        description: Create transfer
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTransferResponse'
+          description: OK
+      summary: Creates a transfer of multiple tokens between two parties
+      tags:
+      - transfers
+      x-codegen-request-body-name: CreateTransferRequestV2
+  /v3/signable-order-details:
+    post:
+      description: Get a signable order request (V3)
+      operationId: getSignableOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetSignableOrderRequest'
+        description: get a signable order
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSignableOrderResponse'
+          description: OK
+      summary: Get a signable order request (V3)
+      tags:
+      - orders
+      x-codegen-request-body-name: GetSignableOrderRequestV3
+  /v3/signable-trade-details:
+    post:
+      description: Get details a signable trade V3
+      operationId: getSignableTrade
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetSignableTradeRequest'
+        description: get a signable trade
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSignableTradeResponse'
+          description: OK
+      summary: Get details a signable trade V3
+      tags:
+      - trades
+      x-codegen-request-body-name: GetSignableTradeRequest
+components:
+  schemas:
+    AddMetadataSchemaToCollectionRequest:
+      example:
+        metadata:
+        - filterable: true
+          name: name
+          type: enum
+        - filterable: true
+          name: name
+          type: enum
+        contract_address: contract_address
+      properties:
+        contract_address:
+          description: Not required from API user
+          type: string
+        metadata:
+          description: The metadata container
+          items:
+            $ref: '#/components/schemas/MetadataSchemaRequest'
+          minItems: 1
+          type: array
+      required:
+      - metadata
+      type: object
+    Asset:
+      example:
+        fees:
+        - address: address
+          percentage: 60.27456183070403
+          type: type
+        - address: address
+          percentage: 60.27456183070403
+          type: type
+        metadata: "{}"
+        image_url: image_url
+        created_at: created_at
+        description: description
+        token_address: token_address
+        collection:
+          icon_url: icon_url
+          name: name
+        uri: uri
+        token_id: token_id
+        updated_at: updated_at
+        name: name
+        orders:
+          sell_orders:
+          - "{}"
+          - "{}"
+          buy_orders:
+          - "{}"
+          - "{}"
+        id: id
+        user: user
+        status: status
+      properties:
+        collection:
+          $ref: '#/components/schemas/CollectionDetails'
+        created_at:
+          description: Timestamp of when the asset was created
+          nullable: true
+          type: string
+        description:
+          description: Description of this asset
+          nullable: true
+          type: string
+        fees:
+          description: Royalties to pay on this asset operations
+          items:
+            $ref: '#/components/schemas/Fee'
+          type: array
+        id:
+          description: "[DEPRECATED] Internal Immutable X Token ID"
+          type: string
+        image_url:
+          description: URL of the image which should be used for this asset
+          nullable: true
+          type: string
+        metadata:
+          description: Metadata of this asset
+          nullable: true
+          properties: {}
+          type: object
+        name:
+          description: Name of this asset
+          nullable: true
+          type: string
+        orders:
+          $ref: '#/components/schemas/OrderDetails'
+        status:
+          description: Status of this asset (where it is in the system)
+          type: string
+        token_address:
+          description: Address of the ERC721 contract
+          type: string
+        token_id:
+          description: ERC721 Token ID of this asset
+          type: string
+        updated_at:
+          description: Timestamp of when the asset was updated
+          nullable: true
+          type: string
+        uri:
+          description: URI to access this asset externally to Immutable X
+          nullable: true
+          type: string
+        user:
+          description: Ethereum address of the user who owns this asset
+          type: string
+      required:
+      - collection
+      - created_at
+      - description
+      - image_url
+      - metadata
+      - name
+      - status
+      - token_address
+      - token_id
+      - updated_at
+      - uri
+      - user
+      type: object
+    AssetProperties:
+      example:
+        image_url: image_url
+        name: name
+        collection:
+          icon_url: icon_url
+          name: name
+      properties:
+        collection:
+          $ref: '#/components/schemas/CollectionDetails'
+        image_url:
+          description: Image URL of this asset
+          type: string
+        name:
+          description: Name of this asset
+          type: string
+      type: object
+    AssetWithOrders:
+      example:
+        fees:
+        - address: address
+          percentage: 60.27456183070403
+          type: type
+        - address: address
+          percentage: 60.27456183070403
+          type: type
+        metadata: "{}"
+        image_url: image_url
+        created_at: created_at
+        description: description
+        token_address: token_address
+        collection:
+          icon_url: icon_url
+          name: name
+        uri: uri
+        token_id: token_id
+        updated_at: updated_at
+        name: name
+        orders:
+          sell_orders:
+          - "{}"
+          - "{}"
+          buy_orders:
+          - "{}"
+          - "{}"
+        id: id
+        user: user
+        status: status
+      properties:
+        collection:
+          $ref: '#/components/schemas/CollectionDetails'
+        created_at:
+          description: Timestamp of when the asset was created
+          nullable: true
+          type: string
+        description:
+          description: Description of this asset
+          nullable: true
+          type: string
+        fees:
+          description: Royalties to pay on this asset operations
+          items:
+            $ref: '#/components/schemas/Fee'
+          type: array
+        id:
+          description: "[DEPRECATED] Internal Immutable X Token ID"
+          type: string
+        image_url:
+          description: URL of the image which should be used for this asset
+          nullable: true
+          type: string
+        metadata:
+          description: Metadata of this asset
+          nullable: true
+          properties: {}
+          type: object
+        name:
+          description: Name of this asset
+          nullable: true
+          type: string
+        orders:
+          $ref: '#/components/schemas/OrderDetails'
+        status:
+          description: Status of this asset (where it is in the system)
+          type: string
+        token_address:
+          description: Address of the ERC721 contract
+          type: string
+        token_id:
+          description: ERC721 Token ID of this asset
+          type: string
+        updated_at:
+          description: Timestamp of when the asset was updated
+          nullable: true
+          type: string
+        uri:
+          description: URI to access this asset externally to Immutable X
+          nullable: true
+          type: string
+        user:
+          description: Ethereum address of the user who owns this asset
+          type: string
+      required:
+      - collection
+      - created_at
+      - description
+      - image_url
+      - metadata
+      - name
+      - status
+      - token_address
+      - token_id
+      - updated_at
+      - uri
+      - user
+      type: object
+    Balance:
+      example:
+        preparing_withdrawal: preparing_withdrawal
+        symbol: symbol
+        balance: balance
+        withdrawable: withdrawable
+        token_address: token_address
+      properties:
+        balance:
+          description: Amount which is currently inside the exchange
+          type: string
+        preparing_withdrawal:
+          description: Amount which is currently preparing withdrawal from the exchange
+          type: string
+        symbol:
+          description: "Symbol of the token (e.g. ETH, IMX)"
+          type: string
+        token_address:
+          description: Address of the contract that represents this ERC20 token or
+            empty for ETH
+          type: string
+        withdrawable:
+          description: Amount which is currently withdrawable from the exchange
+          type: string
+      required:
+      - balance
+      - preparing_withdrawal
+      - symbol
+      - token_address
+      - withdrawable
+      type: object
+    CancelOrderRequest:
+      example:
+        stark_signature: stark_signature
+        order_id: 0
+      properties:
+        order_id:
+          description: ID of the order
+          type: integer
+        stark_signature:
+          description: Payload signature
+          type: string
+      required:
+      - order_id
+      - stark_signature
+      type: object
+    CancelOrderResponse:
+      example:
+        order_id: 0
+        status: status
+      properties:
+        order_id:
+          description: ID of the cancelled order
+          type: integer
+        status:
+          description: New status of the order
+          type: string
+      required:
+      - order_id
+      - status
+      type: object
+    Collection:
+      example:
+        icon_url: icon_url
+        collection_image_url: collection_image_url
+        address: address
+        project_id: 6
+        metadata_api_url: metadata_api_url
+        name: name
+        description: description
+        project_owner_address: project_owner_address
+      properties:
+        address:
+          description: Ethereum address of the ERC721 contract
+          type: string
+        collection_image_url:
+          description: URL of the tile image for this collection
+          nullable: true
+          type: string
+        description:
+          description: Description of the collection
+          nullable: true
+          type: string
+        icon_url:
+          description: URL of the icon for this collection
+          nullable: true
+          type: string
+        metadata_api_url:
+          description: URL of the metadata for this collection
+          nullable: true
+          type: string
+        name:
+          description: Name of the collection
+          type: string
+        project_id:
+          description: The collection's project ID
+          type: integer
+        project_owner_address:
+          description: Project owner address
+          type: string
+      required:
+      - address
+      - collection_image_url
+      - description
+      - icon_url
+      - metadata_api_url
+      - name
+      - project_id
+      - project_owner_address
+      type: object
+    CollectionDetails:
+      example:
+        icon_url: icon_url
+        name: name
+      properties:
+        icon_url:
+          description: URL of the icon of the collection
+          nullable: true
+          type: string
+        name:
+          description: Name of the collection
+          type: string
+      required:
+      - icon_url
+      - name
+      type: object
+    CollectionFilter:
+      example:
+        range:
+          min: 6
+          max: 0
+        type: type
+        value:
+        - value
+        - value
+        key: key
+      properties:
+        key:
+          description: Key of this property
+          type: string
+        range:
+          $ref: '#/components/schemas/Range'
+        type:
+          description: Type of this filter
+          type: string
+        value:
+          description: List of possible values for this property
+          items:
+            type: string
+          type: array
+      type: object
+    CreateCollectionRequest:
+      example:
+        icon_url: icon_url
+        collection_image_url: collection_image_url
+        project_id: 0
+        metadata_api_url: metadata_api_url
+        name: name
+        description: description
+        owner_public_key: owner_public_key
+        contract_address: contract_address
+      properties:
+        collection_image_url:
+          description: URL of the tile image for this collection
+          type: string
+        contract_address:
+          description: Ethereum address of the ERC721 contract
+          type: string
+        description:
+          description: Description of the collection
+          type: string
+        icon_url:
+          description: URL of the icon for this collection
+          type: string
+        metadata_api_url:
+          description: URL of the metadata for this collection
+          type: string
+        name:
+          description: Name of the collection
+          type: string
+        owner_public_key:
+          description: "Owner Public Key: The public key of the owner of the contract"
+          type: string
+        project_id:
+          description: The collection's project ID
+          type: integer
+      required:
+      - contract_address
+      - name
+      - owner_public_key
+      - project_id
+      type: object
+    CreateOrderRequest:
+      example:
+        fees:
+        - fee_percentage: 6.027456183070403
+          address: address
+        - fee_percentage: 6.027456183070403
+          address: address
+        stark_key: stark_key
+        vault_id_sell: 5
+        vault_id_buy: 5
+        stark_signature: stark_signature
+        expiration_timestamp: 0
+        include_fees: true
+        amount_buy: amount_buy
+        asset_id_sell: asset_id_sell
+        amount_sell: amount_sell
+        asset_id_buy: asset_id_buy
+        nonce: 1
+      properties:
+        amount_buy:
+          description: Amount to buy
+          type: string
+        amount_sell:
+          description: Amount to sell
+          type: string
+        asset_id_buy:
+          description: ID of the asset to buy
+          type: string
+        asset_id_sell:
+          description: ID of the asset to sell
+          type: string
+        expiration_timestamp:
+          description: Expiration timestamp for this order
+          type: integer
+        fees:
+          description: Fee information
+          items:
+            $ref: '#/components/schemas/FeeEntry'
+          type: array
+        include_fees:
+          description: Whether to include fees in order
+          type: boolean
+        nonce:
+          description: Nonce of the order
+          type: integer
+        stark_key:
+          description: Public stark key of the user creating order
+          type: string
+        stark_signature:
+          description: Payload signature
+          type: string
+        vault_id_buy:
+          description: ID of the vault into which the bought asset will be placed
+          type: integer
+        vault_id_sell:
+          description: ID of the vault to sell from
+          type: integer
+      required:
+      - amount_buy
+      - amount_sell
+      - asset_id_buy
+      - asset_id_sell
+      - expiration_timestamp
+      - nonce
+      - stark_key
+      - stark_signature
+      - vault_id_buy
+      - vault_id_sell
+      type: object
+    CreateOrderResponse:
+      example:
+        time: 6
+        order_id: 0
+        status: status
+      properties:
+        order_id:
+          description: ID of the created order
+          type: integer
+        status:
+          description: Status of the created order
+          type: string
+        time:
+          description: Timestamp of the created order
+          type: integer
+      required:
+      - order_id
+      - status
+      - time
+      type: object
+    CreateProjectRequest:
+      example:
+        company_name: company_name
+        name: name
+        contact_email: contact_email
+      properties:
+        company_name:
+          description: The company name
+          type: string
+        contact_email:
+          description: The project contact email
+          type: string
+        name:
+          description: The project name
+          type: string
+      required:
+      - company_name
+      - contact_email
+      - name
+      type: object
+    CreateProjectResponse:
+      example:
+        id: 0
+      properties:
+        id:
+          description: The project ID
+          type: integer
+      required:
+      - id
+      type: object
+    CreateTradeRequestV1:
+      example:
+        fees:
+        - fee_percentage: 6.027456183070403
+          address: address
+        - fee_percentage: 6.027456183070403
+          address: address
+        stark_key: stark_key
+        vault_id_sell: 2
+        vault_id_buy: 5
+        expiration_timestamp: 0
+        include_fees: true
+        amount_buy: amount_buy
+        amount_sell: amount_sell
+        asset_id_buy: asset_id_buy
+        nonce: 1
+        stark_signature: stark_signature
+        fee_info:
+          source_vault_id: 6
+          asset_id: asset_id
+          fee_limit: fee_limit
+        asset_id_sell: asset_id_sell
+        order_id: 5
+      properties:
+        amount_buy:
+          description: Amount to buy
+          type: string
+        amount_sell:
+          description: Amount to sell
+          type: string
+        asset_id_buy:
+          description: ID of the asset to buy
+          type: string
+        asset_id_sell:
+          description: ID of the asset to sell
+          type: string
+        expiration_timestamp:
+          description: Expiration timestamp for this trade
+          type: integer
+        fee_info:
+          $ref: '#/components/schemas/FeeInfo'
+        fees:
+          description: Fee information
+          items:
+            $ref: '#/components/schemas/FeeEntry'
+          type: array
+        include_fees:
+          description: "[deprecated] All orders include fees since the introduction\
+            \ of protocol fees"
+          type: boolean
+        nonce:
+          description: Nonce of the trade
+          type: integer
+        order_id:
+          description: ID of the order
+          type: integer
+        stark_key:
+          description: Public stark key of the user creating trade
+          type: string
+        stark_signature:
+          description: Payload signature
+          type: string
+        vault_id_buy:
+          description: ID of the vault into which the traded asset will be placed
+          type: integer
+        vault_id_sell:
+          description: ID of the vault to sell from
+          type: integer
+      required:
+      - amount_buy
+      - amount_sell
+      - asset_id_buy
+      - asset_id_sell
+      - expiration_timestamp
+      - nonce
+      - order_id
+      - stark_key
+      - stark_signature
+      - vault_id_buy
+      - vault_id_sell
+      type: object
+    CreateTradeResponse:
+      example:
+        trade_id: 0
+        request_id: request_id
+        status: status
+      properties:
+        request_id:
+          description: Request ID that returns when a trade initiated through risk-manager
+          type: string
+        status:
+          description: Current status of trade
+          type: string
+        trade_id:
+          description: ID of trade within Immutable X
+          type: integer
+      required:
+      - status
+      - trade_id
+      type: object
+    CreateTransferRequest:
+      example:
+        sender_stark_key: sender_stark_key
+        requests:
+        - amount: amount
+          stark_signature: stark_signature
+          receiver_stark_key: receiver_stark_key
+          expiration_timestamp: 0
+          asset_id: asset_id
+          nonce: 6
+          receiver_vault_id: 1
+          sender_vault_id: 5
+        - amount: amount
+          stark_signature: stark_signature
+          receiver_stark_key: receiver_stark_key
+          expiration_timestamp: 0
+          asset_id: asset_id
+          nonce: 6
+          receiver_vault_id: 1
+          sender_vault_id: 5
+      properties:
+        requests:
+          description: List of transfers
+          items:
+            $ref: '#/components/schemas/TransferRequest'
+          type: array
+        sender_stark_key:
+          description: Public stark key of the user sending the transfer
+          type: string
+      required:
+      - requests
+      - sender_stark_key
+      type: object
+    CreateTransferRequestV1:
+      example:
+        amount: amount
+        sender_stark_key: sender_stark_key
+        stark_signature: stark_signature
+        receiver_stark_key: receiver_stark_key
+        expiration_timestamp: 0
+        asset_id: asset_id
+        nonce: 6
+        receiver_vault_id: 1
+        sender_vault_id: 5
+      properties:
+        amount:
+          description: Amount to transfer
+          type: string
+        asset_id:
+          description: ID of the asset to transfer
+          type: string
+        expiration_timestamp:
+          description: Expiration timestamp for this transfer
+          type: integer
+        nonce:
+          description: Nonce of the transfer
+          type: integer
+        receiver_stark_key:
+          description: Public stark key of the user receiving the transfer
+          type: string
+        receiver_vault_id:
+          description: ID of the vault into which the asset will be transferred to
+          type: integer
+        sender_stark_key:
+          description: Public stark key of the user sending the transfer
+          type: string
+        sender_vault_id:
+          description: ID of the vault into which the asset is from
+          type: integer
+        stark_signature:
+          description: Transfer payload signature
+          type: string
+      required:
+      - amount
+      - asset_id
+      - expiration_timestamp
+      - nonce
+      - receiver_stark_key
+      - receiver_vault_id
+      - sender_stark_key
+      - sender_vault_id
+      - stark_signature
+      type: object
+    CreateTransferResponse:
+      example:
+        transfer_ids:
+        - 0
+        - 0
+      properties:
+        transfer_ids:
+          description: List of transfer IDs
+          items:
+            type: integer
+          type: array
+      required:
+      - transfer_ids
+      type: object
+    CreateTransferResponseV1:
+      example:
+        sent_signature: sent_signature
+        time: 0
+        transfer_id: 6
+        status: status
+      properties:
+        sent_signature:
+          description: "[deprecated] Sent signature"
+          type: string
+        status:
+          description: "[deprecated] The status of transfer"
+          type: string
+        time:
+          description: "[deprecated] Time of the transfer"
+          type: integer
+        transfer_id:
+          description: ID of the transfer
+          type: integer
+      required:
+      - sent_signature
+      - status
+      - time
+      - transfer_id
+      type: object
+    CreateWithdrawalRequest:
+      example:
+        amount: amount
+        stark_key: stark_key
+        stark_signature: stark_signature
+        asset_id: asset_id
+        nonce: 0
+        vault_id: 6
+      properties:
+        amount:
+          description: Amount to withdraw
+          type: string
+        asset_id:
+          description: The ID of asset the user is withdrawing
+          type: string
+        nonce:
+          description: Nonce of the withdrawal
+          type: integer
+        stark_key:
+          description: Public stark key of the withdrawing user
+          type: string
+        stark_signature:
+          description: Payload signature
+          type: string
+        vault_id:
+          description: The ID of the vault the asset belong to
+          type: integer
+      required:
+      - amount
+      - asset_id
+      - nonce
+      - stark_key
+      - stark_signature
+      - vault_id
+      type: object
+    CreateWithdrawalResponse:
+      example:
+        withdrawal_id: 6
+        time: 0
+        status: status
+      properties:
+        status:
+          description: Status of the withdrawal
+          type: string
+        time:
+          description: Time of the withdrawal
+          type: integer
+        withdrawal_id:
+          description: ID of the withdrawal
+          type: integer
+      required:
+      - status
+      - time
+      - withdrawal_id
+      type: object
+    Deposit:
+      example:
+        transaction_id: 1
+        user: user
+        status: status
+        timestamp: timestamp
+        token:
+          data:
+            quantity: quantity
+            token_id: token_id
+            decimals: 6
+            token_address: token_address
+            id: id
+            quantity_with_fees: quantity_with_fees
+            properties:
+              image_url: image_url
+              name: name
+              collection:
+                icon_url: icon_url
+                name: name
+          type: type
+      properties:
+        status:
+          description: Status of this deposit in Immutable X
+          type: string
+        timestamp:
+          description: Timestamp of the deposit
+          type: string
+        token:
+          $ref: '#/components/schemas/Token'
+        transaction_id:
+          description: Sequential ID of this transaction within Immutable X
+          type: integer
+        user:
+          description: Ethereum address of the user making this deposit
+          type: string
+      required:
+      - status
+      - timestamp
+      - token
+      - transaction_id
+      - user
+      type: object
+    EncodeAssetRequest:
+      example:
+        token:
+          data:
+            blueprint: blueprint
+            token_id: token_id
+            token_address: token_address
+            id: id
+          type: ETH
+      properties:
+        token:
+          $ref: '#/components/schemas/encodeAssetRequestToken'
+      required:
+      - token
+      type: object
+    EncodeAssetResponse:
+      example:
+        asset_type: asset_type
+        asset_id: asset_id
+      properties:
+        asset_id:
+          description: Stark encoded asset id
+          type: string
+        asset_type:
+          description: Stark encoded asset type
+          type: string
+      required:
+      - asset_id
+      - asset_type
+      type: object
+    EncodeAssetTokenData:
+      example:
+        blueprint: blueprint
+        token_id: token_id
+        token_address: token_address
+        id: id
+      properties:
+        blueprint:
+          description: Blueprint information of the token to be encoded. Used if token
+            is mintable.
+          type: string
+        id:
+          description: ID of the token to be encoded. Used if token is mintable.
+          type: string
+        token_address:
+          description: Contract address of the token to be encoded
+          type: string
+        token_id:
+          description: TokenId of the token to be encoded. Used if token is non-mintable
+          type: string
+      type: object
+    Fee:
+      example:
+        address: address
+        percentage: 60.27456183070403
+        type: type
+      properties:
+        address:
+          description: Wallet address
+          type: string
+        percentage:
+          description: The percentage of fee
+          maximum: 100
+          type: number
+        type:
+          description: "Type of fee. Examples: `royalty`, `maker`, `taker` or `protocol`"
+          type: string
+      required:
+      - address
+      - percentage
+      - type
+      type: object
+    FeeData:
+      example:
+        decimals: 6
+        contract_address: contract_address
+      properties:
+        contract_address:
+          description: Address of ERC721/ERC20 contract
+          type: string
+        decimals:
+          description: Number of decimals supported by this asset
+          type: integer
+      type: object
+    FeeEntry:
+      example:
+        fee_percentage: 6.027456183070403
+        address: address
+      properties:
+        address:
+          type: string
+        fee_percentage:
+          type: number
+      type: object
+    FeeInfo:
+      example:
+        source_vault_id: 6
+        asset_id: asset_id
+        fee_limit: fee_limit
+      properties:
+        asset_id:
+          description: ID of the asset these fees relate to
+          type: string
+        fee_limit:
+          description: Fee limit
+          type: string
+        source_vault_id:
+          description: ID of vault the asset belong to
+          type: integer
+      required:
+      - asset_id
+      - fee_limit
+      - source_vault_id
+      type: object
+    FeeToken:
+      example:
+        data:
+          decimals: 6
+          contract_address: contract_address
+        type: ETH
+      properties:
+        data:
+          $ref: '#/components/schemas/FeeData'
+        type:
+          description: Fee token type. One of ETH/ERC20
+          enum:
+          - ETH
+          - ERC20
+          type: string
+      type: object
+    GetProjectsResponse:
+      example:
+        cursor: cursor
+        result:
+        - collection_remaining: 1
+          mint_limit_expires_at: mint_limit_expires_at
+          mint_remaining: 2
+          mint_monthly_limit: 5
+          company_name: company_name
+          collection_monthly_limit: 6
+          name: name
+          id: 5
+          collection_limit_expires_at: collection_limit_expires_at
+          contact_email: contact_email
+        - collection_remaining: 1
+          mint_limit_expires_at: mint_limit_expires_at
+          mint_remaining: 2
+          mint_monthly_limit: 5
+          company_name: company_name
+          collection_monthly_limit: 6
+          name: name
+          id: 5
+          collection_limit_expires_at: collection_limit_expires_at
+          contact_email: contact_email
+        remaining: 0
+      properties:
+        cursor:
+          description: Generated cursor returned by previous query
+          type: string
+        remaining:
+          description: "Remaining results flag. 1: there are remaining results matching\
+            \ this query, 0: no remaining results"
+          type: integer
+        result:
+          description: Projects matching query parameters
+          items:
+            $ref: '#/components/schemas/Project'
+          type: array
+      required:
+      - cursor
+      - remaining
+      - result
+      type: object
+    GetSignableCancelOrderRequest:
+      example:
+        order_id: 0
+      properties:
+        order_id:
+          description: ID of the order to be cancelled
+          type: integer
+      required:
+      - order_id
+      type: object
+    GetSignableCancelOrderResponse:
+      example:
+        payload_hash: payload_hash
+        order_id: 0
+        signable_message: signable_message
+      properties:
+        order_id:
+          description: ID of the order to be cancelled
+          type: integer
+        payload_hash:
+          description: Hash of the payload to be signed for cancel order
+          type: string
+        signable_message:
+          description: Message to sign from wallet to confirm cancel order
+          type: string
+      required:
+      - order_id
+      - payload_hash
+      - signable_message
+      type: object
+    GetSignableDepositRequest:
+      example:
+        amount: amount
+        user: user
+        token:
+          data: "{}"
+          type: ETH/ERC20/ERC721
+      properties:
+        amount:
+          description: Amount of the token the user is depositing
+          type: string
+        token:
+          $ref: '#/components/schemas/SignableToken'
+        user:
+          description: User who is depositing
+          type: string
+      required:
+      - amount
+      - token
+      - user
+      type: object
+    GetSignableDepositResponse:
+      example:
+        amount: amount
+        stark_key: stark_key
+        asset_id: asset_id
+        nonce: 0
+        vault_id: 6
+      properties:
+        amount:
+          description: Amount this user is depositing
+          type: string
+        asset_id:
+          description: ID of the asset this user is depositing
+          type: string
+        nonce:
+          description: Nonce of the deposit
+          type: integer
+        stark_key:
+          description: Public stark key of the depositing user
+          type: string
+        vault_id:
+          description: ID of the vault this user is depositing to
+          type: integer
+      required:
+      - amount
+      - asset_id
+      - nonce
+      - stark_key
+      - vault_id
+      type: object
+    GetSignableOrderRequest:
+      example:
+        fees:
+        - fee_percentage: 6.027456183070403
+          address: address
+        - fee_percentage: 6.027456183070403
+          address: address
+        token_buy:
+          data: "{}"
+          type: ETH/ERC20/ERC721
+        token_sell:
+          data: "{}"
+          type: ETH/ERC20/ERC721
+        expiration_timestamp: 0
+        amount_buy: amount_buy
+        amount_sell: amount_sell
+        user: user
+      properties:
+        amount_buy:
+          description: Fee-exclusive amount to buy the asset
+          type: string
+        amount_sell:
+          description: Amount to sell (quantity)
+          type: string
+        expiration_timestamp:
+          description: "ExpirationTimestamp in Unix time. Note: will be rounded down\
+            \ to the nearest hour"
+          type: integer
+        fees:
+          description: Inclusion of either maker or taker fees
+          items:
+            $ref: '#/components/schemas/FeeEntry'
+          type: array
+        token_buy:
+          $ref: '#/components/schemas/SignableToken'
+        token_sell:
+          $ref: '#/components/schemas/SignableToken'
+        user:
+          description: Ethereum address of the submitting user
+          type: string
+      required:
+      - amount_buy
+      - amount_sell
+      - token_buy
+      - token_sell
+      - user
+      type: object
+    GetSignableOrderResponse:
+      example:
+        stark_key: stark_key
+        vault_id_sell: 5
+        vault_id_buy: 1
+        fee_info:
+          source_vault_id: 6
+          asset_id: asset_id
+          fee_limit: fee_limit
+        expiration_timestamp: 0
+        amount_buy: amount_buy
+        asset_id_sell: asset_id_sell
+        amount_sell: amount_sell
+        payload_hash: payload_hash
+        asset_id_buy: asset_id_buy
+        nonce: 6
+        signable_message: signable_message
+      properties:
+        amount_buy:
+          description: Fee-exclusive amount to buy
+          type: string
+        amount_sell:
+          description: Amount to sell
+          type: string
+        asset_id_buy:
+          description: ID of the asset to buy
+          type: string
+        asset_id_sell:
+          description: ID of the asset to sell
+          type: string
+        expiration_timestamp:
+          description: Expiration timestamp for this order
+          type: integer
+        fee_info:
+          $ref: '#/components/schemas/FeeInfo'
+        nonce:
+          description: Nonce of the order
+          type: integer
+        payload_hash:
+          description: Hash of the payload to be signed for signable order
+          type: string
+        signable_message:
+          description: Message to sign with L1 wallet to confirm order request
+          type: string
+        stark_key:
+          description: Public stark key of the created user
+          type: string
+        vault_id_buy:
+          description: ID of the vault into which the bought asset will be placed
+          type: integer
+        vault_id_sell:
+          description: ID of the vault to sell from
+          type: integer
+      required:
+      - amount_buy
+      - amount_sell
+      - asset_id_buy
+      - asset_id_sell
+      - expiration_timestamp
+      - nonce
+      - payload_hash
+      - signable_message
+      - stark_key
+      - vault_id_buy
+      - vault_id_sell
+      type: object
+    GetSignableRegistrationOffchainResponse:
+      example:
+        payload_hash: payload_hash
+        signable_message: signable_message
+      properties:
+        payload_hash:
+          description: Hash of the payload to be signed for user registration offchain
+          type: string
+        signable_message:
+          description: Message to sign with L1 wallet to register user offchain
+          type: string
+      required:
+      - payload_hash
+      - signable_message
+      type: object
+    GetSignableRegistrationRequest:
+      example:
+        stark_key: stark_key
+        ether_key: ether_key
+      properties:
+        ether_key:
+          description: Ether key of user
+          type: string
+        stark_key:
+          description: Public stark key of the user
+          type: string
+      required:
+      - ether_key
+      - stark_key
+      type: object
+    GetSignableRegistrationResponse:
+      example:
+        operator_signature: operator_signature
+        payload_hash: payload_hash
+      properties:
+        operator_signature:
+          description: Signature from authorised operator
+          type: string
+        payload_hash:
+          description: Hash of the payload to be signed for user registration
+          type: string
+      required:
+      - operator_signature
+      - payload_hash
+      type: object
+    GetSignableTradeRequest:
+      example:
+        fees:
+        - fee_percentage: 6.027456183070403
+          address: address
+        - fee_percentage: 6.027456183070403
+          address: address
+        expiration_timestamp: 0
+        order_id: 6
+        user: user
+      properties:
+        expiration_timestamp:
+          description: "ExpirationTimestamp in Unix time. Note: will be rounded down\
+            \ to the nearest hour"
+          type: integer
+        fees:
+          description: Inclusion of either maker or taker fees
+          items:
+            $ref: '#/components/schemas/FeeEntry'
+          type: array
+        order_id:
+          description: The ID of the maker order involved
+          type: integer
+        user:
+          description: Ethereum address of the submitting user
+          type: string
+      required:
+      - order_id
+      - user
+      type: object
+    GetSignableTradeResponse:
+      example:
+        stark_key: stark_key
+        vault_id_sell: 5
+        vault_id_buy: 1
+        fee_info:
+          source_vault_id: 6
+          asset_id: asset_id
+          fee_limit: fee_limit
+        expiration_timestamp: 0
+        amount_buy: amount_buy
+        asset_id_sell: asset_id_sell
+        amount_sell: amount_sell
+        payload_hash: payload_hash
+        asset_id_buy: asset_id_buy
+        nonce: 6
+        signable_message: signable_message
+      properties:
+        amount_buy:
+          description: Amount to buy
+          type: string
+        amount_sell:
+          description: Amount to sell
+          type: string
+        asset_id_buy:
+          description: ID of the asset to buy
+          type: string
+        asset_id_sell:
+          description: ID of the asset to sell
+          type: string
+        expiration_timestamp:
+          description: Expiration timestamp for this order
+          type: integer
+        fee_info:
+          $ref: '#/components/schemas/FeeInfo'
+        nonce:
+          description: Nonce of the order
+          type: integer
+        payload_hash:
+          description: Payload Hash
+          type: string
+        signable_message:
+          description: Message to sign with L1 wallet to confirm trade request
+          type: string
+        stark_key:
+          description: Public stark key of the created user
+          type: string
+        vault_id_buy:
+          description: ID of the vault into which the bought asset will be placed
+          type: integer
+        vault_id_sell:
+          description: ID of the vault to sell from
+          type: integer
+      required:
+      - amount_buy
+      - amount_sell
+      - asset_id_buy
+      - asset_id_sell
+      - expiration_timestamp
+      - nonce
+      - payload_hash
+      - signable_message
+      - stark_key
+      - vault_id_buy
+      - vault_id_sell
+      type: object
+    GetSignableTransferRequest:
+      example:
+        sender_ether_key: sender_ether_key
+        signable_requests:
+        - amount: amount
+          receiver: receiver
+          token:
+            data: "{}"
+            type: ETH/ERC20/ERC721
+        - amount: amount
+          receiver: receiver
+          token:
+            data: "{}"
+            type: ETH/ERC20/ERC721
+      properties:
+        sender_ether_key:
+          description: Ethereum address of the transferring user
+          type: string
+        signable_requests:
+          description: List of signable transfer details
+          items:
+            $ref: '#/components/schemas/SignableTransferDetails'
+          type: array
+      required:
+      - sender_ether_key
+      - signable_requests
+      type: object
+    GetSignableTransferRequestV1:
+      example:
+        amount: amount
+        receiver: receiver
+        sender: sender
+        token:
+          data: "{}"
+          type: ETH/ERC20/ERC721
+      properties:
+        amount:
+          description: Amount of the token to transfer
+          type: string
+        receiver:
+          description: Ethereum address of the receiving user
+          type: string
+        sender:
+          description: Ethereum address of the transferring user
+          type: string
+        token:
+          $ref: '#/components/schemas/SignableToken'
+      required:
+      - amount
+      - receiver
+      - sender
+      - token
+      type: object
+    GetSignableTransferResponse:
+      example:
+        sender_stark_key: sender_stark_key
+        signable_responses:
+        - amount: amount
+          receiver_stark_key: receiver_stark_key
+          expiration_timestamp: 0
+          asset_id: asset_id
+          payload_hash: payload_hash
+          nonce: 6
+          receiver_vault_id: 1
+          sender_vault_id: 5
+          token:
+            data: "{}"
+            type: ETH/ERC20/ERC721
+        - amount: amount
+          receiver_stark_key: receiver_stark_key
+          expiration_timestamp: 0
+          asset_id: asset_id
+          payload_hash: payload_hash
+          nonce: 6
+          receiver_vault_id: 1
+          sender_vault_id: 5
+          token:
+            data: "{}"
+            type: ETH/ERC20/ERC721
+        signable_message: signable_message
+      properties:
+        sender_stark_key:
+          description: Sender of the transfer
+          type: string
+        signable_message:
+          description: Message to sign with L1 wallet to confirm transfer request
+          type: string
+        signable_responses:
+          description: List of transfer responses without the sender stark key
+          items:
+            $ref: '#/components/schemas/SignableTransferResponseDetails'
+          type: array
+      required:
+      - sender_stark_key
+      - signable_message
+      - signable_responses
+      type: object
+    GetSignableTransferResponseV1:
+      example:
+        amount: amount
+        sender_stark_key: sender_stark_key
+        receiver_stark_key: receiver_stark_key
+        expiration_timestamp: 0
+        asset_id: asset_id
+        payload_hash: payload_hash
+        nonce: 6
+        receiver_vault_id: 1
+        sender_vault_id: 5
+        signable_message: signable_message
+      properties:
+        amount:
+          description: Amount of the asset being transferred
+          type: string
+        asset_id:
+          description: ID of the asset being transferred
+          type: string
+        expiration_timestamp:
+          description: Token in request to match in SDK implementation
+          type: integer
+        nonce:
+          description: Nonce of the transfer
+          type: integer
+        payload_hash:
+          description: Hash of the payload
+          type: string
+        receiver_stark_key:
+          description: Receiver of the transfer
+          type: string
+        receiver_vault_id:
+          description: ID of the vault being transferred to
+          type: integer
+        sender_stark_key:
+          description: Sender of the transfer
+          type: string
+        sender_vault_id:
+          description: ID of the vault being transferred from
+          type: integer
+        signable_message:
+          description: Message to sign with L1 wallet to confirm transfer request
+          type: string
+      required:
+      - amount
+      - asset_id
+      - expiration_timestamp
+      - nonce
+      - payload_hash
+      - receiver_stark_key
+      - receiver_vault_id
+      - sender_vault_id
+      - signable_message
+      type: object
+    GetSignableWithdrawalRequest:
+      example:
+        amount: amount
+        user: user
+        token:
+          data: "{}"
+          type: ETH/ERC20/ERC721
+      properties:
+        amount:
+          description: Amount of the token to withdraw
+          type: string
+        token:
+          $ref: '#/components/schemas/SignableToken'
+        user:
+          description: Ethereum address of the user who is making this withdrawal
+          type: string
+      required:
+      - amount
+      - token
+      - user
+      type: object
+    GetSignableWithdrawalResponse:
+      example:
+        amount: amount
+        stark_key: stark_key
+        asset_id: asset_id
+        payload_hash: payload_hash
+        nonce: 0
+        vault_id: 6
+        signable_message: signable_message
+      properties:
+        amount:
+          description: Amount of the token we are withdrawing
+          type: string
+        asset_id:
+          description: ID of the asset to be withdrawn
+          type: string
+        nonce:
+          description: Nonce of this transaction
+          type: integer
+        payload_hash:
+          description: Encoded payload hash
+          type: string
+        signable_message:
+          description: Message to sign with L1 wallet to verity withdrawal request
+          type: string
+        stark_key:
+          description: Public stark key of this user
+          type: string
+        vault_id:
+          description: ID of the vault we are withdrawing from
+          type: integer
+      required:
+      - amount
+      - asset_id
+      - nonce
+      - payload_hash
+      - signable_message
+      - stark_key
+      - vault_id
+      type: object
+    GetUsersApiResponse:
+      example:
+        accounts:
+        - accounts
+        - accounts
+      properties:
+        accounts:
+          description: Accounts
+          items:
+            type: string
+          type: array
+      required:
+      - accounts
+      type: object
+    ListAssetsResponse:
+      example:
+        cursor: cursor
+        result:
+        - fees:
+          - address: address
+            percentage: 60.27456183070403
+            type: type
+          - address: address
+            percentage: 60.27456183070403
+            type: type
+          metadata: "{}"
+          image_url: image_url
+          created_at: created_at
+          description: description
+          token_address: token_address
+          collection:
+            icon_url: icon_url
+            name: name
+          uri: uri
+          token_id: token_id
+          updated_at: updated_at
+          name: name
+          orders:
+            sell_orders:
+            - "{}"
+            - "{}"
+            buy_orders:
+            - "{}"
+            - "{}"
+          id: id
+          user: user
+          status: status
+        - fees:
+          - address: address
+            percentage: 60.27456183070403
+            type: type
+          - address: address
+            percentage: 60.27456183070403
+            type: type
+          metadata: "{}"
+          image_url: image_url
+          created_at: created_at
+          description: description
+          token_address: token_address
+          collection:
+            icon_url: icon_url
+            name: name
+          uri: uri
+          token_id: token_id
+          updated_at: updated_at
+          name: name
+          orders:
+            sell_orders:
+            - "{}"
+            - "{}"
+            buy_orders:
+            - "{}"
+            - "{}"
+          id: id
+          user: user
+          status: status
+        remaining: 0
+      properties:
+        cursor:
+          description: Generated cursor returned by previous query
+          type: string
+        remaining:
+          description: "Remaining results flag. 1: there are remaining results matching\
+            \ this query, 0: no remaining results"
+          type: integer
+        result:
+          description: Assets matching query parameters
+          items:
+            $ref: '#/components/schemas/AssetWithOrders'
+          type: array
+      required:
+      - cursor
+      - remaining
+      - result
+      type: object
+    ListBalancesResponse:
+      example:
+        cursor: cursor
+        result:
+        - preparing_withdrawal: preparing_withdrawal
+          symbol: symbol
+          balance: balance
+          withdrawable: withdrawable
+          token_address: token_address
+        - preparing_withdrawal: preparing_withdrawal
+          symbol: symbol
+          balance: balance
+          withdrawable: withdrawable
+          token_address: token_address
+      properties:
+        cursor:
+          description: Generated cursor returned by previous query
+          type: string
+        result:
+          description: Dictionary of tokens
+          items:
+            $ref: '#/components/schemas/Balance'
+          type: array
+      required:
+      - cursor
+      - result
+      type: object
+    ListCollectionsResponse:
+      example:
+        cursor: cursor
+        result:
+        - icon_url: icon_url
+          collection_image_url: collection_image_url
+          address: address
+          project_id: 6
+          metadata_api_url: metadata_api_url
+          name: name
+          description: description
+          project_owner_address: project_owner_address
+        - icon_url: icon_url
+          collection_image_url: collection_image_url
+          address: address
+          project_id: 6
+          metadata_api_url: metadata_api_url
+          name: name
+          description: description
+          project_owner_address: project_owner_address
+        remaining: 0
+      properties:
+        cursor:
+          description: Generated cursor returned by previous query
+          type: string
+        remaining:
+          description: "Remaining results flag. 1: there are remaining results matching\
+            \ this query, 0: no remaining results"
+          type: integer
+        result:
+          description: Collections matching query parameters
+          items:
+            $ref: '#/components/schemas/Collection'
+          type: array
+      required:
+      - cursor
+      - remaining
+      - result
+      type: object
+    ListDepositsResponse:
+      example:
+        cursor: cursor
+        result:
+        - transaction_id: 1
+          user: user
+          status: status
+          timestamp: timestamp
+          token:
+            data:
+              quantity: quantity
+              token_id: token_id
+              decimals: 6
+              token_address: token_address
+              id: id
+              quantity_with_fees: quantity_with_fees
+              properties:
+                image_url: image_url
+                name: name
+                collection:
+                  icon_url: icon_url
+                  name: name
+            type: type
+        - transaction_id: 1
+          user: user
+          status: status
+          timestamp: timestamp
+          token:
+            data:
+              quantity: quantity
+              token_id: token_id
+              decimals: 6
+              token_address: token_address
+              id: id
+              quantity_with_fees: quantity_with_fees
+              properties:
+                image_url: image_url
+                name: name
+                collection:
+                  icon_url: icon_url
+                  name: name
+            type: type
+        remaining: 0
+      properties:
+        cursor:
+          description: Generated cursor returned by previous query
+          type: string
+        remaining:
+          description: "Remaining results flag. 1: there are remaining results matching\
+            \ this query, 0: no remaining results"
+          type: integer
+        result:
+          description: Deposits matching query parameters
+          items:
+            $ref: '#/components/schemas/Deposit'
+          type: array
+      required:
+      - cursor
+      - remaining
+      - result
+      type: object
+    ListMintsResponse:
+      example:
+        cursor: cursor
+        result:
+        - transaction_id: 6
+          fees:
+          - address: address
+            percentage: 60.27456183070403
+            type: type
+          - address: address
+            percentage: 60.27456183070403
+            type: type
+          user: user
+          status: status
+          timestamp: timestamp
+          token:
+            data:
+              quantity: quantity
+              token_id: token_id
+              decimals: 6
+              token_address: token_address
+              id: id
+              quantity_with_fees: quantity_with_fees
+              properties:
+                image_url: image_url
+                name: name
+                collection:
+                  icon_url: icon_url
+                  name: name
+            type: type
+        - transaction_id: 6
+          fees:
+          - address: address
+            percentage: 60.27456183070403
+            type: type
+          - address: address
+            percentage: 60.27456183070403
+            type: type
+          user: user
+          status: status
+          timestamp: timestamp
+          token:
+            data:
+              quantity: quantity
+              token_id: token_id
+              decimals: 6
+              token_address: token_address
+              id: id
+              quantity_with_fees: quantity_with_fees
+              properties:
+                image_url: image_url
+                name: name
+                collection:
+                  icon_url: icon_url
+                  name: name
+            type: type
+        remaining: 0
+      properties:
+        cursor:
+          description: Generated cursor returned by previous query
+          type: string
+        remaining:
+          description: "Remaining results flag. 1: there are remaining results matching\
+            \ this query, 0: no remaining results"
+          type: integer
+        result:
+          description: Mints matching query parameters
+          items:
+            $ref: '#/components/schemas/Mint'
+          type: array
+      required:
+      - cursor
+      - remaining
+      - result
+      type: object
+    ListOrdersResponse:
+      example:
+        cursor: cursor
+        result:
+        - fees:
+          - amount: amount
+            address: address
+            type: type
+            token:
+              data:
+                decimals: 6
+                contract_address: contract_address
+              type: ETH
+          - amount: amount
+            address: address
+            type: type
+            token:
+              data:
+                decimals: 6
+                contract_address: contract_address
+              type: ETH
+          updated_timestamp: updated_timestamp
+          buy:
+            data:
+              quantity: quantity
+              token_id: token_id
+              decimals: 6
+              token_address: token_address
+              id: id
+              quantity_with_fees: quantity_with_fees
+              properties:
+                image_url: image_url
+                name: name
+                collection:
+                  icon_url: icon_url
+                  name: name
+            type: type
+          expiration_timestamp: expiration_timestamp
+          sell:
+            data:
+              quantity: quantity
+              token_id: token_id
+              decimals: 6
+              token_address: token_address
+              id: id
+              quantity_with_fees: quantity_with_fees
+              properties:
+                image_url: image_url
+                name: name
+                collection:
+                  icon_url: icon_url
+                  name: name
+            type: type
+          amount_sold: amount_sold
+          order_id: 1
+          user: user
+          status: status
+          timestamp: timestamp
+        - fees:
+          - amount: amount
+            address: address
+            type: type
+            token:
+              data:
+                decimals: 6
+                contract_address: contract_address
+              type: ETH
+          - amount: amount
+            address: address
+            type: type
+            token:
+              data:
+                decimals: 6
+                contract_address: contract_address
+              type: ETH
+          updated_timestamp: updated_timestamp
+          buy:
+            data:
+              quantity: quantity
+              token_id: token_id
+              decimals: 6
+              token_address: token_address
+              id: id
+              quantity_with_fees: quantity_with_fees
+              properties:
+                image_url: image_url
+                name: name
+                collection:
+                  icon_url: icon_url
+                  name: name
+            type: type
+          expiration_timestamp: expiration_timestamp
+          sell:
+            data:
+              quantity: quantity
+              token_id: token_id
+              decimals: 6
+              token_address: token_address
+              id: id
+              quantity_with_fees: quantity_with_fees
+              properties:
+                image_url: image_url
+                name: name
+                collection:
+                  icon_url: icon_url
+                  name: name
+            type: type
+          amount_sold: amount_sold
+          order_id: 1
+          user: user
+          status: status
+          timestamp: timestamp
+        remaining: 0
+      properties:
+        cursor:
+          description: Generated cursor returned by previous query
+          type: string
+        remaining:
+          description: "Remaining results flag. 1: there are remaining results matching\
+            \ this query, 0: no remaining results"
+          type: integer
+        result:
+          description: Orders matching query parameters
+          items:
+            $ref: '#/components/schemas/Order'
+          type: array
+      required:
+      - cursor
+      - remaining
+      - result
+      type: object
+    ListTokensResponse:
+      example:
+        cursor: cursor
+        result:
+        - symbol: symbol
+          image_url: image_url
+          decimals: decimals
+          name: name
+          quantum: quantum
+          token_address: token_address
+        - symbol: symbol
+          image_url: image_url
+          decimals: decimals
+          name: name
+          quantum: quantum
+          token_address: token_address
+      properties:
+        cursor:
+          description: Generated cursor returned by previous query
+          type: string
+        result:
+          description: Tokens matching query parameters
+          items:
+            $ref: '#/components/schemas/TokenDetails'
+          type: array
+      required:
+      - cursor
+      - result
+      type: object
+    ListTradesResponse:
+      example:
+        cursor: cursor
+        result:
+        - transaction_id: 1
+          a:
+            sold: sold
+            token_id: token_id
+            token_address: token_address
+            token_type: token_type
+            order_id: 6
+          b:
+            sold: sold
+            token_id: token_id
+            token_address: token_address
+            token_type: token_type
+            order_id: 6
+          status: status
+          timestamp: timestamp
+        - transaction_id: 1
+          a:
+            sold: sold
+            token_id: token_id
+            token_address: token_address
+            token_type: token_type
+            order_id: 6
+          b:
+            sold: sold
+            token_id: token_id
+            token_address: token_address
+            token_type: token_type
+            order_id: 6
+          status: status
+          timestamp: timestamp
+        remaining: 0
+      properties:
+        cursor:
+          description: Generated cursor returned by previous query
+          type: string
+        remaining:
+          description: "Remaining results flag. 1: there are remaining results matching\
+            \ this query, 0: no remaining results"
+          type: integer
+        result:
+          description: Trades matching query parameters
+          items:
+            $ref: '#/components/schemas/Trade'
+          type: array
+      required:
+      - cursor
+      - remaining
+      - result
+      type: object
+    ListTransfersResponse:
+      example:
+        cursor: cursor
+        result:
+        - transaction_id: 6
+          receiver: receiver
+          user: user
+          status: status
+          timestamp: timestamp
+          token:
+            data:
+              quantity: quantity
+              token_id: token_id
+              decimals: 6
+              token_address: token_address
+              id: id
+              quantity_with_fees: quantity_with_fees
+              properties:
+                image_url: image_url
+                name: name
+                collection:
+                  icon_url: icon_url
+                  name: name
+            type: type
+        - transaction_id: 6
+          receiver: receiver
+          user: user
+          status: status
+          timestamp: timestamp
+          token:
+            data:
+              quantity: quantity
+              token_id: token_id
+              decimals: 6
+              token_address: token_address
+              id: id
+              quantity_with_fees: quantity_with_fees
+              properties:
+                image_url: image_url
+                name: name
+                collection:
+                  icon_url: icon_url
+                  name: name
+            type: type
+        remaining: 0
+      properties:
+        cursor:
+          description: Generated cursor returned by previous query
+          type: string
+        remaining:
+          description: "Remaining results flag. 1: there are remaining results matching\
+            \ this query, 0: no remaining results"
+          type: integer
+        result:
+          description: Transfers matching query parameters
+          items:
+            $ref: '#/components/schemas/Transfer'
+          type: array
+      required:
+      - cursor
+      - remaining
+      - result
+      type: object
+    ListWithdrawalsResponse:
+      example:
+        cursor: cursor
+        result:
+        - transaction_id: 6
+          sender: sender
+          rollup_status: rollup_status
+          withdrawn_to_wallet: true
+          status: status
+          timestamp: timestamp
+          token:
+            data:
+              quantity: quantity
+              token_id: token_id
+              decimals: 6
+              token_address: token_address
+              id: id
+              quantity_with_fees: quantity_with_fees
+              properties:
+                image_url: image_url
+                name: name
+                collection:
+                  icon_url: icon_url
+                  name: name
+            type: type
+        - transaction_id: 6
+          sender: sender
+          rollup_status: rollup_status
+          withdrawn_to_wallet: true
+          status: status
+          timestamp: timestamp
+          token:
+            data:
+              quantity: quantity
+              token_id: token_id
+              decimals: 6
+              token_address: token_address
+              id: id
+              quantity_with_fees: quantity_with_fees
+              properties:
+                image_url: image_url
+                name: name
+                collection:
+                  icon_url: icon_url
+                  name: name
+            type: type
+        remaining: 0
+      properties:
+        cursor:
+          description: Generated cursor returned by previous query
+          type: string
+        remaining:
+          description: "Remaining results flag. 1: there are remaining results matching\
+            \ this query, 0: no remaining results"
+          type: integer
+        result:
+          description: Withdrawals matching query parameters
+          items:
+            $ref: '#/components/schemas/Withdrawal'
+          type: array
+      required:
+      - cursor
+      - remaining
+      - result
+      type: object
+    MetadataSchemaProperty:
+      example:
+        filterable: true
+        name: name
+        type: type
+      properties:
+        filterable:
+          description: Sets the metadata as filterable
+          type: boolean
+        name:
+          description: Name of the metadata key
+          type: string
+        type:
+          description: "Type of the metadata. Values: \"enum\", \"text\", \"boolean\"\
+            , \"continuous\", \"discrete\" | Default: \"text\".\nSrc: https://docs.x.github.com/immutable/docs/asset-metadata#property-type-mapping"
+          type: string
+      required:
+      - filterable
+      - name
+      - type
+      type: object
+    MetadataSchemaRequest:
+      example:
+        filterable: true
+        name: name
+        type: enum
+      properties:
+        filterable:
+          description: Sets the metadata as filterable
+          type: boolean
+        name:
+          description: Name of the metadata key
+          type: string
+        type:
+          description: "Type of the metadata. Values: \"enum\", \"text\", \"boolean\"\
+            , \"continuous\", \"discrete\" | Default: \"text\". Src: https://docs.x.github.com/immutable/docs/asset-metadata#property-type-mapping"
+          enum:
+          - enum
+          - text
+          - boolean
+          - continuous
+          - discrete
+          type: string
+      required:
+      - name
+      type: object
+    Mint:
+      example:
+        transaction_id: 6
+        fees:
+        - address: address
+          percentage: 60.27456183070403
+          type: type
+        - address: address
+          percentage: 60.27456183070403
+          type: type
+        user: user
+        status: status
+        timestamp: timestamp
+        token:
+          data:
+            quantity: quantity
+            token_id: token_id
+            decimals: 6
+            token_address: token_address
+            id: id
+            quantity_with_fees: quantity_with_fees
+            properties:
+              image_url: image_url
+              name: name
+              collection:
+                icon_url: icon_url
+                name: name
+          type: type
+      properties:
+        fees:
+          description: Fee details
+          items:
+            $ref: '#/components/schemas/Fee'
+          type: array
+        status:
+          description: Status of this mint
+          type: string
+        timestamp:
+          description: Timestamp this mint was initiated
+          type: string
+        token:
+          $ref: '#/components/schemas/Token'
+        transaction_id:
+          description: Sequential ID of transaction in Immutable X
+          type: integer
+        user:
+          description: Ethereum address of the user to whom the asset has been minted
+          type: string
+      required:
+      - status
+      - timestamp
+      - token
+      - transaction_id
+      - user
+      type: object
+    MintFee:
+      example:
+        percentage: 8.008281904610115
+        recipient: recipient
+      properties:
+        percentage:
+          description: Fee percentage
+          maximum: 100
+          type: number
+        recipient:
+          description: Recipient wallet address
+          type: string
+      required:
+      - percentage
+      - recipient
+      type: object
+    MintRequest:
+      example:
+        auth_signature: auth_signature
+        royalties:
+        - percentage: 8.008281904610115
+          recipient: recipient
+        - percentage: 8.008281904610115
+          recipient: recipient
+        contract_address: contract_address
+        users:
+        - tokens:
+          - blueprint: blueprint
+            royalties:
+            - percentage: 8.008281904610115
+              recipient: recipient
+            - percentage: 8.008281904610115
+              recipient: recipient
+            id: id
+          - blueprint: blueprint
+            royalties:
+            - percentage: 8.008281904610115
+              recipient: recipient
+            - percentage: 8.008281904610115
+              recipient: recipient
+            id: id
+          user: user
+        - tokens:
+          - blueprint: blueprint
+            royalties:
+            - percentage: 8.008281904610115
+              recipient: recipient
+            - percentage: 8.008281904610115
+              recipient: recipient
+            id: id
+          - blueprint: blueprint
+            royalties:
+            - percentage: 8.008281904610115
+              recipient: recipient
+            - percentage: 8.008281904610115
+              recipient: recipient
+            id: id
+          user: user
+      properties:
+        auth_signature:
+          description: Signature from authorised minter
+          type: string
+        contract_address:
+          description: minting contract
+          type: string
+        royalties:
+          description: Global contract-level royalty fees
+          items:
+            $ref: '#/components/schemas/MintFee'
+          type: array
+        users:
+          description: Users to mint to
+          items:
+            $ref: '#/components/schemas/MintUser'
+          type: array
+      required:
+      - auth_signature
+      - contract_address
+      - users
+      type: object
+    MintResultDetails:
+      example:
+        token_id: token_id
+        contract_address: contract_address
+        tx_id: 0
+      properties:
+        contract_address:
+          description: Contract address of this token
+          type: string
+        token_id:
+          description: IMX ID of this token
+          type: string
+        tx_id:
+          description: Mint Transaction ID
+          type: integer
+      required:
+      - contract_address
+      - token_id
+      - tx_id
+      type: object
+    MintTokenDataV2:
+      example:
+        blueprint: blueprint
+        royalties:
+        - percentage: 8.008281904610115
+          recipient: recipient
+        - percentage: 8.008281904610115
+          recipient: recipient
+        id: id
+      properties:
+        blueprint:
+          description: Token metadata blueprint
+          type: string
+        id:
+          description: Token ID
+          type: string
+        royalties:
+          description: List of mint fees
+          items:
+            $ref: '#/components/schemas/MintFee'
+          type: array
+      required:
+      - id
+      type: object
+    MintTokensResponse:
+      example:
+        results:
+        - token_id: token_id
+          contract_address: contract_address
+          tx_id: 0
+        - token_id: token_id
+          contract_address: contract_address
+          tx_id: 0
+      properties:
+        results:
+          description: List of mint result details
+          items:
+            $ref: '#/components/schemas/MintResultDetails'
+          type: array
+      required:
+      - results
+      type: object
+    MintUser:
+      example:
+        tokens:
+        - blueprint: blueprint
+          royalties:
+          - percentage: 8.008281904610115
+            recipient: recipient
+          - percentage: 8.008281904610115
+            recipient: recipient
+          id: id
+        - blueprint: blueprint
+          royalties:
+          - percentage: 8.008281904610115
+            recipient: recipient
+          - percentage: 8.008281904610115
+            recipient: recipient
+          id: id
+        user: user
+      properties:
+        tokens:
+          description: List of Mint tokens
+          items:
+            $ref: '#/components/schemas/MintTokenDataV2'
+          type: array
+        user:
+          description: User wallet address
+          type: string
+      required:
+      - tokens
+      - user
+      type: object
+    MintableTokenDetails:
+      example:
+        blueprint: blueprint
+        client_token_id: client_token_id
+        token_id: token_id
+      properties:
+        blueprint:
+          description: Blueprint of this token
+          type: string
+        client_token_id:
+          description: ID provided by the client for this token
+          type: string
+        token_id:
+          description: IMX Id of this token
+          type: string
+      required:
+      - blueprint
+      - client_token_id
+      - token_id
+      type: object
+    Order:
+      example:
+        fees:
+        - amount: amount
+          address: address
+          type: type
+          token:
+            data:
+              decimals: 6
+              contract_address: contract_address
+            type: ETH
+        - amount: amount
+          address: address
+          type: type
+          token:
+            data:
+              decimals: 6
+              contract_address: contract_address
+            type: ETH
+        updated_timestamp: updated_timestamp
+        buy:
+          data:
+            quantity: quantity
+            token_id: token_id
+            decimals: 6
+            token_address: token_address
+            id: id
+            quantity_with_fees: quantity_with_fees
+            properties:
+              image_url: image_url
+              name: name
+              collection:
+                icon_url: icon_url
+                name: name
+          type: type
+        expiration_timestamp: expiration_timestamp
+        sell:
+          data:
+            quantity: quantity
+            token_id: token_id
+            decimals: 6
+            token_address: token_address
+            id: id
+            quantity_with_fees: quantity_with_fees
+            properties:
+              image_url: image_url
+              name: name
+              collection:
+                icon_url: icon_url
+                name: name
+          type: type
+        amount_sold: amount_sold
+        order_id: 1
+        user: user
+        status: status
+        timestamp: timestamp
+      properties:
+        amount_sold:
+          description: Amount of the asset already sold by this order
+          nullable: true
+          type: string
+        buy:
+          $ref: '#/components/schemas/Token'
+        expiration_timestamp:
+          description: Expiration timestamp of this order
+          nullable: true
+          type: string
+        fees:
+          description: Fee information for the order
+          items:
+            $ref: '#/components/schemas/OrderFeeInfo'
+          type: array
+        order_id:
+          description: ID of the order
+          type: integer
+        sell:
+          $ref: '#/components/schemas/Token'
+        status:
+          description: Status of the order
+          type: string
+        timestamp:
+          description: Timestamp this order was created
+          nullable: true
+          type: string
+        updated_timestamp:
+          description: Updated timestamp of this order
+          nullable: true
+          type: string
+        user:
+          description: Ethereum address of the user who submitted the order
+          type: string
+      required:
+      - amount_sold
+      - buy
+      - expiration_timestamp
+      - order_id
+      - sell
+      - status
+      - timestamp
+      - updated_timestamp
+      - user
+      type: object
+    OrderDetails:
+      example:
+        sell_orders:
+        - "{}"
+        - "{}"
+        buy_orders:
+        - "{}"
+        - "{}"
+      properties:
+        buy_orders:
+          description: Buy orders for this asset
+          items:
+            properties: {}
+            type: object
+          type: array
+        sell_orders:
+          description: Sell orders for this asset
+          items:
+            properties: {}
+            type: object
+          type: array
+      type: object
+    OrderFeeInfo:
+      example:
+        amount: amount
+        address: address
+        type: type
+        token:
+          data:
+            decimals: 6
+            contract_address: contract_address
+          type: ETH
+      properties:
+        address:
+          type: string
+        amount:
+          type: string
+        token:
+          $ref: '#/components/schemas/FeeToken'
+        type:
+          description: Fee type
+          type: string
+      type: object
+    Project:
+      example:
+        collection_remaining: 1
+        mint_limit_expires_at: mint_limit_expires_at
+        mint_remaining: 2
+        mint_monthly_limit: 5
+        company_name: company_name
+        collection_monthly_limit: 6
+        name: name
+        id: 5
+        collection_limit_expires_at: collection_limit_expires_at
+        contact_email: contact_email
+      properties:
+        collection_limit_expires_at:
+          description: The current period expiry date for collection limit
+          type: string
+        collection_monthly_limit:
+          description: The total monthly collection limit
+          type: integer
+        collection_remaining:
+          description: The number of collection remaining in the current period
+          type: integer
+        company_name:
+          description: The company name
+          type: string
+        contact_email:
+          description: The project contact email
+          type: string
+        id:
+          description: The project ID
+          type: integer
+        mint_limit_expires_at:
+          description: The current period expiry date for mint operation limit
+          type: string
+        mint_monthly_limit:
+          description: The total monthly mint operation limit
+          type: integer
+        mint_remaining:
+          description: The number of mint operation remaining in the current period
+          type: integer
+        name:
+          description: The project name
+          type: string
+      required:
+      - collection_limit_expires_at
+      - collection_monthly_limit
+      - collection_remaining
+      - company_name
+      - contact_email
+      - id
+      - mint_limit_expires_at
+      - mint_monthly_limit
+      - mint_remaining
+      - name
+      type: object
+    Range:
+      example:
+        min: 6
+        max: 0
+      properties:
+        max:
+          description: Maximum value
+          type: integer
+        min:
+          description: Minimum value
+          type: integer
+      type: object
+    RegisterUserRequest:
+      example:
+        stark_key: stark_key
+        stark_signature: stark_signature
+        eth_signature: eth_signature
+        ether_key: ether_key
+        email: email
+      properties:
+        email:
+          description: User email
+          type: string
+        eth_signature:
+          description: Eth signature
+          type: string
+        ether_key:
+          description: The ether key of the user
+          type: string
+        stark_key:
+          description: Public stark key of the user
+          type: string
+        stark_signature:
+          description: Payload signature
+          type: string
+      required:
+      - eth_signature
+      - ether_key
+      - stark_key
+      - stark_signature
+      type: object
+    RegisterUserResponse:
+      example:
+        tx_hash: tx_hash
+      properties:
+        tx_hash:
+          description: Immutable signature authorising registration
+          type: string
+      required:
+      - tx_hash
+      type: object
+    SignableToken:
+      example:
+        data: "{}"
+        type: ETH/ERC20/ERC721
+      properties:
+        data:
+          description: Token data. See https://docs.x.github.com/immutable/docs/token-data-object"
+          type: object
+        type:
+          description: Type of token
+          example: ETH/ERC20/ERC721
+          type: string
+      type: object
+    SignableTransferDetails:
+      example:
+        amount: amount
+        receiver: receiver
+        token:
+          data: "{}"
+          type: ETH/ERC20/ERC721
+      properties:
+        amount:
+          description: Amount of the token to transfer
+          type: string
+        receiver:
+          description: Ethereum address of the receiving user
+          type: string
+        token:
+          $ref: '#/components/schemas/SignableToken'
+      required:
+      - amount
+      - receiver
+      - token
+      type: object
+    SignableTransferResponseDetails:
+      example:
+        amount: amount
+        receiver_stark_key: receiver_stark_key
+        expiration_timestamp: 0
+        asset_id: asset_id
+        payload_hash: payload_hash
+        nonce: 6
+        receiver_vault_id: 1
+        sender_vault_id: 5
+        token:
+          data: "{}"
+          type: ETH/ERC20/ERC721
+      properties:
+        amount:
+          description: Amount of the asset being transferred
+          type: string
+        asset_id:
+          description: ID of the asset being transferred
+          type: string
+        expiration_timestamp:
+          description: Timestamp when this transfer will expire
+          type: integer
+        nonce:
+          description: Nonce of the transfer
+          type: integer
+        payload_hash:
+          description: Hash of the payload to be signed for transfer
+          type: string
+        receiver_stark_key:
+          description: Receiver of the transfer
+          type: string
+        receiver_vault_id:
+          description: ID of the vault being transferred to
+          type: integer
+        sender_vault_id:
+          description: ID of the vault being transferred from
+          type: integer
+        token:
+          $ref: '#/components/schemas/SignableToken'
+      required:
+      - amount
+      - asset_id
+      - expiration_timestamp
+      - nonce
+      - payload_hash
+      - receiver_stark_key
+      - receiver_vault_id
+      - sender_vault_id
+      - token
+      type: object
+    SuccessResponse:
+      example:
+        result: result
+      properties:
+        result:
+          type: string
+      required:
+      - result
+      type: object
+    Token:
+      example:
+        data:
+          quantity: quantity
+          token_id: token_id
+          decimals: 6
+          token_address: token_address
+          id: id
+          quantity_with_fees: quantity_with_fees
+          properties:
+            image_url: image_url
+            name: name
+            collection:
+              icon_url: icon_url
+              name: name
+        type: type
+      properties:
+        data:
+          $ref: '#/components/schemas/TokenData'
+        type:
+          description: Type of this asset (ETH/ERC20/ERC721)
+          type: string
+      required:
+      - data
+      - type
+      type: object
+    TokenData:
+      example:
+        quantity: quantity
+        token_id: token_id
+        decimals: 6
+        token_address: token_address
+        id: id
+        quantity_with_fees: quantity_with_fees
+        properties:
+          image_url: image_url
+          name: name
+          collection:
+            icon_url: icon_url
+            name: name
+      properties:
+        decimals:
+          description: Number of decimals supported by this asset
+          type: integer
+        id:
+          description: "[DEPRECATED] Internal Immutable X Token ID"
+          type: string
+        properties:
+          $ref: '#/components/schemas/AssetProperties'
+        quantity:
+          description: Quantity of this asset
+          type: string
+        quantity_with_fees:
+          description: Quantity of this asset with the sum of all fees applied to
+            the asset
+          type: string
+        token_address:
+          description: Address of ERC721/ERC20 contract
+          type: string
+        token_id:
+          description: ERC721 Token ID
+          type: string
+      required:
+      - quantity
+      - quantity_with_fees
+      type: object
+    TokenDetails:
+      example:
+        symbol: symbol
+        image_url: image_url
+        decimals: decimals
+        name: name
+        quantum: quantum
+        token_address: token_address
+      properties:
+        decimals:
+          description: Number of decimals for token
+          type: string
+        image_url:
+          description: Url for the icon of the token
+          type: string
+        name:
+          description: Full name of the token (e.g. Ether)
+          type: string
+        quantum:
+          description: Quantum for token
+          type: string
+        symbol:
+          description: Ticker symbol for token (e.g. ETH/USDC/IMX)
+          type: string
+        token_address:
+          description: Address of the ERC721 contract
+          type: string
+      required:
+      - decimals
+      - image_url
+      - name
+      - quantum
+      - symbol
+      - token_address
+      type: object
+    Trade:
+      example:
+        transaction_id: 1
+        a:
+          sold: sold
+          token_id: token_id
+          token_address: token_address
+          token_type: token_type
+          order_id: 6
+        b:
+          sold: sold
+          token_id: token_id
+          token_address: token_address
+          token_type: token_type
+          order_id: 6
+        status: status
+        timestamp: timestamp
+      properties:
+        a:
+          $ref: '#/components/schemas/TradeSide'
+        b:
+          $ref: '#/components/schemas/TradeSide'
+        status:
+          description: Status of this trade
+          type: string
+        timestamp:
+          description: Time this trade occurred
+          nullable: true
+          type: string
+        transaction_id:
+          description: Sequential ID of this trade within Immutable X
+          type: integer
+      required:
+      - a
+      - b
+      - status
+      - timestamp
+      - transaction_id
+      type: object
+    TradeSide:
+      example:
+        sold: sold
+        token_id: token_id
+        token_address: token_address
+        token_type: token_type
+        order_id: 6
+      properties:
+        order_id:
+          description: The ID of the order involved in the trade
+          type: integer
+        sold:
+          description: The amount of that order's asset this trade sold
+          type: string
+        token_address:
+          description: The contract address of the token that this trade sold
+          type: string
+        token_id:
+          description: The ID of the token that this trade sold
+          type: string
+        token_type:
+          description: The type of the token that this trade sold
+          type: string
+      required:
+      - order_id
+      - sold
+      - token_type
+      type: object
+    Transfer:
+      example:
+        transaction_id: 6
+        receiver: receiver
+        user: user
+        status: status
+        timestamp: timestamp
+        token:
+          data:
+            quantity: quantity
+            token_id: token_id
+            decimals: 6
+            token_address: token_address
+            id: id
+            quantity_with_fees: quantity_with_fees
+            properties:
+              image_url: image_url
+              name: name
+              collection:
+                icon_url: icon_url
+                name: name
+          type: type
+      properties:
+        receiver:
+          description: Ethereum address of the user who received this transfer
+          type: string
+        status:
+          description: Status of the transaction
+          type: string
+        timestamp:
+          description: Timestamp of the transfer
+          nullable: true
+          type: string
+        token:
+          $ref: '#/components/schemas/Token'
+        transaction_id:
+          description: Sequential transaction ID
+          type: integer
+        user:
+          description: Ethereum address of the user  who submitted this transfer
+          type: string
+      required:
+      - receiver
+      - status
+      - timestamp
+      - token
+      - transaction_id
+      - user
+      type: object
+    TransferRequest:
+      example:
+        amount: amount
+        stark_signature: stark_signature
+        receiver_stark_key: receiver_stark_key
+        expiration_timestamp: 0
+        asset_id: asset_id
+        nonce: 6
+        receiver_vault_id: 1
+        sender_vault_id: 5
+      properties:
+        amount:
+          description: Amount to transfer
+          type: string
+        asset_id:
+          description: ID of the asset to transfer
+          type: string
+        expiration_timestamp:
+          description: Expiration timestamp for this transfer
+          type: integer
+        nonce:
+          description: Nonce of the transfer
+          type: integer
+        receiver_stark_key:
+          description: Public stark key of the user receiving the transfer
+          type: string
+        receiver_vault_id:
+          description: ID of the vault into which the asset will be transferred to
+          type: integer
+        sender_vault_id:
+          description: ID of the vault into which the asset is from
+          type: integer
+        stark_signature:
+          description: Transfer payload signature
+          type: string
+      required:
+      - amount
+      - asset_id
+      - expiration_timestamp
+      - nonce
+      - receiver_stark_key
+      - receiver_vault_id
+      - sender_vault_id
+      - stark_signature
+      type: object
+    UpdateCollectionRequest:
+      example:
+        icon_url: icon_url
+        collection_image_url: collection_image_url
+        metadata_api_url: metadata_api_url
+        name: name
+        description: description
+      properties:
+        collection_image_url:
+          description: URL of the tile image for this collection
+          type: string
+        description:
+          description: Description of the collection
+          type: string
+        icon_url:
+          description: URL of the icon for this collection
+          type: string
+        metadata_api_url:
+          description: URL of the metadata for this collection
+          type: string
+        name:
+          description: Name of the collection
+          type: string
+      type: object
+    Withdrawal:
+      example:
+        transaction_id: 6
+        sender: sender
+        rollup_status: rollup_status
+        withdrawn_to_wallet: true
+        status: status
+        timestamp: timestamp
+        token:
+          data:
+            quantity: quantity
+            token_id: token_id
+            decimals: 6
+            token_address: token_address
+            id: id
+            quantity_with_fees: quantity_with_fees
+            properties:
+              image_url: image_url
+              name: name
+              collection:
+                icon_url: icon_url
+                name: name
+          type: type
+      properties:
+        rollup_status:
+          description: Status of the on-chain batch confirmation for this withdrawal
+          type: string
+        sender:
+          description: Ethereum address of the user who requested this withdrawal
+          type: string
+        status:
+          description: Status of this withdrawal
+          type: string
+        timestamp:
+          description: Time when this withdrawal was initiated
+          type: string
+        token:
+          $ref: '#/components/schemas/Token'
+        transaction_id:
+          description: Sequential ID of this transaction
+          type: integer
+        withdrawn_to_wallet:
+          description: Withdrawal has been transferred to user's Layer 1 wallet
+          type: boolean
+      required:
+      - rollup_status
+      - sender
+      - status
+      - timestamp
+      - token
+      - transaction_id
+      - withdrawn_to_wallet
+      type: object
+    encodeAssetRequestToken:
+      example:
+        data:
+          blueprint: blueprint
+          token_id: token_id
+          token_address: token_address
+          id: id
+        type: ETH
+      properties:
+        data:
+          $ref: '#/components/schemas/EncodeAssetTokenData'
+        type:
+          description: The type of the token to be encoded
+          enum:
+          - ETH
+          - ERC20
+          - ERC721
+          type: string
+      type: object
+      x-go-gen-location: models
+x-original-swagger-version: "2.0"

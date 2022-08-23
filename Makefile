@@ -12,24 +12,25 @@ generate-openapi-ropsten: get-openapi-ropsten generate-api
 get-openapi-prod:
 	rm -f openapi.json && touch openapi.json && \
 	curl -H "Accept: application/json+v3" \
-    https://api.x.immutable.com/openapi \
+    https://api.x.github.com/immutable/openapi \
     -o openapi.json
 
 .PHONY: get-openapi-ropsten
 get-openapi-ropsten:
 	rm -f openapi.json && touch openapi.json && \
 	curl -H "Accept: application/json+v3" \
-    https://api.ropsten.x.immutable.com/openapi \
+    https://api.ropsten.x.github.com/immutable/openapi \
     -o openapi.json
 
 .PHONY: generate-api
 generate-api:
-	rm -rf src/$(GENERATED_CODE_DIR) && \
-    mkdir -p src/$(GENERATED_CODE_DIR) && \
+	rm -rf imx/$(GENERATED_CODE_DIR) && \
+    mkdir -p imx/$(GENERATED_CODE_DIR) && \
 	docker run --rm -v $(shell pwd):/app openapitools/openapi-generator-cli generate \
 		-i ./app/openapi.json \
 		-c ./app/go-client-config.yaml \
 		-t ./app/generator-templates/templates \
-		-o /app/src/generated/api
+		-o /app/imx/generated/api
+	rm -rf imx/$(GENERATED_CODE_DIR)/go.mod imx/$(GENERATED_CODE_DIR)/go.sum imx/$(GENERATED_CODE_DIR)/git_push.sh
 
 	

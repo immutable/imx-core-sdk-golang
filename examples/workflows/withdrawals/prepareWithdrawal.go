@@ -5,12 +5,12 @@ import (
 	"encoding/json"
 	"log"
 
-	"immutable.com/imx-core-sdk-golang/api"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
-	"immutable.com/imx-core-sdk-golang/signers"
-	"immutable.com/imx-core-sdk-golang/tokens"
-	converter "immutable.com/imx-core-sdk-golang/utils"
-	withdrawalsWorkflow "immutable.com/imx-core-sdk-golang/workflows/withdrawals"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
+	"github.com/immutable/imx-core-sdk-golang/generated/api"
+	converter "github.com/immutable/imx-core-sdk-golang/internal/utils"
+	"github.com/immutable/imx-core-sdk-golang/signers"
+	"github.com/immutable/imx-core-sdk-golang/tokens"
+	withdrawalsWorkflow "github.com/immutable/imx-core-sdk-golang/workflows/withdrawals"
 )
 
 const (
@@ -29,7 +29,7 @@ func DemoPrepareEthWithdrawalWorkflow(ctx context.Context, clientAPI *api.APICli
 	}
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
-	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.github.com/immutable/docs/token-data-object
 	signableToken := tokens.NewSignableTokenEth()
 	withdrawalRequest := api.GetSignableWithdrawalRequest{
 		Amount: ethTokenValue.String(),
@@ -53,7 +53,7 @@ func DemoPrepareERC20WithdrawalWorkflow(ctx context.Context, clientAPI *api.APIC
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
-	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.github.com/immutable/docs/token-data-object
 
 	amount := "5"
 	// Convert ERC20 token amount to its denomination.
@@ -86,7 +86,7 @@ func DemoPrepareERC721WithdrawalWorkflow(ctx context.Context, clientAPI *api.API
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
-	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.github.com/immutable/docs/token-data-object
 	signableToken := tokens.NewSignableTokenERC721(tokenID, tokenAddress)
 	amount := "1"
 	withdrawalRequest := api.GetSignableWithdrawalRequest{

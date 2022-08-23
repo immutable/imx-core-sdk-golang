@@ -1,3 +1,4 @@
 # Code Generation
 
-We are using go swagger for public api client code generation. See the following link for install and docs https://goswagger.io/install.html
+We are using openapi-generator for public api client code generation. See the following github link for info https://github.com/OpenAPITools/openapi-generator
+

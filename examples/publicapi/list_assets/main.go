@@ -8,9 +8,9 @@ import (
 	"os"
 	"strings"
 
+	"github.com/immutable/imx-core-sdk-golang/config"
+	"github.com/immutable/imx-core-sdk-golang/generated/api"
 	"github.com/joho/godotenv"
-	"immutable.com/imx-core-sdk-golang/api"
-	"immutable.com/imx-core-sdk-golang/config"
 )
 
 func PrettyStruct(data interface{}) (string, error) {
@@ -42,7 +42,7 @@ func main() {
 
 	/*
 		// Setup default host
-		configuration.Host = "api.x.immutable.com"
+		configuration.Host = "api.x.github.com/immutable/"
 		configuration.Scheme = "https"
 		ctx := context.Background()
 	*/

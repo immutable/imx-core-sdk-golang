@@ -5,20 +5,20 @@ import (
 	"log"
 	"strings"
 
+	"github.com/immutable/imx-core-sdk-golang/config"
+	"github.com/immutable/imx-core-sdk-golang/ethereum"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/burn"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/deposits"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/minting"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/onboarding"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/orders"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/trades"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/transfers"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/withdrawals"
+	"github.com/immutable/imx-core-sdk-golang/generated/api"
+	"github.com/immutable/imx-core-sdk-golang/signers/stark"
 	"github.com/joho/godotenv"
-	"immutable.com/imx-core-sdk-golang/api"
-	"immutable.com/imx-core-sdk-golang/config"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/burn"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/deposits"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/minting"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/onboarding"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/orders"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/trades"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/transfers"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/withdrawals"
-	"immutable.com/imx-core-sdk-golang/signers/stark"
-	"immutable.com/imx-core-sdk-golang/utils/ethereum"
 )
 
 func main() {
@@ -83,7 +83,7 @@ func main() {
 
 	// Withdrawals Demo
 	// After prepare withdrawal workflow is performed. Must wait for getWithdrawal endpoint
-	// https://docs.x.immutable.com/reference/#/operations/getWithdrawal to return "rollup_status": "confirmed"
+	// https://docs.x.github.com/immutable/reference/#/operations/getWithdrawal to return "rollup_status": "confirmed"
 	// before calling complete withdrawal workflow.
 	withdrawals.DemoPrepareEthWithdrawalWorkflow(ctx, apiClient, envs["DW_ETH_AMOUNT"], l1signer, l2signer)
 	withdrawals.DemoPrepareERC20WithdrawalWorkflow(ctx, apiClient, envs["DW_ERC20TOKEN_ADDRESS"], l1signer, l2signer)

@@ -1,7 +1,7 @@
 generatorName: go
 inputSpec: openapi.json
-gitHost: immutable.com
-gitUserId: ""
+gitHost: github.com
+gitUserId: immutable
 gitRepoId: imx-core-sdk-golang
 enablePostProcessFile: true
 additionalProperties:
