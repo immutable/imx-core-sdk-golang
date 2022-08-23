@@ -106,7 +106,7 @@ The Core SDK includes classes that interact with the Immutable X APIs.
 
 import (
     "context"
-	"fmt"
+    "fmt"
     "github.com/immutable/imx-core-sdk-golang/generated/api"
     "github.com/immutable/imx-core-sdk-golang/config"
 )
