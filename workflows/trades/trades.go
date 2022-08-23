@@ -10,7 +10,7 @@ import (
 )
 
 // CreateTrade submits a matched order to the CreateTrade endpoint.
-// https://docs.x.immutable.com/immutable/reference#/operations/createTrade
+// https://docs.x.immutable.com/reference#/operations/createTrade
 func CreateTrade(
 	ctx context.Context,
 	apiClient *api.APIClient,

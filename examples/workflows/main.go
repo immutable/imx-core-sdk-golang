@@ -83,7 +83,7 @@ func main() {
 
 	// Withdrawals Demo
 	// After prepare withdrawal workflow is performed. Must wait for getWithdrawal endpoint
-	// https://docs.x.immutable.com/immutable/reference/#/operations/getWithdrawal to return "rollup_status": "confirmed"
+	// https://docs.x.immutable.com/reference/#/operations/getWithdrawal to return "rollup_status": "confirmed"
 	// before calling complete withdrawal workflow.
 	withdrawals.DemoPrepareEthWithdrawalWorkflow(ctx, apiClient, envs["DW_ETH_AMOUNT"], l1signer, l2signer)
 	withdrawals.DemoPrepareERC20WithdrawalWorkflow(ctx, apiClient, envs["DW_ERC20TOKEN_ADDRESS"], l1signer, l2signer)

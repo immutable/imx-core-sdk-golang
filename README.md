@@ -1,6 +1,6 @@
 <div align="center">
   <p align="center">
-    <a  href="https://docs.x.immutable.com/immutable/docs">
+    <a  href="https://docs.x.immutable.com/docs">
       <img src="https://cdn.dribbble.com/users/1299339/screenshots/7133657/media/837237d447d36581ebd59ec36d30daea.gif" width="280"/>
     </a>
   </p>
@@ -20,11 +20,11 @@ Currently, our SDK supports interactions with our application-specific rollup ba
 
 ## Documentation
 
-See the [Developer Home](https://docs.x.immutable.com/immutable/) for general information on building on Immutable X.
+See the [Developer Home](https://docs.x.immutable.com/) for general information on building on Immutable X.
 
-* Getting started, see [Developer Docs](https://docs.x.immutable.com/immutable/docs/welcome/)
-* See the [API reference documentation](https://docs.x.immutable.com/immutable/reference) for more information on our API's.
-* Reference docs releated to this (Golang imx core) SDK can be found [here](https://docs.x.immutable.com/immutable/sdk-docs/core-sdk-golang/overview) 
+* Getting started, see [Developer Docs](https://docs.x.immutable.com/docs/welcome/)
+* See the [API reference documentation](https://docs.x.immutable.com/reference) for more information on our API's.
+* Reference docs releated to this (Golang imx core) SDK can be found [here](https://docs.x.immutable.com/sdk-docs/core-sdk-golang/overview) 
 ## Installation
 
 [//]: # (TODO: Revisit after package deployment)
@@ -67,7 +67,7 @@ For information about how ethereum client is setup, see `examples/workflows/main
 
 ### L1 Signer
 
-Almost all the POST requests will need signed message. To sign a message as a minimum an L1 signer is required. An ethereum wallet can be used to implement an L1 signer ([Getting started > Wallet](https://docs.x.immutable.com/immutable/docs/getting-started-guide/#wallet)).
+Almost all the POST requests will need signed message. To sign a message as a minimum an L1 signer is required. An ethereum wallet can be used to implement an L1 signer ([Getting started > Wallet](https://docs.x.immutable.com/docs/getting-started-guide/#wallet)).
 
 When you implement an L1signer, it must satisfy [L1Signer interface](signers/signers.go). See [BaseL1Signer](examples/workflows/utils/signer.go) for a sample implementation of L1 Signer.
 

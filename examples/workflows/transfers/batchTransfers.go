@@ -17,7 +17,7 @@ func DemoBatchTransferWorkflow(ctx context.Context, apiClient *api.APIClient, l1
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
 	// To declare tokens, use tokens.NewSignableTokenERC721 method.
-	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/immutable/docs/token-data-object
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
 	signableToken1 := tokens.NewSignableTokenERC721("Token ID Here", "Token Address Hex Here")
 	signableToken2 := tokens.NewSignableTokenERC721("Token ID Here", "Token Address Hex Here")
 	amount := "1"

@@ -34,7 +34,7 @@ import (
 )
 
 func main() {
-    iMXSignature := "iMXSignature_example" // string | String created by signing wallet address and timestamp. See https://docs.x.immutable.com/immutable/docs/generate-imx-signature
+    iMXSignature := "iMXSignature_example" // string | String created by signing wallet address and timestamp. See https://docs.x.immutable.com/docs/generate-imx-signature
     iMXTimestamp := "iMXTimestamp_example" // string | Unix Epoc timestamp
     createCollectionRequest := *openapiclient.NewCreateCollectionRequest("ContractAddress_example", "Name_example", "OwnerPublicKey_example", int32(123)) // CreateCollectionRequest | create a collection
 
@@ -61,7 +61,7 @@ Other parameters are passed through a pointer to a apiCreateCollectionRequest st
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **iMXSignature** | **string** | String created by signing wallet address and timestamp. See https://docs.x.immutable.com/immutable/docs/generate-imx-signature | 
+ **iMXSignature** | **string** | String created by signing wallet address and timestamp. See https://docs.x.immutable.com/docs/generate-imx-signature | 
  **iMXTimestamp** | **string** | Unix Epoc timestamp | 
  **createCollectionRequest** | [**CreateCollectionRequest**](CreateCollectionRequest.md) | create a collection | 
 
