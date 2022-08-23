@@ -15,7 +15,6 @@ jobs:
     strategy:
       matrix:
         workdir:
-          - /
           - examples/workflows
           - examples/publicapi/list_assets
     steps:
