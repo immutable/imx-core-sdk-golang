@@ -27,8 +27,6 @@ See the [Developer Home](https://docs.x.immutable.com/) for general information 
 * Reference docs releated to this (Golang imx core) SDK can be found [here](https://docs.x.immutable.com/sdk-docs/core-sdk-golang/overview) 
 ## Installation
 
-[//]: # (TODO: Revisit after package deployment)
-
 ```sh
 go get github.com/immutable/imx-core-sdk-golang 
 ```
@@ -65,14 +63,14 @@ For information about how ethereum client is setup, see `examples/workflows/main
 
 ### How to generate the required signers
 
-### L1 Signer
+#### L1 Signer
 
 Almost all the POST requests will need signed message. To sign a message as a minimum an L1 signer is required. An ethereum wallet can be used to implement an L1 signer ([Getting started > Wallet](https://docs.x.immutable.com/docs/getting-started-guide/#wallet)).
 
 When you implement an L1signer, it must satisfy [L1Signer interface](signers/signers.go). See [BaseL1Signer](examples/workflows/utils/signer.go) for a sample implementation of L1 Signer.
 
 Also refer `examples/publicapi/list_assets/main.go` for environment setup examples.
-### L2 Signer
+#### L2 Signer
 
 Some of the endpoints like Withdrawal, Orders, Trades, Transfers require an L2 signer. See `signers/stark` for information about generating your own L2 signer and also the following code snippet.
 
