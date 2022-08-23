@@ -74,7 +74,7 @@ ctx = context.WithValue(context.Background(), api.ContextOperationServerVariable
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://api.ropsten.x.github.com/immutable/*
+All URIs are relative to *https://api.ropsten.x.immutable.com*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
@@ -248,5 +248,5 @@ Each of these functions takes a value of the given basic type and returns a poin
 
 ## Author
 
-support@github.com/immutable/
+support@immutable.com
 

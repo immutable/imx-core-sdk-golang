@@ -41,7 +41,7 @@ func main() {
 
 	/*
 		// Setup default host
-		configuration.Host = "api.x.github.com/immutable/"
+		configuration.Host = "api.x.immutable.com"
 		configuration.Scheme = "https"
 		ctx := context.Background()
 	*/

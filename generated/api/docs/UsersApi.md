@@ -1,6 +1,6 @@
 # \UsersApi
 
-All URIs are relative to *https://api.ropsten.x.github.com/immutable/*
+All URIs are relative to *https://api.ropsten.x.immutable.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------

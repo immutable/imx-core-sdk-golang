@@ -12,14 +12,14 @@ generate-openapi-ropsten: get-openapi-ropsten generate-api
 get-openapi-prod:
 	rm -f openapi.json && touch openapi.json && \
 	curl -H "Accept: application/json+v3" \
-    https://api.x.github.com/immutable/openapi \
+    https://api.x.immutable.com/openapi \
     -o openapi.json
 
 .PHONY: get-openapi-ropsten
 get-openapi-ropsten:
 	rm -f openapi.json && touch openapi.json && \
 	curl -H "Accept: application/json+v3" \
-    https://api.ropsten.x.github.com/immutable/openapi \
+    https://api.ropsten.x.immutable.com/openapi \
     -o openapi.json
 
 .PHONY: generate-api

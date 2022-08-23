@@ -7,11 +7,11 @@
     "title": "Immutable X API",
     "contact": {
       "name": "Immutable API Support",
-      "email": "support@github.com/immutable/"
+      "email": "support@immutable.com"
     },
     "version": "0.1"
   },
-  "host": "api.ropsten.x.github.com/immutable/",
+  "host": "api.ropsten.x.immutable.com",
   "basePath": "/",
   "paths": {
     "/v1/assets": {
