@@ -7,7 +7,7 @@ import (
 
 	"github.com/immutable/imx-core-sdk-golang/generated/api"
 	"github.com/immutable/imx-core-sdk-golang/signers"
-	internalSigners "github.com/immutable/imx-core-sdk-golang/signers/internal/signers"
+	internalSigners "github.com/immutable/imx-core-sdk-golang/internal/signers"
 )
 
 // CreateOrder will list the given asset for sale on the marketplace.
