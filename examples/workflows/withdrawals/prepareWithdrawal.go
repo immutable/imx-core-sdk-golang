@@ -5,12 +5,12 @@ import (
 	"encoding/json"
 	"log"
 
-	"immutable.com/imx-core-sdk-golang/api"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
-	"immutable.com/imx-core-sdk-golang/signers"
-	"immutable.com/imx-core-sdk-golang/tokens"
-	converter "immutable.com/imx-core-sdk-golang/utils"
-	withdrawalsWorkflow "immutable.com/imx-core-sdk-golang/workflows/withdrawals"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
+	"github.com/immutable/imx-core-sdk-golang/generated/api"
+	converter "github.com/immutable/imx-core-sdk-golang/internal/utils"
+	"github.com/immutable/imx-core-sdk-golang/signers"
+	"github.com/immutable/imx-core-sdk-golang/tokens"
+	withdrawalsWorkflow "github.com/immutable/imx-core-sdk-golang/workflows/withdrawals"
 )
 
 const (

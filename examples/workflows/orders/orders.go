@@ -4,12 +4,12 @@ import (
 	"context"
 	"log"
 
-	"immutable.com/imx-core-sdk-golang/api"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
-	"immutable.com/imx-core-sdk-golang/signers"
-	"immutable.com/imx-core-sdk-golang/tokens"
-	converters "immutable.com/imx-core-sdk-golang/utils"
-	ordersWorkflow "immutable.com/imx-core-sdk-golang/workflows/orders"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
+	"github.com/immutable/imx-core-sdk-golang/generated/api"
+	converters "github.com/immutable/imx-core-sdk-golang/internal/utils"
+	"github.com/immutable/imx-core-sdk-golang/signers"
+	"github.com/immutable/imx-core-sdk-golang/tokens"
+	ordersWorkflow "github.com/immutable/imx-core-sdk-golang/workflows/orders"
 )
 
 const (

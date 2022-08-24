@@ -24,12 +24,13 @@ get-openapi-ropsten:
 
 .PHONY: generate-api
 generate-api:
-	rm -rf src/$(GENERATED_CODE_DIR) && \
-    mkdir -p src/$(GENERATED_CODE_DIR) && \
+	rm -rf $(GENERATED_CODE_DIR) && \
+    mkdir -p $(GENERATED_CODE_DIR) && \
 	docker run --rm -v $(shell pwd):/app openapitools/openapi-generator-cli generate \
 		-i ./app/openapi.json \
 		-c ./app/go-client-config.yaml \
 		-t ./app/generator-templates/templates \
-		-o /app/src/generated/api
+		-o /app/generated/api
+	rm -rf $(GENERATED_CODE_DIR)/go.mod $(GENERATED_CODE_DIR)/go.sum $(GENERATED_CODE_DIR)/git_push.sh
 
 	

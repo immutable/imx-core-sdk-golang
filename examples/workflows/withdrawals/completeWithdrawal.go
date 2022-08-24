@@ -4,11 +4,11 @@ import (
 	"context"
 	"log"
 
-	"immutable.com/imx-core-sdk-golang/api"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
-	"immutable.com/imx-core-sdk-golang/signers"
-	"immutable.com/imx-core-sdk-golang/utils/ethereum"
-	withdrawalsWorkflow "immutable.com/imx-core-sdk-golang/workflows/withdrawals"
+	"github.com/immutable/imx-core-sdk-golang/ethereum"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
+	"github.com/immutable/imx-core-sdk-golang/generated/api"
+	"github.com/immutable/imx-core-sdk-golang/signers"
+	withdrawalsWorkflow "github.com/immutable/imx-core-sdk-golang/workflows/withdrawals"
 )
 
 // DemoCompleteEthWithdrawalWorkflow contains sample code for completing withdrawal of Eth tokens

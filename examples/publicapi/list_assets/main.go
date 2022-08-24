@@ -8,9 +8,9 @@ import (
 	"os"
 	"strings"
 
+	"github.com/immutable/imx-core-sdk-golang/config"
+	"github.com/immutable/imx-core-sdk-golang/generated/api"
 	"github.com/joho/godotenv"
-	"immutable.com/imx-core-sdk-golang/api"
-	"immutable.com/imx-core-sdk-golang/config"
 )
 
 func PrettyStruct(data interface{}) (string, error) {
@@ -22,7 +22,6 @@ func PrettyStruct(data interface{}) (string, error) {
 }
 
 func main() {
-
 	var envs map[string]string
 	envs, err := godotenv.Read("../../.env")
 	if err != nil {
@@ -40,6 +39,7 @@ func main() {
 	// 1. Set default host on config
 	// 2. Per request config via context.
 
+	// nolint:gocritic // ignore commented out code sample
 	/*
 		// Setup default host
 		configuration.Host = "api.x.immutable.com"
@@ -49,6 +49,7 @@ func main() {
 
 	// or
 
+	// nolint:gocritic // ignore commented out code sample
 	/*
 		// Alternatively add to configuration servers then it can be selectable with context value as below.
 		alchemyAPIKey := envs["ALCHEMY_API_KEY"]
@@ -59,7 +60,8 @@ func main() {
 		})
 	*/
 
-	// Using context value to switch/specify the server before sending request. If nothing is specified, the default server will be used which will be first one in the open api spec list.
+	// Using context value to switch/specify the server before sending request.
+	// If nothing is specified, the default server will be used which will be first one in the open api spec list.
 	ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
 
 	apiClient := api.NewAPIClient(configuration)

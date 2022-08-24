@@ -4,11 +4,11 @@ import (
 	"context"
 	"log"
 
-	"immutable.com/imx-core-sdk-golang/api"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
-	"immutable.com/imx-core-sdk-golang/signers"
-	"immutable.com/imx-core-sdk-golang/utils/ethereum"
-	"immutable.com/imx-core-sdk-golang/workflows/deposits"
+	"github.com/immutable/imx-core-sdk-golang/ethereum"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
+	"github.com/immutable/imx-core-sdk-golang/generated/api"
+	"github.com/immutable/imx-core-sdk-golang/signers"
+	"github.com/immutable/imx-core-sdk-golang/workflows/deposits"
 )
 
 func DemoDepositEthWorkflow(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, amount string, l1signer signers.L1Signer) {

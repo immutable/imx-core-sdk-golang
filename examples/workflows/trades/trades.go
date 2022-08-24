@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"log"
 
-	"immutable.com/imx-core-sdk-golang/api"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
-	"immutable.com/imx-core-sdk-golang/signers"
-	tradesWorkflow "immutable.com/imx-core-sdk-golang/workflows/trades"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
+	"github.com/immutable/imx-core-sdk-golang/generated/api"
+	"github.com/immutable/imx-core-sdk-golang/signers"
+	tradesWorkflow "github.com/immutable/imx-core-sdk-golang/workflows/trades"
 )
 
 func DemoTradesWorkflow(ctx context.Context, apiClient *api.APIClient, l1signer signers.L1Signer, l2signer signers.L2Signer) {

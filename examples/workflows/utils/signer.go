@@ -8,8 +8,8 @@ import (
 
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
-	"immutable.com/imx-core-sdk-golang/signers"
-	coreutils "immutable.com/imx-core-sdk-golang/utils"
+	coreutils "github.com/immutable/imx-core-sdk-golang/internal/utils"
+	"github.com/immutable/imx-core-sdk-golang/signers"
 )
 
 // BaseL1Signer is an L1Signer implementation to assist for demo code.

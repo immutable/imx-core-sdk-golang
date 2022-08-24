@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"log"
 
-	"immutable.com/imx-core-sdk-golang/api"
-	"immutable.com/imx-core-sdk-golang/examples/workflows/utils"
-	"immutable.com/imx-core-sdk-golang/signers"
-	"immutable.com/imx-core-sdk-golang/signers/stark"
-	"immutable.com/imx-core-sdk-golang/workflows/registration"
+	"github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
+	"github.com/immutable/imx-core-sdk-golang/generated/api"
+	"github.com/immutable/imx-core-sdk-golang/signers"
+	"github.com/immutable/imx-core-sdk-golang/signers/stark"
+	"github.com/immutable/imx-core-sdk-golang/workflows/registration"
 )
 
 func DemoUserRegistrationWorkflow(ctx context.Context, usersAPI api.UsersApi, l1signer signers.L1Signer) {
