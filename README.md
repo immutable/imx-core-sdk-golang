@@ -24,7 +24,7 @@ See the [Developer Home](https://docs.x.immutable.com/) for general information 
 
 * Getting started, see [Developer Docs](https://docs.x.immutable.com/docs/welcome/)
 * See the [API reference documentation](https://docs.x.immutable.com/reference) for more information on our API's.
-* Reference docs releated to this (Golang imx core) SDK can be found [here](https://docs.x.immutable.com/sdk-docs/core-sdk-golang/overview) 
+* Reference docs related to this (Golang imx core) SDK can be found [here](https://docs.x.immutable.com/sdk-docs/core-sdk-golang/overview) 
 ## Installation
 
 ```sh
@@ -33,7 +33,7 @@ go get github.com/immutable/imx-core-sdk-golang
 
 ## How to use
 
-The following code snipptes talk about how to get setup and use the various sections of the golang SDK for most commoon use cases. Any sections that are not covered here please reach out to team. See [Getting Help](#getting-help)
+The following code snippets talk about how to get setup and use the various sections of the Golang SDK for most common use cases. Any sections that are not covered here please reach out to team. See [Getting Help](#getting-help)
 
 ### Configuration
 
@@ -46,7 +46,7 @@ Select one of the following Ethereum networks Immutable X platform currently sup
 | Sandbox     | Test network  |
 | Mainnet     | Production    | 
 
-```golang
+```go
 import "github.com/immutable/imx-core-sdk-golang/config"
 
 const alchemyAPIKey = "alchemy api key"
