@@ -39,6 +39,7 @@ func main() {
 	// 1. Set default host on config
 	// 2. Per request config via context.
 
+	// nolint:gocritic // ignore commented out code sample
 	/*
 		// Setup default host
 		configuration.Host = "api.x.immutable.com"
@@ -48,6 +49,7 @@ func main() {
 
 	// or
 
+	// nolint:gocritic // ignore commented out code sample
 	/*
 		// Alternatively add to configuration servers then it can be selectable with context value as below.
 		alchemyAPIKey := envs["ALCHEMY_API_KEY"]
