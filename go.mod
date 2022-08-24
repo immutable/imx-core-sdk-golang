@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/aarbt/hdkeys v0.0.0-20151205172415-ee76d77aba2f
 	github.com/dontpanicdao/caigo v0.3.0
-	github.com/ethereum/go-ethereum v1.10.21
+	github.com/ethereum/go-ethereum v1.10.22
 	github.com/go-openapi/runtime v0.24.1
 	github.com/shopspring/decimal v1.3.1
 	github.com/stretchr/testify v1.8.0
