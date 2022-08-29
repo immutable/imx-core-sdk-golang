@@ -9,7 +9,7 @@ import (
 // The order of this enum should match with the order specified in the OpenApi Spec document.
 const (
 	Sandbox = iota // Sandbox network
-	MainNet        // Production network
+	Mainnet        // Production network
 )
 
 type Config struct {
@@ -42,8 +42,8 @@ func getBaseConfigs() map[Network]Config {
 			StarkContractAddress:        "0x4527BE8f31E2ebFbEF4fCADDb5a17447B27d2aef",
 			ChainID:                     params.RopstenChainConfig.ChainID,
 		},
-		MainNet: {
-			EthereumClientEndpoint:      "https://eth-mainnet.alchemyapi.io/v2/",
+		Mainnet: {
+			EthereumClientEndpoint:      "https://eth-Mainnet.alchemyapi.io/v2/",
 			CoreAPIEndpoint:             "https://api.x.immutable.com",
 			RegistrationContractAddress: "0x72a06bf2a1CE5e39cBA06c0CAb824960B587d64c",
 			StarkContractAddress:        "0x5FDCCA53617f4d2b9134B29090C87D01058e27e9",

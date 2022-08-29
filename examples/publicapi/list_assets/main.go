@@ -53,9 +53,9 @@ func main() {
 	/*
 		// Alternatively add to configuration servers then it can be selectable with context value as below.
 		alchemyAPIKey := envs["ALCHEMY_API_KEY"]
-		mainnetConfig := config.GetConfig(config.MainNet, alchemyAPIKey)
+		MainnetConfig := config.GetConfig(config.Mainnet, alchemyAPIKey)
 		configuration.Servers = append(configuration.Servers, api.ServerConfiguration{
-			URL:         mainnetConfig.CoreAPIEndpoint,
+			URL:         MainnetConfig.CoreAPIEndpoint,
 			Description: "Production Server",
 		})
 	*/
