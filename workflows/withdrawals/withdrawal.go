@@ -13,10 +13,6 @@ type TokenWithdrawal interface {
 	CompleteWithdrawal(ctx context.Context, ethClient *ethereumutil.Client, clientAPI *api.APIClient, l1signer signers.L1Signer, starkPublicKey string) (*eth.Transaction, error)
 }
 
-// ETHWithdrawal implements TokenWithdrawal. Used for withdrawal of Eth Tokens.
-type ETHWithdrawal struct {
-}
-
 // ERC20Withdrawal implements TokenWithdrawal. Used for withdrawal of ERC20 Tokens.
 type ERC20Withdrawal struct {
 	TokenAddress string
