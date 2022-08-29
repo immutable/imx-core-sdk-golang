@@ -22,7 +22,8 @@ func CompleteEthWithdrawal(
 	ethClient *ethereumutil.Client,
 	clientAPI *api.APIClient,
 	l1signer signers.L1Signer,
-	starkKeyHex string) (*eth.Transaction, error) {
+	starkKeyHex string,
+) (*eth.Transaction, error) {
 	assetType, err := encode.GetEncodedAssetTypeForEth(ctx, clientAPI.EncodingApi)
 	if err != nil {
 		return nil, err
@@ -37,7 +38,8 @@ func (w *ERC20Withdrawal) CompleteWithdrawal(
 	ethClient *ethereumutil.Client,
 	clientAPI *api.APIClient,
 	l1signer signers.L1Signer,
-	starkKeyHex string) (*eth.Transaction, error) {
+	starkKeyHex string,
+) (*eth.Transaction, error) {
 	assetType, err := encode.GetEncodedAssetTypeForERC20(ctx, clientAPI.EncodingApi, w.TokenAddress)
 	if err != nil {
 		return nil, err
@@ -52,7 +54,8 @@ func completeFungiblesWithdrawal(
 	clientAPI *api.APIClient,
 	l1signer signers.L1Signer,
 	starkKeyHex string,
-	assetType *big.Int) (*eth.Transaction, error) {
+	assetType *big.Int,
+) (*eth.Transaction, error) {
 	starkKey, err := convert.HexToInt(starkKeyHex)
 	if err != nil {
 		return nil, fmt.Errorf("error converting StarkKeyHex to bigint: %s", starkKeyHex)
@@ -66,7 +69,12 @@ func completeFungiblesWithdrawal(
 	return registerAndWithdrawFungibles(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, assetType)
 }
 
-func withdrawFungibles(ctx context.Context, ethClient *ethereumutil.Client, l1signer signers.L1Signer, starkKey, assetType *big.Int) (*eth.Transaction, error) {
+func withdrawFungibles(
+	ctx context.Context,
+	ethClient *ethereumutil.Client,
+	l1signer signers.L1Signer,
+	starkKey, assetType *big.Int,
+) (*eth.Transaction, error) {
 	auth, err := ethClient.BuildTransactOpts(ctx, l1signer)
 	if err != nil {
 		return nil, err
@@ -85,7 +93,8 @@ func registerAndWithdrawFungibles(
 	usersAPI api.UsersApi,
 	starkKeyHex string,
 	starkKey *big.Int,
-	assetType *big.Int) (*eth.Transaction, error) {
+	assetType *big.Int,
+) (*eth.Transaction, error) {
 	etherKey := l1signer.GetAddress()
 	signableRegistration, err := registration.GetSignableRegistrationOnchain(ctx, usersAPI, etherKey, starkKeyHex)
 	if err != nil {

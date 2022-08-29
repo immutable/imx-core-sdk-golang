@@ -21,7 +21,8 @@ func (w *ERC721Withdrawal) withdrawMintedNft(
 	ethClient *ethereumutil.Client,
 	clientAPI *api.APIClient,
 	l1signer signers.L1Signer,
-	starkKeyHex string) (*eth.Transaction, error) {
+	starkKeyHex string,
+) (*eth.Transaction, error) {
 	assetType, err := encode.GetEncodedAssetTypeForERC721(ctx, clientAPI.EncodingApi, w.TokenID, w.TokenAddress)
 	if err != nil {
 		return nil, err
@@ -48,7 +49,12 @@ func (w *ERC721Withdrawal) withdrawMintedNft(
 	return registerAndWithdrawMintedNft(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, assetType, tokenID)
 }
 
-func withdrawMintedNft(ctx context.Context, ethClient *ethereumutil.Client, l1signer signers.L1Signer, starkKey, assetType, tokenID *big.Int) (*eth.Transaction, error) {
+func withdrawMintedNft(
+	ctx context.Context,
+	ethClient *ethereumutil.Client,
+	l1signer signers.L1Signer,
+	starkKey, assetType, tokenID *big.Int,
+) (*eth.Transaction, error) {
 	auth, err := ethClient.BuildTransactOpts(ctx, l1signer)
 	if err != nil {
 		return nil, err
@@ -68,7 +74,8 @@ func registerAndWithdrawMintedNft(
 	starkKeyHex string,
 	starkKey *big.Int,
 	assetType *big.Int,
-	tokenID *big.Int) (*eth.Transaction, error) {
+	tokenID *big.Int,
+) (*eth.Transaction, error) {
 	etherKey := l1signer.GetAddress()
 	signableRegistration, err := registration.GetSignableRegistrationOnchain(ctx, usersAPI, etherKey, starkKeyHex)
 	if err != nil {

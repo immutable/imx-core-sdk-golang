@@ -23,7 +23,8 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 	ethClient *ethereumutil.Client,
 	clientAPI *api.APIClient,
 	l1signer signers.L1Signer,
-	starkKeyHex string) (*eth.Transaction, error) {
+	starkKeyHex string,
+) (*eth.Transaction, error) {
 	mintableTokenResponse, httpResp, err := clientAPI.MintsApi.GetMintableTokenDetailsByClientTokenId(ctx, w.TokenAddress, w.TokenID).Execute()
 	if err != nil {
 		if err.(*runtime.APIError).IsCode(404) {
@@ -56,7 +57,13 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 	return registerAndWithdrawAndMintNft(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, assetType, mintingBlob)
 }
 
-func withdrawAndMintNft(ctx context.Context, ethClient *ethereumutil.Client, l1signer signers.L1Signer, starkKey, assetType *big.Int, mintingBlob []byte) (*eth.Transaction, error) {
+func withdrawAndMintNft(
+	ctx context.Context,
+	ethClient *ethereumutil.Client,
+	l1signer signers.L1Signer,
+	starkKey, assetType *big.Int,
+	mintingBlob []byte,
+) (*eth.Transaction, error) {
 	auth, err := ethClient.BuildTransactOpts(ctx, l1signer)
 	if err != nil {
 		return nil, err
@@ -76,7 +83,8 @@ func registerAndWithdrawAndMintNft(
 	starkKeyHex string,
 	starkKey *big.Int,
 	assetType *big.Int,
-	mintingBlob []byte) (*eth.Transaction, error) {
+	mintingBlob []byte,
+) (*eth.Transaction, error) {
 	etherKey := l1signer.GetAddress()
 	signableRegistration, err := registration.GetSignableRegistrationOnchain(ctx, usersAPI, etherKey, starkKeyHex)
 	if err != nil {
