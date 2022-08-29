@@ -10,7 +10,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/immutable/imx-core-sdk-golang/internal/utils"
+	"github.com/immutable/imx-core-sdk-golang/internal/convert"
 	"github.com/immutable/imx-core-sdk-golang/signers"
 	"github.com/stretchr/testify/assert"
 )
@@ -25,7 +25,7 @@ func TestStarkSigner_VerifySignature(t *testing.T) {
 
 	l2Signer, _ := GenerateStarkSigner(l1Signer)
 	message := "0x074180eaec7e68712b5a0fbf5d63a70c33940c9b02e60565e36f84d705b669e"
-	hash, _ := utils.HexToInt(message)
+	hash, _ := convert.HexToInt(message)
 	signature, _ := l2Signer.SignMessage(message)
 	starkPubKey := l2Signer.GetAddress()
 	err := l2Signer.VerifySignature(hash, signature, starkPubKey)
@@ -89,7 +89,7 @@ func (b *BaseL1Signer) SignTx(tx *types.Transaction) (*types.Transaction, error)
 }
 
 func GetL1Signer(privateKey string, chainID *big.Int) (signers.L1Signer, error) {
-	privateKey, err := utils.TrimHexPrefix(privateKey)
+	privateKey, err := convert.TrimHexPrefix(privateKey)
 	if err != nil {
 		return nil, err
 	}

@@ -8,18 +8,18 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	eth "github.com/ethereum/go-ethereum/core/types"
-	"github.com/immutable/imx-core-sdk-golang/ethereum"
+	"github.com/immutable/imx-core-sdk-golang/ethereumutil"
 	"github.com/immutable/imx-core-sdk-golang/generated/api"
+	"github.com/immutable/imx-core-sdk-golang/internal/convert"
 	"github.com/immutable/imx-core-sdk-golang/internal/encode"
-	"github.com/immutable/imx-core-sdk-golang/internal/utils"
 	"github.com/immutable/imx-core-sdk-golang/signers"
 	"github.com/immutable/imx-core-sdk-golang/tokens"
 	"github.com/immutable/imx-core-sdk-golang/workflows/registration"
 )
 
 // Deposit performs the deposit workflow on the ETHDeposit.
-func (d *ETHDeposit) Deposit(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, l1signer signers.L1Signer) (*eth.Transaction, error) {
-	amount, err := utils.ToDenomination(d.Amount, utils.EtherDecimals)
+func (d *ETHDeposit) Deposit(ctx context.Context, ethClient *ethereumutil.Client, clientAPI *api.APIClient, l1signer signers.L1Signer) (*eth.Transaction, error) {
+	amount, err := convert.ToDenomination(d.Amount, convert.EtherDecimals)
 	if err != nil {
 		return nil, fmt.Errorf("error when parsing deposit amount: %v", err)
 	}
@@ -35,7 +35,7 @@ func (d *ETHDeposit) Deposit(ctx context.Context, ethClient *ethereum.Client, cl
 	}
 
 	starkKeyHex := signableDeposit.StarkKey
-	starkKey, err := utils.HexToInt(starkKeyHex)
+	starkKey, err := convert.HexToInt(starkKeyHex)
 	if err != nil {
 		return nil, fmt.Errorf("error converting StarkKey to bigint: %s", starkKeyHex)
 	}
@@ -60,7 +60,7 @@ func newSignableDepositRequestForEth(amount, user string) *api.GetSignableDeposi
 
 func registerAndDepositEth(
 	ctx context.Context,
-	ethClient *ethereum.Client,
+	ethClient *ethereumutil.Client,
 	l1signer signers.L1Signer,
 	usersAPI api.UsersApi,
 	starkKeyHex string,
@@ -79,7 +79,7 @@ func registerAndDepositEth(
 		return nil, err
 	}
 
-	operatorSignature, err := utils.HexToByteArray(signableRegistration.OperatorSignature)
+	operatorSignature, err := convert.HexToByteArray(signableRegistration.OperatorSignature)
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +100,7 @@ func registerAndDepositEth(
 
 func depositEth(
 	ctx context.Context,
-	ethClient *ethereum.Client,
+	ethClient *ethereumutil.Client,
 	l1signer signers.L1Signer,
 	starkPublicKey *big.Int,
 	vaultID *big.Int,

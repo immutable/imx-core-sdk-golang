@@ -20,7 +20,7 @@ const (
 	SeedStarkMessage = "Only sign this request if you’ve initiated an action with Immutable X."
 )
 
-// GenerateStarkSigner creates StarkSigner.
+// GenerateStarkSigner factory method to create StarkSigner.
 func GenerateStarkSigner(signer signers.L1Signer) (*StarkSigner, error) {
 	seed, err := generateSeed(signer, SeedStarkMessage)
 	if err != nil {

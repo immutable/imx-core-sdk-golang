@@ -6,6 +6,12 @@ import (
 	"github.com/ethereum/go-ethereum/params"
 )
 
+// The order of this enum should match with the order specified in the OpenApi Spec document.
+const (
+	Sandbox = iota // Sandbox network
+	MainNet        // Production network
+)
+
 type Config struct {
 	EthereumClientEndpoint      string
 	CoreAPIEndpoint             string
@@ -16,11 +22,16 @@ type Config struct {
 
 type Network int
 
-// The order of this enum should match with the order specified in the OpenApi Spec document.
-const (
-	Sandbox = iota // Sandbox network
-	MainNet        // Production network
-)
+func GetApiUrl(network Network) string {
+	return getBaseConfigs()[network].CoreAPIEndpoint
+}
+
+func GetConfig(network Network, alchemyKey string) Config {
+	baseConfig := getBaseConfigs()[network]
+	baseConfig.EthereumClientEndpoint += alchemyKey
+
+	return baseConfig
+}
 
 func getBaseConfigs() map[Network]Config {
 	return map[Network]Config{
@@ -39,15 +50,4 @@ func getBaseConfigs() map[Network]Config {
 			ChainID:                     params.MainnetChainConfig.ChainID,
 		},
 	}
-}
-
-func GetAPIURL(network Network) string {
-	return getBaseConfigs()[network].CoreAPIEndpoint
-}
-
-func GetConfig(network Network, alchemyKey string) Config {
-	baseConfig := getBaseConfigs()[network]
-	baseConfig.EthereumClientEndpoint += alchemyKey
-
-	return baseConfig
 }

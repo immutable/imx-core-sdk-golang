@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/immutable/imx-core-sdk-golang/config"
-	"github.com/immutable/imx-core-sdk-golang/ethereum"
+	"github.com/immutable/imx-core-sdk-golang/ethereumutil"
 	"github.com/immutable/imx-core-sdk-golang/examples/workflows/burn"
 	"github.com/immutable/imx-core-sdk-golang/examples/workflows/deposits"
 	"github.com/immutable/imx-core-sdk-golang/examples/workflows/minting"
@@ -44,7 +44,7 @@ func main() {
 	ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
 
 	cfg := config.GetConfig(config.Sandbox, alchemyAPIKey)
-	ethClient, err := ethereum.NewEthereumClientAndAttachContracts(ctx, &cfg, ethereum.DefaultGasParams)
+	ethClient, err := ethereumutil.NewEthereumClientAndAttachContracts(ctx, &cfg, ethereumutil.DefaultGasParams)
 	if err != nil {
 		log.Panicf("error dialing ethereum client: %v\n", err)
 	}

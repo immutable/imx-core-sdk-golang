@@ -6,9 +6,10 @@ import (
 	"math/big"
 
 	"github.com/dontpanicdao/caigo"
-	"github.com/immutable/imx-core-sdk-golang/internal/utils"
+	"github.com/immutable/imx-core-sdk-golang/internal/convert"
 )
 
+// StarkSigner implements L2Signer interface.
 type StarkSigner struct {
 	privateKey *big.Int
 	publicKey  *big.Int
@@ -24,7 +25,7 @@ func NewStarkSigner(privateKey, publicKey *big.Int, curve *caigo.StarkCurve) *St
 }
 
 func (base *StarkSigner) SignMessage(message string) (string, error) {
-	hash, err := utils.HexToInt(message)
+	hash, err := convert.HexToInt(message)
 	if err != nil {
 		return "", err
 	}
@@ -35,6 +36,7 @@ func (base *StarkSigner) SignMessage(message string) (string, error) {
 	return serializeSignature(r, s), nil
 }
 
+// VerifySignature validates the given signature is signed by the requiredSigner or not.
 func (base *StarkSigner) VerifySignature(hash *big.Int, signature, requiredSigner string) error {
 	// All signatures must be 130 characters hex encoded 0x + 64 bytes with 2 characters each
 	requiredSigLength := len("0x") + 64*2
@@ -42,7 +44,7 @@ func (base *StarkSigner) VerifySignature(hash *big.Int, signature, requiredSigne
 		return fmt.Errorf("invalid signature")
 	}
 
-	pubKey, _ := utils.HexToInt(requiredSigner)
+	pubKey, _ := convert.HexToInt(requiredSigner)
 	y := base.curve.GetYCoordinate(pubKey)
 
 	r, s := rsFromSig(signature)

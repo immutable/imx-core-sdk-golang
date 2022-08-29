@@ -4,14 +4,14 @@ import (
 	"context"
 	"log"
 
-	"github.com/immutable/imx-core-sdk-golang/ethereum"
+	"github.com/immutable/imx-core-sdk-golang/ethereumutil"
 	"github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
 	"github.com/immutable/imx-core-sdk-golang/generated/api"
 	"github.com/immutable/imx-core-sdk-golang/signers"
 	"github.com/immutable/imx-core-sdk-golang/workflows/deposits"
 )
 
-func DemoDepositEthWorkflow(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, amount string, l1signer signers.L1Signer) {
+func DemoDepositEthWorkflow(ctx context.Context, ethClient *ethereumutil.Client, clientAPI *api.APIClient, amount string, l1signer signers.L1Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
@@ -26,7 +26,7 @@ func DemoDepositEthWorkflow(ctx context.Context, ethClient *ethereum.Client, cli
 	log.Println("-------------------------------------------------------")
 }
 
-func DemoDepositERC20Workflow(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, amount, tokenAddress string, l1signer signers.L1Signer) {
+func DemoDepositERC20Workflow(ctx context.Context, ethClient *ethereumutil.Client, clientAPI *api.APIClient, amount, tokenAddress string, l1signer signers.L1Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 
@@ -40,7 +40,7 @@ func DemoDepositERC20Workflow(ctx context.Context, ethClient *ethereum.Client, c
 	log.Println("-------------------------------------------------------")
 }
 
-func DemoDepositERC721Workflow(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, tokenID, tokenAddress string, l1signer signers.L1Signer) {
+func DemoDepositERC721Workflow(ctx context.Context, ethClient *ethereumutil.Client, clientAPI *api.APIClient, tokenID, tokenAddress string, l1signer signers.L1Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", utils.GetCurrentFunctionName())
 

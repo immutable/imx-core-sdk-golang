@@ -8,7 +8,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
-	coreutils "github.com/immutable/imx-core-sdk-golang/internal/utils"
+	coreutils "github.com/immutable/imx-core-sdk-golang/internal/convert"
 	"github.com/immutable/imx-core-sdk-golang/signers"
 )
 

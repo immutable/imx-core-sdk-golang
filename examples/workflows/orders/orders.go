@@ -6,7 +6,7 @@ import (
 
 	"github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
 	"github.com/immutable/imx-core-sdk-golang/generated/api"
-	converters "github.com/immutable/imx-core-sdk-golang/internal/utils"
+	"github.com/immutable/imx-core-sdk-golang/internal/convert"
 	"github.com/immutable/imx-core-sdk-golang/signers"
 	"github.com/immutable/imx-core-sdk-golang/tokens"
 	ordersWorkflow "github.com/immutable/imx-core-sdk-golang/workflows/orders"
@@ -23,7 +23,7 @@ func DemoOrdersWorkflow(ctx context.Context, apiClient *api.APIClient, l1signer 
 
 	// The amount (listing price) should be in Wei for Eth tokens, see https://docs.starkware.co/starkex-v4/starkex-deep-dive/starkex-specific-concepts
 	// and https://eth-converter.com/
-	amountBuy, _ := converters.ToDenomination("0.3", converters.EtherDecimals)
+	amountBuy, _ := convert.ToDenomination("0.3", convert.EtherDecimals)
 	ethAddress := l1signer.GetAddress()                               // Address of the user listing for sale.
 	sellToken := tokens.NewSignableTokenERC721(tokenID, tokenAddress) // NFT Token
 	buyToken := tokens.NewSignableTokenEth()                          // The listed asset can be bought with Ethereum

@@ -7,7 +7,7 @@ import (
 
 	"github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
 	"github.com/immutable/imx-core-sdk-golang/generated/api"
-	converter "github.com/immutable/imx-core-sdk-golang/internal/utils"
+	converter "github.com/immutable/imx-core-sdk-golang/internal/convert"
 	"github.com/immutable/imx-core-sdk-golang/signers"
 	"github.com/immutable/imx-core-sdk-golang/tokens"
 	withdrawalsWorkflow "github.com/immutable/imx-core-sdk-golang/workflows/withdrawals"

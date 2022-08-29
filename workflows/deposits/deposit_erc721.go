@@ -8,17 +8,17 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	eth "github.com/ethereum/go-ethereum/core/types"
-	"github.com/immutable/imx-core-sdk-golang/ethereum"
+	"github.com/immutable/imx-core-sdk-golang/ethereumutil"
 	"github.com/immutable/imx-core-sdk-golang/generated/api"
+	"github.com/immutable/imx-core-sdk-golang/internal/convert"
 	"github.com/immutable/imx-core-sdk-golang/internal/encode"
-	"github.com/immutable/imx-core-sdk-golang/internal/utils"
 	"github.com/immutable/imx-core-sdk-golang/signers"
 	"github.com/immutable/imx-core-sdk-golang/tokens"
 	"github.com/immutable/imx-core-sdk-golang/workflows/registration"
 )
 
 // Deposit performs the deposit workflow on the ERC721Deposit.
-func (d *ERC721Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, l1signer signers.L1Signer) (*eth.Transaction, error) {
+func (d *ERC721Deposit) Deposit(ctx context.Context, ethClient *ethereumutil.Client, clientAPI *api.APIClient, l1signer signers.L1Signer) (*eth.Transaction, error) {
 	// Approve whether an amount of token from an account can be spent by a third-party account
 	auth, err := ethClient.BuildTransactOpts(ctx, l1signer)
 	if err != nil {
@@ -52,7 +52,7 @@ func (d *ERC721Deposit) Deposit(ctx context.Context, ethClient *ethereum.Client,
 
 	// Passing starkKeyHex to register method because it may be padded and converting back from Int loses the padding
 	starkKeyHex := signableDeposit.StarkKey
-	starkKey, err := utils.HexToInt(starkKeyHex)
+	starkKey, err := convert.HexToInt(starkKeyHex)
 	if err != nil {
 		return nil, fmt.Errorf("error converting StarkKey to bigint: %s", starkKeyHex)
 	}
@@ -78,7 +78,7 @@ func newSignableDepositRequestForERC721(amount, tokenID, tokenAddress, user stri
 
 func depositERC721(
 	ctx context.Context,
-	ethClient *ethereum.Client,
+	ethClient *ethereumutil.Client,
 	l1signer signers.L1Signer,
 	starkPublicKey *big.Int,
 	vaultID *big.Int,
@@ -97,7 +97,7 @@ func depositERC721(
 
 func registerAndDepositERC721(
 	ctx context.Context,
-	ethClient *ethereum.Client,
+	ethClient *ethereumutil.Client,
 	l1signer signers.L1Signer,
 	usersAPI api.UsersApi,
 	starkKeyHex string,
@@ -116,7 +116,7 @@ func registerAndDepositERC721(
 		return nil, err
 	}
 
-	operatorSignature, err := utils.HexToByteArray(signableRegistration.OperatorSignature)
+	operatorSignature, err := convert.HexToByteArray(signableRegistration.OperatorSignature)
 	if err != nil {
 		return nil, err
 	}

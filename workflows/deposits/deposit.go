@@ -5,13 +5,13 @@ import (
 	"strings"
 
 	eth "github.com/ethereum/go-ethereum/core/types"
-	"github.com/immutable/imx-core-sdk-golang/ethereum"
+	"github.com/immutable/imx-core-sdk-golang/ethereumutil"
 	"github.com/immutable/imx-core-sdk-golang/generated/api"
 	"github.com/immutable/imx-core-sdk-golang/signers"
 )
 
 type TokenDeposit interface {
-	Deposit(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, l1signer signers.L1Signer) (*eth.Transaction, error)
+	Deposit(ctx context.Context, ethClient *ethereumutil.Client, clientAPI *api.APIClient, l1signer signers.L1Signer) (*eth.Transaction, error)
 }
 
 // ETHDeposit implements TokenDeposit. Used to deposit Eth Tokens.

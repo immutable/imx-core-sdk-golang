@@ -27,6 +27,8 @@ See the [Developer Home](https://docs.x.immutable.com/) for general information 
 * Reference docs related to this (Golang imx core) SDK can be found [here](https://docs.x.immutable.com/sdk-docs/core-sdk-golang/overview) 
 ## Installation
 
+The supported go version is 1.17 or above.
+
 ```sh
 go get github.com/immutable/imx-core-sdk-golang 
 ```

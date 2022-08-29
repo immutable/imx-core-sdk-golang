@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/immutable/imx-core-sdk-golang/ethereum"
+	"github.com/immutable/imx-core-sdk-golang/ethereumutil"
 	"github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
 	"github.com/immutable/imx-core-sdk-golang/generated/api"
 	"github.com/immutable/imx-core-sdk-golang/signers"
@@ -14,7 +14,7 @@ import (
 // DemoCompleteEthWithdrawalWorkflow contains sample code for completing withdrawal of Eth tokens
 func DemoCompleteEthWithdrawalWorkflow(
 	ctx context.Context,
-	ethClient *ethereum.Client,
+	ethClient *ethereumutil.Client,
 	clientAPI *api.APIClient,
 	l1signer signers.L1Signer,
 	l2signer signers.L2Signer,
@@ -35,7 +35,7 @@ func DemoCompleteEthWithdrawalWorkflow(
 // DemoCompleteERC20WithdrawalWorkflow contains sample code for completing withdrawal of ERC20 tokens
 func DemoCompleteERC20WithdrawalWorkflow(
 	ctx context.Context,
-	ethClient *ethereum.Client,
+	ethClient *ethereumutil.Client,
 	clientAPI *api.APIClient,
 	tokenAddress string,
 	l1signer signers.L1Signer,
@@ -59,7 +59,7 @@ func DemoCompleteERC20WithdrawalWorkflow(
 // DemoCompleteERC721WithdrawalWorkflow contains sample code for completing withdrawal of ERC721 tokens
 func DemoCompleteERC721WithdrawalWorkflow(
 	ctx context.Context,
-	ethClient *ethereum.Client,
+	ethClient *ethereumutil.Client,
 	clientAPI *api.APIClient,
 	tokenID, tokenAddress string,
 	l1signer signers.L1Signer,

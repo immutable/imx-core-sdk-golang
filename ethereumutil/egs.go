@@ -1,4 +1,4 @@
-package ethereum
+package ethereumutil
 
 import (
 	"context"

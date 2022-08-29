@@ -8,17 +8,17 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	eth "github.com/ethereum/go-ethereum/core/types"
-	"github.com/immutable/imx-core-sdk-golang/ethereum"
+	"github.com/immutable/imx-core-sdk-golang/ethereumutil"
 	"github.com/immutable/imx-core-sdk-golang/generated/api"
+	"github.com/immutable/imx-core-sdk-golang/internal/convert"
 	"github.com/immutable/imx-core-sdk-golang/internal/encode"
-	"github.com/immutable/imx-core-sdk-golang/internal/utils"
 	"github.com/immutable/imx-core-sdk-golang/signers"
 	"github.com/immutable/imx-core-sdk-golang/workflows/registration"
 )
 
 func (w *ERC721Withdrawal) withdrawMintedNft(
 	ctx context.Context,
-	ethClient *ethereum.Client,
+	ethClient *ethereumutil.Client,
 	clientAPI *api.APIClient,
 	l1signer signers.L1Signer,
 	starkKeyHex string) (*eth.Transaction, error) {
@@ -27,7 +27,7 @@ func (w *ERC721Withdrawal) withdrawMintedNft(
 		return nil, err
 	}
 
-	starkKey, err := utils.HexToInt(starkKeyHex)
+	starkKey, err := convert.HexToInt(starkKeyHex)
 	if err != nil {
 		return nil, fmt.Errorf("error converting StarkKeyHex to bigint: %s", starkKeyHex)
 	}
@@ -48,7 +48,7 @@ func (w *ERC721Withdrawal) withdrawMintedNft(
 	return registerAndWithdrawMintedNft(ctx, ethClient, l1signer, clientAPI.UsersApi, starkKeyHex, starkKey, assetType, tokenID)
 }
 
-func withdrawMintedNft(ctx context.Context, ethClient *ethereum.Client, l1signer signers.L1Signer, starkKey, assetType, tokenID *big.Int) (*eth.Transaction, error) {
+func withdrawMintedNft(ctx context.Context, ethClient *ethereumutil.Client, l1signer signers.L1Signer, starkKey, assetType, tokenID *big.Int) (*eth.Transaction, error) {
 	auth, err := ethClient.BuildTransactOpts(ctx, l1signer)
 	if err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ func withdrawMintedNft(ctx context.Context, ethClient *ethereum.Client, l1signer
 
 func registerAndWithdrawMintedNft(
 	ctx context.Context,
-	ethClient *ethereum.Client,
+	ethClient *ethereumutil.Client,
 	l1signer signers.L1Signer,
 	usersAPI api.UsersApi,
 	starkKeyHex string,
@@ -80,7 +80,7 @@ func registerAndWithdrawMintedNft(
 		return nil, err
 	}
 
-	operatorSignature, err := utils.HexToByteArray(signableRegistration.OperatorSignature)
+	operatorSignature, err := convert.HexToByteArray(signableRegistration.OperatorSignature)
 	if err != nil {
 		return nil, err
 	}

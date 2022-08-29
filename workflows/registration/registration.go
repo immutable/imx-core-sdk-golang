@@ -9,7 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/immutable/imx-core-sdk-golang/generated/api"
 	"github.com/immutable/imx-core-sdk-golang/generated/contracts"
-	"github.com/immutable/imx-core-sdk-golang/internal/utils"
+	"github.com/immutable/imx-core-sdk-golang/internal/convert"
 	"github.com/immutable/imx-core-sdk-golang/signers"
 )
 
@@ -54,11 +54,6 @@ func RegisterOffchain(ctx context.Context,
 	return registerUserResponse, nil
 }
 
-func isValidEmail(email string) bool {
-	_, err := mail.ParseAddress(email)
-	return err == nil
-}
-
 // IsRegisteredOffChain checks if the given public address is already registered on the offchain (L2 network).
 func IsRegisteredOffChain(ctx context.Context, usersAPI api.UsersApi, publicAddress string) (*bool, error) {
 	usersResponse, httpResp, err := usersAPI.GetUsers(ctx, publicAddress).Execute()
@@ -71,7 +66,7 @@ func IsRegisteredOffChain(ctx context.Context, usersAPI api.UsersApi, publicAddr
 
 // IsRegisteredOnChain checks if the given public address is already registered on the onchain (L1 network).
 func IsRegisteredOnChain(ctx context.Context, contract *contracts.Registration, starkPublicKey string) (*bool, error) {
-	starkKey, err := utils.HexToInt(starkPublicKey)
+	starkKey, err := convert.HexToInt(starkPublicKey)
 	if err != nil {
 		return nil, fmt.Errorf("error converting StarkKey to bigint: %v", starkPublicKey)
 	}
@@ -93,4 +88,9 @@ func GetSignableRegistrationOnchain(ctx context.Context, usersAPI api.UsersApi, 
 		return nil, fmt.Errorf("error in `GetSignableRegistrationRequest.Execute`: %v, HTTP response body: %v", err, httpResp.Body)
 	}
 	return signableRegistrationResponse, nil
+}
+
+func isValidEmail(email string) bool {
+	_, err := mail.ParseAddress(email)
+	return err == nil
 }

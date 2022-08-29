@@ -4,13 +4,17 @@ import (
 	"context"
 
 	eth "github.com/ethereum/go-ethereum/core/types"
-	"github.com/immutable/imx-core-sdk-golang/ethereum"
+	"github.com/immutable/imx-core-sdk-golang/ethereumutil"
 	"github.com/immutable/imx-core-sdk-golang/generated/api"
 	"github.com/immutable/imx-core-sdk-golang/signers"
 )
 
 type TokenWithdrawal interface {
-	CompleteWithdrawal(ctx context.Context, ethClient *ethereum.Client, clientAPI *api.APIClient, l1signer signers.L1Signer, starkPublicKey string) (*eth.Transaction, error)
+	CompleteWithdrawal(ctx context.Context, ethClient *ethereumutil.Client, clientAPI *api.APIClient, l1signer signers.L1Signer, starkPublicKey string) (*eth.Transaction, error)
+}
+
+// ETHWithdrawal implements TokenWithdrawal. Used for withdrawal of Eth Tokens.
+type ETHWithdrawal struct {
 }
 
 // ERC20Withdrawal implements TokenWithdrawal. Used for withdrawal of ERC20 Tokens.
