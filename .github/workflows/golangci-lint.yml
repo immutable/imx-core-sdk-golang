@@ -31,6 +31,7 @@ jobs:
         workdir:
           - examples/workflows
           - examples/publicapi/list_assets
+          - examples/publicapi/create_project
     steps:
       - uses: actions/setup-go@v3
         with:

@@ -59,13 +59,13 @@ func main() {
 
 #### Ethereum Client
 
-For information about how ethereum client is setup, see `examples/workflows/main.go`
+For information about how Ethereum client is setup, see `examples/workflows/main.go`
 
 ### How to generate the required signers
 
 #### L1 Signer
 
-Almost all the POST requests will need signed message. To sign a message as a minimum an L1 signer is required. An ethereum wallet can be used to implement an L1 signer ([Getting started > Wallet](https://docs.x.immutable.com/docs/getting-started-guide/#wallet)).
+Almost all the POST requests will need signed message. To sign a message as a minimum an L1 signer is required. An Ethereum wallet can be used to implement an L1 signer ([Getting started > Wallet](https://docs.x.immutable.com/docs/getting-started-guide/#wallet)).
 
 When you implement an L1signer, it must satisfy [L1Signer interface](signers/signers.go). See [BaseL1Signer](examples/workflows/utils/signer.go) for a sample implementation of L1 Signer.
 
