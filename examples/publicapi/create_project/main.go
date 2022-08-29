@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/params"
 	"github.com/immutable/imx-core-sdk-golang/config"
 	"github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
 	"github.com/immutable/imx-core-sdk-golang/generated/api"
@@ -15,10 +14,11 @@ import (
 )
 
 func main() {
+	environment := config.GetConfig(config.Sandbox, "alchemy api key")
 	configuration := api.NewConfiguration()
 	apiClient := api.NewAPIClient(configuration)
 	ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
-	l1signer, err := utils.NewBaseL1Signer("Project Owner Private Key", params.RopstenChainConfig.ChainID)
+	l1signer, err := utils.NewBaseL1Signer("Project Owner Private Key", environment.ChainID)
 	if err != nil {
 		log.Panicf("error in creating BaseL1Signer: %v\n", err)
 	}
