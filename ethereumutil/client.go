@@ -31,7 +31,7 @@ type Client struct {
 	GasPrice                    *big.Int
 	GasMultiplier               float64
 	MaxGasPrice                 *big.Int
-	EgsApiKey                   string
+	EgsAPIKey                   string
 	EGSSpeed                    string
 	RegistrationContractAddress ethcommon.Address
 	StarkContractAddress        ethcommon.Address
@@ -68,7 +68,7 @@ func NewEthereumClient(url string, params GasParams) (*Client, error) {
 		GasPrice:      params.GasPrice,
 		GasMultiplier: params.GasMultiplier,
 		MaxGasPrice:   params.MaxGasPrice,
-		EgsApiKey:     params.EgsApiKey,
+		EgsAPIKey:     params.EgsAPIKey,
 		EGSSpeed:      params.EGSSpeed,
 	}
 	return ethClient, nil
@@ -180,8 +180,8 @@ func (e *Client) estimateGasPrice(ctx context.Context) (*big.Int, error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Second*Timeout)
 	defer cancel()
 
-	if e.EgsApiKey != "" {
-		price, err := fetchGasPrice(e.EgsApiKey, e.EGSSpeed)
+	if e.EgsAPIKey != "" {
+		price, err := fetchGasPrice(e.EgsAPIKey, e.EGSSpeed)
 		if err != nil {
 			// log? - ignore for now and use node price
 		} else {

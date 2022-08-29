@@ -10,10 +10,10 @@ const (
 )
 
 // GasParams are used to set the gas limit and gas price.
-// When EgsApiKey is provided, Client.BuildTransactOpts will attempt to set the gas price returned from eth gas station.
+// When EgsAPIKey is provided, Client.BuildTransactOpts will attempt to set the gas price returned from eth gas station.
 // If the api call to eth gas station fails, the gas price will be set at the (Network suggested price * GasMultiplier)
 // unless MaxGasPrice is lower, then gas price will be set at MaxGasPrice.
-// When EgsApiKey is an empty string or if the api call to eth gas station fails, the gas price will be set at
+// When EgsAPIKey is an empty string or if the api call to eth gas station fails, the gas price will be set at
 // the (Network suggested price * GasMultiplier) unless MaxGasPrice is lower, then gas price will be set at MaxGasPrice.
 type GasParams struct {
 	GasLimit uint64
@@ -24,7 +24,7 @@ type GasParams struct {
 	GasMultiplier float64
 	MaxGasPrice   *big.Int
 	// Eth gas station (EGS) API key https://ethgasstation.info
-	EgsApiKey string
+	EgsAPIKey string
 	// Eth gas station (EGS) speed https://ethgasstation.info
 	EGSSpeed string
 }

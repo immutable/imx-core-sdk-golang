@@ -22,7 +22,7 @@ type Config struct {
 
 type Network int
 
-func GetApiUrl(network Network) string {
+func GetAPIURL(network Network) string {
 	return getBaseConfigs()[network].CoreAPIEndpoint
 }
 
