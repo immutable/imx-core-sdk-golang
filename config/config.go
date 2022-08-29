@@ -43,7 +43,7 @@ func getBaseConfigs() map[Network]Config {
 			ChainID:                     params.RopstenChainConfig.ChainID,
 		},
 		Mainnet: {
-			EthereumClientEndpoint:      "https://eth-Mainnet.alchemyapi.io/v2/",
+			EthereumClientEndpoint:      "https://eth-mainnet.alchemyapi.io/v2/",
 			CoreAPIEndpoint:             "https://api.x.immutable.com",
 			RegistrationContractAddress: "0x72a06bf2a1CE5e39cBA06c0CAb824960B587d64c",
 			StarkContractAddress:        "0x5FDCCA53617f4d2b9134B29090C87D01058e27e9",
