@@ -5,7 +5,7 @@ go 1.18
 replace github.com/immutable/imx-core-sdk-golang => ./../../
 
 require (
-	github.com/ethereum/go-ethereum v1.10.21
+	github.com/ethereum/go-ethereum v1.10.23
 	github.com/immutable/imx-core-sdk-golang v0.0.0-00010101000000-000000000000
 	github.com/joho/godotenv v1.4.0
 )
