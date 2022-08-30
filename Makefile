@@ -1,5 +1,5 @@
 GENERATOR_TEMPLATES_DIR=generator-templates
-GENERATED_CODE_DIR=generated/api
+GENERATED_CODE_DIR=api
 CURRENT_DIR = $(shell pwd)
 
 .PHONY: generate-openapi-prod
@@ -30,7 +30,7 @@ generate-api:
 		-i ./app/openapi.json \
 		-c ./app/go-client-config.yaml \
 		-t ./app/generator-templates/templates \
-		-o /app/generated/api
+		-o /app/api
 	rm -rf $(GENERATED_CODE_DIR)/go.mod $(GENERATED_CODE_DIR)/go.sum $(GENERATED_CODE_DIR)/git_push.sh
 
 	

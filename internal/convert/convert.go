@@ -22,16 +22,6 @@ func TrimHexPrefix(hexString string) (string, error) {
 	return hexString, nil
 }
 
-func HexToInt(hexString string) (*big.Int, error) {
-	addressInt := new(big.Int)
-	hexString, err := TrimHexPrefix(hexString)
-	if err != nil {
-		return nil, err
-	}
-	addressInt.SetString(hexString, 16)
-	return addressInt, nil
-}
-
 func HexToByteArray(hexString string) ([]byte, error) {
 	hexString, err := TrimHexPrefix(hexString)
 	if err != nil {

@@ -136,7 +136,7 @@ See [here](#how-to-generate-the-required-signers) for how to generate the signer
 
 ```go
 // Example method to generate authorisation headers
-func GetProjectOwnerAuthorisationHeaders(l1signer signers.L1Signer) (timestamp, signature string, err error) {
+func GetProjectOwnerAuthorisationHeaders(l1signer immutable.L1Signer) (timestamp, signature string, err error) {
     timestamp = strconv.FormatInt(time.Now().Unix(), 10)
     signedTimestamp, err := l1signer.SignMessage(timestamp)
     if err != nil {
@@ -146,7 +146,7 @@ func GetProjectOwnerAuthorisationHeaders(l1signer signers.L1Signer) (timestamp, 
     return timestamp, signature, nil
 }
 
-func CreateProject(l1signer signers.L1Signer, name, companyName, contactEmail string) (*api.CreateProjectResponse, error) {
+func CreateProject(l1signer immutable.L1Signer, name, companyName, contactEmail string) (*api.CreateProjectResponse, error) {
     configuration := api.NewConfiguration()
     apiClient := api.NewAPIClient(configuration)
     ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
@@ -200,7 +200,7 @@ The Core SDK provides interfaces for all smart contracts required to interact wi
 ```go
 // This example is only to demonstrate using the generated smart contract clients
 // We recommend using the workflows to deposit NFT
-func DepositNft(l1signer signers.L1Signer, starkKey, assetType, vaultID, tokenID *big.Int) {
+func DepositNft(l1signer immutable.L1Signer, starkKey, assetType, vaultID, tokenID *big.Int) {
    cfg := config.GetConfig(config.Sandbox, "alchemy api key")
    client, err := ethclient.Dial(cfg.EthereumClientEndpoint)
    if err != nil {
