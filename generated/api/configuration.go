@@ -109,6 +109,10 @@ func NewConfiguration() *Configuration {
 				URL: "https://api.ropsten.x.immutable.com",
 				Description: "No description provided",
 			},
+			{
+				URL: "https://api.x.immutable.com",
+				Description: "No description provided",
+			},
 		},
 		OperationServers: map[string]ServerConfigurations{
 		},
