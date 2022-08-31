@@ -24,7 +24,15 @@ func NewSigner(privateKey, publicKey *big.Int, curve *caigo.StarkCurve) *Signer 
 	}
 }
 
+// has0xPrefix checks if input contains 0x prefix. This method is copied from github.com/ethereum/go-ethereum/common/hexutil
+func has0xPrefix(input string) bool {
+	return len(input) >= 2 && input[0] == '0' && (input[1] == 'x' || input[1] == 'X')
+}
+
 func (base *Signer) SignMessage(message string) (string, error) {
+	if !has0xPrefix(message) {
+		message = "0x" + message
+	}
 	hash, err := hexutil.DecodeBig(message)
 	if err != nil {
 		return "", err
