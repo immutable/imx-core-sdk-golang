@@ -69,6 +69,7 @@ func NewClient(env Environment, cfg Config) (*Client, error) {
 	}
 	c.EthClient = ethclient
 
+	cfg.APIConfig.Servers = api.ServerConfigurations{{URL: env.BaseAPIPath}}
 	apiClient := api.NewAPIClient(cfg.APIConfig)
 
 	c.AssetsApi = apiClient.AssetsApi
