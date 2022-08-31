@@ -16,7 +16,7 @@ import (
 )
 
 type TokenDeposit interface {
-	Deposit(ctx context.Context, c *Client, l1signer L1Signer) (*types.Transaction, error)
+	Deposit(ctx context.Context, c *Client, l1signer L1Signer, overrides *bind.TransactOpts) (*types.Transaction, error)
 }
 
 // ETHDeposit implements TokenDeposit. Used to deposit Eth Tokens.

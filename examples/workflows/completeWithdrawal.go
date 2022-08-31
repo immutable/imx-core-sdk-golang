@@ -17,7 +17,7 @@ func demoCompleteEthWithdrawalWorkflow(
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
-	transaction, err := c.CompleteEthWithdrawal(ctx, l1signer, l2signer.GetAddress())
+	transaction, err := c.CompleteEthWithdrawal(ctx, l1signer, l2signer.GetAddress(), nil)
 	if err != nil {
 		log.Panicf("error calling withdrawalsWorkflow.CompleteEthWithdrawal workflow: %v", err)
 	}
@@ -39,7 +39,7 @@ func demoCompleteERC20WithdrawalWorkflow(
 	log.Printf("Running %s", getCurrentFunctionName())
 
 	erc20Withdrawal := immutable.NewERC20Withdrawal(tokenAddress)
-	transaction, err := erc20Withdrawal.CompleteWithdrawal(ctx, c, l1signer, l2signer.GetAddress())
+	transaction, err := erc20Withdrawal.CompleteWithdrawal(ctx, c, l1signer, l2signer.GetAddress(), nil)
 
 	if err != nil {
 		log.Panicf("error calling complete withdrawal workflow: %v", err)
@@ -62,7 +62,7 @@ func demoCompleteERC721WithdrawalWorkflow(
 	log.Printf("Running %s", getCurrentFunctionName())
 
 	erc721Withdrawal := immutable.NewERC721Withdrawal(tokenID, tokenAddress)
-	transaction, err := erc721Withdrawal.CompleteWithdrawal(ctx, c, l1signer, l2signer.GetAddress())
+	transaction, err := erc721Withdrawal.CompleteWithdrawal(ctx, c, l1signer, l2signer.GetAddress(), nil)
 
 	if err != nil {
 		log.Panicf("error calling complete withdrawal workflow: %v", err)

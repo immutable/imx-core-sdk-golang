@@ -51,7 +51,7 @@ func (c *Client) PrepareWithdrawal(
 }
 
 type TokenWithdrawal interface {
-	CompleteWithdrawal(ctx context.Context, c *Client, l1signer L1Signer, starkPublicKey string) (*types.Transaction, error)
+	CompleteWithdrawal(ctx context.Context, c *Client, l1signer L1Signer, starkPublicKey string, overrides *bind.TransactOpts) (*types.Transaction, error)
 }
 
 // ERC20Withdrawal implements TokenWithdrawal. Used for withdrawal of ERC20 Tokens.

@@ -12,7 +12,7 @@ func demoDepositEthWorkflow(ctx context.Context, c *immutable.Client, amount str
 	log.Printf("Running %s", getCurrentFunctionName())
 
 	depositRequest := immutable.NewETHDeposit(amount)
-	transaction, err := depositRequest.Deposit(ctx, c, l1signer)
+	transaction, err := depositRequest.Deposit(ctx, c, l1signer, nil)
 	if err != nil {
 		log.Panicf("error calling deposit workflow: %v", err)
 	}
@@ -26,7 +26,7 @@ func demoDepositERC20Workflow(ctx context.Context, c *immutable.Client, amount, 
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
-	transaction, err := immutable.NewERC20Deposit(amount, tokenAddress).Deposit(ctx, c, l1signer)
+	transaction, err := immutable.NewERC20Deposit(amount, tokenAddress).Deposit(ctx, c, l1signer, nil)
 	if err != nil {
 		log.Panicf("error calling deposit workflow: %v", err)
 	}
@@ -41,7 +41,7 @@ func demoDepositERC721Workflow(ctx context.Context, c *immutable.Client, tokenID
 	log.Printf("Running %s", getCurrentFunctionName())
 
 	depositERC721Request := immutable.NewERC721Deposit(tokenID, tokenAddress)
-	transaction, err := depositERC721Request.Deposit(ctx, c, l1signer)
+	transaction, err := depositERC721Request.Deposit(ctx, c, l1signer, nil)
 	if err != nil {
 		log.Panicf("error calling deposit workflow: %v", err)
 	}
