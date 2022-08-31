@@ -71,7 +71,6 @@ func main() {
 	demoTradesWorkflow(ctx, c, l1signer, l2signer)
 	demoBurnWorkflow(ctx, c, l1signer, l2signer)
 	demoTransferWorkflow(ctx, c, l1signer, l2signer)
-	demoBatchTransferWorkflow(ctx, c, l1signer, l2signer)
 
 	// Withdrawals Demo
 	// After prepare withdrawal workflow is performed. Must wait for getWithdrawal endpoint
