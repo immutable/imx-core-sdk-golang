@@ -58,17 +58,17 @@ type Client struct {
 }
 
 func NewClient(env Environment, cfg Config) (*Client, error) {
-
 	c := Client{
 		Environment: env,
 	}
 
-	ethclient, err := ethclient.Dial(cfg.EthereumRPC)
+	ethClient, err := ethclient.Dial(cfg.EthereumRPC)
 	if err != nil {
 		return nil, err
 	}
-	c.EthClient = ethclient
+	c.EthClient = ethClient
 
+	cfg.APIConfig.Servers = api.ServerConfigurations{{URL: env.BaseAPIPath}}
 	apiClient := api.NewAPIClient(cfg.APIConfig)
 
 	c.AssetsApi = apiClient.AssetsApi

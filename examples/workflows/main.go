@@ -40,6 +40,9 @@ func main() {
 	}
 
 	c, err := immutable.NewClient(immutable.Sandbox, cfg)
+	if err != nil {
+		log.Panicf("error on NewClient: %v\n", err)
+	}
 	defer c.EthClient.Close()
 
 	chainID, err := c.EthClient.ChainID(ctx)
@@ -71,6 +74,7 @@ func main() {
 	demoTradesWorkflow(ctx, c, l1signer, l2signer)
 	demoBurnWorkflow(ctx, c, l1signer, l2signer)
 	demoTransferWorkflow(ctx, c, l1signer, l2signer)
+	demoBatchNftTransferWorkflow(ctx, c, l1signer, l2signer)
 
 	// Withdrawals Demo
 	// After prepare withdrawal workflow is performed. Must wait for getWithdrawal endpoint

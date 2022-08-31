@@ -74,20 +74,20 @@ func validateEthereumAddress(address string) error {
 	return nil
 }
 
-func (c *Client) buildTransactOpts(ctx context.Context, l1signer L1Signer) (*bind.TransactOpts, error) {
+func (c *Client) buildTransactOpts(ctx context.Context, l1signer L1Signer, overrides *bind.TransactOpts) *bind.TransactOpts {
 	keyAddr := common.HexToAddress(l1signer.GetAddress())
-
-	auth := &bind.TransactOpts{
-		From: keyAddr,
-		Signer: func(address common.Address, tx *types.Transaction) (*types.Transaction, error) {
-			if address != keyAddr {
-				return nil, bind.ErrNotAuthorized
-			}
-			return l1signer.SignTx(tx)
-		},
-		Context: ctx,
+	if overrides == nil {
+		overrides = new(bind.TransactOpts)
 	}
-	return auth, nil
+	overrides.From = keyAddr
+	overrides.Context = ctx
+	overrides.Signer = func(address common.Address, tx *types.Transaction) (*types.Transaction, error) {
+		if address != keyAddr {
+			return nil, bind.ErrNotAuthorized
+		}
+		return l1signer.SignTx(tx)
+	}
+	return overrides
 }
 
 // isValidContract validates whether the given address is a contract

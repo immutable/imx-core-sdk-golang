@@ -85,12 +85,13 @@ func (c *Client) CompleteEthWithdrawal(
 	ctx context.Context,
 	l1signer L1Signer,
 	starkKeyHex string,
+	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	assetType, err := c.encodeETHAsset(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return c.completeFungiblesWithdrawal(ctx, l1signer, starkKeyHex, assetType)
+	return c.completeFungiblesWithdrawal(ctx, l1signer, starkKeyHex, assetType, overrides)
 }
 
 // CompleteWithdrawal performs the complete withdrawal workflow on ERC20Withdrawal
@@ -99,12 +100,13 @@ func (w *ERC20Withdrawal) CompleteWithdrawal(
 	c *Client,
 	l1signer L1Signer,
 	starkKeyHex string,
+	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	assetType, err := c.encodeERC20Asset(ctx, w.TokenAddress)
 	if err != nil {
 		return nil, err
 	}
-	return c.completeFungiblesWithdrawal(ctx, l1signer, starkKeyHex, assetType)
+	return c.completeFungiblesWithdrawal(ctx, l1signer, starkKeyHex, assetType, overrides)
 }
 
 func (c *Client) completeFungiblesWithdrawal(
@@ -112,6 +114,7 @@ func (c *Client) completeFungiblesWithdrawal(
 	l1signer L1Signer,
 	starkKeyHex string,
 	assetType *big.Int,
+	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	starkKey, err := hexutil.DecodeBig(starkKeyHex)
 	if err != nil {
@@ -121,21 +124,19 @@ func (c *Client) completeFungiblesWithdrawal(
 	isRegistered, _ := c.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 
 	if isRegistered {
-		return c.withdrawFungibles(ctx, l1signer, starkKey, assetType)
+		return c.withdrawFungibles(ctx, l1signer, starkKey, assetType, overrides)
 	}
-	return c.registerAndWithdrawFungibles(ctx, l1signer, starkKeyHex, starkKey, assetType)
+	return c.registerAndWithdrawFungibles(ctx, l1signer, starkKeyHex, starkKey, assetType, overrides)
 }
 
 func (c *Client) withdrawFungibles(
 	ctx context.Context,
 	l1signer L1Signer,
 	starkKey, assetType *big.Int,
+	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
-	tnx, err := c.CoreContract.Withdraw(auth, starkKey, assetType)
+	opts := c.buildTransactOpts(ctx, l1signer, overrides)
+	tnx, err := c.CoreContract.Withdraw(opts, starkKey, assetType)
 	if err != nil {
 		return nil, err
 	}
@@ -148,6 +149,7 @@ func (c *Client) registerAndWithdrawFungibles(
 	starkKeyHex string,
 	starkKey *big.Int,
 	assetType *big.Int,
+	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	etherKey := l1signer.GetAddress()
 	signableRegistration, err := c.GetSignableRegistrationOnchain(ctx, etherKey, starkKeyHex)
@@ -155,16 +157,13 @@ func (c *Client) registerAndWithdrawFungibles(
 		return nil, err
 	}
 
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
+	opts := c.buildTransactOpts(ctx, l1signer, overrides)
 
 	operatorSignature, err := convert.HexToByteArray(signableRegistration.OperatorSignature)
 	if err != nil {
 		return nil, err
 	}
-	transaction, err := c.RegistrationContract.RegisterAndWithdraw(auth, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType)
+	transaction, err := c.RegistrationContract.RegisterAndWithdraw(opts, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType)
 	if err != nil {
 		return nil, err
 	}
@@ -176,6 +175,7 @@ func (w *ERC721Withdrawal) withdrawMintedNft(
 	c *Client,
 	l1signer L1Signer,
 	starkKeyHex string,
+	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	assetType, err := c.encodeERC721Asset(ctx, w.TokenID, w.TokenAddress)
 	if err != nil {
@@ -198,21 +198,19 @@ func (w *ERC721Withdrawal) withdrawMintedNft(
 	}
 
 	if isRegistered {
-		return c.withdrawMintedNft(ctx, l1signer, starkKey, assetType, tokenID)
+		return c.withdrawMintedNft(ctx, l1signer, starkKey, assetType, tokenID, overrides)
 	}
-	return c.registerAndWithdrawMintedNft(ctx, l1signer, starkKeyHex, starkKey, assetType, tokenID)
+	return c.registerAndWithdrawMintedNft(ctx, l1signer, starkKeyHex, starkKey, assetType, tokenID, overrides)
 }
 
 func (c *Client) withdrawMintedNft(
 	ctx context.Context,
 	l1signer L1Signer,
 	starkKey, assetType, tokenID *big.Int,
+	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
-	tnx, err := c.CoreContract.WithdrawNft(auth, starkKey, assetType, tokenID)
+	opts := c.buildTransactOpts(ctx, l1signer, overrides)
+	tnx, err := c.CoreContract.WithdrawNft(opts, starkKey, assetType, tokenID)
 	if err != nil {
 		return nil, err
 	}
@@ -226,6 +224,7 @@ func (c *Client) registerAndWithdrawMintedNft(
 	starkKey *big.Int,
 	assetType *big.Int,
 	tokenID *big.Int,
+	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	etherKey := l1signer.GetAddress()
 	signableRegistration, err := c.GetSignableRegistrationOnchain(ctx, etherKey, starkKeyHex)
@@ -233,16 +232,13 @@ func (c *Client) registerAndWithdrawMintedNft(
 		return nil, err
 	}
 
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
+	opts := c.buildTransactOpts(ctx, l1signer, overrides)
 
 	operatorSignature, err := convert.HexToByteArray(signableRegistration.OperatorSignature)
 	if err != nil {
 		return nil, err
 	}
-	tnx, err := c.RegistrationContract.RegisterAndWithdrawNft(auth, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType, tokenID)
+	tnx, err := c.RegistrationContract.RegisterAndWithdrawNft(opts, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType, tokenID)
 	if err != nil {
 		return nil, err
 	}
@@ -255,12 +251,13 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 	c *Client,
 	l1signer L1Signer,
 	starkKeyHex string,
+	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	mintableTokenResponse, httpResp, err := c.GetMintableTokenDetailsByClientTokenId(ctx, w.TokenAddress, w.TokenID).Execute()
 	if err != nil {
 		if err.(*runtime.APIError).IsCode(404) {
 			// Token is already minted on L1
-			return w.withdrawMintedNft(ctx, c, l1signer, starkKeyHex)
+			return w.withdrawMintedNft(ctx, c, l1signer, starkKeyHex, overrides)
 		}
 		return nil, fmt.Errorf("error when calling `clientAPI.MintsApi.GetMintableTokenDetailsByClientTokenId.Execute`: %v, HTTP response body: %v", err, httpResp.Body)
 	}
@@ -283,9 +280,9 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 	// we should swallow this error to allow the register and withdraw flow to execute.
 
 	if isRegistered {
-		return c.withdrawAndMintNft(ctx, l1signer, starkKey, assetType, mintingBlob)
+		return c.withdrawAndMintNft(ctx, l1signer, starkKey, assetType, mintingBlob, overrides)
 	}
-	return c.registerAndWithdrawAndMintNft(ctx, l1signer, starkKeyHex, starkKey, assetType, mintingBlob)
+	return c.registerAndWithdrawAndMintNft(ctx, l1signer, starkKeyHex, starkKey, assetType, mintingBlob, overrides)
 }
 
 func (c *Client) withdrawAndMintNft(
@@ -293,12 +290,10 @@ func (c *Client) withdrawAndMintNft(
 	l1signer L1Signer,
 	starkKey, assetType *big.Int,
 	mintingBlob []byte,
+	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
-	tnx, err := c.CoreContract.WithdrawAndMint(auth, starkKey, assetType, mintingBlob)
+	opts := c.buildTransactOpts(ctx, l1signer, overrides)
+	tnx, err := c.CoreContract.WithdrawAndMint(opts, starkKey, assetType, mintingBlob)
 	if err != nil {
 		return nil, err
 	}
@@ -312,6 +307,7 @@ func (c *Client) registerAndWithdrawAndMintNft(
 	starkKey *big.Int,
 	assetType *big.Int,
 	mintingBlob []byte,
+	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	etherKey := l1signer.GetAddress()
 	signableRegistration, err := c.GetSignableRegistrationOnchain(ctx, etherKey, starkKeyHex)
@@ -319,17 +315,14 @@ func (c *Client) registerAndWithdrawAndMintNft(
 		return nil, err
 	}
 
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
+	opts := c.buildTransactOpts(ctx, l1signer, overrides)
 
 	operatorSignature, err := convert.HexToByteArray(signableRegistration.OperatorSignature)
 	if err != nil {
 		return nil, err
 	}
 
-	tnx, err := c.RegistrationContract.RegsiterAndWithdrawAndMint(auth, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType, mintingBlob)
+	tnx, err := c.RegistrationContract.RegsiterAndWithdrawAndMint(opts, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType, mintingBlob)
 	if err != nil {
 		return nil, err
 	}
