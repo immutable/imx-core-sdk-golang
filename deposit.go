@@ -124,10 +124,7 @@ func (c *Client) registerAndDepositEth(
 		return nil, err
 	}
 
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
+	auth := c.buildTransactOpts(ctx, l1signer)
 
 	operatorSignature, err := convert.HexToByteArray(signableRegistration.OperatorSignature)
 	if err != nil {
@@ -155,11 +152,8 @@ func (c *Client) depositEth(
 	vaultID *big.Int,
 	assetType *big.Int,
 	amount *big.Int) (*types.Transaction, error) {
-	auth, err := c.buildTransactOpts(ctx, l1signer)
+	auth := c.buildTransactOpts(ctx, l1signer)
 	auth.Value = amount
-	if err != nil {
-		return nil, err
-	}
 	tnx, err := c.CoreContract.Deposit(auth, starkPublicKey, assetType, vaultID)
 	if err != nil {
 		return nil, err
@@ -170,10 +164,7 @@ func (c *Client) depositEth(
 // Deposit performs the deposit workflow on the ERC721Deposit.
 func (d *ERC721Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer) (*types.Transaction, error) {
 	// Approve whether an amount of token from an account can be spent by a third-party account
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
+	auth := c.buildTransactOpts(ctx, l1signer)
 	tokenID, ok := new(big.Int).SetString(d.TokenID, 10)
 	if !ok {
 		return nil, fmt.Errorf("error converting tokenID to bigint: %v", d.TokenID)
@@ -233,10 +224,7 @@ func (c *Client) depositERC721(
 	vaultID *big.Int,
 	assetType *big.Int,
 	tokenID *big.Int) (*types.Transaction, error) {
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
+	auth := c.buildTransactOpts(ctx, l1signer)
 	tnx, err := c.CoreContract.DepositNft(auth, starkPublicKey, assetType, vaultID, tokenID)
 	if err != nil {
 		return nil, err
@@ -258,10 +246,7 @@ func (c *Client) registerAndDepositERC721(
 		return nil, err
 	}
 
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
+	auth := c.buildTransactOpts(ctx, l1signer)
 
 	operatorSignature, err := convert.HexToByteArray(signableRegistration.OperatorSignature)
 	if err != nil {
@@ -300,10 +285,7 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer
 	}
 
 	// Approve whether an amount of token from an account can be spent by a third-party account
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
+	auth := c.buildTransactOpts(ctx, l1signer)
 	ierc20Contract, err := c.newIERC20Contract(ctx, d.TokenAddress)
 	if err != nil {
 		return nil, err
@@ -363,10 +345,7 @@ func (c *Client) depositERC20(
 	vaultID *big.Int,
 	assetType *big.Int,
 	quantizedAmount *big.Int) (*types.Transaction, error) {
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
+	auth := c.buildTransactOpts(ctx, l1signer)
 	tnx, err := c.CoreContract.DepositERC20(auth, starkKey, assetType, vaultID, quantizedAmount)
 	if err != nil {
 		return nil, err
@@ -388,10 +367,7 @@ func (c *Client) registerAndDepositERC20(
 		return nil, err
 	}
 
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
+	auth := c.buildTransactOpts(ctx, l1signer)
 
 	operatorSignature, err := convert.HexToByteArray(signableRegistration.OperatorSignature)
 	if err != nil {

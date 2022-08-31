@@ -131,10 +131,7 @@ func (c *Client) withdrawFungibles(
 	l1signer L1Signer,
 	starkKey, assetType *big.Int,
 ) (*types.Transaction, error) {
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
+	auth := c.buildTransactOpts(ctx, l1signer)
 	tnx, err := c.CoreContract.Withdraw(auth, starkKey, assetType)
 	if err != nil {
 		return nil, err
@@ -155,10 +152,7 @@ func (c *Client) registerAndWithdrawFungibles(
 		return nil, err
 	}
 
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
+	auth := c.buildTransactOpts(ctx, l1signer)
 
 	operatorSignature, err := convert.HexToByteArray(signableRegistration.OperatorSignature)
 	if err != nil {
@@ -208,10 +202,7 @@ func (c *Client) withdrawMintedNft(
 	l1signer L1Signer,
 	starkKey, assetType, tokenID *big.Int,
 ) (*types.Transaction, error) {
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
+	auth := c.buildTransactOpts(ctx, l1signer)
 	tnx, err := c.CoreContract.WithdrawNft(auth, starkKey, assetType, tokenID)
 	if err != nil {
 		return nil, err
@@ -233,10 +224,7 @@ func (c *Client) registerAndWithdrawMintedNft(
 		return nil, err
 	}
 
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
+	auth := c.buildTransactOpts(ctx, l1signer)
 
 	operatorSignature, err := convert.HexToByteArray(signableRegistration.OperatorSignature)
 	if err != nil {
@@ -294,10 +282,7 @@ func (c *Client) withdrawAndMintNft(
 	starkKey, assetType *big.Int,
 	mintingBlob []byte,
 ) (*types.Transaction, error) {
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
+	auth := c.buildTransactOpts(ctx, l1signer)
 	tnx, err := c.CoreContract.WithdrawAndMint(auth, starkKey, assetType, mintingBlob)
 	if err != nil {
 		return nil, err
@@ -319,10 +304,7 @@ func (c *Client) registerAndWithdrawAndMintNft(
 		return nil, err
 	}
 
-	auth, err := c.buildTransactOpts(ctx, l1signer)
-	if err != nil {
-		return nil, err
-	}
+	auth := c.buildTransactOpts(ctx, l1signer)
 
 	operatorSignature, err := convert.HexToByteArray(signableRegistration.OperatorSignature)
 	if err != nil {
