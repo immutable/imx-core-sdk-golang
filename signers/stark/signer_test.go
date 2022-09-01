@@ -1,30 +1,21 @@
 package stark
 
 import (
-	"fmt"
 	"math/big"
 	"testing"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/immutable/imx-core-sdk-golang/signers/ethereum"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestStarkSigner_VerifySignature(t *testing.T) {
-	privateKey := ""
-	if privateKey == "" {
-		fmt.Println("WARN: You need to provide a private key to run this test.")
-		return
-	}
-	l1Signer, _ := ethereum.NewSigner(privateKey, nil)
-
-	l2Signer, _ := GenerateSigner(l1Signer)
+	key, _ := GenerateKey()
+	l2Signer, _ := NewSigner(key)
 	message := "0x074180eaec7e68712b5a0fbf5d63a70c33940c9b02e60565e36f84d705b669e"
 	hash, _ := hexutil.DecodeBig(message)
 	signature, _ := l2Signer.SignMessage(message)
 	starkPubKey := l2Signer.GetAddress()
 	err := l2Signer.VerifySignature(hash, signature, starkPubKey)
-
 	assert.Nil(t, err)
 }
 

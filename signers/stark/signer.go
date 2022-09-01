@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/dontpanicdao/caigo"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
@@ -13,15 +12,19 @@ import (
 type Signer struct {
 	privateKey *big.Int
 	publicKey  *big.Int
-	curve      *caigo.StarkCurve
 }
 
-func NewSigner(privateKey, publicKey *big.Int, curve *caigo.StarkCurve) *Signer {
+func NewSigner(privateKey *big.Int) (*Signer, error) {
+
+	x, _, err := curve.PrivateToPoint(privateKey)
+	if err != nil {
+		return nil, err
+	}
+
 	return &Signer{
 		privateKey: privateKey,
-		publicKey:  publicKey,
-		curve:      curve,
-	}
+		publicKey:  x, // TODO: is this right?
+	}, nil
 }
 
 // has0xPrefix checks if input contains 0x prefix. This method is copied from github.com/ethereum/go-ethereum/common/hexutil
@@ -37,7 +40,7 @@ func (base *Signer) SignMessage(message string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	r, s, err := base.curve.Sign(hash, base.privateKey)
+	r, s, err := curve.Sign(hash, base.privateKey)
 	if err != nil {
 		return "", err
 	}
@@ -53,17 +56,17 @@ func (base *Signer) VerifySignature(hash *big.Int, signature, requiredSigner str
 	}
 
 	pubKey, _ := hexutil.DecodeBig(requiredSigner)
-	y := base.curve.GetYCoordinate(pubKey)
+	y := curve.GetYCoordinate(pubKey)
 
 	r, s := rsFromSig(signature)
 
 	// verification
-	ok := base.curve.Verify(hash, r, s, pubKey, y)
+	ok := curve.Verify(hash, r, s, pubKey, y)
 	if ok {
 		return nil
 	}
-	negY := big.NewInt(0).Mod(big.NewInt(0).Neg(y), base.curve.P)
-	ok = base.curve.Verify(hash, r, s, pubKey, negY)
+	negY := big.NewInt(0).Mod(big.NewInt(0).Neg(y), curve.P)
+	ok = curve.Verify(hash, r, s, pubKey, negY)
 	if !ok {
 		return fmt.Errorf("verification failed")
 	}

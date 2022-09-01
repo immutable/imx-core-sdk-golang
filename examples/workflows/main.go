@@ -55,7 +55,8 @@ func main() {
 		log.Panicf("error in creating BaseL1Signer: %v\n", err)
 	}
 
-	l2signer, err := stark.GenerateSigner(l1signer)
+	key, _ := stark.GenerateKey()
+	l2signer, err := stark.NewSigner(key)
 	if err != nil {
 		log.Panicf("error in creating StarkSigner: %v\n", err)
 	}

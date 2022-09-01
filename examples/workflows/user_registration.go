@@ -13,7 +13,8 @@ func demoUserRegistrationWorkflow(ctx context.Context, c *immutable.Client, l1si
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
-	l2signer, err := stark.GenerateSigner(l1signer)
+	key, _ := stark.GenerateKey()
+	l2signer, err := stark.NewSigner(key)
 	if err != nil {
 		log.Panicf("error in creating StarkSigner: %v\n", err)
 	}
