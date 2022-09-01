@@ -10,7 +10,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/go-openapi/runtime"
-	"github.com/immutable/imx-core-sdk-golang/api"
+	"github.com/immutable/imx-core-sdk-golang/imx/api"
 	"github.com/immutable/imx-core-sdk-golang/imx/internal/convert"
 )
 

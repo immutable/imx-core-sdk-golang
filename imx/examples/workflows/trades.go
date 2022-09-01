@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/immutable/imx-core-sdk-golang/api"
 	"github.com/immutable/imx-core-sdk-golang/imx"
+	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
 
 func demoTradesWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, l2signer imx.L2Signer) {

@@ -8,7 +8,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/immutable/imx-core-sdk-golang/api"
+	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
 
 // BurnAddress 0x00 where tokens are sent to be removed from circulation

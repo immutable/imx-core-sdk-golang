@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/immutable/imx-core-sdk-golang/api"
+	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
 
 // CreateTransfer transfers the request's models.SignableToken from Sender to Receiver.

@@ -69,7 +69,7 @@ For information about how Ethereum client is setup, see `examples/workflows/main
 
 Almost all the POST requests will need signed message. To sign a message as a minimum an L1 signer is required. An Ethereum wallet can be used to implement an L1 signer ([Getting started > Wallet](https://docs.x.immutable.com/docs/getting-started-guide/#wallet)).
 
-When you implement an L1signer, it must satisfy [L1Signer interface](signers/signers.go). See [BaseL1Signer](examples/workflows/utils/signer.go) for a sample implementation of L1 Signer.
+When you implement an L1signer, it must satisfy [L1Signer interface](signers/signers.go). See [BaseL1Signer](imx/examples/workflows/utils/signer.go) for a sample implementation of L1 Signer.
 
 Also refer `examples/publicapi/list_assets/main.go` for environment setup examples.
 #### L2 Signer
@@ -272,7 +272,7 @@ func Register(signerPrivateKey string, chainID *big.Int) (*api.RegisterUserRespo
 ```
 
 The workflows can be found in the [workflows directory](workflows/).
-Sample usage of workflows can be found in [examples](examples/workflows).
+Sample usage of workflows can be found in [examples](imx/examples/workflows).
 
 ### Available workflows
 

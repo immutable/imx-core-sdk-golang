@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/immutable/imx-core-sdk-golang/api"
+	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
 
 const (

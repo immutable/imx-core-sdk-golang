@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/immutable/imx-core-sdk-golang/api"
 	"github.com/immutable/imx-core-sdk-golang/imx"
+	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
 
 func demoTransferWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, l2signer imx.L2Signer) {
@@ -14,7 +14,7 @@ func demoTransferWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Sig
 	log.Printf("Running %s", getCurrentFunctionName())
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
-	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.imx.com/docs/token-data-object
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
 	amount := "100000000"
 	sender := l1signer.GetAddress()
 	receiver := "Set receiver address here"
@@ -41,7 +41,7 @@ func demoBatchNftTransferWorkflow(ctx context.Context, c *imx.Client, l1signer i
 	log.Printf("Running %s", getCurrentFunctionName())
 
 	// To declare tokens, use tokens.NewSignableTokenERC721 method.
-	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.imx.com/docs/token-data-object
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
 	signableToken1 := imx.SignableERC721Token("Token ID Here", "Token Address Hex Here")
 	signableToken2 := imx.SignableERC721Token("Token ID Here", "Token Address Hex Here")
 	amount := "1"

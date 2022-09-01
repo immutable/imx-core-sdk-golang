@@ -5,8 +5,8 @@ import (
 	"log"
 	"strings"
 
-	"github.com/immutable/imx-core-sdk-golang/api"
 	"github.com/immutable/imx-core-sdk-golang/imx"
+	"github.com/immutable/imx-core-sdk-golang/imx/api"
 	"github.com/immutable/imx-core-sdk-golang/imx/signers/ethereum"
 	"github.com/immutable/imx-core-sdk-golang/imx/signers/stark"
 	"github.com/joho/godotenv"
@@ -78,7 +78,7 @@ func main() {
 
 	// Withdrawals Demo
 	// After prepare withdrawal workflow is performed. Must wait for getWithdrawal endpoint
-	// https://docs.x.imx.com/reference/#/operations/getWithdrawal to return "rollup_status": "confirmed"
+	// https://docs.x.immutable.com/reference/#/operations/getWithdrawal to return "rollup_status": "confirmed"
 	// before calling complete withdrawal workflow.
 	demoPrepareEthWithdrawalWorkflow(ctx, c, envs["DW_ETH_AMOUNT"], l1signer, l2signer)
 	demoPrepareERC20WithdrawalWorkflow(ctx, c, envs["DW_ERC20TOKEN_ADDRESS"], l1signer, l2signer)

@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/immutable/imx-core-sdk-golang/api"
 	"github.com/immutable/imx-core-sdk-golang/imx"
-	converter "github.com/immutable/imx-core-sdk-golang/imx/internal/convert"
+	"github.com/immutable/imx-core-sdk-golang/imx/api"
+	"github.com/immutable/imx-core-sdk-golang/imx/internal/convert"
 )
 
 const (
@@ -20,13 +20,13 @@ func demoPrepareEthWithdrawalWorkflow(ctx context.Context, c *imx.Client, amount
 	log.Printf("Running %s", getCurrentFunctionName())
 
 	// Convert Eth Amount to its denomination.
-	ethTokenValue, err := converter.ToDenomination(amount, converter.EtherDecimals)
+	ethTokenValue, err := convert.ToDenomination(amount, convert.EtherDecimals)
 	if err != nil {
 		log.Panicf("error converting Eth amount: %v", err)
 	}
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
-	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.imx.com/docs/token-data-object
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
 	withdrawalRequest := api.GetSignableWithdrawalRequest{
 		Amount: ethTokenValue.String(),
 		Token:  imx.SignableETHToken(),
@@ -49,11 +49,11 @@ func demoPrepareERC20WithdrawalWorkflow(ctx context.Context, c *imx.Client, toke
 	log.Printf("Running %s", getCurrentFunctionName())
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
-	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.imx.com/docs/token-data-object
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
 
 	amount := "5"
 	// Convert ERC20 token amount to its denomination.
-	erc20TokenValue, err := converter.ToDenomination(amount, ERC20TokenDecimals)
+	erc20TokenValue, err := convert.ToDenomination(amount, ERC20TokenDecimals)
 	if err != nil {
 		log.Panicf("error converting ERC20 amount: %v", err)
 	}
@@ -80,7 +80,7 @@ func demoPrepareERC721WithdrawalWorkflow(ctx context.Context, c *imx.Client, tok
 	log.Printf("Running %s", getCurrentFunctionName())
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
-	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.imx.com/docs/token-data-object
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
 	amount := "1"
 	withdrawalRequest := api.GetSignableWithdrawalRequest{
 		Amount: amount,

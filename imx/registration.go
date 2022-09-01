@@ -7,8 +7,8 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/immutable/imx-core-sdk-golang/api"
-	"github.com/immutable/imx-core-sdk-golang/contracts"
+	"github.com/immutable/imx-core-sdk-golang/imx/api"
+	"github.com/immutable/imx-core-sdk-golang/imx/internal/contracts"
 )
 
 // RegisterOffchain performs off chain user registration i.e, on the L2 network.

@@ -5,8 +5,8 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/immutable/imx-core-sdk-golang/api"
-	"github.com/immutable/imx-core-sdk-golang/contracts"
+	"github.com/immutable/imx-core-sdk-golang/imx/api"
+	"github.com/immutable/imx-core-sdk-golang/imx/internal/contracts"
 )
 
 var (

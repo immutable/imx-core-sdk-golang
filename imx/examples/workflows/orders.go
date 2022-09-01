@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/immutable/imx-core-sdk-golang/api"
 	"github.com/immutable/imx-core-sdk-golang/imx"
+	"github.com/immutable/imx-core-sdk-golang/imx/api"
 	"github.com/immutable/imx-core-sdk-golang/imx/internal/convert"
 )
 
