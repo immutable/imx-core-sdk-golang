@@ -31,7 +31,6 @@ func main() {
 
 	// Using context value to switch/specify the server before sending request.
 	// If nothing is specified, the default server will be used which will be first one in the open api spec list.
-	// ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
 	ctx := context.TODO()
 
 	cfg := immutable.Config{
