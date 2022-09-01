@@ -22,7 +22,7 @@ go get golang.org/x/net/context
 Put the package under your project folder and add the following in import:
 
 ```go
-import api "github.com/immutable/imx-core-sdk-golang/generated/api"
+import api "github.com/immutable/imx-core-sdk-golang/imx/api"
 ```
 
 To use a proxy, set the environment variable `HTTP_PROXY`:
