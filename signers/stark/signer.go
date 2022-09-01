@@ -15,7 +15,6 @@ type Signer struct {
 }
 
 func NewSigner(privateKey *big.Int) (*Signer, error) {
-
 	x, _, err := curve.PrivateToPoint(privateKey)
 	if err != nil {
 		return nil, err
