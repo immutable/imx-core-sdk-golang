@@ -1,4 +1,4 @@
-package immutable
+package imx
 
 import (
 	"fmt"

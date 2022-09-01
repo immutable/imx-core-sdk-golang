@@ -1,4 +1,4 @@
-package immutable
+package imx
 
 import (
 	"github.com/immutable/imx-core-sdk-golang/api"

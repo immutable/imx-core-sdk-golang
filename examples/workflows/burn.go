@@ -6,17 +6,17 @@ import (
 	"log"
 	"strconv"
 
-	immutable "github.com/immutable/imx-core-sdk-golang"
+	"github.com/immutable/imx-core-sdk-golang/imx"
 )
 
-func demoBurnWorkflow(ctx context.Context, c *immutable.Client, l1signer immutable.L1Signer, l2signer immutable.L2Signer) {
+func demoBurnWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, l2signer imx.L2Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
-	burnRequest := immutable.GetSignableBurnRequest{
+	burnRequest := imx.GetSignableBurnRequest{
 		Amount: "100000000",
 		Sender: l1signer.GetAddress(),
-		Token:  immutable.SignableETHToken(),
+		Token:  imx.SignableETHToken(),
 	}
 
 	/*

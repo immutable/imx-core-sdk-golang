@@ -78,7 +78,7 @@ Some of the endpoints like Withdrawal, Orders, Trades, Transfers require an L2 s
 
 ```go
 import (
-   "github.com/immutable/imx-core-sdk-golang/signers/stark"
+   "github.com/immutable/imx-core-sdk-golang/imx/signers/stark"
    ...
 )
 
@@ -241,7 +241,7 @@ import (
     "github.com/immutable/imx-core-sdk-golang/config"
     "github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
     "github.com/immutable/imx-core-sdk-golang/generated/api"
-    "github.com/immutable/imx-core-sdk-golang/signers/stark"
+    "github.com/immutable/imx-core-sdk-golang/imx/signers/stark"
     "github.com/immutable/imx-core-sdk-golang/workflows/registration"
 )
 

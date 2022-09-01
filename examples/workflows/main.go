@@ -5,10 +5,10 @@ import (
 	"log"
 	"strings"
 
-	immutable "github.com/immutable/imx-core-sdk-golang"
 	"github.com/immutable/imx-core-sdk-golang/api"
-	"github.com/immutable/imx-core-sdk-golang/signers/ethereum"
-	"github.com/immutable/imx-core-sdk-golang/signers/stark"
+	"github.com/immutable/imx-core-sdk-golang/imx"
+	"github.com/immutable/imx-core-sdk-golang/imx/signers/ethereum"
+	"github.com/immutable/imx-core-sdk-golang/imx/signers/stark"
 	"github.com/joho/godotenv"
 )
 
@@ -33,12 +33,12 @@ func main() {
 	// If nothing is specified, the default server will be used which will be first one in the open api spec list.
 	ctx := context.TODO()
 
-	cfg := immutable.Config{
+	cfg := imx.Config{
 		APIConfig:   configuration,
 		EthereumRPC: "https://eth-ropsten.alchemyapi.io/v2/" + alchemyAPIKey,
 	}
 
-	c, err := immutable.NewClient(immutable.Sandbox, cfg)
+	c, err := imx.NewClient(imx.Sandbox, cfg)
 	if err != nil {
 		log.Panicf("error on NewClient: %v\n", err)
 	}
@@ -78,7 +78,7 @@ func main() {
 
 	// Withdrawals Demo
 	// After prepare withdrawal workflow is performed. Must wait for getWithdrawal endpoint
-	// https://docs.x.immutable.com/reference/#/operations/getWithdrawal to return "rollup_status": "confirmed"
+	// https://docs.x.imx.com/reference/#/operations/getWithdrawal to return "rollup_status": "confirmed"
 	// before calling complete withdrawal workflow.
 	demoPrepareEthWithdrawalWorkflow(ctx, c, envs["DW_ETH_AMOUNT"], l1signer, l2signer)
 	demoPrepareERC20WithdrawalWorkflow(ctx, c, envs["DW_ERC20TOKEN_ADDRESS"], l1signer, l2signer)

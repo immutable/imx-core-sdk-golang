@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"log"
 
-	immutable "github.com/immutable/imx-core-sdk-golang"
 	"github.com/immutable/imx-core-sdk-golang/api"
-	converter "github.com/immutable/imx-core-sdk-golang/internal/convert"
+	"github.com/immutable/imx-core-sdk-golang/imx"
+	converter "github.com/immutable/imx-core-sdk-golang/imx/internal/convert"
 )
 
 const (
@@ -15,7 +15,7 @@ const (
 )
 
 // DemoPrepareEthWithdrawalWorkflow contains sample code for preparing withdrawal of Eth tokens
-func demoPrepareEthWithdrawalWorkflow(ctx context.Context, c *immutable.Client, amount string, l1signer immutable.L1Signer, l2signer immutable.L2Signer) {
+func demoPrepareEthWithdrawalWorkflow(ctx context.Context, c *imx.Client, amount string, l1signer imx.L1Signer, l2signer imx.L2Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
@@ -26,10 +26,10 @@ func demoPrepareEthWithdrawalWorkflow(ctx context.Context, c *immutable.Client, 
 	}
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
-	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.imx.com/docs/token-data-object
 	withdrawalRequest := api.GetSignableWithdrawalRequest{
 		Amount: ethTokenValue.String(),
-		Token:  immutable.SignableETHToken(),
+		Token:  imx.SignableETHToken(),
 	}
 
 	response, err := c.PrepareWithdrawal(ctx, l1signer, l2signer, withdrawalRequest)
@@ -44,12 +44,12 @@ func demoPrepareEthWithdrawalWorkflow(ctx context.Context, c *immutable.Client, 
 }
 
 // DemoPrepareERC20WithdrawalWorkflow contains sample code for preparing withdrawal of ERC20 tokens
-func demoPrepareERC20WithdrawalWorkflow(ctx context.Context, c *immutable.Client, tokenAddress string, l1signer immutable.L1Signer, l2signer immutable.L2Signer) {
+func demoPrepareERC20WithdrawalWorkflow(ctx context.Context, c *imx.Client, tokenAddress string, l1signer imx.L1Signer, l2signer imx.L2Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
-	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.imx.com/docs/token-data-object
 
 	amount := "5"
 	// Convert ERC20 token amount to its denomination.
@@ -60,7 +60,7 @@ func demoPrepareERC20WithdrawalWorkflow(ctx context.Context, c *immutable.Client
 
 	withdrawalRequest := api.GetSignableWithdrawalRequest{
 		Amount: erc20TokenValue.String(),
-		Token:  immutable.SignableERC20Token(ERC20TokenDecimals, tokenAddress),
+		Token:  imx.SignableERC20Token(ERC20TokenDecimals, tokenAddress),
 	}
 
 	response, err := c.PrepareWithdrawal(ctx, l1signer, l2signer, withdrawalRequest)
@@ -75,16 +75,16 @@ func demoPrepareERC20WithdrawalWorkflow(ctx context.Context, c *immutable.Client
 }
 
 // DemoPrepareERC721WithdrawalWorkflow contains sample code for preparing withdrawal of ERC721 tokens.
-func demoPrepareERC721WithdrawalWorkflow(ctx context.Context, c *immutable.Client, tokenID, tokenAddress string, l1signer immutable.L1Signer, l2signer immutable.L2Signer) {
+func demoPrepareERC721WithdrawalWorkflow(ctx context.Context, c *imx.Client, tokenID, tokenAddress string, l1signer imx.L1Signer, l2signer imx.L2Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
-	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.imx.com/docs/token-data-object
 	amount := "1"
 	withdrawalRequest := api.GetSignableWithdrawalRequest{
 		Amount: amount,
-		Token:  immutable.SignableERC721Token(tokenID, tokenAddress),
+		Token:  imx.SignableERC721Token(tokenID, tokenAddress),
 	}
 
 	response, err := c.PrepareWithdrawal(ctx, l1signer, l2signer, withdrawalRequest)

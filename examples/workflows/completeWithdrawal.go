@@ -4,15 +4,15 @@ import (
 	"context"
 	"log"
 
-	immutable "github.com/immutable/imx-core-sdk-golang"
+	"github.com/immutable/imx-core-sdk-golang/imx"
 )
 
 // DemoCompleteEthWithdrawalWorkflow contains sample code for completing withdrawal of Eth tokens
 func demoCompleteEthWithdrawalWorkflow(
 	ctx context.Context,
-	c *immutable.Client,
-	l1signer immutable.L1Signer,
-	l2signer immutable.L2Signer,
+	c *imx.Client,
+	l1signer imx.L1Signer,
+	l2signer imx.L2Signer,
 ) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
@@ -30,15 +30,15 @@ func demoCompleteEthWithdrawalWorkflow(
 // DemoCompleteERC20WithdrawalWorkflow contains sample code for completing withdrawal of ERC20 tokens
 func demoCompleteERC20WithdrawalWorkflow(
 	ctx context.Context,
-	c *immutable.Client,
+	c *imx.Client,
 	tokenAddress string,
-	l1signer immutable.L1Signer,
-	l2signer immutable.L2Signer,
+	l1signer imx.L1Signer,
+	l2signer imx.L2Signer,
 ) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
-	erc20Withdrawal := immutable.NewERC20Withdrawal(tokenAddress)
+	erc20Withdrawal := imx.NewERC20Withdrawal(tokenAddress)
 	transaction, err := erc20Withdrawal.CompleteWithdrawal(ctx, c, l1signer, l2signer.GetAddress(), nil)
 
 	if err != nil {
@@ -53,15 +53,15 @@ func demoCompleteERC20WithdrawalWorkflow(
 // DemoCompleteERC721WithdrawalWorkflow contains sample code for completing withdrawal of ERC721 tokens
 func demoCompleteERC721WithdrawalWorkflow(
 	ctx context.Context,
-	c *immutable.Client,
+	c *imx.Client,
 	tokenID, tokenAddress string,
-	l1signer immutable.L1Signer,
-	l2signer immutable.L2Signer,
+	l1signer imx.L1Signer,
+	l2signer imx.L2Signer,
 ) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
-	erc721Withdrawal := immutable.NewERC721Withdrawal(tokenID, tokenAddress)
+	erc721Withdrawal := imx.NewERC721Withdrawal(tokenID, tokenAddress)
 	transaction, err := erc721Withdrawal.CompleteWithdrawal(ctx, c, l1signer, l2signer.GetAddress(), nil)
 
 	if err != nil {

@@ -1,4 +1,4 @@
-package immutable
+package imx
 
 import (
 	"context"
@@ -11,7 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/go-openapi/runtime"
 	"github.com/immutable/imx-core-sdk-golang/api"
-	"github.com/immutable/imx-core-sdk-golang/internal/convert"
+	"github.com/immutable/imx-core-sdk-golang/imx/internal/convert"
 )
 
 // PrepareWithdrawal submits a withdrawal request for ETH, ERC20 and ERC721 tokens to be included in the generation and submission of the next batch.

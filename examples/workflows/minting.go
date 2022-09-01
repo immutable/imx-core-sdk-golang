@@ -4,31 +4,31 @@ import (
 	"context"
 	"log"
 
-	immutable "github.com/immutable/imx-core-sdk-golang"
+	"github.com/immutable/imx-core-sdk-golang/imx"
 )
 
-func demoMintingTokens(ctx context.Context, c *immutable.Client, l1signer immutable.L1Signer, tokenID, tokenAddress string) {
+func demoMintingTokens(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, tokenID, tokenAddress string) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
 	ethAddress := l1signer.GetAddress()
 	blueprint := "123"
 	var royaltyPercentage float32 = 1
-	var mintableToken = immutable.UnsignedMintRequest{
+	var mintableToken = imx.UnsignedMintRequest{
 		ContractAddress: tokenAddress,
-		Royalties: []immutable.MintFee{
+		Royalties: []imx.MintFee{
 			{
 				Percentage: royaltyPercentage,
 				Recipient:  ethAddress,
 			},
 		},
-		Users: []immutable.User{
+		Users: []imx.User{
 			{
 				User: ethAddress,
-				Tokens: []immutable.MintableTokenData{
+				Tokens: []imx.MintableTokenData{
 					{
 						ID: tokenID,
-						Royalties: []immutable.MintFee{
+						Royalties: []imx.MintFee{
 							{
 								Percentage: royaltyPercentage,
 								Recipient:  ethAddress,
@@ -41,7 +41,7 @@ func demoMintingTokens(ctx context.Context, c *immutable.Client, l1signer immuta
 		},
 	}
 
-	request := make([]immutable.UnsignedMintRequest, 1)
+	request := make([]imx.UnsignedMintRequest, 1)
 	request[0] = mintableToken
 
 	mintTokensResponse, err := c.Mint(ctx, l1signer, request)

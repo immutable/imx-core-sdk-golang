@@ -4,14 +4,14 @@ import (
 	"context"
 	"log"
 
-	immutable "github.com/immutable/imx-core-sdk-golang"
+	"github.com/immutable/imx-core-sdk-golang/imx"
 )
 
-func demoDepositEthWorkflow(ctx context.Context, c *immutable.Client, amount string, l1signer immutable.L1Signer) {
+func demoDepositEthWorkflow(ctx context.Context, c *imx.Client, amount string, l1signer imx.L1Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
-	depositRequest := immutable.NewETHDeposit(amount)
+	depositRequest := imx.NewETHDeposit(amount)
 	transaction, err := depositRequest.Deposit(ctx, c, l1signer, nil)
 	if err != nil {
 		log.Panicf("error calling deposit workflow: %v", err)
@@ -22,11 +22,11 @@ func demoDepositEthWorkflow(ctx context.Context, c *immutable.Client, amount str
 	log.Println("-------------------------------------------------------")
 }
 
-func demoDepositERC20Workflow(ctx context.Context, c *immutable.Client, amount, tokenAddress string, l1signer immutable.L1Signer) {
+func demoDepositERC20Workflow(ctx context.Context, c *imx.Client, amount, tokenAddress string, l1signer imx.L1Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
-	transaction, err := immutable.NewERC20Deposit(amount, tokenAddress).Deposit(ctx, c, l1signer, nil)
+	transaction, err := imx.NewERC20Deposit(amount, tokenAddress).Deposit(ctx, c, l1signer, nil)
 	if err != nil {
 		log.Panicf("error calling deposit workflow: %v", err)
 	}
@@ -36,11 +36,11 @@ func demoDepositERC20Workflow(ctx context.Context, c *immutable.Client, amount, 
 	log.Println("-------------------------------------------------------")
 }
 
-func demoDepositERC721Workflow(ctx context.Context, c *immutable.Client, tokenID, tokenAddress string, l1signer immutable.L1Signer) {
+func demoDepositERC721Workflow(ctx context.Context, c *imx.Client, tokenID, tokenAddress string, l1signer imx.L1Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
-	depositERC721Request := immutable.NewERC721Deposit(tokenID, tokenAddress)
+	depositERC721Request := imx.NewERC721Deposit(tokenID, tokenAddress)
 	transaction, err := depositERC721Request.Deposit(ctx, c, l1signer, nil)
 	if err != nil {
 		log.Panicf("error calling deposit workflow: %v", err)

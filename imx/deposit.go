@@ -1,4 +1,4 @@
-package immutable
+package imx
 
 import (
 	"context"
@@ -12,7 +12,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/immutable/imx-core-sdk-golang/api"
-	"github.com/immutable/imx-core-sdk-golang/internal/convert"
+	"github.com/immutable/imx-core-sdk-golang/imx/internal/convert"
 )
 
 type TokenDeposit interface {

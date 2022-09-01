@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"log"
 
-	immutable "github.com/immutable/imx-core-sdk-golang"
-	"github.com/immutable/imx-core-sdk-golang/signers/stark"
+	"github.com/immutable/imx-core-sdk-golang/imx"
+	"github.com/immutable/imx-core-sdk-golang/imx/signers/stark"
 )
 
-func demoUserRegistrationWorkflow(ctx context.Context, c *immutable.Client, l1signer immutable.L1Signer) {
+func demoUserRegistrationWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 

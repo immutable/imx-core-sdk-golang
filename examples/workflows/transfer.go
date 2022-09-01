@@ -5,23 +5,23 @@ import (
 	"encoding/json"
 	"log"
 
-	immutable "github.com/immutable/imx-core-sdk-golang"
 	"github.com/immutable/imx-core-sdk-golang/api"
+	"github.com/immutable/imx-core-sdk-golang/imx"
 )
 
-func demoTransferWorkflow(ctx context.Context, c *immutable.Client, l1signer immutable.L1Signer, l2signer immutable.L2Signer) {
+func demoTransferWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, l2signer imx.L2Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
-	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.imx.com/docs/token-data-object
 	amount := "100000000"
 	sender := l1signer.GetAddress()
 	receiver := "Set receiver address here"
 	transferRequest := api.GetSignableTransferRequestV1{
 		Amount:   amount,
 		Sender:   sender,
-		Token:    immutable.SignableETHToken(),
+		Token:    imx.SignableETHToken(),
 		Receiver: receiver,
 	}
 
@@ -36,14 +36,14 @@ func demoTransferWorkflow(ctx context.Context, c *immutable.Client, l1signer imm
 	log.Println("-------------------------------------------------------")
 }
 
-func demoBatchNftTransferWorkflow(ctx context.Context, c *immutable.Client, l1signer immutable.L1Signer, l2signer immutable.L2Signer) {
+func demoBatchNftTransferWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, l2signer imx.L2Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
 	// To declare tokens, use tokens.NewSignableTokenERC721 method.
-	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
-	signableToken1 := immutable.SignableERC721Token("Token ID Here", "Token Address Hex Here")
-	signableToken2 := immutable.SignableERC721Token("Token ID Here", "Token Address Hex Here")
+	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.imx.com/docs/token-data-object
+	signableToken1 := imx.SignableERC721Token("Token ID Here", "Token Address Hex Here")
+	signableToken2 := imx.SignableERC721Token("Token ID Here", "Token Address Hex Here")
 	amount := "1"
 	sender := l1signer.GetAddress()
 	receiver := "Receiver Address Here"
