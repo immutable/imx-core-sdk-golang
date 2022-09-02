@@ -6,16 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: "gomod" # See documentation for possible values
-    directory: "/examples/publicapi/list_assets" # Location of package manifests
-    schedule:
-      interval: "weekly"
-    pull-request-branch-name:
-      # Separate sections of the branch name with a hyphen
-      # for example, `dependabot-gomod_and_go-ethereum_v1.10.19`
-      separator: "-"
-
-  - package-ecosystem: "gomod" # See documentation for possible values
-    directory: "/examples/workflows" # Location of package manifests
+    directory: "imx/examples/workflows" # Location of package manifests
     schedule:
       interval: "weekly"
     pull-request-branch-name:
