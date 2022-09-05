@@ -1,4 +1,4 @@
-package main
+package workflow
 
 import (
 	"context"
@@ -15,7 +15,7 @@ const (
 )
 
 // DemoPrepareEthWithdrawalWorkflow contains sample code for preparing withdrawal of Eth tokens
-func demoPrepareEthWithdrawalWorkflow(ctx context.Context, c *imx.Client, amount string, l1signer imx.L1Signer, l2signer imx.L2Signer) {
+func DemoPrepareEthWithdrawalWorkflow(ctx context.Context, c *imx.Client, amount string, l1signer imx.L1Signer, l2signer imx.L2Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
@@ -44,7 +44,7 @@ func demoPrepareEthWithdrawalWorkflow(ctx context.Context, c *imx.Client, amount
 }
 
 // DemoPrepareERC20WithdrawalWorkflow contains sample code for preparing withdrawal of ERC20 tokens
-func demoPrepareERC20WithdrawalWorkflow(ctx context.Context, c *imx.Client, tokenAddress string, l1signer imx.L1Signer, l2signer imx.L2Signer) {
+func DemoPrepareERC20WithdrawalWorkflow(ctx context.Context, c *imx.Client, tokenAddress string, l1signer imx.L1Signer, l2signer imx.L2Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
@@ -75,7 +75,7 @@ func demoPrepareERC20WithdrawalWorkflow(ctx context.Context, c *imx.Client, toke
 }
 
 // DemoPrepareERC721WithdrawalWorkflow contains sample code for preparing withdrawal of ERC721 tokens.
-func demoPrepareERC721WithdrawalWorkflow(ctx context.Context, c *imx.Client, tokenID, tokenAddress string, l1signer imx.L1Signer, l2signer imx.L2Signer) {
+func DemoPrepareERC721WithdrawalWorkflow(ctx context.Context, c *imx.Client, tokenID, tokenAddress string, l1signer imx.L1Signer, l2signer imx.L2Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 

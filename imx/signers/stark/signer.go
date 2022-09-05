@@ -1,4 +1,4 @@
-// Package stark implements utilities for generating immutable.L2Signer
+// Package stark implements utilities for generating imx.L2Signer
 package stark
 
 import (

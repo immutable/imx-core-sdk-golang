@@ -1,4 +1,4 @@
-package main
+package workflow
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"github.com/immutable/imx-core-sdk-golang/imx/signers/stark"
 )
 
-func demoUserRegistrationWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer) {
+func DemoUserRegistrationWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 

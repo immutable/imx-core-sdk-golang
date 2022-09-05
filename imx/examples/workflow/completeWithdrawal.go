@@ -1,4 +1,4 @@
-package main
+package workflow
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 )
 
 // DemoCompleteEthWithdrawalWorkflow contains sample code for completing withdrawal of Eth tokens
-func demoCompleteEthWithdrawalWorkflow(
+func DemoCompleteEthWithdrawalWorkflow(
 	ctx context.Context,
 	c *imx.Client,
 	l1signer imx.L1Signer,
@@ -28,7 +28,7 @@ func demoCompleteEthWithdrawalWorkflow(
 }
 
 // DemoCompleteERC20WithdrawalWorkflow contains sample code for completing withdrawal of ERC20 tokens
-func demoCompleteERC20WithdrawalWorkflow(
+func DemoCompleteERC20WithdrawalWorkflow(
 	ctx context.Context,
 	c *imx.Client,
 	tokenAddress string,
@@ -51,7 +51,7 @@ func demoCompleteERC20WithdrawalWorkflow(
 }
 
 // DemoCompleteERC721WithdrawalWorkflow contains sample code for completing withdrawal of ERC721 tokens
-func demoCompleteERC721WithdrawalWorkflow(
+func DemoCompleteERC721WithdrawalWorkflow(
 	ctx context.Context,
 	c *imx.Client,
 	tokenID, tokenAddress string,

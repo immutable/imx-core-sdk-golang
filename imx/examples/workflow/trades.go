@@ -1,4 +1,4 @@
-package main
+package workflow
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
 
-func demoTradesWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, l2signer imx.L2Signer) {
+func DemoTradesWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, l2signer imx.L2Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 

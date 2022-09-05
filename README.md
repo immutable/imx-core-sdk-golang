@@ -136,7 +136,7 @@ See [here](#how-to-generate-the-required-signers) for how to generate the signer
 
 ```go
 // Example method to generate authorisation headers
-func GetProjectOwnerAuthorisationHeaders(l1signer immutable.L1Signer) (timestamp, signature string, err error) {
+func GetProjectOwnerAuthorisationHeaders(l1signer imx.L1Signer) (timestamp, signature string, err error) {
     timestamp = strconv.FormatInt(time.Now().Unix(), 10)
     signedTimestamp, err := l1signer.SignMessage(timestamp)
     if err != nil {

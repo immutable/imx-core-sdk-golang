@@ -7,6 +7,7 @@ import (
 
 	"github.com/immutable/imx-core-sdk-golang/imx"
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
+	"github.com/immutable/imx-core-sdk-golang/imx/examples/workflow"
 	"github.com/immutable/imx-core-sdk-golang/imx/signers/ethereum"
 	"github.com/immutable/imx-core-sdk-golang/imx/signers/stark"
 	"github.com/joho/godotenv"
@@ -14,7 +15,7 @@ import (
 
 func main() {
 	var envs map[string]string
-	envs, err := godotenv.Read("../.env")
+	envs, err := godotenv.Read(".env")
 	if err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
@@ -61,28 +62,28 @@ func main() {
 	}
 
 	// User registration demo.
-	demoUserRegistrationWorkflow(ctx, c, l1signer)
+	workflow.DemoUserRegistrationWorkflow(ctx, c, l1signer)
 
 	// Minting tokens demo
-	demoMintingTokens(ctx, c, l1signer, envs["MINT_TOKEN_ID"], envs["MINT_TOKEN_ADDRESS"])
+	workflow.DemoMintingTokens(ctx, c, l1signer, envs["MINT_TOKEN_ID"], envs["MINT_TOKEN_ADDRESS"])
 
 	// Deposit tokens demo.
-	demoDepositEthWorkflow(ctx, c, envs["DW_ETH_AMOUNT"], l1signer)
-	demoDepositERC20Workflow(ctx, c, envs["DW_ERC20_AMOUNT"], envs["DW_ERC20TOKEN_ADDRESS"], l1signer)
-	demoDepositERC721Workflow(ctx, c, envs["DW_ERC721TOKEN_ID"], envs["DW_ERC721TOKEN_ADDRESS"], l1signer)
+	workflow.DemoDepositEthWorkflow(ctx, c, envs["DW_ETH_AMOUNT"], l1signer)
+	workflow.DemoDepositERC20Workflow(ctx, c, envs["DW_ERC20_AMOUNT"], envs["DW_ERC20TOKEN_ADDRESS"], l1signer)
+	workflow.DemoDepositERC721Workflow(ctx, c, envs["DW_ERC721TOKEN_ID"], envs["DW_ERC721TOKEN_ADDRESS"], l1signer)
 
-	demoTradesWorkflow(ctx, c, l1signer, l2signer)
-	demoBurnWorkflow(ctx, c, l1signer, l2signer)
-	demoTransferWorkflow(ctx, c, l1signer, l2signer)
-	demoBatchNftTransferWorkflow(ctx, c, l1signer, l2signer)
+	workflow.DemoTradesWorkflow(ctx, c, l1signer, l2signer)
+	workflow.DemoBurnWorkflow(ctx, c, l1signer, l2signer)
+	workflow.DemoTransferWorkflow(ctx, c, l1signer, l2signer)
+	workflow.DemoBatchNftTransferWorkflow(ctx, c, l1signer, l2signer)
 
 	// Withdrawals Demo
 	// After prepare withdrawal workflow is performed. Must wait for getWithdrawal endpoint
 	// https://docs.x.immutable.com/reference/#/operations/getWithdrawal to return "rollup_status": "confirmed"
 	// before calling complete withdrawal workflow.
-	demoPrepareEthWithdrawalWorkflow(ctx, c, envs["DW_ETH_AMOUNT"], l1signer, l2signer)
-	demoPrepareERC20WithdrawalWorkflow(ctx, c, envs["DW_ERC20TOKEN_ADDRESS"], l1signer, l2signer)
-	demoPrepareERC721WithdrawalWorkflow(ctx,
+	workflow.DemoPrepareEthWithdrawalWorkflow(ctx, c, envs["DW_ETH_AMOUNT"], l1signer, l2signer)
+	workflow.DemoPrepareERC20WithdrawalWorkflow(ctx, c, envs["DW_ERC20TOKEN_ADDRESS"], l1signer, l2signer)
+	workflow.DemoPrepareERC721WithdrawalWorkflow(ctx,
 		c,
 		envs["DW_ERC721TOKEN_ID"],
 		envs["DW_ERC721TOKEN_ADDRESS"],
@@ -90,14 +91,14 @@ func main() {
 		l2signer)
 
 	// Make sure the tokens are ready for withdrawal before performing complete withdrawal.
-	demoCompleteEthWithdrawalWorkflow(ctx, c, l1signer, l2signer)
-	demoCompleteERC20WithdrawalWorkflow(ctx, c, envs["DW_ERC20TOKEN_ADDRESS"], l1signer, l2signer)
-	demoCompleteERC721WithdrawalWorkflow(ctx,
+	workflow.DemoCompleteEthWithdrawalWorkflow(ctx, c, l1signer, l2signer)
+	workflow.DemoCompleteERC20WithdrawalWorkflow(ctx, c, envs["DW_ERC20TOKEN_ADDRESS"], l1signer, l2signer)
+	workflow.DemoCompleteERC721WithdrawalWorkflow(ctx,
 		c,
 		envs["DW_ERC721TOKEN_ID"],
 		envs["DW_ERC721TOKEN_ADDRESS"],
 		l1signer,
 		l2signer)
 
-	demoOrdersWorkflow(ctx, c, l1signer, l2signer)
+	workflow.DemoOrdersWorkflow(ctx, c, l1signer, l2signer)
 }

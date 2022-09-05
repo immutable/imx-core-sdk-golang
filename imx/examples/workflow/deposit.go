@@ -1,4 +1,4 @@
-package main
+package workflow
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"github.com/immutable/imx-core-sdk-golang/imx"
 )
 
-func demoDepositEthWorkflow(ctx context.Context, c *imx.Client, amount string, l1signer imx.L1Signer) {
+func DemoDepositEthWorkflow(ctx context.Context, c *imx.Client, amount string, l1signer imx.L1Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
@@ -22,7 +22,7 @@ func demoDepositEthWorkflow(ctx context.Context, c *imx.Client, amount string, l
 	log.Println("-------------------------------------------------------")
 }
 
-func demoDepositERC20Workflow(ctx context.Context, c *imx.Client, amount, tokenAddress string, l1signer imx.L1Signer) {
+func DemoDepositERC20Workflow(ctx context.Context, c *imx.Client, amount, tokenAddress string, l1signer imx.L1Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
@@ -36,7 +36,7 @@ func demoDepositERC20Workflow(ctx context.Context, c *imx.Client, amount, tokenA
 	log.Println("-------------------------------------------------------")
 }
 
-func demoDepositERC721Workflow(ctx context.Context, c *imx.Client, tokenID, tokenAddress string, l1signer imx.L1Signer) {
+func DemoDepositERC721Workflow(ctx context.Context, c *imx.Client, tokenID, tokenAddress string, l1signer imx.L1Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 

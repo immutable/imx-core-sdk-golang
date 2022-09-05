@@ -1,4 +1,4 @@
-package main
+package workflow
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"github.com/immutable/imx-core-sdk-golang/imx"
 )
 
-func demoMintingTokens(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, tokenID, tokenAddress string) {
+func DemoMintingTokens(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, tokenID, tokenAddress string) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 

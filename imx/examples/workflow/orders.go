@@ -1,4 +1,4 @@
-package main
+package workflow
 
 import (
 	"context"
@@ -14,7 +14,7 @@ const (
 	tokenID      = "" // Provide the token id being listed for sale.
 )
 
-func demoOrdersWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, l2signer imx.L2Signer) {
+func DemoOrdersWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, l2signer imx.L2Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
