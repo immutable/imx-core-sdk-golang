@@ -61,7 +61,7 @@ func main() {
 
 #### Ethereum Client
 
-For information about how Ethereum client is setup, see `imx/examples/workflows/main.go`
+For information about how Ethereum client is setup, see `imx/examples/main.go`
 
 ### How to generate the required signers
 
@@ -69,9 +69,24 @@ For information about how Ethereum client is setup, see `imx/examples/workflows/
 
 Almost all the POST requests will need signed message. To sign a message as a minimum an L1 signer is required. An Ethereum wallet can be used to implement an L1 signer ([Getting started > Wallet](https://docs.x.immutable.com/docs/getting-started-guide/#wallet)).
 
-When you implement an L1signer, it must satisfy [L1Signer interface](signers/signers.go). See [BaseL1Signer](imx/examples/workflows/utils/signer.go) for a sample implementation of L1 Signer.
+An L1 Signer implementation can be found at `signers/ethereum`, following code snippet shows how to create a L1Signer.
 
-Also refer `examples/publicapi/list_assets/main.go` for environment setup examples.
+```go
+import (
+   "github.com/immutable/imx-core-sdk-golang/imx/signers/ethereum"
+   ...
+)
+
+func main() {
+   // L1 credentials, supply your signerPrivateKey string.
+	l1signer, err := ethereum.NewSigner(signerPrivateKey, chainID)
+	if err != nil {
+		log.Panicf("error in creating L1Signer: %v\n", err)
+	}
+}
+```
+
+
 #### L2 Signer
 
 Some of the endpoints like Withdrawal, Orders, Trades, Transfers require an L2 signer. See `signers/stark` for information about generating your own L2 signer and also the following code snippet.
@@ -241,6 +256,7 @@ import (
     "github.com/immutable/imx-core-sdk-golang/config"
     "github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
     "github.com/immutable/imx-core-sdk-golang/imx/api"
+    "github.com/immutable/imx-core-sdk-golang/imx/signers/ethereum"
     "github.com/immutable/imx-core-sdk-golang/imx/signers/stark"
     "github.com/immutable/imx-core-sdk-golang/workflows/registration"
 )
@@ -252,10 +268,10 @@ func Register(signerPrivateKey string, chainID *big.Int) (*api.RegisterUserRespo
     ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
 
     // Setup L1 signer
-    l1signer, err := utils.NewBaseL1Signer(signerPrivateKey, chainID)
-    if err != nil {
-        return nil, fmt.Errorf("error in creating BaseL1Signer: %v", err)
-    }
+	l1signer, err := ethereum.NewSigner(signerPrivateKey, chainID)
+	if err != nil {
+        return nil, fmt.Errorf("error in creating L1Signer: %v", err)
+	}
 
     // Setup L2 signer
     l2signer, err := stark.GenerateStarkSigner(l1signer)

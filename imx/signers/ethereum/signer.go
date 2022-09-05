@@ -11,13 +11,13 @@ import (
 	"github.com/immutable/imx-core-sdk-golang/imx/internal/convert"
 )
 
-// BaseL1Signer is an L1Signer implementation to assist for demo code.
+// Signer implements L1Signer interface.
 type Signer struct {
 	privateKey *ecdsa.PrivateKey
 	chainID    *big.Int
 }
 
-// NewBaseL1Signer creates a new BaseL1Signer object with the given user's privateKey and chainID.
+// NewSigner creates a new Signer object with the given user's privateKey and chainID.
 func NewSigner(privateKeyInHex string, chainID *big.Int) (imx.L1Signer, error) {
 	privateKey, err := convert.TrimHexPrefix(privateKeyInHex)
 	if err != nil {

@@ -52,7 +52,7 @@ func main() {
 
 	l1signer, err := ethereum.NewSigner(signerPrivateKey, chainID)
 	if err != nil {
-		log.Panicf("error in creating BaseL1Signer: %v\n", err)
+		log.Panicf("error in creating L1Signer: %v\n", err)
 	}
 
 	key, _ := stark.GenerateKey()

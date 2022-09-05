@@ -6,7 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: "gomod" # See documentation for possible values
-    directory: "imx/examples/workflows" # Location of package manifests
+    directory: "imx/examples" # Location of package manifests
     schedule:
       interval: "weekly"
     pull-request-branch-name:
