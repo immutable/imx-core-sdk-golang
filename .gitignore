@@ -8,4 +8,4 @@
 .DS_Store
 
 # Generated files
-contracts/generated
+solidity/generated
