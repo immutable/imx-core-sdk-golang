@@ -61,7 +61,7 @@ func main() {
 
 #### Ethereum Client
 
-For information about how Ethereum client is setup, see `examples/workflows/main.go`
+For information about how Ethereum client is setup, see `imx/examples/workflows/main.go`
 
 ### How to generate the required signers
 
@@ -84,7 +84,7 @@ import (
 
 func main() {
    // L1 credentials
-   l1signer := YourImplementationOfL1SignerInterface() // See examples/workflows/utils/signer.go 
+   l1signer := YourImplementationOfL1SignerInterface() // See imx/examples/workflows/utils/signer.go 
 
    // L2 credentials
    // Obtain the stark signer associated with this user.
@@ -95,7 +95,7 @@ func main() {
 }
 ```
 
-Also see the examples for a sample l2 signer usage `examples/workflows/main.go`
+Also see the examples for a sample l2 signer usage `imx/examples/workflows/main.go`
 
 ### Standard API Requests
 
