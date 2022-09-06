@@ -35,11 +35,12 @@ func main() {
 	ctx := context.TODO()
 
 	cfg := imx.Config{
-		APIConfig:   configuration,
-		EthereumRPC: "https://eth-ropsten.alchemyapi.io/v2/" + alchemyAPIKey,
+		APIConfig:     configuration,
+		AlchemyAPIKey: alchemyAPIKey,
+		Environment:   imx.Sandbox,
 	}
 
-	c, err := imx.NewClient(imx.Sandbox, cfg)
+	c, err := imx.NewClient(cfg)
 	if err != nil {
 		log.Panicf("error on NewClient: %v\n", err)
 	}

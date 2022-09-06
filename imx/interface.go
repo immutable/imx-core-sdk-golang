@@ -12,12 +12,14 @@ import (
 var (
 	Sandbox = Environment{
 		BaseAPIPath:                 "https://api.ropsten.x.immutable.com",
+		EthereumRPC:                 "https://eth-ropsten.alchemyapi.io/v2/",
 		RegistrationContractAddress: "0x6C21EC8DE44AE44D0992ec3e2d9f1aBb6207D864",
 		CoreContractAddress:         "0x4527BE8f31E2ebFbEF4fCADDb5a17447B27d2aef",
 		ChainID:                     big.NewInt(3), // Ropsten
 	}
 	Mainnet = Environment{
 		BaseAPIPath:                 "https://api.x.immutable.com",
+		EthereumRPC:                 "https://eth-mainnet.alchemyapi.io/v2/",
 		RegistrationContractAddress: "0x72a06bf2a1CE5e39cBA06c0CAb824960B587d64c",
 		CoreContractAddress:         "0x5FDCCA53617f4d2b9134B29090C87D01058e27e9",
 		ChainID:                     big.NewInt(1),
@@ -25,12 +27,14 @@ var (
 )
 
 type Config struct {
-	EthereumRPC string
-	APIConfig   *api.Configuration
+	AlchemyAPIKey string
+	APIConfig     *api.Configuration
+	Environment
 }
 
 type Environment struct {
 	BaseAPIPath                 string
+	EthereumRPC                 string
 	RegistrationContractAddress string
 	CoreContractAddress         string
 	ChainID                     *big.Int
@@ -57,18 +61,18 @@ type Client struct {
 	api.BalancesApi
 }
 
-func NewClient(env Environment, cfg Config) (*Client, error) {
+func NewClient(cfg Config) (*Client, error) {
 	c := Client{
-		Environment: env,
+		Environment: cfg.Environment,
 	}
 
-	ethClient, err := ethclient.Dial(cfg.EthereumRPC)
+	ethClient, err := ethclient.Dial(cfg.EthereumRPC + cfg.AlchemyAPIKey)
 	if err != nil {
 		return nil, err
 	}
 	c.EthClient = ethClient
 
-	cfg.APIConfig.Servers = api.ServerConfigurations{{URL: env.BaseAPIPath}}
+	cfg.APIConfig.Servers = api.ServerConfigurations{{URL: cfg.BaseAPIPath}}
 	apiClient := api.NewAPIClient(cfg.APIConfig)
 
 	c.AssetsApi = apiClient.AssetsApi
