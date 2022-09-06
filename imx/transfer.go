@@ -15,7 +15,7 @@ func (c *Client) CreateTransfer(
 	l2signer L2Signer,
 	request api.GetSignableTransferRequestV1,
 ) (*api.CreateTransferResponseV1, error) {
-	data, httpResponse, err := c.GetSignableTransferV1(ctx).GetSignableTransferRequest(request).Execute()
+	data, httpResponse, err := c.transfersApi.GetSignableTransferV1(ctx).GetSignableTransferRequest(request).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `TransfersApi.GetSignableTransferV1`: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
@@ -26,7 +26,7 @@ func (c *Client) CreateTransfer(
 	}
 
 	ethAddress := l1signer.GetAddress()
-	response, httpResponse, err := c.CreateTransferV1(ctx).
+	response, httpResponse, err := c.transfersApi.CreateTransferV1(ctx).
 		CreateTransferRequest(api.CreateTransferRequestV1{
 			Amount:              data.Amount,
 			AssetId:             data.AssetId,
@@ -53,7 +53,7 @@ func (c *Client) CreateBatchNftTransfer(
 	l2signer L2Signer,
 	request api.GetSignableTransferRequest,
 ) (*api.CreateTransferResponse, error) {
-	data, httpResponse, err := c.GetSignableTransfer(ctx).GetSignableTransferRequestV2(request).Execute()
+	data, httpResponse, err := c.transfersApi.GetSignableTransfer(ctx).GetSignableTransferRequestV2(request).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `TransfersApi.GetSignableTransfer`: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
@@ -71,7 +71,7 @@ func (c *Client) CreateBatchNftTransfer(
 		return nil, err
 	}
 
-	response, httpResponse, err := c.TransfersApi.CreateTransfer(ctx).
+	response, httpResponse, err := c.transfersApi.CreateTransfer(ctx).
 		CreateTransferRequestV2(api.CreateTransferRequest{
 			Requests:       transferRequests,
 			SenderStarkKey: data.SenderStarkKey,
@@ -104,4 +104,33 @@ func getSignedTransferRequests(signableTransfers []api.SignableTransferResponseD
 		}
 	}
 	return mapped, nil
+}
+
+/*
+GetTransfer Get details of a transfer with the given ID
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param id Transfer ID
+@return Transfer
+*/
+func (c *Client) GetTransfer(ctx context.Context, id string) (*api.Transfer, error) {
+	response, httpResponse, err := c.transfersApi.GetTransfer(ctx, id).Execute()
+	if err != nil {
+		return nil, fmt.Errorf("error in getting the details of a transfer: %v, HTTP response body: %v", err, httpResponse.Body)
+	}
+	return response, nil
+}
+
+/*
+ListTransfers Gets a list of transfers
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@return ListTransfersResponse
+*/
+func (c *Client) ListTransfers(ctx context.Context) (*api.ListTransfersResponse, error) {
+	response, httpResponse, err := c.transfersApi.ListTransfers(ctx).Execute()
+	if err != nil {
+		return nil, fmt.Errorf("error in getting the list of transfers: %v, HTTP response body: %v", err, httpResponse.Body)
+	}
+	return response, nil
 }

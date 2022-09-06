@@ -47,20 +47,20 @@ type Environment struct {
 type Client struct {
 	Environment          Environment
 	EthClient            *ethclient.Client
-	RegistrationContract *contracts.Registration
-	CoreContract         *contracts.Core
-	api.TradesApi
-	api.OrdersApi
-	api.TransfersApi
-	api.DepositsApi
-	api.WithdrawalsApi
-	api.MintsApi
+	registrationContract *contracts.Registration
+	coreContract         *contracts.Core
+	tradesApi            api.TradesApi
+	ordersApi            api.OrdersApi
+	transfersApi         api.TransfersApi
+	depositsApi          api.DepositsApi
+	withdrawalsApi       api.WithdrawalsApi
+	mintsApi             api.MintsApi
 	api.AssetsApi
-	api.UsersApi
+	usersApi api.UsersApi
 	api.EncodingApi
 	api.MetadataApi
 	api.ProjectsApi
-	api.TokensApi
+	tokensApi api.TokensApi
 	api.CollectionsApi
 	api.BalancesApi
 }
@@ -84,17 +84,17 @@ func NewClient(cfg *Config) (*Client, error) {
 	c.AssetsApi = apiClient.AssetsApi
 	c.BalancesApi = apiClient.BalancesApi
 	c.CollectionsApi = apiClient.CollectionsApi
-	c.DepositsApi = apiClient.DepositsApi
+	c.depositsApi = apiClient.DepositsApi
 	c.EncodingApi = apiClient.EncodingApi
 	c.MetadataApi = apiClient.MetadataApi
-	c.MintsApi = apiClient.MintsApi
-	c.OrdersApi = apiClient.OrdersApi
+	c.mintsApi = apiClient.MintsApi
+	c.ordersApi = apiClient.OrdersApi
 	c.ProjectsApi = apiClient.ProjectsApi
-	c.TokensApi = apiClient.TokensApi
-	c.TradesApi = apiClient.TradesApi
-	c.TransfersApi = apiClient.TransfersApi
-	c.UsersApi = apiClient.UsersApi
-	c.WithdrawalsApi = apiClient.WithdrawalsApi
+	c.tokensApi = apiClient.TokensApi
+	c.tradesApi = apiClient.TradesApi
+	c.transfersApi = apiClient.TransfersApi
+	c.usersApi = apiClient.UsersApi
+	c.withdrawalsApi = apiClient.WithdrawalsApi
 
 	if err := c.attachCoreContract(context.TODO()); err != nil {
 		return nil, err

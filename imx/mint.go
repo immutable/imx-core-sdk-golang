@@ -95,9 +95,38 @@ func (c *Client) Mint(
 		}
 	}
 
-	mintTokensResponse, httpResp, err := c.MintTokens(ctx).MintTokensRequestV2(mintRequest).Execute()
+	mintTokensResponse, httpResp, err := c.mintsApi.MintTokens(ctx).MintTokensRequestV2(mintRequest).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `api.Mints.MintTokens`: %v, HTTP response body: %v", err, httpResp.Body)
 	}
 	return mintTokensResponse, nil
+}
+
+/*
+GetMint Get details of a mint with the given ID
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param id Mint ID. This is the transaction_id returned from listMints
+@return ApiGetMintRequest
+*/
+func (c *Client) GetMint(ctx context.Context, id string) (*api.Mint, error) {
+	response, httpResponse, err := c.mintsApi.GetMint(ctx, id).Execute()
+	if err != nil {
+		return nil, fmt.Errorf("error in getting the details of mint: %v, HTTP response body: %v", err, httpResponse.Body)
+	}
+	return response, nil
+}
+
+/*
+ListMints Gets a list of mints
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@return ListMintsResponse
+*/
+func (c *Client) ListMints(ctx context.Context) (*api.ListMintsResponse, error) {
+	response, httpResponse, err := c.mintsApi.ListMints(ctx).Execute()
+	if err != nil {
+		return nil, fmt.Errorf("error in getting the mints list: %v, HTTP response body: %v", err, httpResponse.Body)
+	}
+	return response, nil
 }

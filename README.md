@@ -285,8 +285,6 @@ Sample usage of workflows can be found in [examples](imx/examples/workflows).
 | `MintTokensWorkflow`      | Mint tokens on L2.                                  |
 | `CreateTransfer`          | Transfer tokens to another wallet.                  |
 | `CreateBatchTransfer`     | Batch transfer NFT tokens.                          |
-| `Burn`                    | Burn tokens.                                        |
-| `GetBurn`                 | Verify burn/transfer details.                       |
 | `Deposit`                 | Deposit based on token type. (ETH, ERC20, ERC721)   |
 | `PrepareWithdrawal`       | Prepare token (ETH, ERC20, ERC721) for withdrawal.  |
 | `CompleteEthWithdrawal`   | Withdraw ETH to L1.                                 |

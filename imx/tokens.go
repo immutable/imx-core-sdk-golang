@@ -1,6 +1,9 @@
 package imx
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
 
@@ -47,4 +50,33 @@ func SignableERC721Token(tokenID, tokenAddress string) api.SignableToken {
 		},
 		Type: s(ERC721TokenType),
 	}
+}
+
+/*
+GetToken Get details of a token with the given ID
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param address Token Contract Address
+@return TokenDetails
+*/
+func (c *Client) GetToken(ctx context.Context, id string) (*api.TokenDetails, error) {
+	response, httpResponse, err := c.tokensApi.GetToken(ctx, id).Execute()
+	if err != nil {
+		return nil, fmt.Errorf("error in getting the details of a token: %v, HTTP response body: %v", err, httpResponse.Body)
+	}
+	return response, nil
+}
+
+/*
+ListTokens Gets a list of tokens
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@return ListTokensResponse
+*/
+func (c *Client) ListTokens(ctx context.Context) (*api.ListTokensResponse, error) {
+	response, httpResponse, err := c.tokensApi.ListTokens(ctx).Execute()
+	if err != nil {
+		return nil, fmt.Errorf("error in getting the list of tokens: %v, HTTP response body: %v", err, httpResponse.Body)
+	}
+	return response, nil
 }

@@ -73,7 +73,6 @@ func main() {
 	workflow.DemoDepositERC721Workflow(ctx, c, envs["DW_ERC721TOKEN_ID"], envs["DW_ERC721TOKEN_ADDRESS"], l1signer)
 
 	workflow.DemoTradesWorkflow(ctx, c, l1signer, l2signer)
-	workflow.DemoBurnWorkflow(ctx, c, l1signer, l2signer)
 	workflow.DemoTransferWorkflow(ctx, c, l1signer, l2signer)
 	workflow.DemoBatchNftTransferWorkflow(ctx, c, l1signer, l2signer)
 

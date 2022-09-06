@@ -26,7 +26,7 @@ func (c *Client) RegisterOffchain(ctx context.Context,
 	starkKey := l2signer.GetAddress()
 
 	signableRegistrationRequest := api.NewGetSignableRegistrationRequest(etherKey, starkKey)
-	signableResponse, httpResponse, err := c.GetSignableRegistrationOffchain(ctx).GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
+	signableResponse, httpResponse, err := c.usersApi.GetSignableRegistrationOffchain(ctx).GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `UserApi.GetSignableRegistrationOffchain`: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
@@ -37,7 +37,7 @@ func (c *Client) RegisterOffchain(ctx context.Context,
 	}
 
 	registerUserRequest := api.NewRegisterUserRequest(ethSignature, etherKey, starkKey, starkSignature)
-	registerUserResponse, httpResp, err := c.RegisterUser(ctx).RegisterUserRequest(*registerUserRequest).Execute()
+	registerUserResponse, httpResp, err := c.usersApi.RegisterUser(ctx).RegisterUserRequest(*registerUserRequest).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `UserApi.RegisterUser`: %v, HTTP response body: %v", err, httpResp.Body)
 	}
@@ -46,7 +46,7 @@ func (c *Client) RegisterOffchain(ctx context.Context,
 
 // IsRegisteredOffChain checks if the given public address is already registered on the offchain (L2 network).
 func (c *Client) IsRegisteredOffChain(ctx context.Context, publicAddress string) (*bool, error) {
-	usersResponse, httpResp, err := c.GetUsers(ctx, publicAddress).Execute()
+	usersResponse, httpResp, err := c.usersApi.GetUsers(ctx, publicAddress).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `api.Users.GetUsers: %v, HTTP response body: %v", err, httpResp.Body)
 	}
@@ -69,10 +69,25 @@ func (c *Client) IsRegisteredOnChain(ctx context.Context, contract *contracts.Re
 	return &isRegistered, nil
 }
 
-// GetSignableRegistrationOnchain is a helper function to get the operator signature and payload hash to assist clients in the process of user registration.
-func (c *Client) GetSignableRegistrationOnchain(ctx context.Context, etherKey, starkKey string) (*api.GetSignableRegistrationResponse, error) {
+/*
+GetUsers Get stark keys for a registered user
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param user User
+@return GetUsersApiResponse
+*/
+func (c *Client) GetUsers(ctx context.Context, user string) (*api.GetUsersApiResponse, error) {
+	response, httpResponse, err := c.usersApi.GetUsers(ctx, user).Execute()
+	if err != nil {
+		return nil, fmt.Errorf("error in getting the users: %v, HTTP response body: %v", err, httpResponse.Body)
+	}
+	return response, nil
+}
+
+// getSignableRegistrationOnchain is a helper function to get the operator signature and payload hash to assist clients in the process of user registration.
+func (c *Client) getSignableRegistrationOnchain(ctx context.Context, etherKey, starkKey string) (*api.GetSignableRegistrationResponse, error) {
 	signableRegistrationRequest := api.NewGetSignableRegistrationRequest(etherKey, starkKey)
-	signableRegistrationResponse, httpResp, err := c.GetSignableRegistration(ctx).
+	signableRegistrationResponse, httpResp, err := c.usersApi.GetSignableRegistration(ctx).
 		GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error in `GetSignableRegistrationRequest.Execute`: %v, HTTP response body: %v", err, httpResp.Body)

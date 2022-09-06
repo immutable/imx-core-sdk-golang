@@ -15,7 +15,7 @@ func (c *Client) CreateOrder(ctx context.Context,
 	request *api.GetSignableOrderRequest) (*api.CreateOrderResponse, error) {
 	ethAddress := l1signer.GetAddress()
 	request.User = ethAddress
-	signableOrder, httpResponse, err := c.GetSignableOrder(ctx).GetSignableOrderRequestV3(*request).Execute()
+	signableOrder, httpResponse, err := c.ordersApi.GetSignableOrder(ctx).GetSignableOrderRequestV3(*request).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `OrdersApi.GetSignableOrder`: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
@@ -26,7 +26,7 @@ func (c *Client) CreateOrder(ctx context.Context,
 	}
 
 	includeFees := true
-	createOrderResponse, httpResponse, err := c.OrdersApi.CreateOrder(ctx).
+	createOrderResponse, httpResponse, err := c.ordersApi.CreateOrder(ctx).
 		CreateOrderRequest(api.CreateOrderRequest{
 			AmountBuy: signableOrder.AmountBuy, // The amount (listing price) should be in Wei for Eth tokens,
 			// see https://docs.starkware.co/starkex-v4/starkex-deep-dive/starkex-specific-concepts and https://eth-converter.com/
@@ -54,7 +54,7 @@ func (c *Client) CancelOrder(ctx context.Context,
 	l2signer L2Signer,
 	request api.GetSignableCancelOrderRequest,
 ) (*api.CancelOrderResponse, error) {
-	signableCancelOrder, httpResponse, err := c.GetSignableCancelOrder(ctx).GetSignableCancelOrderRequest(request).Execute()
+	signableCancelOrder, httpResponse, err := c.ordersApi.GetSignableCancelOrder(ctx).GetSignableCancelOrderRequest(request).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `OrdersApi.GetSignableCancelOrder`: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
@@ -66,7 +66,7 @@ func (c *Client) CancelOrder(ctx context.Context,
 
 	ethAddress := l1signer.GetAddress()
 	orderID := strconv.FormatInt(int64(request.OrderId), 10)
-	cancelOrderResponse, httpResponse, err := c.OrdersApi.CancelOrder(ctx, orderID).
+	cancelOrderResponse, httpResponse, err := c.ordersApi.CancelOrder(ctx, orderID).
 		CancelOrderRequest(api.CancelOrderRequest{
 			OrderId:        request.OrderId,
 			StarkSignature: starkSignature,
@@ -75,4 +75,33 @@ func (c *Client) CancelOrder(ctx context.Context,
 		return nil, fmt.Errorf("error when calling `OrdersApi.CancelOrder`: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
 	return cancelOrderResponse, nil
+}
+
+/*
+GetOrder Get details of an order with the given ID
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param id Order ID
+@return Order
+*/
+func (c *Client) GetOrder(ctx context.Context, id string) (*api.Order, error) {
+	response, httpResponse, err := c.ordersApi.GetOrder(ctx, id).Execute()
+	if err != nil {
+		return nil, fmt.Errorf("error in getting the details of an order: %v, HTTP response body: %v", err, httpResponse.Body)
+	}
+	return response, nil
+}
+
+/*
+ListOrders Gets a list of orders
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@return ListOrdersResponse
+*/
+func (c *Client) ListOrders(ctx context.Context) (*api.ListOrdersResponse, error) {
+	response, httpResponse, err := c.ordersApi.ListOrders(ctx).Execute()
+	if err != nil {
+		return nil, fmt.Errorf("error in getting the orders list: %v, HTTP response body: %v", err, httpResponse.Body)
+	}
+	return response, nil
 }
