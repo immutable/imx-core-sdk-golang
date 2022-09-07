@@ -61,7 +61,10 @@ type Client struct {
 	api.BalancesApi
 }
 
-func NewClient(cfg Config) (*Client, error) {
+// Client implements functions to get the work done with Immutable X API.
+// It manages communication with the Immutable X API.
+// See examples for usage reference.
+func NewClient(cfg *Config) (*Client, error) {
 	c := Client{
 		Environment: cfg.Environment,
 	}

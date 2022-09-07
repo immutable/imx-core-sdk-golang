@@ -78,7 +78,7 @@ import (
 )
 
 func main() {
-   // L1 credentials, supply your signerPrivateKey string.
+    // L1 credentials, supply your signerPrivateKey string.
 	l1signer, err := ethereum.NewSigner(signerPrivateKey, chainID)
 	if err != nil {
 		log.Panicf("error in creating L1Signer: %v\n", err)
@@ -268,10 +268,10 @@ func Register(signerPrivateKey string, chainID *big.Int) (*api.RegisterUserRespo
     ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
 
     // Setup L1 signer
-	l1signer, err := ethereum.NewSigner(signerPrivateKey, chainID)
-	if err != nil {
+    l1signer, err := ethereum.NewSigner(signerPrivateKey, chainID)
+    if err != nil {
         return nil, fmt.Errorf("error in creating L1Signer: %v", err)
-	}
+    }
 
     // Setup L2 signer
     l2signer, err := stark.GenerateStarkSigner(l1signer)

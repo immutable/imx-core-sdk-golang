@@ -40,18 +40,13 @@ func main() {
 		Environment:   imx.Sandbox,
 	}
 
-	c, err := imx.NewClient(cfg)
+	c, err := imx.NewClient(&cfg)
 	if err != nil {
 		log.Panicf("error on NewClient: %v\n", err)
 	}
 	defer c.EthClient.Close()
 
-	chainID, err := c.EthClient.ChainID(ctx)
-	if err != nil {
-		log.Panicf("error obtaining chain id: %v\n", err)
-	}
-
-	l1signer, err := ethereum.NewSigner(signerPrivateKey, chainID)
+	l1signer, err := ethereum.NewSigner(signerPrivateKey, cfg.ChainID)
 	if err != nil {
 		log.Panicf("error in creating L1Signer: %v\n", err)
 	}
