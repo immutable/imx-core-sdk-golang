@@ -26,12 +26,14 @@ var (
 	}
 )
 
+// Config is used to initialise NewClient object.
 type Config struct {
 	AlchemyAPIKey string
 	APIConfig     *api.Configuration
 	Environment
 }
 
+// Environment holds ethereum network and contract address information. Part of the config.
 type Environment struct {
 	BaseAPIPath                 string
 	EthereumRPC                 string
@@ -40,6 +42,8 @@ type Environment struct {
 	ChainID                     *big.Int
 }
 
+// Client implements functions to get the work done with Immutable X API.
+// It manages communication with the Immutable X API.
 type Client struct {
 	Environment          Environment
 	EthClient            *ethclient.Client
@@ -61,8 +65,7 @@ type Client struct {
 	api.BalancesApi
 }
 
-// Client implements functions to get the work done with Immutable X API.
-// It manages communication with the Immutable X API.
+// NewClient creates a new Client. Requires config to setup and initialise.
 // See examples for usage reference.
 func NewClient(cfg *Config) (*Client, error) {
 	c := Client{
