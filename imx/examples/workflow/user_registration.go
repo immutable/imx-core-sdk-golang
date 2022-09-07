@@ -13,7 +13,10 @@ func DemoUserRegistrationWorkflow(ctx context.Context, c *imx.Client, l1signer i
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
-	key, _ := stark.GenerateKey()
+	key, err := stark.GenerateKey()
+	if err != nil {
+		log.Panicf("error in generating private key for stark signer: %v\n", err)
+	}
 	l2signer, err := stark.NewSigner(key)
 	if err != nil {
 		log.Panicf("error in creating StarkSigner: %v\n", err)
@@ -21,7 +24,7 @@ func DemoUserRegistrationWorkflow(ctx context.Context, c *imx.Client, l1signer i
 
 	response, err := c.RegisterOffchain(ctx, l1signer, l2signer, "")
 	if err != nil {
-		log.Panicf("error in creating StarkSigner: %v\n", err)
+		log.Panicf("error in RegisterOffchain: %v\n", err)
 	}
 
 	val, err := json.MarshalIndent(response, "", "    ")

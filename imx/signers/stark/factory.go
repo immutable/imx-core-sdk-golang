@@ -11,13 +11,18 @@ import (
 )
 
 // package-global variable to represent our standard stark curve
-// generally bad practice, but has no state + we never configure it
-// unexported so can be updated in future if necessary
-// TODO: should we do this in init() to allow us to handle the eaten error here
-var curve, _ = loadCurve()
+var curve *caigo.StarkCurve
 
-// GenerateStarkSigner factory method to create StarkSigner.
+// GenerateKey generates a random key that can be used to create StarkSigner.
+// On creation save this key for future usage as this key will be required to reuse your stark signer.
 func GenerateKey() (*big.Int, error) {
+	if curve == nil {
+		var err error
+		curve, err = loadCurve()
+		if err != nil {
+			return nil, err
+		}
+	}
 	return curve.GetRandomPrivateKey()
 }
 

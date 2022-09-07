@@ -39,7 +39,7 @@ The following code snippets talk about how to get setup and use the various sect
 
 ### Configuration
 
-A configuration object is provided with preset configurations for both Test and Production networks to simplify the environment setup required for which the Core SDK requests are made. This can be obtained by using the `GetConfig` function available within the `config` package of Core SDK. 
+A configuration object is provided with preset configurations for both Test and Production networks to simplify the environment setup required for which the Core SDK requests are made. This can be found in `interface.go` of `imx` package.
 
 Select one of the following Ethereum networks Immutable X platform currently supports.
 
@@ -49,12 +49,17 @@ Select one of the following Ethereum networks Immutable X platform currently sup
 | Mainnet     | Production    | 
 
 ```go
-import "github.com/immutable/imx-core-sdk-golang/config"
+import "github.com/immutable/imx-core-sdk-golang/imx/api"
 
 const alchemyAPIKey = "alchemy api key"
 
 func main() {
-   cfg := config.GetConfig(config.Sandbox, alchemyAPIKey)
+    apiConfiguration := api.NewConfiguration()
+	cfg := imx.Config{
+		APIConfig:     apiConfiguration,
+		AlchemyAPIKey: alchemyAPIKey,
+		Environment:   imx.Sandbox,
+	}
    ...
 }
 ```
@@ -98,49 +103,22 @@ import (
 )
 
 func main() {
-   // L1 credentials
-   l1signer := YourImplementationOfL1SignerInterface() // See imx/examples/workflows/utils/signer.go 
-
-   // L2 credentials
-   // Obtain the stark signer associated with this user.
-   l2signer, err := stark.GenerateStarkSigner(l1signer) // this is the sdk helper function
-   if err != nil {
-      ...
-   }
-}
-```
-
-Also see the examples for a sample l2 signer usage `imx/examples/workflows/main.go`
-
-### Standard API Requests
-
-The Core SDK includes classes that interact with the Immutable X APIs.
-
-```go
-// Standard API request example usage
-
-import (
-    "context"
-    "fmt"
-    "github.com/immutable/imx-core-sdk-golang/imx/api"
-    "github.com/immutable/imx-core-sdk-golang/config"
-)
-
-func GetYourAsset(tokenID, tokenAddress string) (*api.Asset, error) {
-    configuration := api.NewConfiguration()
-    apiClient := api.NewAPIClient(configuration)
-    ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
-
-    getAssetResponse, httpResp, err := apiClient.AssetsApi.GetAsset(ctx, tokenAddress, tokenID).Execute()
+    // L2 signer
+    key, err := stark.GenerateKey()
     if err != nil {
-        return nil, fmt.Errorf("error when calling `GetAsset`: %v, HTTP response body: %v", err, httpResp.Body)
+        log.Panicf("error in Generating Stark Private Key: %v\n", err)
     }
 
-    return getAssetResponse, nil
+    l2signer, err := stark.NewSigner(key)
+    if err != nil {
+        log.Panicf("error in creating StarkSigner: %v\n", err)
+    }
+    ...
 }
 ```
 
-View the [OpenAPI spec](openapi.json) for a full list of API requests available in the Core SDK.
+Also see the examples for a sample l2 signer usage `imx/examples/main.go`
+
 
 ### Authorised project owner requests
 
@@ -246,40 +224,48 @@ func DepositNft(l1signer immutable.L1Signer, starkKey, assetType, vaultID, token
 A workflow is a combination of API and contract calls required for more complicated functionality.
 
 ```go
-package onboarding
-
 import (
-    "context"
-    "fmt"
-    "math/big"
+	"context"
+	"encoding/json"
+	"log"
 
-    "github.com/immutable/imx-core-sdk-golang/config"
-    "github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
-    "github.com/immutable/imx-core-sdk-golang/imx/api"
-    "github.com/immutable/imx-core-sdk-golang/imx/signers/ethereum"
-    "github.com/immutable/imx-core-sdk-golang/imx/signers/stark"
-    "github.com/immutable/imx-core-sdk-golang/workflows/registration"
+	"github.com/immutable/imx-core-sdk-golang/imx"
+	"github.com/immutable/imx-core-sdk-golang/imx/signers/stark"
 )
 
 func Register(signerPrivateKey string, chainID *big.Int) (*api.RegisterUserResponse, error) {
     // User registration workflow example
     configuration := api.NewConfiguration()
-    apiClient := api.NewAPIClient(configuration)
-    ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
+
+	cfg := imx.Config{
+		APIConfig:     configuration,
+		AlchemyAPIKey: alchemyAPIKey,
+		Environment:   imx.Sandbox,
+	}
+
+	c, err := imx.NewClient(&cfg)
+	if err != nil {
+		log.Panicf("error on NewClient: %v\n", err)
+	}
+	defer c.EthClient.Close()
 
     // Setup L1 signer
-    l1signer, err := ethereum.NewSigner(signerPrivateKey, chainID)
-    if err != nil {
-        return nil, fmt.Errorf("error in creating L1Signer: %v", err)
-    }
+	l1signer, err := ethereum.NewSigner(signerPrivateKey, cfg.ChainID)
+	if err != nil {
+		log.Panicf("error in creating L1Signer: %v\n", err)
+	}
 
     // Setup L2 signer
-    l2signer, err := stark.GenerateStarkSigner(l1signer)
+	key, err := stark.GenerateKey()
     if err != nil {
-        return nil, fmt.Errorf("error in creating StarkSigner: %v", err)
-    }
+		log.Panicf("error in generating private key for stark signer: %v\n", err)
+	}
+	l2signer, err := stark.NewSigner(key)
+	if err != nil {
+		log.Panicf("error in creating StarkSigner: %v\n", err)
+	}
 
-    response, err := registration.RegisterOffchain(ctx, apiClient.UsersApi, l1signer, l2signer, "user@email.com")
+    response, err := c.RegisterOffchain(ctx, l1signer, l2signer, "user@email.com")
     if err != nil {
         return nil, fmt.Errorf("error in RegisterOffchain: %v", err)
     }

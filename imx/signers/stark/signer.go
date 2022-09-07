@@ -14,7 +14,16 @@ type Signer struct {
 	publicKey  *big.Int
 }
 
+// NewSigner created a new stark signer with the given private stark key.
 func NewSigner(privateKey *big.Int) (*Signer, error) {
+	if curve == nil {
+		var err error
+		curve, err = loadCurve()
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	x, _, err := curve.PrivateToPoint(privateKey)
 	if err != nil {
 		return nil, err
@@ -22,7 +31,7 @@ func NewSigner(privateKey *big.Int) (*Signer, error) {
 
 	return &Signer{
 		privateKey: privateKey,
-		publicKey:  x, // TODO: is this right?
+		publicKey:  x,
 	}, nil
 }
 

@@ -24,10 +24,10 @@ func main() {
 	signerPrivateKey := envs["OWNER_ACCOUNT_PRIVATE_KEY"]
 	enableDebugLogging := strings.EqualFold(envs["DEBUG_LOGGING"], "true")
 
-	configuration := api.NewConfiguration()
+	apiConfiguration := api.NewConfiguration()
 	// Enable debug logging.
 	if enableDebugLogging {
-		configuration.Debug = true
+		apiConfiguration.Debug = true
 	}
 
 	// Using context value to switch/specify the server before sending request.
@@ -35,7 +35,7 @@ func main() {
 	ctx := context.TODO()
 
 	cfg := imx.Config{
-		APIConfig:     configuration,
+		APIConfig:     apiConfiguration,
 		AlchemyAPIKey: alchemyAPIKey,
 		Environment:   imx.Sandbox,
 	}
@@ -51,7 +51,11 @@ func main() {
 		log.Panicf("error in creating L1Signer: %v\n", err)
 	}
 
-	key, _ := stark.GenerateKey()
+	key, err := stark.GenerateKey()
+	if err != nil {
+		log.Panicf("error in Generating Stark Private Key: %v\n", err)
+	}
+
 	l2signer, err := stark.NewSigner(key)
 	if err != nil {
 		log.Panicf("error in creating StarkSigner: %v\n", err)
