@@ -167,7 +167,7 @@ func (a *TransfersApiService) CreateTransferExecute(r ApiCreateTransferRequest) 
 		localVarReturnValue  *CreateTransferResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TransfersApiService.Transfer")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TransfersApiService.CreateTransfer")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
