@@ -15,7 +15,6 @@ All minted assets belong to a collection, and in order to mint assets on L2 you 
 * Each collection belongs to a project.
 * Each collection may contain many similar or different NFTs.
 
-
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
 @param l1signer Ethereum signer used for ownership authentication.
 @param createCollectionRequest The request struct with all the params.
