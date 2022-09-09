@@ -8,8 +8,8 @@ import (
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
 
-// CreateTransfer transfers the request's models.SignableToken from Sender to Receiver.
-func (c *Client) CreateTransfer(
+// Transfer transfers the request's models.SignableToken from Sender to Receiver.
+func (c *Client) Transfer(
 	ctx context.Context,
 	l1signer L1Signer,
 	l2signer L2Signer,
@@ -46,8 +46,8 @@ func (c *Client) CreateTransfer(
 	return response, nil
 }
 
-// CreateBatchNftTransfer performs a bulk transfer of NFTs given an array of models.SignableToken and their receivers.
-func (c *Client) CreateBatchNftTransfer(
+// BatchNftTransfer performs a bulk transfer of NFTs given an array of models.SignableToken and their receivers.
+func (c *Client) BatchNftTransfer(
 	ctx context.Context,
 	l1signer L1Signer,
 	l2signer L2Signer,
@@ -79,31 +79,9 @@ func (c *Client) CreateBatchNftTransfer(
 		XImxEthAddress(ethAddress).
 		XImxEthSignature(ethSignature).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `TransfersApi.CreateTransfer`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, fmt.Errorf("error when calling `TransfersApi.Transfer`: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
 	return response, nil
-}
-
-// getSignedTransferRequests iterates through signableTransfers, signs each payloadHash and returns an array of pointers to models.TransferRequest.
-func getSignedTransferRequests(signableTransfers []api.SignableTransferResponseDetails, l2signer L2Signer) ([]api.TransferRequest, error) {
-	mapped := make([]api.TransferRequest, len(signableTransfers))
-	for i, transfer := range signableTransfers {
-		starkSignature, err := l2signer.SignMessage(transfer.PayloadHash)
-		if err != nil {
-			return nil, fmt.Errorf("error generating StarkSignature from PayloadHash %s for AssetID %s: %v", transfer.PayloadHash, transfer.AssetId, err)
-		}
-		mapped[i] = api.TransferRequest{
-			Amount:              transfer.Amount,
-			AssetId:             transfer.AssetId,
-			ExpirationTimestamp: transfer.ExpirationTimestamp,
-			Nonce:               transfer.Nonce,
-			ReceiverStarkKey:    transfer.ReceiverStarkKey,
-			ReceiverVaultId:     transfer.ReceiverVaultId,
-			SenderVaultId:       transfer.SenderVaultId,
-			StarkSignature:      starkSignature,
-		}
-	}
-	return mapped, nil
 }
 
 /*
@@ -133,4 +111,26 @@ func (c *Client) ListTransfers(ctx context.Context) (*api.ListTransfersResponse,
 		return nil, fmt.Errorf("error in getting the list of transfers: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
 	return response, nil
+}
+
+// getSignedTransferRequests iterates through signableTransfers, signs each payloadHash and returns an array of pointers to models.TransferRequest.
+func getSignedTransferRequests(signableTransfers []api.SignableTransferResponseDetails, l2signer L2Signer) ([]api.TransferRequest, error) {
+	mapped := make([]api.TransferRequest, len(signableTransfers))
+	for i, transfer := range signableTransfers {
+		starkSignature, err := l2signer.SignMessage(transfer.PayloadHash)
+		if err != nil {
+			return nil, fmt.Errorf("error generating StarkSignature from PayloadHash %s for AssetID %s: %v", transfer.PayloadHash, transfer.AssetId, err)
+		}
+		mapped[i] = api.TransferRequest{
+			Amount:              transfer.Amount,
+			AssetId:             transfer.AssetId,
+			ExpirationTimestamp: transfer.ExpirationTimestamp,
+			Nonce:               transfer.Nonce,
+			ReceiverStarkKey:    transfer.ReceiverStarkKey,
+			ReceiverVaultId:     transfer.ReceiverVaultId,
+			SenderVaultId:       transfer.SenderVaultId,
+			StarkSignature:      starkSignature,
+		}
+	}
+	return mapped, nil
 }

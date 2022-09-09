@@ -25,7 +25,7 @@ func DemoTransferWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Sig
 		Receiver: receiver,
 	}
 
-	response, err := c.CreateTransfer(ctx, l1signer, l2signer, transferRequest)
+	response, err := c.Transfer(ctx, l1signer, l2signer, transferRequest)
 	if err != nil {
 		log.Panicf("error calling transfer workflow: %v", err)
 	}
@@ -67,7 +67,7 @@ func DemoBatchNftTransferWorkflow(ctx context.Context, c *imx.Client, l1signer i
 		},
 	}
 
-	response, err := c.CreateBatchNftTransfer(ctx, l1signer, l2signer, batchTransferRequest)
+	response, err := c.BatchNftTransfer(ctx, l1signer, l2signer, batchTransferRequest)
 	if err != nil {
 		log.Panicf("error calling batch transfer workflow: %v", err)
 	}

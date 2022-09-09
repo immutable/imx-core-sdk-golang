@@ -36,7 +36,7 @@ type UnsignedMintRequest struct {
 	AuthSignature   string    `json:"auth_signature" validate:"required"`
 }
 
-// MintTokensWorkflow assists in minting tokens to the given imx user.
+// Mint assists in minting tokens to the given imx user.
 func (c *Client) Mint(
 	ctx context.Context,
 	l1signer L1Signer,

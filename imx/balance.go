@@ -1,0 +1,48 @@
+package imx
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/immutable/imx-core-sdk-golang/imx/api"
+)
+
+/*
+GetBalance Fetches the token balances of the user
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param owner Address of the owner/user
+@param tokenAddress Token address
+@return Balance
+*/
+func (c *Client) GetBalance(ctx context.Context, owner string, tokenAddress string) (*api.Balance, error) {
+	response, httpResponse, err := c.balancesApi.GetBalance(ctx, owner, tokenAddress).Execute()
+	if err != nil {
+		return nil, fmt.Errorf("error in getting the details of a token balance: %v, HTTP response body: %v", err, httpResponse.Body)
+	}
+	return response, nil
+}
+
+/*
+NewListBalancesRequest Creates a new ApiListBalancesRequest object with required params.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@return ApiListBalancesRequest
+*/
+func (c *Client) NewListBalancesRequest(ctx context.Context, owner string) api.ApiListBalancesRequest {
+	return c.balancesApi.ListBalances(ctx, owner)
+}
+
+/*
+ListBalances Get a list of balances for given user
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@return ListBalancesResponse
+*/
+func (c *Client) ListBalances(req api.ApiListBalancesRequest) (*api.ListBalancesResponse, error) {
+	response, httpResponse, err := c.balancesApi.ListBalancesExecute(req)
+	if err != nil {
+		return nil, fmt.Errorf("error in getting the list of token balances: %v, HTTP response body: %v", err, httpResponse.Body)
+	}
+	return response, nil
+}

@@ -55,14 +55,14 @@ type Client struct {
 	depositsApi          api.DepositsApi
 	withdrawalsApi       api.WithdrawalsApi
 	mintsApi             api.MintsApi
-	api.AssetsApi
-	usersApi api.UsersApi
+	assetsApi            api.AssetsApi
+	usersApi             api.UsersApi
+	metadataApi          api.MetadataApi
+	tokensApi            api.TokensApi
+	balancesApi          api.BalancesApi
+	projectsApi          api.ProjectsApi
+	collectionsApi       api.CollectionsApi
 	api.EncodingApi
-	api.MetadataApi
-	api.ProjectsApi
-	tokensApi api.TokensApi
-	api.CollectionsApi
-	api.BalancesApi
 }
 
 // NewClient creates a new Client. Requires config to setup and initialise.
@@ -81,15 +81,15 @@ func NewClient(cfg *Config) (*Client, error) {
 	cfg.APIConfig.Servers = api.ServerConfigurations{{URL: cfg.BaseAPIPath}}
 	apiClient := api.NewAPIClient(cfg.APIConfig)
 
-	c.AssetsApi = apiClient.AssetsApi
-	c.BalancesApi = apiClient.BalancesApi
-	c.CollectionsApi = apiClient.CollectionsApi
+	c.assetsApi = apiClient.AssetsApi
+	c.balancesApi = apiClient.BalancesApi
+	c.collectionsApi = apiClient.CollectionsApi
 	c.depositsApi = apiClient.DepositsApi
 	c.EncodingApi = apiClient.EncodingApi
-	c.MetadataApi = apiClient.MetadataApi
+	c.metadataApi = apiClient.MetadataApi
 	c.mintsApi = apiClient.MintsApi
 	c.ordersApi = apiClient.OrdersApi
-	c.ProjectsApi = apiClient.ProjectsApi
+	c.projectsApi = apiClient.ProjectsApi
 	c.tokensApi = apiClient.TokensApi
 	c.tradesApi = apiClient.TradesApi
 	c.transfersApi = apiClient.TransfersApi

@@ -55,11 +55,11 @@ const alchemyAPIKey = "alchemy api key"
 
 func main() {
     apiConfiguration := api.NewConfiguration()
-	cfg := imx.Config{
-		APIConfig:     apiConfiguration,
-		AlchemyAPIKey: alchemyAPIKey,
-		Environment:   imx.Sandbox,
-	}
+    cfg := imx.Config{
+        APIConfig:     apiConfiguration,
+        AlchemyAPIKey: alchemyAPIKey,
+        Environment:   imx.Sandbox,
+    }
    ...
 }
 ```
@@ -84,10 +84,10 @@ import (
 
 func main() {
     // L1 credentials, supply your signerPrivateKey string.
-	l1signer, err := ethereum.NewSigner(signerPrivateKey, chainID)
-	if err != nil {
-		log.Panicf("error in creating L1Signer: %v\n", err)
-	}
+    l1signer, err := ethereum.NewSigner(signerPrivateKey, chainID)
+    if err != nil {
+        log.Panicf("error in creating L1Signer: %v\n", err)
+    }
 }
 ```
 
@@ -167,19 +167,19 @@ The following methods require project owner authorisation:
 
 **Projects**
 
-- createProject
-- getProject
-- getProjects
+- CreateProject
+- GetProject
+- GetProjects
 
 **Collections**
 
-- createCollection
-- updateCollection
+- CreateCollection
+- UpdateCollection
 
 **Metadata**
 
-- addMetadataSchemaToCollection
-- updateMetadataSchemaByName
+- AddMetadataSchemaToCollection
+- UpdateMetadataSchemaByName
 
 
 ### Contract requests

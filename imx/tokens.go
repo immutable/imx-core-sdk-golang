@@ -68,6 +68,16 @@ func (c *Client) GetToken(ctx context.Context, id string) (*api.TokenDetails, er
 }
 
 /*
+NewListTokensRequest Creates a new ApiListTokensRequest object with required params.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@return ApiListTokensRequest
+*/
+func (c *Client) NewListTokensRequest(ctx context.Context) api.ApiListTokensRequest {
+	return c.tokensApi.ListTokens(ctx)
+}
+
+/*
 ListTokens Gets a list of tokens
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
