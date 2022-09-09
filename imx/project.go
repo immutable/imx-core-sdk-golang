@@ -12,16 +12,16 @@ GetProject Gets a project detail
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
 @param l1signer Ethereum signer used for ownership authentication.
-@param projectID Project ID
+@param id Project ID
 @return Balance
 */
-func (c *Client) GetProject(ctx context.Context, l1signer L1Signer, projectID string) (*api.Project, error) {
+func (c *Client) GetProject(ctx context.Context, l1signer L1Signer, id string) (*api.Project, error) {
 	timestamp, signature, err := getProjectOwnerAuthorisationHeaders(l1signer)
 	if err != nil {
 		return nil, err
 	}
 
-	response, httpResponse, err := c.projectsAPI.GetProject(ctx, projectID).
+	response, httpResponse, err := c.projectsAPI.GetProject(ctx, id).
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
 		Execute()
