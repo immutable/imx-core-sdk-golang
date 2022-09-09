@@ -25,7 +25,7 @@ func (c *Client) CreateCollection(
 		return nil, err
 	}
 
-	createCollectionResponse, httpResp, err := c.collectionsApi.CreateCollection(ctx).
+	createCollectionResponse, httpResp, err := c.collectionsAPI.CreateCollection(ctx).
 		CreateCollectionRequest(*createCollectionRequest).
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
@@ -56,7 +56,7 @@ func (c *Client) UpdateCollection(
 		return nil, err
 	}
 
-	createCollectionResponse, httpResp, err := c.collectionsApi.UpdateCollection(ctx, contractAddress).
+	createCollectionResponse, httpResp, err := c.collectionsAPI.UpdateCollection(ctx, contractAddress).
 		UpdateCollectionRequest(*updateCollectionRequest).
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
@@ -75,7 +75,7 @@ GetCollection Get details of a collection at the given address
 @return Collection
 */
 func (c *Client) GetCollection(ctx context.Context, collectionContractAddress string) (*api.Collection, error) {
-	response, httpResponse, err := c.collectionsApi.GetCollection(ctx, collectionContractAddress).Execute()
+	response, httpResponse, err := c.collectionsAPI.GetCollection(ctx, collectionContractAddress).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the details of a collection: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
@@ -89,7 +89,7 @@ NewListCollectionsRequest Creates a new ApiListCollectionsRequest object with re
 @return ApiListCollectionsRequest
 */
 func (c *Client) NewListCollectionsRequest(ctx context.Context) api.ApiListCollectionsRequest {
-	return c.collectionsApi.ListCollections(ctx)
+	return c.collectionsAPI.ListCollections(ctx)
 }
 
 /*
@@ -99,7 +99,7 @@ ListBalances Get a list of balances for given user
 @return ListCollectionsResponse
 */
 func (c *Client) ListCollections(req *api.ApiListCollectionsRequest) (*api.ListCollectionsResponse, error) {
-	response, httpResponse, err := c.collectionsApi.ListCollectionsExecute(*req)
+	response, httpResponse, err := c.collectionsAPI.ListCollectionsExecute(*req)
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the list of collections: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
@@ -114,7 +114,7 @@ NewListCollectionFiltersRequest Creates a new ApiListCollectionFiltersRequest ob
 @return ApiListCollectionFiltersRequest
 */
 func (c *Client) NewListCollectionFiltersRequest(ctx context.Context, collectionContractAddress string) api.ApiListCollectionFiltersRequest {
-	return c.collectionsApi.ListCollectionFilters(ctx, collectionContractAddress)
+	return c.collectionsAPI.ListCollectionFilters(ctx, collectionContractAddress)
 }
 
 /*
@@ -124,7 +124,7 @@ ListCollectionFilters Get a list of collection filters
 @return CollectionFilter
 */
 func (c *Client) ListCollectionFilters(req *api.ApiListCollectionFiltersRequest) (*api.CollectionFilter, error) {
-	response, httpResponse, err := c.collectionsApi.ListCollectionFiltersExecute(*req)
+	response, httpResponse, err := c.collectionsAPI.ListCollectionFiltersExecute(*req)
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the list of collection Filters: %v, HTTP response body: %v", err, httpResponse.Body)
 	}

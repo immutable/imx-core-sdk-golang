@@ -60,7 +60,7 @@ GetToken Get details of a token with the given ID
 @return TokenDetails
 */
 func (c *Client) GetToken(ctx context.Context, id string) (*api.TokenDetails, error) {
-	response, httpResponse, err := c.tokensApi.GetToken(ctx, id).Execute()
+	response, httpResponse, err := c.tokensAPI.GetToken(ctx, id).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the details of a token: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
@@ -74,7 +74,7 @@ NewListTokensRequest Creates a new ApiListTokensRequest object with required par
 @return ApiListTokensRequest
 */
 func (c *Client) NewListTokensRequest(ctx context.Context) api.ApiListTokensRequest {
-	return c.tokensApi.ListTokens(ctx)
+	return c.tokensAPI.ListTokens(ctx)
 }
 
 /*
@@ -84,7 +84,7 @@ ListTokens Gets a list of tokens
 @return ListTokensResponse
 */
 func (c *Client) ListTokens(req *api.ApiListTokensRequest) (*api.ListTokensResponse, error) {
-	response, httpResponse, err := c.tokensApi.ListTokensExecute(*req)
+	response, httpResponse, err := c.tokensAPI.ListTokensExecute(*req)
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the list of tokens: %v, HTTP response body: %v", err, httpResponse.Body)
 	}

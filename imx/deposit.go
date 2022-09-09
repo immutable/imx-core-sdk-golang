@@ -67,7 +67,7 @@ GetDeposit Gets details of a deposit with the given ID
 @return Deposit
 */
 func (c *Client) GetDeposit(ctx context.Context, id string) (*api.Deposit, error) {
-	response, httpResponse, err := c.depositsApi.GetDeposit(ctx, id).Execute()
+	response, httpResponse, err := c.depositsAPI.GetDeposit(ctx, id).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the deposit details: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
@@ -81,7 +81,7 @@ ListDeposits Gets a list of deposits
 @return ListDepositsResponse
 */
 func (c *Client) ListDeposits(ctx context.Context) (*api.ListDepositsResponse, error) {
-	response, httpResponse, err := c.depositsApi.ListDeposits(ctx).Execute()
+	response, httpResponse, err := c.depositsAPI.ListDeposits(ctx).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the deposits list: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
@@ -129,7 +129,7 @@ func (d *ETHDeposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer, 
 func (c *Client) getSignableDeposit(
 	ctx context.Context,
 	request *api.GetSignableDepositRequest) (*api.GetSignableDepositResponse, error) {
-	signableDepositResponse, httpResp, err := c.depositsApi.GetSignableDeposit(ctx).GetSignableDepositRequest(*request).Execute()
+	signableDepositResponse, httpResp, err := c.depositsAPI.GetSignableDeposit(ctx).GetSignableDepositRequest(*request).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `Deposits.GetSignableDeposit`: %v, HTTP response body: %v", err, httpResp.Body)
 	}
@@ -312,7 +312,7 @@ func (c *Client) registerAndDepositERC721(
 // Deposit performs the deposit workflow on the ERC20Deposit.
 func (d *ERC20Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer, overrides *bind.TransactOpts) (*types.Transaction, error) {
 	// Get decimals for this specific ERC20
-	token, httpResp, err := c.tokensApi.GetToken(ctx, d.TokenAddress).Execute()
+	token, httpResp, err := c.tokensAPI.GetToken(ctx, d.TokenAddress).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `Tokens.GetToken`: %v, http reponse body: %v", err, httpResp.Body)
 	}

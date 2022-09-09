@@ -17,7 +17,7 @@ func (c *Client) CreateTrade(
 ) (*api.CreateTradeResponse, error) {
 	ethAddress := l1signer.GetAddress()
 	request.User = ethAddress
-	signableTrade, httpResponse, err := c.tradesApi.GetSignableTrade(ctx).GetSignableTradeRequest(request).Execute()
+	signableTrade, httpResponse, err := c.tradesAPI.GetSignableTrade(ctx).GetSignableTradeRequest(request).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `TradesApi.GetSignableTrade`: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
@@ -28,7 +28,7 @@ func (c *Client) CreateTrade(
 	}
 
 	includeFees := true
-	createTradeResponse, httpResponse, err := c.tradesApi.CreateTrade(ctx).
+	createTradeResponse, httpResponse, err := c.tradesAPI.CreateTrade(ctx).
 		CreateTradeRequest(api.CreateTradeRequestV1{
 			AmountBuy:           signableTrade.AmountBuy,
 			AmountSell:          signableTrade.AmountSell,
@@ -60,7 +60,7 @@ GetTrade Get details of a trade with the given ID
 @return Trade
 */
 func (c *Client) GetTrade(ctx context.Context, id string) (*api.Trade, error) {
-	response, httpResponse, err := c.tradesApi.GetTrade(ctx, id).Execute()
+	response, httpResponse, err := c.tradesAPI.GetTrade(ctx, id).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the details of a trade: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
@@ -74,7 +74,7 @@ ListTrades Gets a list of trades
 @return ListTradesResponse
 */
 func (c *Client) ListTrades(ctx context.Context) (*api.ListTradesResponse, error) {
-	response, httpResponse, err := c.tradesApi.ListTrades(ctx).Execute()
+	response, httpResponse, err := c.tradesAPI.ListTrades(ctx).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the list of trades: %v, HTTP response body: %v", err, httpResponse.Body)
 	}

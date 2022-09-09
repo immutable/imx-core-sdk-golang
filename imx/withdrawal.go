@@ -24,7 +24,7 @@ func (c *Client) PrepareWithdrawal(
 ) (*api.CreateWithdrawalResponse, error) {
 	ethAddress := l1signer.GetAddress()
 	request.User = ethAddress
-	signableResponse, httpResp, err := c.withdrawalsApi.GetSignableWithdrawal(ctx).GetSignableWithdrawalRequest(request).Execute()
+	signableResponse, httpResp, err := c.withdrawalsAPI.GetSignableWithdrawal(ctx).GetSignableWithdrawalRequest(request).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `Withdrawals.GetSignableWithdrawal`: %v, HTTP response body: %v", err, httpResp.Body)
 	}
@@ -42,7 +42,7 @@ func (c *Client) PrepareWithdrawal(
 		StarkSignature: starkSignature,
 		VaultId:        signableResponse.VaultId,
 	}
-	apiCreateWithdrawalRequest := c.withdrawalsApi.CreateWithdrawal(ctx).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature)
+	apiCreateWithdrawalRequest := c.withdrawalsAPI.CreateWithdrawal(ctx).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature)
 	withdrawalResponse, httpResp, err := apiCreateWithdrawalRequest.CreateWithdrawalRequest(withdrawalRequest).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error when calling `apiCreateWithdrawalRequest.CreateWithdrawalRequest`: %v, HTTP response body: %v", err, httpResp.Body)
@@ -253,7 +253,7 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 	starkKeyHex string,
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
-	mintableTokenResponse, httpResp, err := c.mintsApi.GetMintableTokenDetailsByClientTokenId(ctx, w.TokenAddress, w.TokenID).Execute()
+	mintableTokenResponse, httpResp, err := c.mintsAPI.GetMintableTokenDetailsByClientTokenId(ctx, w.TokenAddress, w.TokenID).Execute()
 	if err != nil {
 		if err.(*runtime.APIError).IsCode(404) {
 			// Token is already minted on L1
@@ -341,7 +341,7 @@ GetWithdrawal Get details of a withdrawal with the given ID
 @return Withdrawal
 */
 func (c *Client) GetWithdrawal(ctx context.Context, id string) (*api.Withdrawal, error) {
-	response, httpResponse, err := c.withdrawalsApi.GetWithdrawal(ctx, id).Execute()
+	response, httpResponse, err := c.withdrawalsAPI.GetWithdrawal(ctx, id).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the details of a withdrawal: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
@@ -355,7 +355,7 @@ ListWithdrawals Gets a list of withdrawals
 @return ListWithdrawalsResponse
 */
 func (c *Client) ListWithdrawals(ctx context.Context) (*api.ListWithdrawalsResponse, error) {
-	response, httpResponse, err := c.withdrawalsApi.ListWithdrawals(ctx).Execute()
+	response, httpResponse, err := c.withdrawalsAPI.ListWithdrawals(ctx).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the list of withdrawals: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
