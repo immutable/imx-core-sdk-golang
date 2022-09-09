@@ -8,7 +8,13 @@ import (
 )
 
 /*
-CreateCollection Create collection
+CreateCollection Creates a new collection
+
+A collection refers to a series of NFTs, minted under a project, and corresponds to a specific deployed smart contract.
+All minted assets belong to a collection, and in order to mint assets on L2 you must first register your collection (smart contract) with Immutable X.
+* Each collection belongs to a project.
+* Each collection may contain many similar or different NFTs.
+
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
 @param l1signer Ethereum signer used for ownership authentication.
@@ -37,7 +43,7 @@ func (c *Client) CreateCollection(
 }
 
 /*
-UpdateCollection Update collection
+UpdateCollection Updates an existing collection
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
 @param l1signer Ethereum signer used for ownership authentication.
