@@ -37,7 +37,7 @@ func (c *Client) CreateCollection(
 }
 
 /*
-CreateCollection Create collection
+UpdateCollection Update collection
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
 @param l1signer Ethereum signer used for ownership authentication.
@@ -93,7 +93,7 @@ func (c *Client) NewListCollectionsRequest(ctx context.Context) api.ApiListColle
 }
 
 /*
-ListBalances Get a list of balances for given user
+ListCollections Get a list of collections
 
 @param req the api request struct with all params populated to make the request
 @return ListCollectionsResponse

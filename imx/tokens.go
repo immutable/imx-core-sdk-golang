@@ -56,11 +56,11 @@ func SignableERC721Token(tokenID, tokenAddress string) api.SignableToken {
 GetToken Get details of a token with the given ID
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
-@param address Token Contract Address
+@param tokenID Token ID
 @return TokenDetails
 */
-func (c *Client) GetToken(ctx context.Context, id string) (*api.TokenDetails, error) {
-	response, httpResponse, err := c.tokensAPI.GetToken(ctx, id).Execute()
+func (c *Client) GetToken(ctx context.Context, tokenID string) (*api.TokenDetails, error) {
+	response, httpResponse, err := c.tokensAPI.GetToken(ctx, tokenID).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the details of a token: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
