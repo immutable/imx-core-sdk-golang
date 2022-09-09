@@ -15,7 +15,7 @@ GetBalance Fetches the token balances of the user
 @param tokenAddress Token address
 @return Balance
 */
-func (c *Client) GetBalance(ctx context.Context, owner string, tokenAddress string) (*api.Balance, error) {
+func (c *Client) GetBalance(ctx context.Context, owner, tokenAddress string) (*api.Balance, error) {
 	response, httpResponse, err := c.balancesApi.GetBalance(ctx, owner, tokenAddress).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the details of a token balance: %v, HTTP response body: %v", err, httpResponse.Body)
@@ -36,11 +36,11 @@ func (c *Client) NewListBalancesRequest(ctx context.Context, owner string) api.A
 /*
 ListBalances Get a list of balances for given user
 
-@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param req the api request struct with all params populated to make the request
 @return ListBalancesResponse
 */
-func (c *Client) ListBalances(req api.ApiListBalancesRequest) (*api.ListBalancesResponse, error) {
-	response, httpResponse, err := c.balancesApi.ListBalancesExecute(req)
+func (c *Client) ListBalances(req *api.ApiListBalancesRequest) (*api.ListBalancesResponse, error) {
+	response, httpResponse, err := c.balancesApi.ListBalancesExecute(*req)
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the list of token balances: %v, HTTP response body: %v", err, httpResponse.Body)
 	}

@@ -83,23 +83,23 @@ func (c *Client) GetCollection(ctx context.Context, collectionContractAddress st
 }
 
 /*
-NewListBalancesRequest Creates a new ApiListBalancesRequest object with required params.
+NewListCollectionsRequest Creates a new ApiListCollectionsRequest object with required params.
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
-@return ApiListBalancesRequest
+@return ApiListCollectionsRequest
 */
-func (c *Client) NewListCollectionsRequest(ctx context.Context, owner string) api.ApiListCollectionsRequest {
+func (c *Client) NewListCollectionsRequest(ctx context.Context) api.ApiListCollectionsRequest {
 	return c.collectionsApi.ListCollections(ctx)
 }
 
 /*
 ListBalances Get a list of balances for given user
 
-@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param req the api request struct with all params populated to make the request
 @return ListCollectionsResponse
 */
-func (c *Client) ListCollections(req api.ApiListCollectionsRequest) (*api.ListCollectionsResponse, error) {
-	response, httpResponse, err := c.collectionsApi.ListCollectionsExecute(req)
+func (c *Client) ListCollections(req *api.ApiListCollectionsRequest) (*api.ListCollectionsResponse, error) {
+	response, httpResponse, err := c.collectionsApi.ListCollectionsExecute(*req)
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the list of collections: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
@@ -107,24 +107,24 @@ func (c *Client) ListCollections(req api.ApiListCollectionsRequest) (*api.ListCo
 }
 
 /*
-NewListBalancesRequest Creates a new ApiListBalancesRequest object with required params.
+NewListCollectionFiltersRequest Creates a new ApiListCollectionFiltersRequest object with required params.
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
 @param collectionContractAddress Collection contract address
-@return ApiListBalancesRequest
+@return ApiListCollectionFiltersRequest
 */
 func (c *Client) NewListCollectionFiltersRequest(ctx context.Context, collectionContractAddress string) api.ApiListCollectionFiltersRequest {
 	return c.collectionsApi.ListCollectionFilters(ctx, collectionContractAddress)
 }
 
 /*
-ListBalances Get a list of balances for given user
+ListCollectionFilters Get a list of collection filters
 
-@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param req the api request struct with all params populated to make the request
 @return CollectionFilter
 */
-func (c *Client) ListCollectionFilters(req api.ApiListCollectionFiltersRequest) (*api.CollectionFilter, error) {
-	response, httpResponse, err := c.collectionsApi.ListCollectionFiltersExecute(req)
+func (c *Client) ListCollectionFilters(req *api.ApiListCollectionFiltersRequest) (*api.CollectionFilter, error) {
+	response, httpResponse, err := c.collectionsApi.ListCollectionFiltersExecute(*req)
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the list of collection Filters: %v, HTTP response body: %v", err, httpResponse.Body)
 	}

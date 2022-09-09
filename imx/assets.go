@@ -16,7 +16,7 @@ GetAsset Get details of an asset
 @param includeFees optional param.
 @return Asset
 */
-func (c *Client) GetAsset(ctx context.Context, tokenAddress string, tokenId string, includeFees *bool) (*api.Asset, error) {
+func (c *Client) GetAsset(ctx context.Context, tokenAddress, tokenId string, includeFees *bool) (*api.Asset, error) {
 	apiGetAssetRequest := c.assetsApi.GetAsset(ctx, tokenAddress, tokenId)
 	if includeFees != nil {
 		apiGetAssetRequest.IncludeFees(*includeFees)
@@ -42,11 +42,11 @@ func (c *Client) NewListAssetsRequest(ctx context.Context) api.ApiListAssetsRequ
 /*
 ListAssets Get a list of assets
 
-@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param req the api request struct with all params populated to make the request
 @return ListAssetsResponse
 */
-func (c *Client) ListAssets(req api.ApiListAssetsRequest) (*api.ListAssetsResponse, error) {
-	response, httpResponse, err := c.assetsApi.ListAssetsExecute(req)
+func (c *Client) ListAssets(req *api.ApiListAssetsRequest) (*api.ListAssetsResponse, error) {
+	response, httpResponse, err := c.assetsApi.ListAssetsExecute(*req)
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the list of assets: %v, HTTP response body: %v", err, httpResponse.Body)
 	}

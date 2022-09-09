@@ -80,11 +80,11 @@ func (c *Client) NewListTokensRequest(ctx context.Context) api.ApiListTokensRequ
 /*
 ListTokens Gets a list of tokens
 
-@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param req the api request struct with all params populated to make the request
 @return ListTokensResponse
 */
-func (c *Client) ListTokens(ctx context.Context) (*api.ListTokensResponse, error) {
-	response, httpResponse, err := c.tokensApi.ListTokens(ctx).Execute()
+func (c *Client) ListTokens(req *api.ApiListTokensRequest) (*api.ListTokensResponse, error) {
+	response, httpResponse, err := c.tokensApi.ListTokensExecute(*req)
 	if err != nil {
 		return nil, fmt.Errorf("error in getting the list of tokens: %v, HTTP response body: %v", err, httpResponse.Body)
 	}
