@@ -63,7 +63,7 @@ func NewERC721Deposit(tokenID, tokenAddress string) *ERC721Deposit {
 GetDeposit Gets details of a deposit with the given ID
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
-@param id Deposit ID
+@param id Deposit Id
 @return Deposit
 */
 func (c *Client) GetDeposit(ctx context.Context, id string) (*api.Deposit, error) {
@@ -92,6 +92,9 @@ func (c *Client) ListDeposits(ctx context.Context) (*api.ListDepositsResponse, e
 Deposit performs the deposit workflow on the ETHDeposit.
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param c Client object from interface.go used to make API calls.
+@param l1Signer Ethereum signer to sign message.
+@param overrides Optional transaction params that overrides the default values.
 @return Transaction
 */
 func (d *ETHDeposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer, overrides *bind.TransactOpts) (*types.Transaction, error) {
@@ -199,7 +202,15 @@ func (c *Client) depositEth(
 	return tnx, nil
 }
 
-// Deposit performs the deposit workflow on the ERC721Deposit.
+/*
+Deposit performs the deposit workflow on the ERC721Deposit.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param c Client object from interface.go used to make API calls.
+@param l1Signer Ethereum signer to sign message.
+@param overrides Optional transaction params that overrides the default values.
+@return Transaction
+*/
 func (d *ERC721Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer, overrides *bind.TransactOpts) (*types.Transaction, error) {
 	// Approve whether an amount of token from an account can be spent by a third-party account
 	opts := c.buildTransactOpts(ctx, l1signer, overrides)
@@ -309,7 +320,15 @@ func (c *Client) registerAndDepositERC721(
 	return tnx, nil
 }
 
-// Deposit performs the deposit workflow on the ERC20Deposit.
+/*
+Deposit performs the deposit workflow on the ERC20Deposit.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param c Client object from interface.go used to make API calls.
+@param l1Signer Ethereum signer to sign message.
+@param overrides Optional transaction params that overrides the default values.
+@return Transaction
+*/
 func (d *ERC20Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer, overrides *bind.TransactOpts) (*types.Transaction, error) {
 	// Get decimals for this specific ERC20
 	token, httpResp, err := c.tokensAPI.GetToken(ctx, d.TokenAddress).Execute()

@@ -8,14 +8,22 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
-	"github.com/immutable/imx-core-sdk-golang/imx/internal/contracts"
 )
 
-// RegisterOffchain performs off chain user registration i.e, on the L2 network.
+/*
+RegisterOffchain performs off chain user registration i.e, on the L2 network.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param l2signer Stark signer to sign the payload hash.
+@param userEmail A valid user email.
+@return RegisterUserResponse
+*/
 func (c *Client) RegisterOffchain(ctx context.Context,
 	l1signer L1Signer,
 	l2signer L2Signer,
-	userEmail string) (*api.RegisterUserResponse, error) {
+	userEmail string,
+) (*api.RegisterUserResponse, error) {
 	if userEmail != "" {
 		if !isValidEmail(userEmail) {
 			return nil, fmt.Errorf("given userEmail is invalid: %v", userEmail)
@@ -44,7 +52,13 @@ func (c *Client) RegisterOffchain(ctx context.Context,
 	return registerUserResponse, nil
 }
 
-// IsRegisteredOffChain checks if the given public address is already registered on the offchain (L2 network).
+/*
+IsRegisteredOffChain checks if the given public address is already registered on the offchain (L2 network).
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param publicAddress ethereum signer public address.
+@return true if registered or false. Nil on error.
+*/
 func (c *Client) IsRegisteredOffChain(ctx context.Context, publicAddress string) (*bool, error) {
 	usersResponse, httpResp, err := c.usersAPI.GetUsers(ctx, publicAddress).Execute()
 	if err != nil {
@@ -54,14 +68,20 @@ func (c *Client) IsRegisteredOffChain(ctx context.Context, publicAddress string)
 	return &isRegistered, nil
 }
 
-// IsRegisteredOnChain checks if the given public address is already registered on the onchain (L1 network).
-func (c *Client) IsRegisteredOnChain(ctx context.Context, contract *contracts.Registration, starkPublicKey string) (*bool, error) {
+/*
+IsRegisteredOnChain checks if the given public address is already registered on the onchain (L1 network).
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param starkPublicKey The stark wallet public address.
+@return true if registered or false. Nil on error.
+*/
+func (c *Client) IsRegisteredOnChain(ctx context.Context, starkPublicKey string) (*bool, error) {
 	starkKey, err := hexutil.DecodeBig(starkPublicKey)
 	if err != nil {
 		return nil, fmt.Errorf("error converting StarkKey to bigint: %v", starkPublicKey)
 	}
 
-	isRegistered, err := contract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
+	isRegistered, err := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	if err != nil {
 		isRegistered = false
 		return &isRegistered, fmt.Errorf("error: %v", err)

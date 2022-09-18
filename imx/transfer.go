@@ -8,7 +8,15 @@ import (
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
 
-// Transfer transfers the request's models.SignableToken from Sender to Receiver.
+/*
+Transfer transfers the request's models.SignableToken from Sender to Receiver.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param l2signer Stark signer to sign the payload hash.
+@param request The request struct with all the params.
+@return CreateTransferResponseV1
+*/
 func (c *Client) Transfer(
 	ctx context.Context,
 	l1signer L1Signer,
@@ -46,7 +54,15 @@ func (c *Client) Transfer(
 	return response, nil
 }
 
-// BatchNftTransfer performs a bulk transfer of NFTs given an array of models.SignableToken and their receivers.
+/*
+BatchNftTransfer performs a bulk transfer of NFTs given an array of models.SignableToken and their receivers.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param l2signer Stark signer to sign the payload hash.
+@param request The request struct with all the params.
+@return CreateTransferResponse
+*/
 func (c *Client) BatchNftTransfer(
 	ctx context.Context,
 	l1signer L1Signer,

@@ -7,8 +7,16 @@ import (
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
 
-// CreateTrade submits a matched order to the CreateTrade endpoint.
-// https://docs.x.immutable.com/reference#/operations/createTrade
+/*
+CreateTrade submits a matched order to the CreateTrade endpoint.
+https://docs.x.immutable.com/reference#/operations/createTrade
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param l2signer Stark signer to sign the payload hash.
+@param request The request struct with all the params.
+@return CreateTradeResponse
+*/
 func (c *Client) CreateTrade(
 	ctx context.Context,
 	l1signer L1Signer,

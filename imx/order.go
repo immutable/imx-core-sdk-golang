@@ -8,11 +8,20 @@ import (
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
 
-// CreateOrder will list the given asset for sale on the marketplace.
+/*
+CreateOrder will list the given asset for sale on the marketplace.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param l2signer Stark signer to sign the payload hash.
+@param request The request struct with all the params.
+@return CreateOrderResponse
+*/
 func (c *Client) CreateOrder(ctx context.Context,
 	l1signer L1Signer,
 	l2signer L2Signer,
-	request *api.GetSignableOrderRequest) (*api.CreateOrderResponse, error) {
+	request *api.GetSignableOrderRequest,
+) (*api.CreateOrderResponse, error) {
 	ethAddress := l1signer.GetAddress()
 	request.User = ethAddress
 	signableOrder, httpResponse, err := c.ordersAPI.GetSignableOrder(ctx).GetSignableOrderRequestV3(*request).Execute()
@@ -48,7 +57,15 @@ func (c *Client) CreateOrder(ctx context.Context,
 	return createOrderResponse, nil
 }
 
-// CancelOrder will remove the listed asset on marketplace from sale.
+/*
+CancelOrder will remove the listed asset on marketplace from sale.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param l2signer Stark signer to sign the payload hash.
+@param request The request struct with all the params.
+@return CancelOrderResponse
+*/
 func (c *Client) CancelOrder(ctx context.Context,
 	l1signer L1Signer,
 	l2signer L2Signer,

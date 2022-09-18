@@ -14,8 +14,16 @@ import (
 	"github.com/immutable/imx-core-sdk-golang/imx/internal/convert"
 )
 
-// PrepareWithdrawal submits a withdrawal request for ETH, ERC20 and ERC721 tokens to be included in the generation and submission of the next batch.
-// Upon batch confirmation (on-chain state update), the asset is available to be withdrawn by the initial owner / originator of the asset.
+/*
+PrepareWithdrawal submits a withdrawal request for ETH, ERC20 and ERC721 tokens to be included in the generation and submission of the next batch.
+Upon batch confirmation (on-chain state update), the asset is available to be withdrawn by the initial owner/originator of the asset.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param l2signer Stark signer to sign the payload hash.
+@param request The request struct with all the params.
+@return CreateWithdrawalResponse
+*/
 func (c *Client) PrepareWithdrawal(
 	ctx context.Context,
 	l1signer L1Signer,
@@ -80,7 +88,15 @@ func NewERC721Withdrawal(tokenID, tokenAddress string) *ERC721Withdrawal {
 	return &this
 }
 
-// CompleteEthWithdrawal performs the complete withdrawal workflow for ETH
+/*
+CompleteEthWithdrawal performs the complete withdrawal workflow for ETH
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param starkKeyHex Stark key string in hex decimal format.
+@param overrides Optional transaction params that overrides the default values.
+@return Transaction
+*/
 func (c *Client) CompleteEthWithdrawal(
 	ctx context.Context,
 	l1signer L1Signer,
@@ -94,7 +110,15 @@ func (c *Client) CompleteEthWithdrawal(
 	return c.completeFungiblesWithdrawal(ctx, l1signer, starkKeyHex, assetType, overrides)
 }
 
-// CompleteWithdrawal performs the complete withdrawal workflow on ERC20Withdrawal
+/*
+CompleteWithdrawal performs the complete withdrawal workflow for ERC20 tokens.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param starkKeyHex Stark key string in hex decimal format.
+@param overrides Optional transaction params that overrides the default values.
+@return Transaction
+*/
 func (w *ERC20Withdrawal) CompleteWithdrawal(
 	ctx context.Context,
 	c *Client,
@@ -245,7 +269,15 @@ func (c *Client) registerAndWithdrawMintedNft(
 	return tnx, nil
 }
 
-// CompleteWithdrawal performs the completion step of the withdrawal process for ERC721 token.
+/*
+CompleteWithdrawal performs the completion step of the withdrawal process for ERC721 token.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param starkKeyHex Stark key string in hex decimal format.
+@param overrides Optional transaction params that overrides the default values.
+@return Transaction
+*/
 func (w *ERC721Withdrawal) CompleteWithdrawal(
 	ctx context.Context,
 	c *Client,

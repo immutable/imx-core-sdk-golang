@@ -15,6 +15,7 @@ var curve *caigo.StarkCurve
 
 // GenerateKey generates a random key that can be used to create StarkSigner.
 // On creation save this key for future usage as this key will be required to reuse your stark signer.
+// @return Randomly generated private key.
 func GenerateKey() (*big.Int, error) {
 	if curve == nil {
 		var err error

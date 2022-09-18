@@ -36,7 +36,14 @@ type UnsignedMintRequest struct {
 	AuthSignature   string    `json:"auth_signature" validate:"required"`
 }
 
-// Mint assists in minting tokens to the given imx user.
+/*
+Mint assists in minting tokens to the given imx user.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param unsignedMintRequest An array to UnsignedMintRequests to mint.
+@return MintTokensResponse
+*/
 func (c *Client) Mint(
 	ctx context.Context,
 	l1signer L1Signer,
