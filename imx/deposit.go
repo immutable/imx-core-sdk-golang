@@ -15,6 +15,13 @@ import (
 	"github.com/immutable/imx-core-sdk-golang/imx/internal/convert"
 )
 
+/*
+	wei  = Wei(1)
+	gwei = Wei(1000000000)
+	eth  = Wei(1000000000000000000)
+*/
+type Wei = uint64
+
 type TokenDeposit interface {
 	Deposit(ctx context.Context, c *Client, l1signer L1Signer, overrides *bind.TransactOpts) (*types.Transaction, error)
 }
@@ -37,16 +44,16 @@ type ERC721Deposit struct {
 }
 
 // NewETHDeposit instantiates a new ETHDeposit object with the given amount.
-func NewETHDeposit(amountInWei string) *ETHDeposit {
+func NewETHDeposit(amount Wei) *ETHDeposit {
 	this := ETHDeposit{}
-	this.Amount = amountInWei
+	this.Amount = strconv.FormatUint(amount, 10)
 	return &this
 }
 
 // NewERC20Deposit instantiates a new ERC20Deposit object with given amount and tokenAddress.
-func NewERC20Deposit(amount, tokenAddress string) *ERC20Deposit {
+func NewERC20Deposit(amount Wei, tokenAddress string) *ERC20Deposit {
 	this := ERC20Deposit{}
-	this.Amount = amount
+	this.Amount = strconv.FormatUint(amount, 10)
 	this.TokenAddress = strings.ToLower(tokenAddress)
 	return &this
 }
@@ -98,11 +105,7 @@ Deposit performs the deposit workflow on the ETHDeposit.
 @return Transaction
 */
 func (d *ETHDeposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer, overrides *bind.TransactOpts) (*types.Transaction, error) {
-	amount, err := convert.ToDenomination(d.Amount, convert.EtherDecimals)
-	if err != nil {
-		return nil, fmt.Errorf("error when parsing deposit amount: %v", err)
-	}
-	signableDepositRequest := newSignableDepositRequestForEth(amount.String(), l1signer.GetAddress())
+	signableDepositRequest := newSignableDepositRequestForEth(d.Amount, l1signer.GetAddress())
 	signableDeposit, err := c.getSignableDeposit(ctx, signableDepositRequest)
 	if err != nil {
 		return nil, err
@@ -123,6 +126,10 @@ func (d *ETHDeposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer, 
 	// Above call will return an error user is not registered but this is for on-chain
 	// we should swallow this error to allow the register and deposit flow to execute.
 
+	amount, ok := new(big.Int).SetString(d.Amount, 10)
+	if !ok {
+		return nil, fmt.Errorf("error converting amount to bigint: %v", d.Amount)
+	}
 	if isRegistered {
 		return c.depositEth(ctx, l1signer, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, amount, overrides)
 	}
@@ -336,18 +343,18 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer
 		return nil, NewAPIError(httpResponse, err)
 	}
 
-	decimals, err := strconv.Atoi(token.Decimals)
-	if err != nil {
-		return nil, fmt.Errorf("error parsing token decimals: %v", err)
-	}
-	amount, err := convert.ToDenomination(d.Amount, decimals)
+	// Approve whether an amount of token from an account can be spent by a third-party account
+	opts := c.buildTransactOpts(ctx, l1signer, overrides)
+	ierc20Contract, err := c.newIERC20Contract(ctx, d.TokenAddress)
 	if err != nil {
 		return nil, err
 	}
 
-	// Approve whether an amount of token from an account can be spent by a third-party account
-	opts := c.buildTransactOpts(ctx, l1signer, overrides)
-	ierc20Contract, err := c.newIERC20Contract(ctx, d.TokenAddress)
+	amount, ok := new(big.Int).SetString(d.Amount, 10)
+	if !ok {
+		return nil, fmt.Errorf("error converting amount to bigint: %v", d.Amount)
+	}
+
 	if err != nil {
 		return nil, err
 	}
@@ -356,8 +363,12 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer
 		return nil, err
 	}
 
+	decimals, err := strconv.Atoi(token.Decimals)
+	if err != nil {
+		return nil, fmt.Errorf("error parsing token decimals: %v", err)
+	}
 	// Get signable deposit details
-	signableDepositRequest := newSignableDepositRequestForERC20(amount.String(), d.TokenAddress, l1signer.GetAddress(), decimals)
+	signableDepositRequest := newSignableDepositRequestForERC20(d.Amount, d.TokenAddress, l1signer.GetAddress(), decimals)
 	signableDepositResponse, err := c.getSignableDeposit(ctx, signableDepositRequest)
 	if err != nil {
 		return nil, err
@@ -380,15 +391,15 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer
 	// Above call will return an error user is not registered but this is for on-chain
 	// we should swallow this error to allow the register and deposit flow to execute.
 
-	quantizedAmount, success := new(big.Int).SetString(signableDepositResponse.Amount, 10)
+	depositResponseAmount, success := new(big.Int).SetString(signableDepositResponse.Amount, 10)
 	if !success {
 		return nil, fmt.Errorf("error converting string value '%s' to bigint", signableDepositResponse.Amount)
 	}
 
 	if isRegistered {
-		return c.depositERC20(ctx, l1signer, starkKey, big.NewInt(int64(signableDepositResponse.VaultId)), assetType, quantizedAmount, overrides)
+		return c.depositERC20(ctx, l1signer, starkKey, big.NewInt(int64(signableDepositResponse.VaultId)), assetType, depositResponseAmount, overrides)
 	}
-	return c.registerAndDepositERC20(ctx, l1signer, starkKeyHex, starkKey, big.NewInt(int64(signableDepositResponse.VaultId)), assetType, quantizedAmount, overrides)
+	return c.registerAndDepositERC20(ctx, l1signer, starkKeyHex, starkKey, big.NewInt(int64(signableDepositResponse.VaultId)), assetType, depositResponseAmount, overrides)
 }
 
 func newSignableDepositRequestForERC20(amount, tokenAddress, user string, decimals int) *api.GetSignableDepositRequest {
