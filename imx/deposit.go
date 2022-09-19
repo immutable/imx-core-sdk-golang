@@ -16,9 +16,12 @@ import (
 )
 
 /*
-	wei  = Wei(1)
-	gwei = Wei(1000000000)
-	eth  = Wei(1000000000000000000)
+Wei type used to specify the token amounts.
+
+For example,
+wei  = Wei(1)
+gwei = Wei(1000000000)
+eth  = Wei(1000000000000000000)
 */
 type Wei = uint64
 
