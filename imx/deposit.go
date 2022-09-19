@@ -54,9 +54,9 @@ func NewETHDeposit(amount Wei) *ETHDeposit {
 }
 
 // NewERC20Deposit instantiates a new ERC20Deposit object with given amount and tokenAddress.
-func NewERC20Deposit(amount Wei, tokenAddress string) *ERC20Deposit {
+func NewERC20Deposit(unDecimalisedAmount uint64, tokenAddress string) *ERC20Deposit {
 	this := ERC20Deposit{}
-	this.Amount = strconv.FormatUint(amount, 10)
+	this.Amount = strconv.FormatUint(unDecimalisedAmount, 10)
 	this.TokenAddress = strings.ToLower(tokenAddress)
 	return &this
 }

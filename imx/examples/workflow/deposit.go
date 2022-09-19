@@ -21,11 +21,11 @@ func DemoDepositEthWorkflow(ctx context.Context, c *imx.Client, amount imx.Wei, 
 	log.Println("-------------------------------------------------------")
 }
 
-func DemoDepositERC20Workflow(ctx context.Context, c *imx.Client, amount imx.Wei, tokenAddress string, l1signer imx.L1Signer) {
+func DemoDepositERC20Workflow(ctx context.Context, c *imx.Client, unDecimalisedAmount uint64, tokenAddress string, l1signer imx.L1Signer) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", getCurrentFunctionName())
 
-	transaction, err := imx.NewERC20Deposit(amount, tokenAddress).Deposit(ctx, c, l1signer, nil)
+	transaction, err := imx.NewERC20Deposit(unDecimalisedAmount, tokenAddress).Deposit(ctx, c, l1signer, nil)
 	if err != nil {
 		log.Panicf("error calling deposit workflow: %v", err)
 	}
