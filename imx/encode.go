@@ -64,9 +64,9 @@ func (c *Client) encodedAssetType(
 	encodeAssetRequest := api.EncodeAssetRequest{
 		Token: *encodeAssetRequestToken,
 	}
-	encodedAssetResponse, httpResp, err := c.EncodeAsset(ctx, assetType).EncodeAssetRequest(encodeAssetRequest).Execute()
+	encodedAssetResponse, httpResponse, err := c.EncodeAsset(ctx, assetType).EncodeAssetRequest(encodeAssetRequest).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `Encoding.EncodeAsset`: %v, HTTP response body: %v", err, httpResp.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 
 	encodedAssetType, ok := new(big.Int).SetString(encodedAssetResponse.AssetType, 10)

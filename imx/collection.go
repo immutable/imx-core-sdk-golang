@@ -2,7 +2,6 @@ package imx
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
@@ -30,13 +29,13 @@ func (c *Client) CreateCollection(
 		return nil, err
 	}
 
-	createCollectionResponse, httpResp, err := c.collectionsAPI.CreateCollection(ctx).
+	createCollectionResponse, httpResponse, err := c.collectionsAPI.CreateCollection(ctx).
 		CreateCollectionRequest(*createCollectionRequest).
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
 		Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `CreateCollection`: %v, HTTP response body: %v", err, httpResp.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return createCollectionResponse, nil
 }
@@ -61,13 +60,13 @@ func (c *Client) UpdateCollection(
 		return nil, err
 	}
 
-	createCollectionResponse, httpResp, err := c.collectionsAPI.UpdateCollection(ctx, contractAddress).
+	createCollectionResponse, httpResponse, err := c.collectionsAPI.UpdateCollection(ctx, contractAddress).
 		UpdateCollectionRequest(*updateCollectionRequest).
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
 		Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `UpdateCollection`: %v, HTTP response body: %v", err, httpResp.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return createCollectionResponse, nil
 }
@@ -82,7 +81,7 @@ GetCollection Get details of a collection at the given address
 func (c *Client) GetCollection(ctx context.Context, collectionContractAddress string) (*api.Collection, error) {
 	response, httpResponse, err := c.collectionsAPI.GetCollection(ctx, collectionContractAddress).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the details of a collection: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -106,7 +105,7 @@ ListCollections Get a list of collections
 func (c *Client) ListCollections(req *api.ApiListCollectionsRequest) (*api.ListCollectionsResponse, error) {
 	response, httpResponse, err := c.collectionsAPI.ListCollectionsExecute(*req)
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the list of collections: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -131,7 +130,7 @@ ListCollectionFilters Get a list of collection filters
 func (c *Client) ListCollectionFilters(req *api.ApiListCollectionFiltersRequest) (*api.CollectionFilter, error) {
 	response, httpResponse, err := c.collectionsAPI.ListCollectionFiltersExecute(*req)
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the list of collection Filters: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }

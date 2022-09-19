@@ -2,7 +2,6 @@ package imx
 
 import (
 	"context"
-	"fmt"
 	"strconv"
 
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
@@ -26,7 +25,7 @@ func (c *Client) CreateOrder(ctx context.Context,
 	request.User = ethAddress
 	signableOrder, httpResponse, err := c.ordersAPI.GetSignableOrder(ctx).GetSignableOrderRequestV3(*request).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `OrdersApi.GetSignableOrder`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 
 	ethSignature, starkSignature, err := createSignatures(&signableOrder.SignableMessage, &signableOrder.PayloadHash, l1signer, l2signer)
@@ -52,7 +51,7 @@ func (c *Client) CreateOrder(ctx context.Context,
 			VaultIdSell:         signableOrder.VaultIdSell,
 		}).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `OrdersApi.CreateOrder`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return createOrderResponse, nil
 }
@@ -73,7 +72,7 @@ func (c *Client) CancelOrder(ctx context.Context,
 ) (*api.CancelOrderResponse, error) {
 	signableCancelOrder, httpResponse, err := c.ordersAPI.GetSignableCancelOrder(ctx).GetSignableCancelOrderRequest(request).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `OrdersApi.GetSignableCancelOrder`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 
 	ethSignature, starkSignature, err := createSignatures(&signableCancelOrder.SignableMessage, &signableCancelOrder.PayloadHash, l1signer, l2signer)
@@ -89,7 +88,7 @@ func (c *Client) CancelOrder(ctx context.Context,
 			StarkSignature: starkSignature,
 		}).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `OrdersApi.CancelOrder`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return cancelOrderResponse, nil
 }
@@ -104,7 +103,7 @@ GetOrder Get details of an order with the given ID
 func (c *Client) GetOrder(ctx context.Context, id string) (*api.Order, error) {
 	response, httpResponse, err := c.ordersAPI.GetOrder(ctx, id).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the details of an order: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -118,7 +117,7 @@ ListOrders Gets a list of orders
 func (c *Client) ListOrders(ctx context.Context) (*api.ListOrdersResponse, error) {
 	response, httpResponse, err := c.ordersAPI.ListOrders(ctx).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the orders list: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }

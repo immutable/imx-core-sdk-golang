@@ -2,7 +2,6 @@ package imx
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
@@ -27,7 +26,7 @@ func (c *Client) CreateTrade(
 	request.User = ethAddress
 	signableTrade, httpResponse, err := c.tradesAPI.GetSignableTrade(ctx).GetSignableTradeRequest(request).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `TradesApi.GetSignableTrade`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 
 	ethSignature, starkSignature, err := createSignatures(&signableTrade.SignableMessage, &signableTrade.PayloadHash, l1signer, l2signer)
@@ -55,7 +54,7 @@ func (c *Client) CreateTrade(
 		}).
 		XImxEthAddress(ethAddress).XImxEthSignature(ethSignature).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `TradesApi.CreateTrade`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return createTradeResponse, nil
 }
@@ -70,7 +69,7 @@ GetTrade Get details of a trade with the given ID
 func (c *Client) GetTrade(ctx context.Context, id string) (*api.Trade, error) {
 	response, httpResponse, err := c.tradesAPI.GetTrade(ctx, id).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the details of a trade: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -84,7 +83,7 @@ ListTrades Gets a list of trades
 func (c *Client) ListTrades(ctx context.Context) (*api.ListTradesResponse, error) {
 	response, httpResponse, err := c.tradesAPI.ListTrades(ctx).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the list of trades: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }

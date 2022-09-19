@@ -2,7 +2,6 @@ package imx
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
@@ -27,13 +26,13 @@ func (c *Client) AddMetadataSchemaToCollection(
 		return nil, err
 	}
 
-	successResponse, httpResp, err := c.metadataAPI.AddMetadataSchemaToCollection(ctx, contractAddress).
+	successResponse, httpResponse, err := c.metadataAPI.AddMetadataSchemaToCollection(ctx, contractAddress).
 		AddMetadataSchemaToCollectionRequest(addMetadataSchemaToCollectionRequest).
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
 		Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `AddMetadataSchemaToCollection`: %v, HTTP response body: %v", err, httpResp.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return successResponse, nil
 }
@@ -59,13 +58,13 @@ func (c *Client) UpdateMetadataSchemaByName(
 		return nil, err
 	}
 
-	successResponse, httpResp, err := c.metadataAPI.UpdateMetadataSchemaByName(ctx, contractAddress, metadataSchemaName).
+	successResponse, httpResponse, err := c.metadataAPI.UpdateMetadataSchemaByName(ctx, contractAddress, metadataSchemaName).
 		MetadataSchemaRequest(metadataSchemaRequest).
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
 		Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `UpdateCollection`: %v, HTTP response body: %v", err, httpResp.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return successResponse, nil
 }

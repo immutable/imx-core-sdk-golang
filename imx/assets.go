@@ -2,7 +2,6 @@ package imx
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
@@ -24,7 +23,7 @@ func (c *Client) GetAsset(ctx context.Context, tokenAddress, tokenID string, inc
 
 	response, httpResponse, err := apiGetAssetRequest.Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the details of an asset: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -48,7 +47,7 @@ ListAssets Get a list of assets
 func (c *Client) ListAssets(req *api.ApiListAssetsRequest) (*api.ListAssetsResponse, error) {
 	response, httpResponse, err := c.assetsAPI.ListAssetsExecute(*req)
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the list of assets: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }

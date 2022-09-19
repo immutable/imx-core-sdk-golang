@@ -2,7 +2,6 @@ package imx
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
@@ -32,13 +31,13 @@ func (c *Client) CreateProject(
 	}
 
 	createProjectRequest := api.NewCreateProjectRequest(companyName, contactEmail, projectName)
-	createProjectResponse, httpResp, err := c.projectsAPI.CreateProject(ctx).
+	createProjectResponse, httpResponse, err := c.projectsAPI.CreateProject(ctx).
 		CreateProjectRequest(*createProjectRequest).
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
 		Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `CreateProject`: %v, HTTP response body: %v", err, httpResp.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return createProjectResponse, nil
 }
@@ -62,7 +61,7 @@ func (c *Client) GetProject(ctx context.Context, l1signer L1Signer, id string) (
 		IMXSignature(signature).
 		Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the details of a project: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -104,7 +103,7 @@ func (c *Client) GetProjects(
 
 	response, httpResponse, err := getProjectsRequest.Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the projects info: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }

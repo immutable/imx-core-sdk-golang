@@ -32,9 +32,9 @@ func (c *Client) PrepareWithdrawal(
 ) (*api.CreateWithdrawalResponse, error) {
 	ethAddress := l1signer.GetAddress()
 	request.User = ethAddress
-	signableResponse, httpResp, err := c.withdrawalsAPI.GetSignableWithdrawal(ctx).GetSignableWithdrawalRequest(request).Execute()
+	signableResponse, httpResponse, err := c.withdrawalsAPI.GetSignableWithdrawal(ctx).GetSignableWithdrawalRequest(request).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `Withdrawals.GetSignableWithdrawal`: %v, HTTP response body: %v", err, httpResp.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 
 	ethSignature, starkSignature, err := createSignatures(&signableResponse.SignableMessage, &signableResponse.PayloadHash, l1signer, l2signer)
@@ -51,9 +51,9 @@ func (c *Client) PrepareWithdrawal(
 		VaultId:        signableResponse.VaultId,
 	}
 	apiCreateWithdrawalRequest := c.withdrawalsAPI.CreateWithdrawal(ctx).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature)
-	withdrawalResponse, httpResp, err := apiCreateWithdrawalRequest.CreateWithdrawalRequest(withdrawalRequest).Execute()
+	withdrawalResponse, httpResponse, err := apiCreateWithdrawalRequest.CreateWithdrawalRequest(withdrawalRequest).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `apiCreateWithdrawalRequest.CreateWithdrawalRequest`: %v, HTTP response body: %v", err, httpResp.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return withdrawalResponse, nil
 }
@@ -285,13 +285,13 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 	starkKeyHex string,
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
-	mintableTokenResponse, httpResp, err := c.mintsAPI.GetMintableTokenDetailsByClientTokenId(ctx, w.TokenAddress, w.TokenID).Execute()
+	mintableTokenResponse, httpResponse, err := c.mintsAPI.GetMintableTokenDetailsByClientTokenId(ctx, w.TokenAddress, w.TokenID).Execute()
 	if err != nil {
 		if err.(*runtime.APIError).IsCode(404) {
 			// Token is already minted on L1
 			return w.withdrawMintedNft(ctx, c, l1signer, starkKeyHex, overrides)
 		}
-		return nil, fmt.Errorf("error when calling `clientAPI.MintsApi.GetMintableTokenDetailsByClientTokenId.Execute`: %v, HTTP response body: %v", err, httpResp.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 
 	blueprint := mintableTokenResponse.Blueprint
@@ -375,7 +375,7 @@ GetWithdrawal Get details of a withdrawal with the given ID
 func (c *Client) GetWithdrawal(ctx context.Context, id string) (*api.Withdrawal, error) {
 	response, httpResponse, err := c.withdrawalsAPI.GetWithdrawal(ctx, id).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the details of a withdrawal: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -389,7 +389,7 @@ ListWithdrawals Gets a list of withdrawals
 func (c *Client) ListWithdrawals(ctx context.Context) (*api.ListWithdrawalsResponse, error) {
 	response, httpResponse, err := c.withdrawalsAPI.ListWithdrawals(ctx).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the list of withdrawals: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }

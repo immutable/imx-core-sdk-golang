@@ -2,7 +2,6 @@ package imx
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
@@ -62,7 +61,7 @@ GetToken Get details of a token with the given ID
 func (c *Client) GetToken(ctx context.Context, id string) (*api.TokenDetails, error) {
 	response, httpResponse, err := c.tokensAPI.GetToken(ctx, id).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the details of a token: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -86,7 +85,7 @@ ListTokens Gets a list of tokens
 func (c *Client) ListTokens(req *api.ApiListTokensRequest) (*api.ListTokensResponse, error) {
 	response, httpResponse, err := c.tokensAPI.ListTokensExecute(*req)
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the list of tokens: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }

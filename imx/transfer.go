@@ -25,7 +25,7 @@ func (c *Client) Transfer(
 ) (*api.CreateTransferResponseV1, error) {
 	data, httpResponse, err := c.transfersAPI.GetSignableTransferV1(ctx).GetSignableTransferRequest(request).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `TransfersApi.GetSignableTransferV1`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 
 	ethSignature, starkSignature, err := createSignatures(&data.SignableMessage, &data.PayloadHash, l1signer, l2signer)
@@ -49,7 +49,7 @@ func (c *Client) Transfer(
 		XImxEthAddress(ethAddress).
 		XImxEthSignature(ethSignature).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `TransfersApi.CreateTransferV1`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -71,7 +71,7 @@ func (c *Client) BatchNftTransfer(
 ) (*api.CreateTransferResponse, error) {
 	data, httpResponse, err := c.transfersAPI.GetSignableTransfer(ctx).GetSignableTransferRequestV2(request).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `TransfersApi.GetSignableTransfer`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 
 	ethSignatureBytes, err := l1signer.SignMessage(data.SignableMessage)
@@ -95,7 +95,7 @@ func (c *Client) BatchNftTransfer(
 		XImxEthAddress(ethAddress).
 		XImxEthSignature(ethSignature).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `TransfersApi.Transfer`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -110,7 +110,7 @@ GetTransfer Get details of a transfer with the given ID
 func (c *Client) GetTransfer(ctx context.Context, id string) (*api.Transfer, error) {
 	response, httpResponse, err := c.transfersAPI.GetTransfer(ctx, id).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the details of a transfer: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -124,13 +124,16 @@ ListTransfers Gets a list of transfers
 func (c *Client) ListTransfers(ctx context.Context) (*api.ListTransfersResponse, error) {
 	response, httpResponse, err := c.transfersAPI.ListTransfers(ctx).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the list of transfers: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }
 
 // getSignedTransferRequests iterates through signableTransfers, signs each payloadHash and returns an array of pointers to models.TransferRequest.
-func getSignedTransferRequests(signableTransfers []api.SignableTransferResponseDetails, l2signer L2Signer) ([]api.TransferRequest, error) {
+func getSignedTransferRequests(
+	signableTransfers []api.SignableTransferResponseDetails,
+	l2signer L2Signer,
+) ([]api.TransferRequest, error) {
 	mapped := make([]api.TransferRequest, len(signableTransfers))
 	for i, transfer := range signableTransfers {
 		starkSignature, err := l2signer.SignMessage(transfer.PayloadHash)

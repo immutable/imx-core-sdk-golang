@@ -102,9 +102,9 @@ func (c *Client) Mint(
 		}
 	}
 
-	mintTokensResponse, httpResp, err := c.mintsAPI.MintTokens(ctx).MintTokensRequestV2(mintRequest).Execute()
+	mintTokensResponse, httpResponse, err := c.mintsAPI.MintTokens(ctx).MintTokensRequestV2(mintRequest).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `api.Mints.MintTokens`: %v, HTTP response body: %v", err, httpResp.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return mintTokensResponse, nil
 }
@@ -119,7 +119,7 @@ GetMint Get details of a mint with the given ID
 func (c *Client) GetMint(ctx context.Context, id string) (*api.Mint, error) {
 	response, httpResponse, err := c.mintsAPI.GetMint(ctx, id).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the details of mint: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -133,7 +133,7 @@ ListMints Gets a list of mints
 func (c *Client) ListMints(ctx context.Context) (*api.ListMintsResponse, error) {
 	response, httpResponse, err := c.mintsAPI.ListMints(ctx).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error in getting the mints list: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }
