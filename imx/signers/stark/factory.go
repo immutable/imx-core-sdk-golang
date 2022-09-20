@@ -56,14 +56,14 @@ func hashKeyWithIndex(key *big.Int, index byte) *big.Int {
 }
 
 /*
- This function receives a key seed and produces an appropriate StarkEx key from a uniform
- distribution.
- Although it is possible to define a StarkEx key as a residue between the StarkEx EC order and a
- random 256bit digest value, the result would be a biased key. In order to prevent this bias, we
- deterministically search (by applying more hashes, AKA grinding) for a value lower than the largest
- 256bit multiple of StarkEx EC order.
+grind function receives a key seed and produces an appropriate StarkEx key from a uniform distribution.
 
- https://github.com/starkware-libs/starkware-crypto-utils/blob/dev/src/js/key_derivation.js#L119
+Although it is possible to define a StarkEx key as a residue between the StarkEx EC order and a
+random 256bit digest value, the result would be a biased key. In order to prevent this bias, we
+deterministically search (by applying more hashes, AKA grinding) for a value lower than the largest
+256bit multiple of StarkEx EC order.
+
+https://github.com/starkware-libs/starkware-crypto-utils/blob/dev/src/js/key_derivation.js#L119
 */
 func grind(key *big.Int) *big.Int {
 	secpOrder, _ := new(big.Int).SetString("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141", 16)
