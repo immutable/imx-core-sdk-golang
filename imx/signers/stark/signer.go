@@ -4,8 +4,6 @@ package stark
 import (
 	"fmt"
 	"math/big"
-
-	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 // StarkSigner implements L2Signer interface.
@@ -44,10 +42,11 @@ func (base *Signer) SignMessage(message string) (string, error) {
 	if !has0xPrefix(message) {
 		message = "0x" + message
 	}
-	hash, err := hexutil.DecodeBig(message)
-	if err != nil {
-		return "", err
+	hash, ok := new(big.Int).SetString(message, 0)
+	if !ok {
+		return "", fmt.Errorf("failed to convert message to big.Int")
 	}
+
 	r, s, err := curve.Sign(hash, base.privateKey)
 	if err != nil {
 		return "", err
@@ -56,20 +55,23 @@ func (base *Signer) SignMessage(message string) (string, error) {
 }
 
 // VerifySignature validates the given signature is signed by the requiredSigner or not.
-func (base *Signer) VerifySignature(hash *big.Int, signature, requiredSigner string) error {
+func (base *Signer) VerifySignature(hash *big.Int, signature, signersPublicKey string) error {
 	// All signatures must be 130 characters hex encoded 0x + 64 bytes with 2 characters each
 	requiredSigLength := len("0x") + 64*2
 	if len(signature) != requiredSigLength {
 		return fmt.Errorf("invalid signature")
 	}
 
-	pubKey, _ := hexutil.DecodeBig(requiredSigner)
+	pubKey, ok := new(big.Int).SetString(signersPublicKey, 0)
+	if !ok {
+		return fmt.Errorf("failed to convert signersPublicKey to big.Int")
+	}
 	y := curve.GetYCoordinate(pubKey)
 
 	r, s := rsFromSig(signature)
 
 	// verification
-	ok := curve.Verify(hash, r, s, pubKey, y)
+	ok = curve.Verify(hash, r, s, pubKey, y)
 	if ok {
 		return nil
 	}
