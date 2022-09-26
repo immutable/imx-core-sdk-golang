@@ -125,13 +125,23 @@ func (c *Client) GetMint(ctx context.Context, id string) (*api.Mint, error) {
 }
 
 /*
-ListMints Gets a list of mints
+NewListMintsRequest Creates a new ApiListMintsRequest object with required params.
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@return ApiListMintsRequest
+*/
+func (c *Client) NewListMintsRequest(ctx context.Context) api.ApiListMintsRequest {
+	return c.mintsAPI.ListMints(ctx)
+}
+
+/*
+ListMints Gets a list of mints
+
+@param req the api request struct with all params populated to make the request
 @return ListMintsResponse
 */
-func (c *Client) ListMints(ctx context.Context) (*api.ListMintsResponse, error) {
-	response, httpResponse, err := c.mintsAPI.ListMints(ctx).Execute()
+func (c *Client) ListMints(req *api.ApiListMintsRequest) (*api.ListMintsResponse, error) {
+	response, httpResponse, err := c.mintsAPI.ListMintsExecute(*req)
 	if err != nil {
 		return nil, NewAPIError(httpResponse, err)
 	}

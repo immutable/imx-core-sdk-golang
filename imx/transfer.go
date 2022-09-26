@@ -116,13 +116,23 @@ func (c *Client) GetTransfer(ctx context.Context, id string) (*api.Transfer, err
 }
 
 /*
-ListTransfers Gets a list of transfers
+NewListTransfersRequest Creates a new ApiListTransfersRequest object with required params.
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@return ApiListTransfersRequest
+*/
+func (c *Client) NewListTransfersRequest(ctx context.Context) api.ApiListTransfersRequest {
+	return c.transfersAPI.ListTransfers(ctx)
+}
+
+/*
+ListTransfers Gets a list of transfers
+
+@param req the api request struct with all params populated to make the request
 @return ListTransfersResponse
 */
-func (c *Client) ListTransfers(ctx context.Context) (*api.ListTransfersResponse, error) {
-	response, httpResponse, err := c.transfersAPI.ListTransfers(ctx).Execute()
+func (c *Client) ListTransfers(req *api.ApiListTransfersRequest) (*api.ListTransfersResponse, error) {
+	response, httpResponse, err := c.transfersAPI.ListTransfersExecute(*req)
 	if err != nil {
 		return nil, NewAPIError(httpResponse, err)
 	}

@@ -381,13 +381,23 @@ func (c *Client) GetWithdrawal(ctx context.Context, id string) (*api.Withdrawal,
 }
 
 /*
-ListWithdrawals Gets a list of withdrawals
+NewListWithdrawalsRequest Creates a new ApiListWithdrawalsRequest object with required params.
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@return ApiListWithdrawalsRequest
+*/
+func (c *Client) NewListWithdrawalsRequest(ctx context.Context) api.ApiListWithdrawalsRequest {
+	return c.withdrawalsAPI.ListWithdrawals(ctx)
+}
+
+/*
+ListWithdrawals Gets a list of withdrawals
+
+@param req the api request struct with all params populated to make the request
 @return ListWithdrawalsResponse
 */
-func (c *Client) ListWithdrawals(ctx context.Context) (*api.ListWithdrawalsResponse, error) {
-	response, httpResponse, err := c.withdrawalsAPI.ListWithdrawals(ctx).Execute()
+func (c *Client) ListWithdrawals(req *api.ApiListWithdrawalsRequest) (*api.ListWithdrawalsResponse, error) {
+	response, httpResponse, err := c.withdrawalsAPI.ListWithdrawalsExecute(*req)
 	if err != nil {
 		return nil, NewAPIError(httpResponse, err)
 	}

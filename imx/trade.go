@@ -75,13 +75,23 @@ func (c *Client) GetTrade(ctx context.Context, id string) (*api.Trade, error) {
 }
 
 /*
-ListTrades Gets a list of trades
+NewListTradesRequest Creates a new ApiListTradesRequest object with required params.
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@return ApiListTradesRequest
+*/
+func (c *Client) NewListTradesRequest(ctx context.Context) api.ApiListTradesRequest {
+	return c.tradesAPI.ListTrades(ctx)
+}
+
+/*
+ListTrades Gets a list of trades
+
+@param req the api request struct with all params populated to make the request
 @return ListTradesResponse
 */
-func (c *Client) ListTrades(ctx context.Context) (*api.ListTradesResponse, error) {
-	response, httpResponse, err := c.tradesAPI.ListTrades(ctx).Execute()
+func (c *Client) ListTrades(req *api.ApiListTradesRequest) (*api.ListTradesResponse, error) {
+	response, httpResponse, err := c.tradesAPI.ListTradesExecute(*req)
 	if err != nil {
 		return nil, NewAPIError(httpResponse, err)
 	}
