@@ -1,18 +1,20 @@
-package workflow
+package main
 
 import (
-	"context"
 	"log"
 
 	"github.com/immutable/imx-core-sdk-golang/imx"
+	"github.com/immutable/imx-core-sdk-golang/imx/examples/common"
 )
 
-func DemoMintingTokens(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, tokenID, tokenAddress string) {
-	log.Println("-------------------------------------------------------")
-	log.Printf("Running %s", getCurrentFunctionName())
+func main() {
+	ctx, envs, c, l1signer, _ := common.CommonInitialise()
 
+	tokenID := envs["MINT_TOKEN_ID"]
+	tokenAddress := envs["MINT_TOKEN_ADDRESS"]
 	ethAddress := l1signer.GetAddress()
 	blueprint := "123"
+
 	var royaltyPercentage float32 = 1
 	var mintableToken = imx.UnsignedMintRequest{
 		ContractAddress: tokenAddress,
@@ -49,12 +51,9 @@ func DemoMintingTokens(ctx context.Context, c *imx.Client, l1signer imx.L1Signer
 		log.Panicf("error in minting.MintTokensWorkflow: %v", err)
 	}
 
-	mintTokensResponseStr, err := prettyStruct(mintTokensResponse)
+	mintTokensResponseStr, err := common.PrettyStruct(mintTokensResponse)
 	if err != nil {
 		log.Panic(err)
 	}
 	log.Printf("Mint Tokens response:\n%v\n", mintTokensResponseStr)
-
-	log.Printf("Running %s completed.", getCurrentFunctionName())
-	log.Println("-------------------------------------------------------")
 }

@@ -1,4 +1,4 @@
-package workflow
+package main
 
 import (
 	"context"
@@ -7,11 +7,20 @@ import (
 
 	"github.com/immutable/imx-core-sdk-golang/imx"
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
+	"github.com/immutable/imx-core-sdk-golang/imx/examples/common"
 )
+
+func main() {
+	ctx, _, c, l1signer, l2signer := common.CommonInitialise()
+
+	// Transfer workflow demo
+	DemoTransferWorkflow(ctx, c, l1signer, l2signer)
+	DemoBatchNftTransferWorkflow(ctx, c, l1signer, l2signer)
+}
 
 func DemoTransferWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, l2signer imx.L2Signer) {
 	log.Println("-------------------------------------------------------")
-	log.Printf("Running %s", getCurrentFunctionName())
+	log.Printf("Running %s", common.GetCurrentFunctionName())
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
 	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
@@ -32,13 +41,13 @@ func DemoTransferWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Sig
 	val, _ := json.MarshalIndent(response, "", "  ")
 	log.Printf("response:\n%s\n", val)
 
-	log.Printf("Running %s completed.", getCurrentFunctionName())
+	log.Printf("Running %s completed.", common.GetCurrentFunctionName())
 	log.Println("-------------------------------------------------------")
 }
 
 func DemoBatchNftTransferWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, l2signer imx.L2Signer) {
 	log.Println("-------------------------------------------------------")
-	log.Printf("Running %s", getCurrentFunctionName())
+	log.Printf("Running %s", common.GetCurrentFunctionName())
 
 	// To declare tokens, use tokens.NewSignableTokenERC721 method.
 	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
@@ -74,6 +83,6 @@ func DemoBatchNftTransferWorkflow(ctx context.Context, c *imx.Client, l1signer i
 	val, _ := json.MarshalIndent(response, "", "  ")
 	log.Printf("response:\n%s\n", val)
 
-	log.Printf("Running %s completed.", getCurrentFunctionName())
+	log.Printf("Running %s completed.", common.GetCurrentFunctionName())
 	log.Println("-------------------------------------------------------")
 }
