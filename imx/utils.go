@@ -2,6 +2,8 @@ package imx
 
 import (
 	"fmt"
+	"strconv"
+	"time"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 )
@@ -20,4 +22,16 @@ func createSignatures(signableMessage, payloadHash *string, l1signer L1Signer, l
 		return "", "", fmt.Errorf("error generating StarkSignature from PayloadHash: %v", err)
 	}
 	return ethSignature, starkSignature, nil
+}
+
+// getProjectOwnerAuthorisationHeaders gets the Unix epoch timestamp and its signature signed with given ETH key.
+// It is required for performing some of the administrative level tasks.
+func getProjectOwnerAuthorisationHeaders(l1signer L1Signer) (timestamp, signature string, err error) {
+	timestamp = strconv.FormatInt(time.Now().Unix(), 10)
+	signedTimestamp, err := l1signer.SignMessage(timestamp)
+	if err != nil {
+		return "", "", err
+	}
+	signature = hexutil.Encode(signedTimestamp)
+	return timestamp, signature, nil
 }

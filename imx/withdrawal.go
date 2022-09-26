@@ -14,8 +14,16 @@ import (
 	"github.com/immutable/imx-core-sdk-golang/imx/internal/convert"
 )
 
-// PrepareWithdrawal submits a withdrawal request for ETH, ERC20 and ERC721 tokens to be included in the generation and submission of the next batch.
-// Upon batch confirmation (on-chain state update), the asset is available to be withdrawn by the initial owner / originator of the asset.
+/*
+PrepareWithdrawal submits a withdrawal request for ETH, ERC20 and ERC721 tokens to be included in the generation and submission of the next batch.
+Upon batch confirmation (on-chain state update), the asset is available to be withdrawn by the initial owner/originator of the asset.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param l2signer Stark signer to sign the payload hash.
+@param request The request struct with all the params.
+@return CreateWithdrawalResponse
+*/
 func (c *Client) PrepareWithdrawal(
 	ctx context.Context,
 	l1signer L1Signer,
@@ -24,9 +32,9 @@ func (c *Client) PrepareWithdrawal(
 ) (*api.CreateWithdrawalResponse, error) {
 	ethAddress := l1signer.GetAddress()
 	request.User = ethAddress
-	signableResponse, httpResp, err := c.GetSignableWithdrawal(ctx).GetSignableWithdrawalRequest(request).Execute()
+	signableResponse, httpResponse, err := c.withdrawalsAPI.GetSignableWithdrawal(ctx).GetSignableWithdrawalRequest(request).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `Withdrawals.GetSignableWithdrawal`: %v, HTTP response body: %v", err, httpResp.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 
 	ethSignature, starkSignature, err := createSignatures(&signableResponse.SignableMessage, &signableResponse.PayloadHash, l1signer, l2signer)
@@ -42,10 +50,10 @@ func (c *Client) PrepareWithdrawal(
 		StarkSignature: starkSignature,
 		VaultId:        signableResponse.VaultId,
 	}
-	apiCreateWithdrawalRequest := c.CreateWithdrawal(ctx).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature)
-	withdrawalResponse, httpResp, err := apiCreateWithdrawalRequest.CreateWithdrawalRequest(withdrawalRequest).Execute()
+	apiCreateWithdrawalRequest := c.withdrawalsAPI.CreateWithdrawal(ctx).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature)
+	withdrawalResponse, httpResponse, err := apiCreateWithdrawalRequest.CreateWithdrawalRequest(withdrawalRequest).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `apiCreateWithdrawalRequest.CreateWithdrawalRequest`: %v, HTTP response body: %v", err, httpResp.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return withdrawalResponse, nil
 }
@@ -80,7 +88,15 @@ func NewERC721Withdrawal(tokenID, tokenAddress string) *ERC721Withdrawal {
 	return &this
 }
 
-// CompleteEthWithdrawal performs the complete withdrawal workflow for ETH
+/*
+CompleteEthWithdrawal performs the complete withdrawal workflow for ETH
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param starkKeyHex Stark key string in hex decimal format.
+@param overrides Optional transaction params that overrides the default values.
+@return Transaction
+*/
 func (c *Client) CompleteEthWithdrawal(
 	ctx context.Context,
 	l1signer L1Signer,
@@ -94,7 +110,15 @@ func (c *Client) CompleteEthWithdrawal(
 	return c.completeFungiblesWithdrawal(ctx, l1signer, starkKeyHex, assetType, overrides)
 }
 
-// CompleteWithdrawal performs the complete withdrawal workflow on ERC20Withdrawal
+/*
+CompleteWithdrawal performs the complete withdrawal workflow for ERC20 tokens.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param starkKeyHex Stark key string in hex decimal format.
+@param overrides Optional transaction params that overrides the default values.
+@return Transaction
+*/
 func (w *ERC20Withdrawal) CompleteWithdrawal(
 	ctx context.Context,
 	c *Client,
@@ -121,7 +145,7 @@ func (c *Client) completeFungiblesWithdrawal(
 		return nil, fmt.Errorf("error converting StarkKeyHex to bigint: %s", starkKeyHex)
 	}
 
-	isRegistered, _ := c.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
+	isRegistered, _ := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 
 	if isRegistered {
 		return c.withdrawFungibles(ctx, l1signer, starkKey, assetType, overrides)
@@ -136,7 +160,7 @@ func (c *Client) withdrawFungibles(
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	opts := c.buildTransactOpts(ctx, l1signer, overrides)
-	tnx, err := c.CoreContract.Withdraw(opts, starkKey, assetType)
+	tnx, err := c.coreContract.Withdraw(opts, starkKey, assetType)
 	if err != nil {
 		return nil, err
 	}
@@ -152,7 +176,7 @@ func (c *Client) registerAndWithdrawFungibles(
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	etherKey := l1signer.GetAddress()
-	signableRegistration, err := c.GetSignableRegistrationOnchain(ctx, etherKey, starkKeyHex)
+	signableRegistration, err := c.getSignableRegistrationOnchain(ctx, etherKey, starkKeyHex)
 	if err != nil {
 		return nil, err
 	}
@@ -163,7 +187,7 @@ func (c *Client) registerAndWithdrawFungibles(
 	if err != nil {
 		return nil, err
 	}
-	transaction, err := c.RegistrationContract.RegisterAndWithdraw(opts, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType)
+	transaction, err := c.registrationContract.RegisterAndWithdraw(opts, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType)
 	if err != nil {
 		return nil, err
 	}
@@ -187,9 +211,9 @@ func (w *ERC721Withdrawal) withdrawMintedNft(
 		return nil, fmt.Errorf("error converting StarkKeyHex to bigint: %s", starkKeyHex)
 	}
 
-	isRegistered, err := c.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
+	isRegistered, err := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	if err != nil {
-		return nil, fmt.Errorf("error when calling 'ethClient.RegistrationContract.IsRegistered': %v", err)
+		return nil, fmt.Errorf("error when calling 'ethClient.registrationContract.IsRegistered': %v", err)
 	}
 
 	tokenID, ok := new(big.Int).SetString(w.TokenID, 10)
@@ -210,7 +234,7 @@ func (c *Client) withdrawMintedNft(
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	opts := c.buildTransactOpts(ctx, l1signer, overrides)
-	tnx, err := c.CoreContract.WithdrawNft(opts, starkKey, assetType, tokenID)
+	tnx, err := c.coreContract.WithdrawNft(opts, starkKey, assetType, tokenID)
 	if err != nil {
 		return nil, err
 	}
@@ -227,7 +251,7 @@ func (c *Client) registerAndWithdrawMintedNft(
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	etherKey := l1signer.GetAddress()
-	signableRegistration, err := c.GetSignableRegistrationOnchain(ctx, etherKey, starkKeyHex)
+	signableRegistration, err := c.getSignableRegistrationOnchain(ctx, etherKey, starkKeyHex)
 	if err != nil {
 		return nil, err
 	}
@@ -238,14 +262,22 @@ func (c *Client) registerAndWithdrawMintedNft(
 	if err != nil {
 		return nil, err
 	}
-	tnx, err := c.RegistrationContract.RegisterAndWithdrawNft(opts, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType, tokenID)
+	tnx, err := c.registrationContract.RegisterAndWithdrawNft(opts, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType, tokenID)
 	if err != nil {
 		return nil, err
 	}
 	return tnx, nil
 }
 
-// CompleteWithdrawal performs the completion step of the withdrawal process for ERC721 token.
+/*
+CompleteWithdrawal performs the completion step of the withdrawal process for ERC721 token.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param starkKeyHex Stark key string in hex decimal format.
+@param overrides Optional transaction params that overrides the default values.
+@return Transaction
+*/
 func (w *ERC721Withdrawal) CompleteWithdrawal(
 	ctx context.Context,
 	c *Client,
@@ -253,13 +285,13 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 	starkKeyHex string,
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
-	mintableTokenResponse, httpResp, err := c.GetMintableTokenDetailsByClientTokenId(ctx, w.TokenAddress, w.TokenID).Execute()
+	mintableTokenResponse, httpResponse, err := c.mintsAPI.GetMintableTokenDetailsByClientTokenId(ctx, w.TokenAddress, w.TokenID).Execute()
 	if err != nil {
 		if err.(*runtime.APIError).IsCode(404) {
 			// Token is already minted on L1
 			return w.withdrawMintedNft(ctx, c, l1signer, starkKeyHex, overrides)
 		}
-		return nil, fmt.Errorf("error when calling `clientAPI.MintsApi.GetMintableTokenDetailsByClientTokenId.Execute`: %v, HTTP response body: %v", err, httpResp.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 
 	blueprint := mintableTokenResponse.Blueprint
@@ -274,7 +306,7 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 		return nil, fmt.Errorf("error converting StarkKeyHex to bigint: %s", starkKeyHex)
 	}
 
-	isRegistered, _ := c.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
+	isRegistered, _ := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	// Note: if we reach here, it means we are registered off-chain.
 	// Above call will return an error user is not registered but this is for on-chain
 	// we should swallow this error to allow the register and withdraw flow to execute.
@@ -293,7 +325,7 @@ func (c *Client) withdrawAndMintNft(
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	opts := c.buildTransactOpts(ctx, l1signer, overrides)
-	tnx, err := c.CoreContract.WithdrawAndMint(opts, starkKey, assetType, mintingBlob)
+	tnx, err := c.coreContract.WithdrawAndMint(opts, starkKey, assetType, mintingBlob)
 	if err != nil {
 		return nil, err
 	}
@@ -310,7 +342,7 @@ func (c *Client) registerAndWithdrawAndMintNft(
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	etherKey := l1signer.GetAddress()
-	signableRegistration, err := c.GetSignableRegistrationOnchain(ctx, etherKey, starkKeyHex)
+	signableRegistration, err := c.getSignableRegistrationOnchain(ctx, etherKey, starkKeyHex)
 	if err != nil {
 		return nil, err
 	}
@@ -322,7 +354,7 @@ func (c *Client) registerAndWithdrawAndMintNft(
 		return nil, err
 	}
 
-	tnx, err := c.RegistrationContract.RegsiterAndWithdrawAndMint(opts, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType, mintingBlob)
+	tnx, err := c.registrationContract.RegsiterAndWithdrawAndMint(opts, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType, mintingBlob)
 	if err != nil {
 		return nil, err
 	}
@@ -331,4 +363,33 @@ func (c *Client) registerAndWithdrawAndMintNft(
 
 func getMintingBlob(tokenID, blueprint string) []byte {
 	return []byte(fmt.Sprintf("{%s}:{%s}", tokenID, blueprint))
+}
+
+/*
+GetWithdrawal Get details of a withdrawal with the given ID
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param id Withdrawal ID
+@return Withdrawal
+*/
+func (c *Client) GetWithdrawal(ctx context.Context, id string) (*api.Withdrawal, error) {
+	response, httpResponse, err := c.withdrawalsAPI.GetWithdrawal(ctx, id).Execute()
+	if err != nil {
+		return nil, NewAPIError(httpResponse, err)
+	}
+	return response, nil
+}
+
+/*
+ListWithdrawals Gets a list of withdrawals
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@return ListWithdrawalsResponse
+*/
+func (c *Client) ListWithdrawals(ctx context.Context) (*api.ListWithdrawalsResponse, error) {
+	response, httpResponse, err := c.withdrawalsAPI.ListWithdrawals(ctx).Execute()
+	if err != nil {
+		return nil, NewAPIError(httpResponse, err)
+	}
+	return response, nil
 }

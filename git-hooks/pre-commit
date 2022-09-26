@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Note: For instructions regarding installing golangci-lint, see https://golangci-lint.run/usage/install/#local-installation
+
+golangci-lint run --tests=0 ./...

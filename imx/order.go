@@ -2,22 +2,30 @@ package imx
 
 import (
 	"context"
-	"fmt"
 	"strconv"
 
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
 
-// CreateOrder will list the given asset for sale on the marketplace.
+/*
+CreateOrder will list the given asset for sale on the marketplace.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param l2signer Stark signer to sign the payload hash.
+@param request The request struct with all the params.
+@return CreateOrderResponse
+*/
 func (c *Client) CreateOrder(ctx context.Context,
 	l1signer L1Signer,
 	l2signer L2Signer,
-	request *api.GetSignableOrderRequest) (*api.CreateOrderResponse, error) {
+	request *api.GetSignableOrderRequest,
+) (*api.CreateOrderResponse, error) {
 	ethAddress := l1signer.GetAddress()
 	request.User = ethAddress
-	signableOrder, httpResponse, err := c.GetSignableOrder(ctx).GetSignableOrderRequestV3(*request).Execute()
+	signableOrder, httpResponse, err := c.ordersAPI.GetSignableOrder(ctx).GetSignableOrderRequestV3(*request).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `OrdersApi.GetSignableOrder`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 
 	ethSignature, starkSignature, err := createSignatures(&signableOrder.SignableMessage, &signableOrder.PayloadHash, l1signer, l2signer)
@@ -26,7 +34,7 @@ func (c *Client) CreateOrder(ctx context.Context,
 	}
 
 	includeFees := true
-	createOrderResponse, httpResponse, err := c.OrdersApi.CreateOrder(ctx).
+	createOrderResponse, httpResponse, err := c.ordersAPI.CreateOrder(ctx).
 		CreateOrderRequest(api.CreateOrderRequest{
 			AmountBuy: signableOrder.AmountBuy, // The amount (listing price) should be in Wei for Eth tokens,
 			// see https://docs.starkware.co/starkex-v4/starkex-deep-dive/starkex-specific-concepts and https://eth-converter.com/
@@ -43,20 +51,28 @@ func (c *Client) CreateOrder(ctx context.Context,
 			VaultIdSell:         signableOrder.VaultIdSell,
 		}).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `OrdersApi.CreateOrder`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return createOrderResponse, nil
 }
 
-// CancelOrder will remove the listed asset on marketplace from sale.
+/*
+CancelOrder will remove the listed asset on marketplace from sale.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param l2signer Stark signer to sign the payload hash.
+@param request The request struct with all the params.
+@return CancelOrderResponse
+*/
 func (c *Client) CancelOrder(ctx context.Context,
 	l1signer L1Signer,
 	l2signer L2Signer,
 	request api.GetSignableCancelOrderRequest,
 ) (*api.CancelOrderResponse, error) {
-	signableCancelOrder, httpResponse, err := c.GetSignableCancelOrder(ctx).GetSignableCancelOrderRequest(request).Execute()
+	signableCancelOrder, httpResponse, err := c.ordersAPI.GetSignableCancelOrder(ctx).GetSignableCancelOrderRequest(request).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `OrdersApi.GetSignableCancelOrder`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 
 	ethSignature, starkSignature, err := createSignatures(&signableCancelOrder.SignableMessage, &signableCancelOrder.PayloadHash, l1signer, l2signer)
@@ -66,13 +82,42 @@ func (c *Client) CancelOrder(ctx context.Context,
 
 	ethAddress := l1signer.GetAddress()
 	orderID := strconv.FormatInt(int64(request.OrderId), 10)
-	cancelOrderResponse, httpResponse, err := c.OrdersApi.CancelOrder(ctx, orderID).
+	cancelOrderResponse, httpResponse, err := c.ordersAPI.CancelOrder(ctx, orderID).
 		CancelOrderRequest(api.CancelOrderRequest{
 			OrderId:        request.OrderId,
 			StarkSignature: starkSignature,
 		}).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `OrdersApi.CancelOrder`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return cancelOrderResponse, nil
+}
+
+/*
+GetOrder Get details of an order with the given ID
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param id Order ID
+@return Order
+*/
+func (c *Client) GetOrder(ctx context.Context, id string) (*api.Order, error) {
+	response, httpResponse, err := c.ordersAPI.GetOrder(ctx, id).Execute()
+	if err != nil {
+		return nil, NewAPIError(httpResponse, err)
+	}
+	return response, nil
+}
+
+/*
+ListOrders Gets a list of orders
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@return ListOrdersResponse
+*/
+func (c *Client) ListOrders(ctx context.Context) (*api.ListOrdersResponse, error) {
+	response, httpResponse, err := c.ordersAPI.ListOrders(ctx).Execute()
+	if err != nil {
+		return nil, NewAPIError(httpResponse, err)
+	}
+	return response, nil
 }

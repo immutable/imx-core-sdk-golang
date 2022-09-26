@@ -47,22 +47,22 @@ type Environment struct {
 type Client struct {
 	Environment          Environment
 	EthClient            *ethclient.Client
-	RegistrationContract *contracts.Registration
-	CoreContract         *contracts.Core
-	api.TradesApi
-	api.OrdersApi
-	api.TransfersApi
-	api.DepositsApi
-	api.WithdrawalsApi
-	api.MintsApi
-	api.AssetsApi
-	api.UsersApi
+	registrationContract *contracts.Registration
+	coreContract         *contracts.Core
+	tradesAPI            api.TradesApi
+	ordersAPI            api.OrdersApi
+	transfersAPI         api.TransfersApi
+	depositsAPI          api.DepositsApi
+	withdrawalsAPI       api.WithdrawalsApi
+	mintsAPI             api.MintsApi
+	assetsAPI            api.AssetsApi
+	usersAPI             api.UsersApi
+	metadataAPI          api.MetadataApi
+	tokensAPI            api.TokensApi
+	balancesAPI          api.BalancesApi
+	projectsAPI          api.ProjectsApi
+	collectionsAPI       api.CollectionsApi
 	api.EncodingApi
-	api.MetadataApi
-	api.ProjectsApi
-	api.TokensApi
-	api.CollectionsApi
-	api.BalancesApi
 }
 
 // NewClient creates a new Client. Requires config to setup and initialise.
@@ -81,20 +81,20 @@ func NewClient(cfg *Config) (*Client, error) {
 	cfg.APIConfig.Servers = api.ServerConfigurations{{URL: cfg.BaseAPIPath}}
 	apiClient := api.NewAPIClient(cfg.APIConfig)
 
-	c.AssetsApi = apiClient.AssetsApi
-	c.BalancesApi = apiClient.BalancesApi
-	c.CollectionsApi = apiClient.CollectionsApi
-	c.DepositsApi = apiClient.DepositsApi
+	c.assetsAPI = apiClient.AssetsApi
+	c.balancesAPI = apiClient.BalancesApi
+	c.collectionsAPI = apiClient.CollectionsApi
+	c.depositsAPI = apiClient.DepositsApi
 	c.EncodingApi = apiClient.EncodingApi
-	c.MetadataApi = apiClient.MetadataApi
-	c.MintsApi = apiClient.MintsApi
-	c.OrdersApi = apiClient.OrdersApi
-	c.ProjectsApi = apiClient.ProjectsApi
-	c.TokensApi = apiClient.TokensApi
-	c.TradesApi = apiClient.TradesApi
-	c.TransfersApi = apiClient.TransfersApi
-	c.UsersApi = apiClient.UsersApi
-	c.WithdrawalsApi = apiClient.WithdrawalsApi
+	c.metadataAPI = apiClient.MetadataApi
+	c.mintsAPI = apiClient.MintsApi
+	c.ordersAPI = apiClient.OrdersApi
+	c.projectsAPI = apiClient.ProjectsApi
+	c.tokensAPI = apiClient.TokensApi
+	c.tradesAPI = apiClient.TradesApi
+	c.transfersAPI = apiClient.TransfersApi
+	c.usersAPI = apiClient.UsersApi
+	c.withdrawalsAPI = apiClient.WithdrawalsApi
 
 	if err := c.attachCoreContract(context.TODO()); err != nil {
 		return nil, err

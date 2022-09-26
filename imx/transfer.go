@@ -8,16 +8,24 @@ import (
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
 
-// CreateTransfer transfers the request's models.SignableToken from Sender to Receiver.
-func (c *Client) CreateTransfer(
+/*
+Transfer transfers the request's models.SignableToken from Sender to Receiver.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param l2signer Stark signer to sign the payload hash.
+@param request The request struct with all the params.
+@return CreateTransferResponseV1
+*/
+func (c *Client) Transfer(
 	ctx context.Context,
 	l1signer L1Signer,
 	l2signer L2Signer,
 	request api.GetSignableTransferRequestV1,
 ) (*api.CreateTransferResponseV1, error) {
-	data, httpResponse, err := c.GetSignableTransferV1(ctx).GetSignableTransferRequest(request).Execute()
+	data, httpResponse, err := c.transfersAPI.GetSignableTransferV1(ctx).GetSignableTransferRequest(request).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `TransfersApi.GetSignableTransferV1`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 
 	ethSignature, starkSignature, err := createSignatures(&data.SignableMessage, &data.PayloadHash, l1signer, l2signer)
@@ -26,7 +34,7 @@ func (c *Client) CreateTransfer(
 	}
 
 	ethAddress := l1signer.GetAddress()
-	response, httpResponse, err := c.CreateTransferV1(ctx).
+	response, httpResponse, err := c.transfersAPI.CreateTransferV1(ctx).
 		CreateTransferRequest(api.CreateTransferRequestV1{
 			Amount:              data.Amount,
 			AssetId:             data.AssetId,
@@ -41,21 +49,29 @@ func (c *Client) CreateTransfer(
 		XImxEthAddress(ethAddress).
 		XImxEthSignature(ethSignature).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `TransfersApi.CreateTransferV1`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }
 
-// CreateBatchNftTransfer performs a bulk transfer of NFTs given an array of models.SignableToken and their receivers.
-func (c *Client) CreateBatchNftTransfer(
+/*
+BatchNftTransfer performs a bulk transfer of NFTs given an array of models.SignableToken and their receivers.
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param l1Signer Ethereum signer to sign message.
+@param l2signer Stark signer to sign the payload hash.
+@param request The request struct with all the params.
+@return CreateTransferResponse
+*/
+func (c *Client) BatchNftTransfer(
 	ctx context.Context,
 	l1signer L1Signer,
 	l2signer L2Signer,
 	request api.GetSignableTransferRequest,
 ) (*api.CreateTransferResponse, error) {
-	data, httpResponse, err := c.GetSignableTransfer(ctx).GetSignableTransferRequestV2(request).Execute()
+	data, httpResponse, err := c.transfersAPI.GetSignableTransfer(ctx).GetSignableTransferRequestV2(request).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `TransfersApi.GetSignableTransfer`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
 	}
 
 	ethSignatureBytes, err := l1signer.SignMessage(data.SignableMessage)
@@ -71,7 +87,7 @@ func (c *Client) CreateBatchNftTransfer(
 		return nil, err
 	}
 
-	response, httpResponse, err := c.TransfersApi.CreateTransfer(ctx).
+	response, httpResponse, err := c.transfersAPI.CreateTransfer(ctx).
 		CreateTransferRequestV2(api.CreateTransferRequest{
 			Requests:       transferRequests,
 			SenderStarkKey: data.SenderStarkKey,
@@ -79,13 +95,45 @@ func (c *Client) CreateBatchNftTransfer(
 		XImxEthAddress(ethAddress).
 		XImxEthSignature(ethSignature).Execute()
 	if err != nil {
-		return nil, fmt.Errorf("error when calling `TransfersApi.CreateTransfer`: %v, HTTP response body: %v", err, httpResponse.Body)
+		return nil, NewAPIError(httpResponse, err)
+	}
+	return response, nil
+}
+
+/*
+GetTransfer Get details of a transfer with the given ID
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param id Transfer ID
+@return Transfer
+*/
+func (c *Client) GetTransfer(ctx context.Context, id string) (*api.Transfer, error) {
+	response, httpResponse, err := c.transfersAPI.GetTransfer(ctx, id).Execute()
+	if err != nil {
+		return nil, NewAPIError(httpResponse, err)
+	}
+	return response, nil
+}
+
+/*
+ListTransfers Gets a list of transfers
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@return ListTransfersResponse
+*/
+func (c *Client) ListTransfers(ctx context.Context) (*api.ListTransfersResponse, error) {
+	response, httpResponse, err := c.transfersAPI.ListTransfers(ctx).Execute()
+	if err != nil {
+		return nil, NewAPIError(httpResponse, err)
 	}
 	return response, nil
 }
 
 // getSignedTransferRequests iterates through signableTransfers, signs each payloadHash and returns an array of pointers to models.TransferRequest.
-func getSignedTransferRequests(signableTransfers []api.SignableTransferResponseDetails, l2signer L2Signer) ([]api.TransferRequest, error) {
+func getSignedTransferRequests(
+	signableTransfers []api.SignableTransferResponseDetails,
+	l2signer L2Signer,
+) ([]api.TransferRequest, error) {
 	mapped := make([]api.TransferRequest, len(signableTransfers))
 	for i, transfer := range signableTransfers {
 		starkSignature, err := l2signer.SignMessage(transfer.PayloadHash)

@@ -34,9 +34,9 @@ func DemoUserRegistrationWorkflow(ctx context.Context, c *imx.Client, l1signer i
 	log.Println("registration success, response: ", string(val))
 
 	// Get the accounts registered on offchain.
-	usersResponse, httpResp, err := c.GetUsers(ctx, l1signer.GetAddress()).Execute()
+	usersResponse, err := c.GetUsers(ctx, l1signer.GetAddress())
 	if err != nil {
-		log.Panicf("error when calling `usersAPI.GetUsers: %v, HTTP response body: %v", err, httpResp.Body)
+		log.Panicf("error when calling `usersAPI.GetUsers: %v", err)
 	}
 	log.Println("registered accounts: ", usersResponse.GetAccounts())
 

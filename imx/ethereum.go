@@ -39,7 +39,7 @@ func (c *Client) attachRegistrationContract(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	c.RegistrationContract = client
+	c.registrationContract = client
 	return nil
 }
 
@@ -51,7 +51,7 @@ func (c *Client) attachCoreContract(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	c.CoreContract = client
+	c.coreContract = client
 	return nil
 }
 

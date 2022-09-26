@@ -55,11 +55,11 @@ const alchemyAPIKey = "alchemy api key"
 
 func main() {
     apiConfiguration := api.NewConfiguration()
-	cfg := imx.Config{
-		APIConfig:     apiConfiguration,
-		AlchemyAPIKey: alchemyAPIKey,
-		Environment:   imx.Sandbox,
-	}
+    cfg := imx.Config{
+        APIConfig:     apiConfiguration,
+        AlchemyAPIKey: alchemyAPIKey,
+        Environment:   imx.Sandbox,
+    }
    ...
 }
 ```
@@ -84,10 +84,10 @@ import (
 
 func main() {
     // L1 credentials, supply your signerPrivateKey string.
-	l1signer, err := ethereum.NewSigner(signerPrivateKey, chainID)
-	if err != nil {
-		log.Panicf("error in creating L1Signer: %v\n", err)
-	}
+    l1signer, err := ethereum.NewSigner(signerPrivateKey, chainID)
+    if err != nil {
+        log.Panicf("error in creating L1Signer: %v\n", err)
+    }
 }
 ```
 
@@ -167,19 +167,19 @@ The following methods require project owner authorisation:
 
 **Projects**
 
-- createProject
-- getProject
-- getProjects
+- CreateProject
+- GetProject
+- GetProjects
 
 **Collections**
 
-- createCollection
-- updateCollection
+- CreateCollection
+- UpdateCollection
 
 **Metadata**
 
-- addMetadataSchemaToCollection
-- updateMetadataSchemaByName
+- AddMetadataSchemaToCollection
+- UpdateMetadataSchemaByName
 
 
 ### Contract requests
@@ -285,8 +285,6 @@ Sample usage of workflows can be found in [examples](imx/examples/workflows).
 | `MintTokensWorkflow`      | Mint tokens on L2.                                  |
 | `CreateTransfer`          | Transfer tokens to another wallet.                  |
 | `CreateBatchTransfer`     | Batch transfer NFT tokens.                          |
-| `Burn`                    | Burn tokens.                                        |
-| `GetBurn`                 | Verify burn/transfer details.                       |
 | `Deposit`                 | Deposit based on token type. (ETH, ERC20, ERC721)   |
 | `PrepareWithdrawal`       | Prepare token (ETH, ERC20, ERC721) for withdrawal.  |
 | `CompleteEthWithdrawal`   | Withdraw ETH to L1.                                 |
