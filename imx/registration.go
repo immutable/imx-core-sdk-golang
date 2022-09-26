@@ -53,22 +53,6 @@ func (c *Client) RegisterOffchain(ctx context.Context,
 }
 
 /*
-IsRegisteredOffChain checks if the given public address is already registered on the offchain (L2 network).
-
-@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
-@param publicAddress ethereum signer public address.
-@return true if registered or false. Nil on error.
-*/
-func (c *Client) IsRegisteredOffChain(ctx context.Context, publicAddress string) (*bool, error) {
-	usersResponse, httpResponse, err := c.usersAPI.GetUsers(ctx, publicAddress).Execute()
-	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
-	}
-	isRegistered := len(usersResponse.GetAccounts()) > 0
-	return &isRegistered, nil
-}
-
-/*
 IsRegisteredOnChain checks if the given public address is already registered on the onchain (L1 network).
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
@@ -90,7 +74,8 @@ func (c *Client) IsRegisteredOnChain(ctx context.Context, starkPublicKey string)
 }
 
 /*
-GetUsers Get stark keys for a registered user
+GetUsers Get stark keys for a registered user.
+Can also be used to check if the user is registered or not when it returns an error.
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
 @param user User
