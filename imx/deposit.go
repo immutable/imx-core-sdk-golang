@@ -9,7 +9,6 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 	"github.com/immutable/imx-core-sdk-golang/imx/internal/convert"
@@ -119,11 +118,11 @@ func (d *ETHDeposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer, 
 		return nil, err
 	}
 
-	starkKeyHex := signableDeposit.StarkKey
-	starkKey, err := hexutil.DecodeBig(starkKeyHex)
-	if err != nil {
-		return nil, fmt.Errorf("error converting StarkKey to bigint: %s", starkKeyHex)
+	starkKey, ok := new(big.Int).SetString(signableDeposit.StarkKey, 0)
+	if !ok {
+		return nil, fmt.Errorf("error converting StarkKey to bigint")
 	}
+
 	isRegistered, _ := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	// Note: if we reach here, it means we are registered off-chain.
 	// Above call will return an error user is not registered but this is for on-chain
@@ -136,7 +135,7 @@ func (d *ETHDeposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer, 
 	if isRegistered {
 		return c.depositEth(ctx, l1signer, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, amount, overrides)
 	}
-	return c.registerAndDepositEth(ctx, l1signer, starkKeyHex, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, amount, overrides)
+	return c.registerAndDepositEth(ctx, l1signer, signableDeposit.StarkKey, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, amount, overrides)
 }
 
 func (c *Client) getSignableDeposit(
@@ -250,11 +249,9 @@ func (d *ERC721Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signe
 		return nil, err
 	}
 
-	// Passing starkKeyHex to register method because it may be padded and converting back from Int loses the padding
-	starkKeyHex := signableDeposit.StarkKey
-	starkKey, err := hexutil.DecodeBig(starkKeyHex)
-	if err != nil {
-		return nil, fmt.Errorf("error converting StarkKey to bigint: %s", starkKeyHex)
+	starkKey, ok := new(big.Int).SetString(signableDeposit.StarkKey, 0)
+	if !ok {
+		return nil, fmt.Errorf("error converting StarkKey to bigint")
 	}
 
 	isRegistered, _ := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
@@ -265,7 +262,8 @@ func (d *ERC721Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signe
 	if isRegistered {
 		return c.depositERC721(ctx, l1signer, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, tokenID, overrides)
 	}
-	return c.registerAndDepositERC721(ctx, l1signer, starkKeyHex, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, tokenID, overrides)
+	// Passing starkKey string in hex format to register method because it may be padded and converting back from Int loses the padding
+	return c.registerAndDepositERC721(ctx, l1signer, signableDeposit.StarkKey, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, tokenID, overrides)
 }
 
 func newSignableDepositRequestForERC721(amount, tokenID, tokenAddress, user string) *api.GetSignableDepositRequest {
@@ -372,7 +370,7 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer
 	}
 	// Get signable deposit details
 	signableDepositRequest := newSignableDepositRequestForERC20(d.Amount, d.TokenAddress, l1signer.GetAddress(), decimals)
-	signableDepositResponse, err := c.getSignableDeposit(ctx, signableDepositRequest)
+	signableDeposit, err := c.getSignableDeposit(ctx, signableDepositRequest)
 	if err != nil {
 		return nil, err
 	}
@@ -383,10 +381,9 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer
 		return nil, err
 	}
 
-	starkKeyHex := signableDepositResponse.StarkKey
-	starkKey, err := hexutil.DecodeBig(starkKeyHex)
-	if err != nil {
-		return nil, fmt.Errorf("error converting StarkKey to bigint: %s", starkKeyHex)
+	starkKey, ok := new(big.Int).SetString(signableDeposit.StarkKey, 0)
+	if !ok {
+		return nil, fmt.Errorf("error converting StarkKey to bigint")
 	}
 
 	isRegistered, _ := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
@@ -394,15 +391,16 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer
 	// Above call will return an error user is not registered but this is for on-chain
 	// we should swallow this error to allow the register and deposit flow to execute.
 
-	depositResponseAmount, success := new(big.Int).SetString(signableDepositResponse.Amount, 10)
+	depositResponseAmount, success := new(big.Int).SetString(signableDeposit.Amount, 10)
 	if !success {
-		return nil, fmt.Errorf("error converting string value '%s' to bigint", signableDepositResponse.Amount)
+		return nil, fmt.Errorf("error converting string value '%s' to bigint", signableDeposit.Amount)
 	}
 
 	if isRegistered {
-		return c.depositERC20(ctx, l1signer, starkKey, big.NewInt(int64(signableDepositResponse.VaultId)), assetType, depositResponseAmount, overrides)
+		return c.depositERC20(ctx, l1signer, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, depositResponseAmount, overrides)
 	}
-	return c.registerAndDepositERC20(ctx, l1signer, starkKeyHex, starkKey, big.NewInt(int64(signableDepositResponse.VaultId)), assetType, depositResponseAmount, overrides)
+	// Passing starkKey string in hex format to register method because it may be padded and converting back from Int loses the padding
+	return c.registerAndDepositERC20(ctx, l1signer, signableDeposit.StarkKey, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, depositResponseAmount, overrides)
 }
 
 func newSignableDepositRequestForERC20(amount, tokenAddress, user string, decimals int) *api.GetSignableDepositRequest {

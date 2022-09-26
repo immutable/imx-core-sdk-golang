@@ -7,7 +7,6 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/go-openapi/runtime"
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
@@ -140,9 +139,9 @@ func (c *Client) completeFungiblesWithdrawal(
 	assetType *big.Int,
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
-	starkKey, err := hexutil.DecodeBig(starkKeyHex)
-	if err != nil {
-		return nil, fmt.Errorf("error converting StarkKeyHex to bigint: %s", starkKeyHex)
+	starkKey, ok := new(big.Int).SetString(starkKeyHex, 0)
+	if !ok {
+		return nil, fmt.Errorf("error converting starkKeyHex to bigint")
 	}
 
 	isRegistered, _ := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
@@ -206,9 +205,9 @@ func (w *ERC721Withdrawal) withdrawMintedNft(
 		return nil, err
 	}
 
-	starkKey, err := hexutil.DecodeBig(starkKeyHex)
-	if err != nil {
-		return nil, fmt.Errorf("error converting StarkKeyHex to bigint: %s", starkKeyHex)
+	starkKey, ok := new(big.Int).SetString(starkKeyHex, 0)
+	if !ok {
+		return nil, fmt.Errorf("error converting starkKeyHex to bigint")
 	}
 
 	isRegistered, err := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
@@ -301,9 +300,9 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 		return nil, err
 	}
 
-	starkKey, err := hexutil.DecodeBig(starkKeyHex)
-	if err != nil {
-		return nil, fmt.Errorf("error converting StarkKeyHex to bigint: %s", starkKeyHex)
+	starkKey, ok := new(big.Int).SetString(starkKeyHex, 0)
+	if !ok {
+		return nil, fmt.Errorf("error converting starkKeyHex to bigint")
 	}
 
 	isRegistered, _ := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)

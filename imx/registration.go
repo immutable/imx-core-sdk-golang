@@ -3,10 +3,10 @@ package imx
 import (
 	"context"
 	"fmt"
+	"math/big"
 	"net/mail"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
 
@@ -76,9 +76,9 @@ IsRegisteredOnChain checks if the given public address is already registered on 
 @return true if registered or false. Nil on error.
 */
 func (c *Client) IsRegisteredOnChain(ctx context.Context, starkPublicKey string) (*bool, error) {
-	starkKey, err := hexutil.DecodeBig(starkPublicKey)
-	if err != nil {
-		return nil, fmt.Errorf("error converting StarkKey to bigint: %v", starkPublicKey)
+	starkKey, ok := new(big.Int).SetString(starkPublicKey, 0)
+	if !ok {
+		return nil, fmt.Errorf("error converting StarkKey to bigint")
 	}
 
 	isRegistered, err := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
