@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	ctx, envs, c, l1signer, _ := common.CommonInitialise()
+	ctx, envs, c, l1signer, _ := common.CommonInitialise(".env")
 
 	tokenID := envs["MINT_TOKEN_ID"]
 	tokenAddress := envs["MINT_TOKEN_ADDRESS"]
