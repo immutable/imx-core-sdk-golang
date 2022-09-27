@@ -11,27 +11,25 @@ import (
 )
 
 func main() {
-	ctx, _, c, l1signer, l2signer := common.CommonInitialise()
+	ctx, envs, c, l1signer, l2signer := common.CommonInitialise(".env")
 
 	// Transfer workflow demo
-	DemoTransferWorkflow(ctx, c, l1signer, l2signer)
-	DemoBatchNftTransferWorkflow(ctx, c, l1signer, l2signer)
+	DemoTransferWorkflow(ctx, c, l1signer, l2signer, envs)
+	DemoBatchNftTransferWorkflow(ctx, c, l1signer, l2signer, envs)
 }
 
-func DemoTransferWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, l2signer imx.L2Signer) {
+func DemoTransferWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, l2signer imx.L2Signer, envs map[string]string) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", common.GetCurrentFunctionName())
 
 	// To declare tokens, use utils.NewSignableToken[type] method.
 	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
-	amount := "100000000"
-	sender := l1signer.GetAddress()
-	receiver := "Set receiver address here"
+
 	transferRequest := api.GetSignableTransferRequestV1{
-		Amount:   amount,
-		Sender:   sender,
+		Amount:   envs["TRANFER_AMOUNT"],
+		Sender:   l1signer.GetAddress(),
 		Token:    imx.SignableETHToken(),
-		Receiver: receiver,
+		Receiver: envs["RECEIVER_ETHEREUM_ACCOUNT_ADDRESS"],
 	}
 
 	response, err := c.Transfer(ctx, l1signer, l2signer, transferRequest)
@@ -45,31 +43,29 @@ func DemoTransferWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Sig
 	log.Println("-------------------------------------------------------")
 }
 
-func DemoBatchNftTransferWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, l2signer imx.L2Signer) {
+func DemoBatchNftTransferWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, l2signer imx.L2Signer, envs map[string]string) {
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", common.GetCurrentFunctionName())
 
 	// To declare tokens, use tokens.NewSignableTokenERC721 method.
 	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
-	signableToken1 := imx.SignableERC721Token("Token ID Here", "Token Address Hex Here")
-	signableToken2 := imx.SignableERC721Token("Token ID Here", "Token Address Hex Here")
+	signableToken1 := imx.SignableERC721Token(envs["TRANSFER_NFT_TOKEN_ID_1"], envs["TRANSFER_NFT_TOKEN_ADDRESS_1"])
+	signableToken2 := imx.SignableERC721Token(envs["TRANSFER_NFT_TOKEN_ID_2"], envs["TRANSFER_NFT_TOKEN_ADDRESS_2"])
 	amount := "1"
-	sender := l1signer.GetAddress()
-	receiver := "Receiver Address Here"
 
 	transferRequest1 := api.SignableTransferDetails{
 		Amount:   amount,
-		Receiver: receiver,
+		Receiver: envs["RECEIVER_ETHEREUM_ACCOUNT_ADDRESS"],
 		Token:    signableToken1,
 	}
 	transferRequest2 := api.SignableTransferDetails{
 		Amount:   amount,
-		Receiver: receiver,
+		Receiver: envs["RECEIVER_ETHEREUM_ACCOUNT_ADDRESS"],
 		Token:    signableToken2,
 	}
 
 	batchTransferRequest := api.GetSignableTransferRequest{
-		SenderEtherKey: sender,
+		SenderEtherKey: l1signer.GetAddress(),
 		SignableRequests: []api.SignableTransferDetails{
 			transferRequest1,
 			transferRequest2,

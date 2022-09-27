@@ -16,9 +16,9 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func CommonInitialise() (context.Context, map[string]string, *imx.Client, imx.L1Signer, imx.L2Signer) {
+func CommonInitialise(configFilePath string) (context.Context, map[string]string, *imx.Client, imx.L1Signer, imx.L2Signer) {
 	var envs map[string]string
-	envs, err := godotenv.Read("../.env")
+	envs, err := godotenv.Read(configFilePath)
 	if err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
@@ -69,19 +69,6 @@ func CommonInitialise() (context.Context, map[string]string, *imx.Client, imx.L1
 		}
 	}
 
-	// key, err := stark.GenerateKey()
-	// if err != nil {
-	// 	log.Panicf("error in Generating Stark Private Key: %v\n", err)
-	// }
-
-	// privateStarkKeyStr := key.String()
-	// log.Println("Save this randomly generated private stark key (can not be retrieved if loose it): ", privateStarkKeyStr)
-
-	// Account 2
-	//key, _ := new(big.Int).SetString("2946573848636148792939850794829220658253350983655420377260914728027695872043", 10)
-
-	// Account 3
-	//key, _ := new(big.Int).SetString("1832552591838651912680142970572254623552566103868100233513686649241285043767", 10)
 	l2signer, err := stark.NewSigner(starkPrivateKey)
 	if err != nil {
 		log.Panicf("error in creating StarkSigner: %v\n", err)

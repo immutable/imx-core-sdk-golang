@@ -9,7 +9,9 @@ import (
 )
 
 func main() {
-	ctx, _, c, l1signer, l2signer := common.CommonInitialise()
+	ctx, _, c, l1signer, _ := common.CommonInitialise(".env")
+
+	// Note: Next step after creating a project would be to create a collection.
 
 	// Create a new project demo.
 	response, err := c.CreateProject(ctx, l1signer, "Tinker", "TinkerCompany", "contact@tinker.com.au")
