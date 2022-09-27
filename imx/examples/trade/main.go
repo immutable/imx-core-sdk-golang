@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 
 	"github.com/immutable/imx-core-sdk-golang/imx"
@@ -11,12 +12,13 @@ import (
 )
 
 func main() {
-	ctx, _, c, l1signer, l2signer := common.CommonInitialise()
+	ctx, envs, c, l1signer, l2signer := common.CommonInitialise(".env")
 
 	// Order ID to execute the trade on.
 	//
 	// Note: 	This orderID to be obtained by performing the CreateOrder using the seller account.
-	orderID := int32(166854)
+	var orderID int32
+	fmt.Sscan(envs["TRADE_ORDER_ID"], &orderID)
 
 	// Trade demo.
 	DemoTradesWorkflow(ctx, c, orderID, l1signer, l2signer)

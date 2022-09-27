@@ -9,7 +9,7 @@ import (
 )
 
 /*
-Transfer transfers the request's models.SignableToken from Sender to Receiver.
+Transfer transfers the request's models.SignableToken from Sender's imx account to Receiver's imx account.
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
 @param l1Signer Ethereum signer to sign message.

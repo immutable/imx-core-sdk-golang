@@ -1,4 +1,4 @@
-module github.com/immutable/imx-core-sdk-golang/imx/examples/registration
+module github.com/immutable/imx-core-sdk-golang/imx/examples/deposit
 
 go 1.18
 

@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	ctx, _, c, l1signer, l2signer := common.CommonInitialise()
+	ctx, _, c, l1signer, l2signer := common.CommonInitialise(".env")
 
 	// Note:	This is the first step to perform for a new user wanting to use IMX.
 	// 			After user registration, next step will be to create a project.
