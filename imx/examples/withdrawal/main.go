@@ -16,38 +16,41 @@ const (
 )
 
 func main() {
-	ctx, envs, c, l1signer, l2signer := common.CommonInitialise()
+	ctx, envs, c, l1signer, l2signer := common.CommonInitialise(".env")
 
 	// Withdrawals Demo
-	// After prepare withdrawal workflow is performed. Must wait for getWithdrawal endpoint
-	// https://docs.x.immutable.com/reference/#/operations/getWithdrawal to return "rollup_status": "confirmed"
-	// before calling complete withdrawal workflow.
+	// For overview of the withdrawal process, please see https://docs.x.immutable.com/docs/guides/asset-management/asset-withdrawals/#withdrawal-process
 
-	ethAmountInWei, err := strconv.ParseUint(envs["DW_ETH_AMOUNT_IN_WEI"], 10, 64)
+	// After prepare withdrawal should wait for getWithdrawal endpoint to confirm that the withdrawal is ready to perform complete withdrawal step.
+	// See https://docs.x.immutable.com/reference/#/operations/getWithdrawal it should return "rollup_status": "confirmed".
+
+	ethAmountInWei, err := strconv.ParseUint(envs["WITHDRAW_ETH_AMOUNT_IN_WEI"], 10, 64)
 	if err != nil {
 		log.Panicf("error in converting ethAmountInWei from string to int: %v\n", err)
 	}
-	erc20AmountInWei, err := strconv.ParseUint(envs["DW_ERC20_AMOUNT_IN_WEI"], 10, 64)
+	erc20AmountInWei, err := strconv.ParseUint(envs["WITHDRAW_ERC20_AMOUNT_IN_WEI"], 10, 64)
 	if err != nil {
 		log.Panicf("error in converting ethAmountInWei from string to int: %v\n", err)
 	}
 
 	DemoPrepareEthWithdrawalWorkflow(ctx, c, ethAmountInWei, l1signer, l2signer)
-	DemoPrepareERC20WithdrawalWorkflow(ctx, c, erc20AmountInWei, envs["DW_ERC20TOKEN_ADDRESS"], l1signer, l2signer)
+	DemoPrepareERC20WithdrawalWorkflow(ctx, c, erc20AmountInWei, envs["WITHDRAW_ERC20TOKEN_ADDRESS"], l1signer, l2signer)
 	DemoPrepareERC721WithdrawalWorkflow(ctx,
 		c,
-		envs["DW_ERC721TOKEN_ID"],
-		envs["DW_ERC721TOKEN_ADDRESS"],
+		envs["WITHDRAW_ERC721TOKEN_ID"],
+		envs["WITHDRAW_ERC721TOKEN_ADDRESS"],
 		l1signer,
 		l2signer)
 
+	// Note: Can only run either Prepare or Complete Withdrawal at a time as we need to wait for the withdrawal to be ready for collection.
+
 	// Make sure the tokens are ready for withdrawal before performing complete withdrawal.
 	DemoCompleteEthWithdrawalWorkflow(ctx, c, l1signer, l2signer)
-	DemoCompleteERC20WithdrawalWorkflow(ctx, c, envs["DW_ERC20TOKEN_ADDRESS"], l1signer, l2signer)
+	DemoCompleteERC20WithdrawalWorkflow(ctx, c, envs["WITHDRAW_ERC20TOKEN_ADDRESS"], l1signer, l2signer)
 	DemoCompleteERC721WithdrawalWorkflow(ctx,
 		c,
-		envs["DW_ERC721TOKEN_ID"],
-		envs["DW_ERC721TOKEN_ADDRESS"],
+		envs["WITHDRAW_ERC721TOKEN_ID"],
+		envs["WITHDRAW_ERC721TOKEN_ADDRESS"],
 		l1signer,
 		l2signer)
 }
@@ -66,9 +69,16 @@ func DemoPrepareEthWithdrawalWorkflow(ctx context.Context, c *imx.Client, amount
 
 	response, err := c.PrepareWithdrawal(ctx, l1signer, l2signer, withdrawalRequest)
 	if err != nil {
-		log.Panicf("error calling withdrawalsWorkflow.PrepareWithdrawal workflow: %v", err)
+		log.Panicf("error calling PrepareWithdrawal workflow: %v", err)
 	}
 	val, _ := json.MarshalIndent(response, "", "  ")
+	log.Printf("response:\n%s\n", val)
+
+	getWithdrawalResponse, err := c.GetWithdrawal(ctx, strconv.FormatInt(int64(response.WithdrawalId), 10))
+	if err != nil {
+		log.Panicf("error calling GetWithdrawal: %v", err)
+	}
+	val, _ = json.MarshalIndent(getWithdrawalResponse, "", "  ")
 	log.Printf("response:\n%s\n", val)
 
 	log.Printf("Running %s completed.", common.GetCurrentFunctionName())
