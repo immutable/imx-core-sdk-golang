@@ -35,7 +35,7 @@ func (c *Client) attachRegistrationContract(ctx context.Context) error {
 	if err := c.validateContract(ctx, c.Environment.RegistrationContractAddress); err != nil {
 		return err
 	}
-	client, err := contracts.NewRegistration(common.HexToAddress(c.Environment.CoreContractAddress), c.EthClient)
+	client, err := contracts.NewRegistration(common.HexToAddress(c.Environment.RegistrationContractAddress), c.EthClient)
 	if err != nil {
 		return err
 	}

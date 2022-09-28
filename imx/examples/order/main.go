@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	ctx, envs, c, l1signer, l2signer := common.CommonInitialise()
+	ctx, envs, c, l1signer, l2signer := common.CommonInitialise(".env")
 
 	// Note: To list assets for sale on marketplace, you will need to have some assets added to account.
 
