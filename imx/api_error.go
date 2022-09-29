@@ -7,9 +7,10 @@ import (
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 )
 
-// IMXError contains the details of the error for the API request.
-// For more information about the API error codes, see https://docs.x.immutable.com/docs/error-codes/
-//
+/*
+IMXError struct contains the details of the error for the API request.
+For more information about the API error codes, see https://docs.x.immutable.com/docs/error-codes/
+*/
 type IMXError struct {
 	HTTPStatusCode int // e.g. 400
 	RequestURL     string
