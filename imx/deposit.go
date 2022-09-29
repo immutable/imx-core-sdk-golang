@@ -78,7 +78,7 @@ GetDeposit Gets details of a deposit with the given ID
 func (c *Client) GetDeposit(ctx context.Context, id string) (*api.Deposit, error) {
 	response, httpResponse, err := c.depositsAPI.GetDeposit(ctx, id).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -92,7 +92,7 @@ ListDeposits Gets a list of deposits
 func (c *Client) ListDeposits(ctx context.Context) (*api.ListDepositsResponse, error) {
 	response, httpResponse, err := c.depositsAPI.ListDeposits(ctx).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -143,7 +143,7 @@ func (c *Client) getSignableDeposit(
 	request *api.GetSignableDepositRequest) (*api.GetSignableDepositResponse, error) {
 	signableDepositResponse, httpResponse, err := c.depositsAPI.GetSignableDeposit(ctx).GetSignableDepositRequest(*request).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return signableDepositResponse, nil
 }
@@ -341,7 +341,7 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer
 	// Get decimals for this specific ERC20
 	token, httpResponse, err := c.tokensAPI.GetToken(ctx, d.TokenAddress).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 
 	// Approve whether an amount of token from an account can be spent by a third-party account

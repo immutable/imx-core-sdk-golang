@@ -33,7 +33,7 @@ func (c *Client) PrepareWithdrawal(
 	request.User = ethAddress
 	signableResponse, httpResponse, err := c.withdrawalsAPI.GetSignableWithdrawal(ctx).GetSignableWithdrawalRequest(request).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 
 	ethSignature, starkSignature, err := createSignatures(&signableResponse.SignableMessage, &signableResponse.PayloadHash, l1signer, l2signer)
@@ -52,7 +52,7 @@ func (c *Client) PrepareWithdrawal(
 	apiCreateWithdrawalRequest := c.withdrawalsAPI.CreateWithdrawal(ctx).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature)
 	withdrawalResponse, httpResponse, err := apiCreateWithdrawalRequest.CreateWithdrawalRequest(withdrawalRequest).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return withdrawalResponse, nil
 }
@@ -290,7 +290,7 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 			// Token is already minted on L1
 			return w.withdrawMintedNft(ctx, c, l1signer, starkKeyHex, overrides)
 		}
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 
 	blueprint := mintableTokenResponse.Blueprint
@@ -374,7 +374,7 @@ GetWithdrawal Get details of a withdrawal with the given ID
 func (c *Client) GetWithdrawal(ctx context.Context, id string) (*api.Withdrawal, error) {
 	response, httpResponse, err := c.withdrawalsAPI.GetWithdrawal(ctx, id).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -388,7 +388,7 @@ ListWithdrawals Gets a list of withdrawals
 func (c *Client) ListWithdrawals(ctx context.Context) (*api.ListWithdrawalsResponse, error) {
 	response, httpResponse, err := c.withdrawalsAPI.ListWithdrawals(ctx).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }

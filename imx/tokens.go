@@ -61,7 +61,7 @@ GetToken Get details of a token with the given ID
 func (c *Client) GetToken(ctx context.Context, id string) (*api.TokenDetails, error) {
 	response, httpResponse, err := c.tokensAPI.GetToken(ctx, id).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -85,7 +85,7 @@ ListTokens Gets a list of tokens
 func (c *Client) ListTokens(req *api.ApiListTokensRequest) (*api.ListTokensResponse, error) {
 	response, httpResponse, err := c.tokensAPI.ListTokensExecute(*req)
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }

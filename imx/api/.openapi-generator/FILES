@@ -9,6 +9,7 @@ api_collections.go
 api_deposits.go
 api_encoding.go
 api_metadata.go
+api_metadata_refreshes.go
 api_mints.go
 api_orders.go
 api_projects.go
@@ -19,6 +20,7 @@ api_users.go
 api_withdrawals.go
 client.go
 configuration.go
+docs/APIError.md
 docs/AddMetadataSchemaToCollectionRequest.md
 docs/Asset.md
 docs/AssetProperties.md
@@ -33,6 +35,8 @@ docs/CollectionDetails.md
 docs/CollectionFilter.md
 docs/CollectionsApi.md
 docs/CreateCollectionRequest.md
+docs/CreateMetadataRefreshRequest.md
+docs/CreateMetadataRefreshResponse.md
 docs/CreateOrderRequest.md
 docs/CreateOrderResponse.md
 docs/CreateProjectRequest.md
@@ -57,6 +61,9 @@ docs/FeeData.md
 docs/FeeEntry.md
 docs/FeeInfo.md
 docs/FeeToken.md
+docs/GetMetadataRefreshErrorsResponse.md
+docs/GetMetadataRefreshResponse.md
+docs/GetMetadataRefreshes.md
 docs/GetProjectsResponse.md
 docs/GetSignableCancelOrderRequest.md
 docs/GetSignableCancelOrderResponse.md
@@ -87,6 +94,10 @@ docs/ListTradesResponse.md
 docs/ListTransfersResponse.md
 docs/ListWithdrawalsResponse.md
 docs/MetadataApi.md
+docs/MetadataRefreshErrors.md
+docs/MetadataRefreshExcludingSummary.md
+docs/MetadataRefreshSummary.md
+docs/MetadataRefreshesApi.md
 docs/MetadataSchemaProperty.md
 docs/MetadataSchemaRequest.md
 docs/Mint.md
@@ -129,6 +140,7 @@ git_push.sh
 go.mod
 go.sum
 model_add_metadata_schema_to_collection_request.go
+model_api_error.go
 model_asset.go
 model_asset_properties.go
 model_asset_with_orders.go
@@ -139,6 +151,8 @@ model_collection.go
 model_collection_details.go
 model_collection_filter.go
 model_create_collection_request.go
+model_create_metadata_refresh_request.go
+model_create_metadata_refresh_response.go
 model_create_order_request.go
 model_create_order_response.go
 model_create_project_request.go
@@ -161,6 +175,9 @@ model_fee_data.go
 model_fee_entry.go
 model_fee_info.go
 model_fee_token.go
+model_get_metadata_refresh_errors_response.go
+model_get_metadata_refresh_response.go
+model_get_metadata_refreshes.go
 model_get_projects_response.go
 model_get_signable_cancel_order_request.go
 model_get_signable_cancel_order_response.go
@@ -190,6 +207,9 @@ model_list_tokens_response.go
 model_list_trades_response.go
 model_list_transfers_response.go
 model_list_withdrawals_response.go
+model_metadata_refresh_errors.go
+model_metadata_refresh_excluding_summary.go
+model_metadata_refresh_summary.go
 model_metadata_schema_property.go
 model_metadata_schema_request.go
 model_mint.go

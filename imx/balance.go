@@ -17,7 +17,7 @@ GetBalance Fetches the token balances of the user
 func (c *Client) GetBalance(ctx context.Context, owner, tokenAddress string) (*api.Balance, error) {
 	response, httpResponse, err := c.balancesAPI.GetBalance(ctx, owner, tokenAddress).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -41,7 +41,7 @@ ListBalances Get a list of balances for given user
 func (c *Client) ListBalances(req *api.ApiListBalancesRequest) (*api.ListBalancesResponse, error) {
 	response, httpResponse, err := c.balancesAPI.ListBalancesExecute(*req)
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }

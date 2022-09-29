@@ -4,9 +4,9 @@ info:
     email: support@immutable.com
     name: Immutable API Support
   title: Immutable X API
-  version: "0.1"
+  version: "3.0"
 servers:
-- url: https://api.ropsten.x.immutable.com/
+- url: https://api.sandbox.x.immutable.com/
 paths:
   /v1/assets:
     get:
@@ -109,6 +109,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListAssetsResponse'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get a list of assets
       tags:
       - assets
@@ -141,6 +153,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/Asset'
           description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get details of an asset
       tags:
       - assets
@@ -164,11 +188,11 @@ paths:
         name: order_by
         schema:
           enum:
-          - '"name"'
-          - '"address"'
-          - '"project_id"'
-          - '"created_at"'
-          - '"updated_at"'
+          - name
+          - address
+          - project_id
+          - created_at
+          - updated_at
           type: string
       - description: Direction to sort (asc/desc)
         in: query
@@ -197,6 +221,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListCollectionsResponse'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get a list of collections
       tags:
       - collections
@@ -245,6 +281,30 @@ paths:
                 window.
               schema:
                 type: string
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Forbidden
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Create collection
       tags:
       - collections
@@ -267,6 +327,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Collection'
           description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Not Found
       summary: Get details of a collection at the given address
       tags:
       - collections
@@ -306,6 +372,36 @@ paths:
               schema:
                 $ref: '#/components/schemas/Collection'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Update collection
       tags:
       - collections
@@ -361,6 +457,18 @@ paths:
                   $ref: '#/components/schemas/MetadataSchemaProperty'
                 type: array
           description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get collection metadata schema
       tags:
       - metadata
@@ -400,6 +508,36 @@ paths:
               schema:
                 $ref: '#/components/schemas/SuccessResponse'
           description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Add metadata schema to collection
       tags:
       - metadata
@@ -447,6 +585,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/SuccessResponse'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Not Found
       summary: Update metadata schema by name
       tags:
       - metadata
@@ -599,6 +761,322 @@ paths:
       tags:
       - encoding
       x-codegen-request-body-name: EncodeAssetRequest
+  /v1/metadata-refreshes:
+    get:
+      description: Get a list of metadata refreshes
+      operationId: Get a list of metadata refreshes
+      parameters:
+      - description: Page size of the result
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: Collection address
+        in: query
+        name: collection_address
+        schema:
+          type: string
+      - description: String created by signing wallet address and timestamp. See https://docs.x.immutable.com/docs/generate-imx-signature
+        in: header
+        name: x-imx-eth-signature
+        required: true
+        schema:
+          type: string
+      - description: Unix Epoc timestamp
+        in: header
+        name: x-imx-eth-timestamp
+        required: true
+        schema:
+          type: string
+      - description: Wallet Address that signed the signature
+        in: header
+        name: x-imx-eth-address
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMetadataRefreshes'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unauthorized Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Forbidden Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
+      tags:
+      - metadata-refreshes
+    post:
+      description: Request metadata refresh for provided tokens
+      operationId: Request a metadata refresh
+      parameters:
+      - description: String created by signing wallet address and timestamp. See https://docs.x.immutable.com/docs/generate-imx-signature
+        in: header
+        name: x-imx-eth-signature
+        required: true
+        schema:
+          type: string
+      - description: Unix Epoc timestamp
+        in: header
+        name: x-imx-eth-timestamp
+        required: true
+        schema:
+          type: string
+      - description: Wallet Address that signed the signature
+        in: header
+        name: x-imx-eth-address
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMetadataRefreshRequest'
+        description: Create metadata refresh request
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateMetadataRefreshResponse'
+          description: Accepted
+          headers:
+            x-imx-refresh-limit-reset:
+              description: The expiry date of the current one-hour window.
+              schema:
+                type: string
+            x-imx-remaining-refreshes:
+              description: The amount of refresh requests remaining for current one-hour
+                window.
+              schema:
+                type: string
+            x-imx-refreshes-limit:
+              description: The refresh request limit available to the project for
+                each one-hour window.
+              schema:
+                type: string
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unauthorized Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Forbidden Request
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Too Many Requests
+          headers:
+            x-imx-refresh-limit-reset:
+              description: The expiry date of the current one-hour window.
+              schema:
+                type: string
+            x-imx-remaining-refreshes:
+              description: The amount of refresh requests remaining for current one-hour
+                window.
+              schema:
+                type: string
+            x-imx-refreshes-limit:
+              description: The refresh request limit available to the project for
+                each one-hour window.
+              schema:
+                type: string
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
+      tags:
+      - metadata-refreshes
+      x-codegen-request-body-name: CreateMetadataRefreshRequest
+  /v1/metadata-refreshes/{refresh_id}:
+    get:
+      description: Get metadata refresh results
+      operationId: Get metadata refresh results
+      parameters:
+      - description: The metadata refresh ID
+        in: path
+        name: refresh_id
+        required: true
+        schema:
+          type: string
+      - description: String created by signing wallet address and timestamp. See https://docs.x.immutable.com/docs/generate-imx-signature
+        in: header
+        name: x-imx-eth-signature
+        required: true
+        schema:
+          type: string
+      - description: Unix Epoc timestamp
+        in: header
+        name: x-imx-eth-timestamp
+        required: true
+        schema:
+          type: string
+      - description: Wallet Address that signed the signature
+        in: header
+        name: x-imx-eth-address
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMetadataRefreshResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unauthorized Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Forbidden Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
+      tags:
+      - metadata-refreshes
+  /v1/metadata-refreshes/{refresh_id}/errors:
+    get:
+      description: Get metadata refresh errors
+      operationId: Get metadata refresh errors
+      parameters:
+      - description: The metadata refresh ID
+        in: path
+        name: refresh_id
+        required: true
+        schema:
+          type: string
+      - description: Page size of the result
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: String created by signing wallet address and timestamp. See https://docs.x.immutable.com/docs/generate-imx-signature
+        in: header
+        name: x-imx-eth-signature
+        required: true
+        schema:
+          type: string
+      - description: Unix Epoc timestamp
+        in: header
+        name: x-imx-eth-timestamp
+        required: true
+        schema:
+          type: string
+      - description: Wallet Address that signed the signature
+        in: header
+        name: x-imx-eth-address
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMetadataRefreshErrorsResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unauthorized Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Forbidden Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
+      tags:
+      - metadata-refreshes
   /v1/mintable-token/{token_address}/{token_id}:
     get:
       description: Get details of a mintable token with the given token address and
@@ -624,6 +1102,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/MintableTokenDetails'
           description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get details of a mintable token with the given token address and token
         ID
       tags:
@@ -647,6 +1137,11 @@ paths:
         in: query
         name: order_by
         schema:
+          enum:
+          - transaction_id
+          - token_id
+          - created_at
+          - updated_at
           type: string
       - description: Direction to sort (asc/desc)
         in: query
@@ -722,6 +1217,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListMintsResponse'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get a list of mints
       tags:
       - mints
@@ -743,6 +1250,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/Mint'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get details of a mint with the given ID
       tags:
       - mints
@@ -1077,10 +1602,34 @@ paths:
       responses:
         "200":
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/GetProjectsResponse'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Forbidden
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get projects
       tags:
       - projects
@@ -1110,10 +1659,34 @@ paths:
       responses:
         "201":
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/CreateProjectResponse'
           description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Forbidden
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Create a project
       tags:
       - projects
@@ -1144,10 +1717,34 @@ paths:
       responses:
         "200":
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/Project'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Forbidden
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get a project
       tags:
       - projects
@@ -1213,6 +1810,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetSignableRegistrationResponse'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get operator signature to allow clients to register the user
       tags:
       - users
@@ -1235,6 +1844,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetSignableRegistrationOffchainResponse'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get encoded details to allow clients to register the user offchain
       tags:
       - users
@@ -1288,6 +1909,30 @@ paths:
       description: Get a list of tokens
       operationId: listTokens
       parameters:
+      - description: Page size of the result
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: Property to sort by
+        in: query
+        name: order_by
+        schema:
+          enum:
+          - contract_address
+          - name
+          - symbol
+          type: string
+      - description: Direction to sort (asc/desc)
+        in: query
+        name: direction
+        schema:
+          type: string
       - description: Contract address of the token
         in: query
         name: address
@@ -1334,11 +1979,6 @@ paths:
       description: Get a list of trades
       operationId: listTrades
       parameters:
-      - description: Party A's (buy order) order id
-        in: query
-        name: party_a_order_id
-        schema:
-          type: string
       - description: Party A's (buy order) token type of currency used to buy
         in: query
         name: party_a_token_type
@@ -1347,11 +1987,6 @@ paths:
       - description: Party A's (buy order) token address of currency used to buy
         in: query
         name: party_a_token_address
-        schema:
-          type: string
-      - description: Party B's (sell order) order id
-        in: query
-        name: party_b_order_id
         schema:
           type: string
       - description: Party B's (sell order) token type of NFT sold - always ERC721
@@ -1574,6 +2209,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListTransfersResponse'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get a list of transfers
       tags:
       - transfers
@@ -1607,6 +2254,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateTransferResponseV1'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Forbidden
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Creates a transfer of tokens between two parties
       tags:
       - transfers
@@ -1629,6 +2300,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/Transfer'
           description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get details of a transfer with the given ID
       tags:
       - transfers
@@ -1650,6 +2333,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/RegisterUserResponse'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unauthorized
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Registers a user
       tags:
       - users
@@ -1672,6 +2373,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetUsersApiResponse'
           description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get stark keys for a registered user
       tags:
       - users
@@ -1919,6 +2632,30 @@ paths:
               description: The amount of mints remaining for current four-week window.
               schema:
                 type: string
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Forbidden
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Mint Tokens V2
       tags:
       - mints
@@ -1941,6 +2678,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetSignableTransferResponse'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Forbidden
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Gets bulk details of a signable transfer
       tags:
       - transfers
@@ -1976,6 +2737,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateTransferResponse'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Forbidden
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Creates a transfer of multiple tokens between two parties
       tags:
       - transfers
@@ -2026,6 +2811,21 @@ paths:
       x-codegen-request-body-name: GetSignableTradeRequest
 components:
   schemas:
+    APIError:
+      properties:
+        code:
+          description: The error code
+          type: string
+        details:
+          description: The error details
+          type: string
+        message:
+          description: The error message
+          type: string
+      required:
+      - code
+      - message
+      type: object
     AddMetadataSchemaToCollectionRequest:
       example:
         metadata:
@@ -2330,9 +3130,11 @@ components:
         icon_url: icon_url
         collection_image_url: collection_image_url
         address: address
+        updated_at: updated_at
         project_id: 6
         metadata_api_url: metadata_api_url
         name: name
+        created_at: created_at
         description: description
         project_owner_address: project_owner_address
       properties:
@@ -2341,6 +3143,10 @@ components:
           type: string
         collection_image_url:
           description: URL of the tile image for this collection
+          nullable: true
+          type: string
+        created_at:
+          description: Timestamp of when the collection was created
           nullable: true
           type: string
         description:
@@ -2364,15 +3170,21 @@ components:
         project_owner_address:
           description: Project owner address
           type: string
+        updated_at:
+          description: Timestamp of when the collection was updated
+          nullable: true
+          type: string
       required:
       - address
       - collection_image_url
+      - created_at
       - description
       - icon_url
       - metadata_api_url
       - name
       - project_id
       - project_owner_address
+      - updated_at
       type: object
     CollectionDetails:
       example:
@@ -2456,6 +3268,35 @@ components:
       - owner_public_key
       - project_id
       type: object
+    CreateMetadataRefreshRequest:
+      example:
+        token_ids:
+        - token_ids
+        - token_ids
+        collection_address: collection_address
+      properties:
+        collection_address:
+          description: The collection contract address
+          type: string
+        token_ids:
+          description: The tokens to refresh
+          items:
+            type: string
+          type: array
+      required:
+      - collection_address
+      - token_ids
+      type: object
+    CreateMetadataRefreshResponse:
+      example:
+        refresh_id: refresh_id
+      properties:
+        refresh_id:
+          description: The metadata refresh ID
+          type: string
+      required:
+      - refresh_id
+      type: object
     CreateOrderRequest:
       example:
         fees:
@@ -2529,11 +3370,16 @@ components:
       example:
         time: 6
         order_id: 0
+        request_id: request_id
         status: status
       properties:
         order_id:
           description: ID of the created order
           type: integer
+        request_id:
+          description: Request ID as a reference for an asynchronous order creation
+            request
+          type: string
         status:
           description: Status of the created order
           type: string
@@ -2663,7 +3509,8 @@ components:
         status: status
       properties:
         request_id:
-          description: Request ID that returns when a trade initiated through risk-manager
+          description: Request ID as a reference for an asynchronous trade creation
+            request
           type: string
         status:
           description: Current status of trade
@@ -2860,6 +3707,7 @@ components:
         timestamp: timestamp
         token:
           data:
+            symbol: symbol
             quantity: quantity
             token_id: token_id
             decimals: 6
@@ -3024,6 +3872,124 @@ components:
           - ETH
           - ERC20
           type: string
+      type: object
+    GetMetadataRefreshErrorsResponse:
+      example:
+        cursor: cursor
+        result:
+        - client_token_metadata_url: client_token_metadata_url
+          client_response_status_code: client_response_status_code
+          token_id: token_id
+          collection_address: collection_address
+          created_at: created_at
+          error_code: error_code
+          client_response_body: client_response_body
+        - client_token_metadata_url: client_token_metadata_url
+          client_response_status_code: client_response_status_code
+          token_id: token_id
+          collection_address: collection_address
+          created_at: created_at
+          error_code: error_code
+          client_response_body: client_response_body
+        remaining: 0
+      properties:
+        cursor:
+          description: Generated cursor returned by previous query
+          type: string
+        remaining:
+          description: "Remaining results flag. 1: there are remaining results matching\
+            \ this query, 0: no remaining results"
+          type: integer
+        result:
+          description: Metadata refresh errors matching query parameters
+          items:
+            $ref: '#/components/schemas/MetadataRefreshErrors'
+          type: array
+      required:
+      - cursor
+      - remaining
+      - result
+      type: object
+    GetMetadataRefreshResponse:
+      example:
+        summary:
+        - pending: 6
+          failed: 0
+          succeeded: 1
+        - pending: 6
+          failed: 0
+          succeeded: 1
+        completed_at: completed_at
+        collection_address: collection_address
+        started_at: started_at
+        refresh_id: refresh_id
+        status: queued
+      properties:
+        collection_address:
+          description: The collection address
+          type: string
+        completed_at:
+          description: When the metadata refresh completed
+          nullable: true
+          type: string
+        refresh_id:
+          description: The metadata refresh ID
+          type: string
+        started_at:
+          description: When the metadata refresh started
+          type: string
+        status:
+          description: The metadata refresh status
+          enum:
+          - queued
+          - in_progress
+          - completed
+          type: string
+        summary:
+          description: The current metadata refresh summary. The summary continue
+            to update until metadata refresh is completed
+          items:
+            $ref: '#/components/schemas/MetadataRefreshSummary'
+          type: array
+      required:
+      - collection_address
+      - refresh_id
+      - started_at
+      - status
+      - summary
+      type: object
+    GetMetadataRefreshes:
+      example:
+        cursor: cursor
+        result:
+        - completed_at: completed_at
+          collection_address: collection_address
+          started_at: started_at
+          refresh_id: refresh_id
+          status: queued
+        - completed_at: completed_at
+          collection_address: collection_address
+          started_at: started_at
+          refresh_id: refresh_id
+          status: queued
+        remaining: 0
+      properties:
+        cursor:
+          description: Generated cursor returned by previous query
+          type: string
+        remaining:
+          description: "Remaining results flag. 1: there are remaining results matching\
+            \ this query, 0: no remaining results"
+          type: integer
+        result:
+          description: Metadata refresh errors matching query parameters
+          items:
+            $ref: '#/components/schemas/MetadataRefreshExcludingSummary'
+          type: array
+      required:
+      - cursor
+      - remaining
+      - result
       type: object
     GetProjectsResponse:
       example:
@@ -3744,17 +4710,21 @@ components:
         - icon_url: icon_url
           collection_image_url: collection_image_url
           address: address
+          updated_at: updated_at
           project_id: 6
           metadata_api_url: metadata_api_url
           name: name
+          created_at: created_at
           description: description
           project_owner_address: project_owner_address
         - icon_url: icon_url
           collection_image_url: collection_image_url
           address: address
+          updated_at: updated_at
           project_id: 6
           metadata_api_url: metadata_api_url
           name: name
+          created_at: created_at
           description: description
           project_owner_address: project_owner_address
         remaining: 0
@@ -3786,6 +4756,7 @@ components:
           timestamp: timestamp
           token:
             data:
+              symbol: symbol
               quantity: quantity
               token_id: token_id
               decimals: 6
@@ -3805,6 +4776,7 @@ components:
           timestamp: timestamp
           token:
             data:
+              symbol: symbol
               quantity: quantity
               token_id: token_id
               decimals: 6
@@ -3854,6 +4826,7 @@ components:
           timestamp: timestamp
           token:
             data:
+              symbol: symbol
               quantity: quantity
               token_id: token_id
               decimals: 6
@@ -3880,6 +4853,7 @@ components:
           timestamp: timestamp
           token:
             data:
+              symbol: symbol
               quantity: quantity
               token_id: token_id
               decimals: 6
@@ -3936,6 +4910,7 @@ components:
           updated_timestamp: updated_timestamp
           buy:
             data:
+              symbol: symbol
               quantity: quantity
               token_id: token_id
               decimals: 6
@@ -3952,6 +4927,7 @@ components:
           expiration_timestamp: expiration_timestamp
           sell:
             data:
+              symbol: symbol
               quantity: quantity
               token_id: token_id
               decimals: 6
@@ -3990,6 +4966,7 @@ components:
           updated_timestamp: updated_timestamp
           buy:
             data:
+              symbol: symbol
               quantity: quantity
               token_id: token_id
               decimals: 6
@@ -4006,6 +4983,7 @@ components:
           expiration_timestamp: expiration_timestamp
           sell:
             data:
+              symbol: symbol
               quantity: quantity
               token_id: token_id
               decimals: 6
@@ -4136,6 +5114,7 @@ components:
           timestamp: timestamp
           token:
             data:
+              symbol: symbol
               quantity: quantity
               token_id: token_id
               decimals: 6
@@ -4156,6 +5135,7 @@ components:
           timestamp: timestamp
           token:
             data:
+              symbol: symbol
               quantity: quantity
               token_id: token_id
               decimals: 6
@@ -4200,6 +5180,7 @@ components:
           timestamp: timestamp
           token:
             data:
+              symbol: symbol
               quantity: quantity
               token_id: token_id
               decimals: 6
@@ -4221,6 +5202,7 @@ components:
           timestamp: timestamp
           token:
             data:
+              symbol: symbol
               quantity: quantity
               token_id: token_id
               decimals: 6
@@ -4252,6 +5234,98 @@ components:
       - cursor
       - remaining
       - result
+      type: object
+    MetadataRefreshErrors:
+      example:
+        client_token_metadata_url: client_token_metadata_url
+        client_response_status_code: client_response_status_code
+        token_id: token_id
+        collection_address: collection_address
+        created_at: created_at
+        error_code: error_code
+        client_response_body: client_response_body
+      properties:
+        client_response_body:
+          description: Metadata API response for the token
+          nullable: true
+          type: string
+        client_response_status_code:
+          description: Metadata API response code for the token
+          nullable: true
+          type: string
+        client_token_metadata_url:
+          description: Requested metadata url for the token
+          type: string
+        collection_address:
+          description: The collection contract address
+          type: string
+        created_at:
+          description: When the error was created
+          type: string
+        error_code:
+          description: Metadata refresh error code
+          type: string
+        token_id:
+          description: The token ID
+          type: string
+      required:
+      - client_response_body
+      - client_response_status_code
+      - client_token_metadata_url
+      - collection_address
+      - created_at
+      - error_code
+      - token_id
+      type: object
+    MetadataRefreshExcludingSummary:
+      example:
+        completed_at: completed_at
+        collection_address: collection_address
+        started_at: started_at
+        refresh_id: refresh_id
+        status: queued
+      properties:
+        collection_address:
+          description: The collection address
+          type: string
+        completed_at:
+          description: When the metadata refresh completed
+          nullable: true
+          type: string
+        refresh_id:
+          description: The metadata refresh ID
+          type: string
+        started_at:
+          description: When the metadata refresh started
+          type: string
+        status:
+          description: The metadata refresh status
+          enum:
+          - queued
+          - in_progress
+          - completed
+          type: string
+      required:
+      - collection_address
+      - refresh_id
+      - started_at
+      - status
+      type: object
+    MetadataRefreshSummary:
+      example:
+        pending: 6
+        failed: 0
+        succeeded: 1
+      properties:
+        failed:
+          description: The number of tokens with failed metadata refreshes
+          type: integer
+        pending:
+          description: The number of tokens that has not been refreshed yet
+          type: integer
+        succeeded:
+          description: The number of tokens with successful metadata refreshes
+          type: integer
       type: object
     MetadataSchemaProperty:
       example:
@@ -4314,6 +5388,7 @@ components:
         timestamp: timestamp
         token:
           data:
+            symbol: symbol
             quantity: quantity
             token_id: token_id
             decimals: 6
@@ -4569,6 +5644,7 @@ components:
         updated_timestamp: updated_timestamp
         buy:
           data:
+            symbol: symbol
             quantity: quantity
             token_id: token_id
             decimals: 6
@@ -4585,6 +5661,7 @@ components:
         expiration_timestamp: expiration_timestamp
         sell:
           data:
+            symbol: symbol
             quantity: quantity
             token_id: token_id
             decimals: 6
@@ -4895,6 +5972,7 @@ components:
     Token:
       example:
         data:
+          symbol: symbol
           quantity: quantity
           token_id: token_id
           decimals: 6
@@ -4920,6 +5998,7 @@ components:
       type: object
     TokenData:
       example:
+        symbol: symbol
         quantity: quantity
         token_id: token_id
         decimals: 6
@@ -4942,11 +6021,15 @@ components:
         properties:
           $ref: '#/components/schemas/AssetProperties'
         quantity:
-          description: Quantity of this asset
+          description: Quantity of this asset - inclusive of fees for buy order in
+            v1 API and exclusive of fees in v3 API
           type: string
         quantity_with_fees:
           description: Quantity of this asset with the sum of all fees applied to
             the asset
+          type: string
+        symbol:
+          description: Symbol of a token
           type: string
         token_address:
           description: Address of ERC721/ERC20 contract
@@ -5069,6 +6152,7 @@ components:
         timestamp: timestamp
         token:
           data:
+            symbol: symbol
             quantity: quantity
             token_id: token_id
             decimals: 6
@@ -5188,6 +6272,7 @@ components:
         timestamp: timestamp
         token:
           data:
+            symbol: symbol
             quantity: quantity
             token_id: token_id
             decimals: 6

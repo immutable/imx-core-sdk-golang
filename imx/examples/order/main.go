@@ -48,7 +48,7 @@ func DemoOrdersWorkflow(ctx context.Context, c *imx.Client, tokenID, tokenAddres
 	// Create order will list the given asset for sale.
 	createOrderResponse, err := c.CreateOrder(ctx, l1signer, l2signer, createOrderRequest)
 	if err != nil {
-		log.Panicf("error calling CreateOrder workflow: %v", err)
+		log.Panicf("error calling CreateOrder: %v", err)
 	}
 
 	createOrderResponseStr, err := common.PrettyStruct(createOrderResponse)

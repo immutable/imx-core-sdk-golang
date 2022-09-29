@@ -37,7 +37,7 @@ func (c *Client) CreateProject(
 		IMXSignature(signature).
 		Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return createProjectResponse, nil
 }
@@ -61,7 +61,7 @@ func (c *Client) GetProject(ctx context.Context, l1signer L1Signer, id string) (
 		IMXSignature(signature).
 		Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -103,7 +103,7 @@ func (c *Client) GetProjects(
 
 	response, httpResponse, err := getProjectsRequest.Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }
