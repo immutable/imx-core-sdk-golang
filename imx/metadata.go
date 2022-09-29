@@ -32,7 +32,7 @@ func (c *Client) AddMetadataSchemaToCollection(
 		IMXSignature(signature).
 		Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return successResponse, nil
 }
@@ -64,7 +64,7 @@ func (c *Client) UpdateMetadataSchemaByName(
 		IMXSignature(signature).
 		Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return successResponse, nil
 }

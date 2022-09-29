@@ -66,7 +66,7 @@ func (c *Client) encodedAssetType(
 	}
 	encodedAssetResponse, httpResponse, err := c.EncodeAsset(ctx, assetType).EncodeAssetRequest(encodeAssetRequest).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 
 	encodedAssetType, ok := new(big.Int).SetString(encodedAssetResponse.AssetType, 10)

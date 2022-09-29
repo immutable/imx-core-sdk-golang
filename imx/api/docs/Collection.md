@@ -6,18 +6,20 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Address** | **string** | Ethereum address of the ERC721 contract | 
 **CollectionImageUrl** | **NullableString** | URL of the tile image for this collection | 
+**CreatedAt** | **NullableString** | Timestamp of when the collection was created | 
 **Description** | **NullableString** | Description of the collection | 
 **IconUrl** | **NullableString** | URL of the icon for this collection | 
 **MetadataApiUrl** | **NullableString** | URL of the metadata for this collection | 
 **Name** | **string** | Name of the collection | 
 **ProjectId** | **int32** | The collection&#39;s project ID | 
 **ProjectOwnerAddress** | **string** | Project owner address | 
+**UpdatedAt** | **NullableString** | Timestamp of when the collection was updated | 
 
 ## Methods
 
 ### NewCollection
 
-`func NewCollection(address string, collectionImageUrl NullableString, description NullableString, iconUrl NullableString, metadataApiUrl NullableString, name string, projectId int32, projectOwnerAddress string, ) *Collection`
+`func NewCollection(address string, collectionImageUrl NullableString, createdAt NullableString, description NullableString, iconUrl NullableString, metadataApiUrl NullableString, name string, projectId int32, projectOwnerAddress string, updatedAt NullableString, ) *Collection`
 
 NewCollection instantiates a new Collection object
 This constructor will assign default values to properties that have it defined,
@@ -82,6 +84,36 @@ SetCollectionImageUrl sets CollectionImageUrl field to given value.
 `func (o *Collection) UnsetCollectionImageUrl()`
 
 UnsetCollectionImageUrl ensures that no value is present for CollectionImageUrl, not even an explicit nil
+### GetCreatedAt
+
+`func (o *Collection) GetCreatedAt() string`
+
+GetCreatedAt returns the CreatedAt field if non-nil, zero value otherwise.
+
+### GetCreatedAtOk
+
+`func (o *Collection) GetCreatedAtOk() (*string, bool)`
+
+GetCreatedAtOk returns a tuple with the CreatedAt field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCreatedAt
+
+`func (o *Collection) SetCreatedAt(v string)`
+
+SetCreatedAt sets CreatedAt field to given value.
+
+
+### SetCreatedAtNil
+
+`func (o *Collection) SetCreatedAtNil(b bool)`
+
+ SetCreatedAtNil sets the value for CreatedAt to be an explicit nil
+
+### UnsetCreatedAt
+`func (o *Collection) UnsetCreatedAt()`
+
+UnsetCreatedAt ensures that no value is present for CreatedAt, not even an explicit nil
 ### GetDescription
 
 `func (o *Collection) GetDescription() string`
@@ -232,6 +264,36 @@ and a boolean to check if the value has been set.
 SetProjectOwnerAddress sets ProjectOwnerAddress field to given value.
 
 
+### GetUpdatedAt
+
+`func (o *Collection) GetUpdatedAt() string`
+
+GetUpdatedAt returns the UpdatedAt field if non-nil, zero value otherwise.
+
+### GetUpdatedAtOk
+
+`func (o *Collection) GetUpdatedAtOk() (*string, bool)`
+
+GetUpdatedAtOk returns a tuple with the UpdatedAt field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetUpdatedAt
+
+`func (o *Collection) SetUpdatedAt(v string)`
+
+SetUpdatedAt sets UpdatedAt field to given value.
+
+
+### SetUpdatedAtNil
+
+`func (o *Collection) SetUpdatedAtNil(b bool)`
+
+ SetUpdatedAtNil sets the value for UpdatedAt to be an explicit nil
+
+### UnsetUpdatedAt
+`func (o *Collection) UnsetUpdatedAt()`
+
+UnsetUpdatedAt ensures that no value is present for UpdatedAt, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

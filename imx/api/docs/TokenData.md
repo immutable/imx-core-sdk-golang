@@ -7,8 +7,9 @@ Name | Type | Description | Notes
 **Decimals** | Pointer to **int32** | Number of decimals supported by this asset | [optional] 
 **Id** | Pointer to **string** | [DEPRECATED] Internal Immutable X Token ID | [optional] 
 **Properties** | Pointer to [**AssetProperties**](AssetProperties.md) |  | [optional] 
-**Quantity** | **string** | Quantity of this asset | 
+**Quantity** | **string** | Quantity of this asset - inclusive of fees for buy order in v1 API and exclusive of fees in v3 API | 
 **QuantityWithFees** | **string** | Quantity of this asset with the sum of all fees applied to the asset | 
+**Symbol** | Pointer to **string** | Symbol of a token | [optional] 
 **TokenAddress** | Pointer to **string** | Address of ERC721/ERC20 contract | [optional] 
 **TokenId** | Pointer to **string** | ERC721 Token ID | [optional] 
 
@@ -145,6 +146,31 @@ and a boolean to check if the value has been set.
 
 SetQuantityWithFees sets QuantityWithFees field to given value.
 
+
+### GetSymbol
+
+`func (o *TokenData) GetSymbol() string`
+
+GetSymbol returns the Symbol field if non-nil, zero value otherwise.
+
+### GetSymbolOk
+
+`func (o *TokenData) GetSymbolOk() (*string, bool)`
+
+GetSymbolOk returns a tuple with the Symbol field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSymbol
+
+`func (o *TokenData) SetSymbol(v string)`
+
+SetSymbol sets Symbol field to given value.
+
+### HasSymbol
+
+`func (o *TokenData) HasSymbol() bool`
+
+HasSymbol returns a boolean if a field has been set.
 
 ### GetTokenAddress
 

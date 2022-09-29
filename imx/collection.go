@@ -35,7 +35,7 @@ func (c *Client) CreateCollection(
 		IMXSignature(signature).
 		Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return createCollectionResponse, nil
 }
@@ -66,7 +66,7 @@ func (c *Client) UpdateCollection(
 		IMXSignature(signature).
 		Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return createCollectionResponse, nil
 }
@@ -81,7 +81,7 @@ GetCollection Get details of a collection at the given address
 func (c *Client) GetCollection(ctx context.Context, collectionContractAddress string) (*api.Collection, error) {
 	response, httpResponse, err := c.collectionsAPI.GetCollection(ctx, collectionContractAddress).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -105,7 +105,7 @@ ListCollections Get a list of collections
 func (c *Client) ListCollections(req *api.ApiListCollectionsRequest) (*api.ListCollectionsResponse, error) {
 	response, httpResponse, err := c.collectionsAPI.ListCollectionsExecute(*req)
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -130,7 +130,7 @@ ListCollectionFilters Get a list of collection filters
 func (c *Client) ListCollectionFilters(req *api.ApiListCollectionFiltersRequest) (*api.CollectionFilter, error) {
 	response, httpResponse, err := c.collectionsAPI.ListCollectionFiltersExecute(*req)
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }

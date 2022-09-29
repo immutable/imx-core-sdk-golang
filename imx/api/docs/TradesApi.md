@@ -1,6 +1,6 @@
 # \TradesApi
 
-All URIs are relative to *https://api.ropsten.x.immutable.com*
+All URIs are relative to *https://api.sandbox.x.immutable.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -222,7 +222,7 @@ No authorization required
 
 ## ListTrades
 
-> ListTradesResponse ListTrades(ctx).PartyAOrderId(partyAOrderId).PartyATokenType(partyATokenType).PartyATokenAddress(partyATokenAddress).PartyBOrderId(partyBOrderId).PartyBTokenType(partyBTokenType).PartyBTokenAddress(partyBTokenAddress).PartyBTokenId(partyBTokenId).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).MinTimestamp(minTimestamp).MaxTimestamp(maxTimestamp).Execute()
+> ListTradesResponse ListTrades(ctx).PartyATokenType(partyATokenType).PartyATokenAddress(partyATokenAddress).PartyBTokenType(partyBTokenType).PartyBTokenAddress(partyBTokenAddress).PartyBTokenId(partyBTokenId).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).MinTimestamp(minTimestamp).MaxTimestamp(maxTimestamp).Execute()
 
 Get a list of trades
 
@@ -242,10 +242,8 @@ import (
 )
 
 func main() {
-    partyAOrderId := "partyAOrderId_example" // string | Party A's (buy order) order id (optional)
     partyATokenType := "partyATokenType_example" // string | Party A's (buy order) token type of currency used to buy (optional)
     partyATokenAddress := "partyATokenAddress_example" // string | Party A's (buy order) token address of currency used to buy (optional)
-    partyBOrderId := "partyBOrderId_example" // string | Party B's (sell order) order id (optional)
     partyBTokenType := "partyBTokenType_example" // string | Party B's (sell order) token type of NFT sold - always ERC721 (optional)
     partyBTokenAddress := "partyBTokenAddress_example" // string | Party B's (sell order) collection address of NFT sold (optional)
     partyBTokenId := "partyBTokenId_example" // string | Party B's (sell order) token id of NFT sold (optional)
@@ -258,7 +256,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.TradesApi.ListTrades(context.Background()).PartyAOrderId(partyAOrderId).PartyATokenType(partyATokenType).PartyATokenAddress(partyATokenAddress).PartyBOrderId(partyBOrderId).PartyBTokenType(partyBTokenType).PartyBTokenAddress(partyBTokenAddress).PartyBTokenId(partyBTokenId).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).MinTimestamp(minTimestamp).MaxTimestamp(maxTimestamp).Execute()
+    resp, r, err := apiClient.TradesApi.ListTrades(context.Background()).PartyATokenType(partyATokenType).PartyATokenAddress(partyATokenAddress).PartyBTokenType(partyBTokenType).PartyBTokenAddress(partyBTokenAddress).PartyBTokenId(partyBTokenId).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).MinTimestamp(minTimestamp).MaxTimestamp(maxTimestamp).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `TradesApi.ListTrades``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -279,10 +277,8 @@ Other parameters are passed through a pointer to a apiListTradesRequest struct v
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **partyAOrderId** | **string** | Party A&#39;s (buy order) order id | 
  **partyATokenType** | **string** | Party A&#39;s (buy order) token type of currency used to buy | 
  **partyATokenAddress** | **string** | Party A&#39;s (buy order) token address of currency used to buy | 
- **partyBOrderId** | **string** | Party B&#39;s (sell order) order id | 
  **partyBTokenType** | **string** | Party B&#39;s (sell order) token type of NFT sold - always ERC721 | 
  **partyBTokenAddress** | **string** | Party B&#39;s (sell order) collection address of NFT sold | 
  **partyBTokenId** | **string** | Party B&#39;s (sell order) token id of NFT sold | 

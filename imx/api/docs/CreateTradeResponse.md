@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**RequestId** | Pointer to **string** | Request ID that returns when a trade initiated through risk-manager | [optional] 
+**RequestId** | Pointer to **string** | Request ID as a reference for an asynchronous trade creation request | [optional] 
 **Status** | **string** | Current status of trade | 
 **TradeId** | **int32** | ID of trade within Immutable X | 
 
