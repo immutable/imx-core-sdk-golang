@@ -23,12 +23,12 @@ func main() {
 	if err != nil {
 		log.Panicf("error in json marshaling: %v\n", err)
 	}
-	log.Println("registration success, response: ", string(val))
+	log.Println("RegisterOffchain response: ", string(val))
 
 	// Get the accounts registered on offchain.
 	usersResponse, err := c.GetUsers(ctx, l1signer.GetAddress())
 	if err != nil {
 		log.Panicf("error when calling `GetUsers: %v", err)
 	}
-	log.Println("registered accounts: ", usersResponse.GetAccounts())
+	log.Println("Registered accounts: ", usersResponse.GetAccounts())
 }

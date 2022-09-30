@@ -21,9 +21,9 @@ func main() {
 
 	transaction, err := imx.NewETHDeposit(ethAmountInWei).Deposit(ctx, c, l1signer, nil)
 	if err != nil {
-		log.Panicf("error calling Eth deposit workflow: %v", err)
+		log.Panicf("Eth deposit: %v", err)
 	}
-	log.Println("transaction hash:", transaction.Hash())
+	log.Println("Eth Deposit transaction hash:", transaction.Hash())
 
 	// ERC20 Deposit
 	erc20AmountInWei, err := strconv.ParseUint(envs["DEPOSIT_ERC20_AMOUNT_IN_WEI"], 10, 64)
@@ -32,14 +32,14 @@ func main() {
 	}
 	transaction, err = imx.NewERC20Deposit(erc20AmountInWei, envs["DEPOSIT_ERC20TOKEN_ADDRESS"]).Deposit(ctx, c, l1signer, nil)
 	if err != nil {
-		log.Panicf("error calling ERC20 deposit workflow: %v", err)
+		log.Panicf("ERC20 deposit workflow: %v", err)
 	}
-	log.Println("transaction hash:", transaction.Hash())
+	log.Println("ERC20 deposit transaction hash:", transaction.Hash())
 
 	// ERC721 Deposit
 	transaction, err = imx.NewERC721Deposit(envs["DEPOSIT_ERC721TOKEN_ID"], envs["DEPOSIT_ERC721TOKEN_ADDRESS"]).Deposit(ctx, c, l1signer, nil)
 	if err != nil {
-		log.Panicf("error calling ERC721 deposit workflow: %v", err)
+		log.Panicf("ERC721 deposit workflow: %v", err)
 	}
-	log.Println("transaction hash:", transaction.Hash())
+	log.Println("ERC721 deposit transaction hash:", transaction.Hash())
 }

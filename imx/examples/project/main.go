@@ -30,5 +30,9 @@ func main() {
 	if err != nil {
 		log.Panicf("error when calling `GetProject: %v", err)
 	}
-	log.Println("Created Project Id: , save this to be used when creating collection.", projectReponse.Id)
+	val, err = json.MarshalIndent(projectReponse, "", "    ")
+	if err != nil {
+		log.Panicf("error in json marshaling: %v\n", err)
+	}
+	log.Println("Project details: ", string(val))
 }

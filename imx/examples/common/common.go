@@ -23,23 +23,16 @@ func CommonInitialise(configFilePath string) (context.Context, map[string]string
 		log.Fatalf("Error loading .env file: %v", err)
 	}
 
-	alchemyAPIKey := envs["ALCHEMY_API_KEY"]
-	signerPrivateKey := envs["OWNER_ACCOUNT_PRIVATE_KEY"]
-	enableDebugLogging := strings.EqualFold(envs["DEBUG_LOGGING"], "true")
-
 	apiConfiguration := api.NewConfiguration()
+
 	// Enable debug logging.
-	if enableDebugLogging {
+	if strings.EqualFold(envs["DEBUG_LOGGING"], "true") {
 		apiConfiguration.Debug = true
 	}
 
-	// Using context value to switch/specify the server before sending request.
-	// If nothing is specified, the default server will be used which will be first one in the open api spec list.
-	ctx := context.TODO()
-
 	cfg := imx.Config{
 		APIConfig:     apiConfiguration,
-		AlchemyAPIKey: alchemyAPIKey,
+		AlchemyAPIKey: envs["ALCHEMY_API_KEY"],
 		Environment:   imx.Sandbox,
 	}
 
@@ -49,7 +42,7 @@ func CommonInitialise(configFilePath string) (context.Context, map[string]string
 	}
 	defer c.EthClient.Close()
 
-	l1signer, err := ethereum.NewSigner(signerPrivateKey, cfg.ChainID)
+	l1signer, err := ethereum.NewSigner(envs["OWNER_ACCOUNT_PRIVATE_KEY"], cfg.ChainID)
 	if err != nil {
 		log.Panicf("error in creating L1Signer: %v\n", err)
 	}
@@ -74,7 +67,9 @@ func CommonInitialise(configFilePath string) (context.Context, map[string]string
 		log.Panicf("error in creating StarkSigner: %v\n", err)
 	}
 
-	return ctx, envs, c, l1signer, l2signer
+	// Using context value to switch/specify the server before sending request.
+	// If nothing is specified, the default server will be used which will be first one in the open api spec list.
+	return context.TODO(), envs, c, l1signer, l2signer
 }
 
 func PrettyStruct(data interface{}) (string, error) {

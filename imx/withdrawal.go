@@ -7,6 +7,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 	"github.com/immutable/imx-core-sdk-golang/imx/internal/convert"
@@ -148,7 +149,7 @@ func (c *Client) completeFungiblesWithdrawal(
 	if isRegistered {
 		return c.withdrawFungibles(ctx, l1signer, starkKey, assetType, overrides)
 	}
-	return c.registerAndWithdrawFungibles(ctx, l1signer, starkKeyHex, starkKey, assetType, overrides)
+	return c.registerAndWithdrawFungibles(ctx, l1signer, starkKey, assetType, overrides)
 }
 
 func (c *Client) withdrawFungibles(
@@ -168,13 +169,12 @@ func (c *Client) withdrawFungibles(
 func (c *Client) registerAndWithdrawFungibles(
 	ctx context.Context,
 	l1signer L1Signer,
-	starkKeyHex string,
 	starkKey *big.Int,
 	assetType *big.Int,
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	etherKey := l1signer.GetAddress()
-	signableRegistration, err := c.getSignableRegistrationOnchain(ctx, etherKey, starkKeyHex)
+	signableRegistration, err := c.getSignableRegistrationOnchain(ctx, etherKey, hexutil.EncodeBig(starkKey))
 	if err != nil {
 		return nil, err
 	}
@@ -222,7 +222,7 @@ func (w *ERC721Withdrawal) withdrawMintedNft(
 	if isRegistered {
 		return c.withdrawMintedNft(ctx, l1signer, starkKey, assetType, tokenID, overrides)
 	}
-	return c.registerAndWithdrawMintedNft(ctx, l1signer, starkKeyHex, starkKey, assetType, tokenID, overrides)
+	return c.registerAndWithdrawMintedNft(ctx, l1signer, starkKey, assetType, tokenID, overrides)
 }
 
 func (c *Client) withdrawMintedNft(
@@ -242,14 +242,13 @@ func (c *Client) withdrawMintedNft(
 func (c *Client) registerAndWithdrawMintedNft(
 	ctx context.Context,
 	l1signer L1Signer,
-	starkKeyHex string,
 	starkKey *big.Int,
 	assetType *big.Int,
 	tokenID *big.Int,
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	etherKey := l1signer.GetAddress()
-	signableRegistration, err := c.getSignableRegistrationOnchain(ctx, etherKey, starkKeyHex)
+	signableRegistration, err := c.getSignableRegistrationOnchain(ctx, etherKey, hexutil.EncodeBig(starkKey))
 	if err != nil {
 		return nil, err
 	}
@@ -312,7 +311,7 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 	if isRegistered {
 		return c.withdrawAndMintNft(ctx, l1signer, starkKey, assetType, mintingBlob, overrides)
 	}
-	return c.registerAndWithdrawAndMintNft(ctx, l1signer, starkKeyHex, starkKey, assetType, mintingBlob, overrides)
+	return c.registerAndWithdrawAndMintNft(ctx, l1signer, starkKey, assetType, mintingBlob, overrides)
 }
 
 func (c *Client) withdrawAndMintNft(
@@ -333,14 +332,13 @@ func (c *Client) withdrawAndMintNft(
 func (c *Client) registerAndWithdrawAndMintNft(
 	ctx context.Context,
 	l1signer L1Signer,
-	starkKeyHex string,
 	starkKey *big.Int,
 	assetType *big.Int,
 	mintingBlob []byte,
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	etherKey := l1signer.GetAddress()
-	signableRegistration, err := c.getSignableRegistrationOnchain(ctx, etherKey, starkKeyHex)
+	signableRegistration, err := c.getSignableRegistrationOnchain(ctx, etherKey, hexutil.EncodeBig(starkKey))
 	if err != nil {
 		return nil, err
 	}
