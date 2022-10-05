@@ -61,6 +61,10 @@ type TokenWithdrawal interface {
 	CompleteWithdrawal(ctx context.Context, c *Client, l1signer L1Signer, starkPublicKey string, overrides *bind.TransactOpts) (*types.Transaction, error)
 }
 
+// ERC20Withdrawal implements TokenWithdrawal. Used for withdrawal of ETh Tokens.
+type EthWithdrawal struct {
+}
+
 // ERC20Withdrawal implements TokenWithdrawal. Used for withdrawal of ERC20 Tokens.
 type ERC20Withdrawal struct {
 	TokenAddress string
@@ -70,6 +74,12 @@ type ERC20Withdrawal struct {
 type ERC721Withdrawal struct {
 	TokenID      string
 	TokenAddress string
+}
+
+// NewEthWithdrawal instantiates a new EthWithdrawal object with the given tokenAddress.
+func NewEthWithdrawal() *EthWithdrawal {
+	this := EthWithdrawal{}
+	return &this
 }
 
 // NewERC20Withdrawal instantiates a new ERC20Withdrawal object with the given tokenAddress.
@@ -88,16 +98,18 @@ func NewERC721Withdrawal(tokenID, tokenAddress string) *ERC721Withdrawal {
 }
 
 /*
-CompleteEthWithdrawal performs the complete withdrawal workflow for ETH
+CompleteWithdrawal performs the complete withdrawal workflow for ETH
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param c Client object from interface.go used to make API calls.
 @param l1Signer Ethereum signer to sign message.
 @param starkKeyHex Stark key string in hex decimal format.
 @param overrides Optional transaction params that overrides the default values.
 @return Transaction
 */
-func (c *Client) CompleteEthWithdrawal(
+func (w *EthWithdrawal) CompleteWithdrawal(
 	ctx context.Context,
+	c *Client,
 	l1signer L1Signer,
 	starkKeyHex string,
 	overrides *bind.TransactOpts,
@@ -113,6 +125,7 @@ func (c *Client) CompleteEthWithdrawal(
 CompleteWithdrawal performs the complete withdrawal workflow for ERC20 tokens.
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param c Client object from interface.go used to make API calls.
 @param l1Signer Ethereum signer to sign message.
 @param starkKeyHex Stark key string in hex decimal format.
 @param overrides Optional transaction params that overrides the default values.
@@ -272,6 +285,7 @@ func (c *Client) registerAndWithdrawMintedNft(
 CompleteWithdrawal performs the completion step of the withdrawal process for ERC721 token.
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param c Client object from interface.go used to make API calls.
 @param l1Signer Ethereum signer to sign message.
 @param starkKeyHex Stark key string in hex decimal format.
 @param overrides Optional transaction params that overrides the default values.

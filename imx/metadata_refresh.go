@@ -51,7 +51,7 @@ func (c *Client) ListMetadataRefreshes(
 }
 
 /*
-GetMetadataRefreshErrors Gets a metadata refresh errors for the given refresh id
+GetMetadataRefreshErrors Gets metadata refresh errors for the given refresh id
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
 @param l1signer Ethereum signer used for ownership authentication.
@@ -92,7 +92,7 @@ func (c *Client) GetMetadataRefreshErrors(
 }
 
 /*
-GetMetadataRefreshResults Gets a metadata refresh results for the given refresh id
+GetMetadataRefreshResults Gets metadata refresh results for the given refresh id
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
 @param l1signer Ethereum signer used for ownership authentication.
