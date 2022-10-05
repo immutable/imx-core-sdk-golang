@@ -81,7 +81,7 @@ func (c *Client) IsRegisteredOnChain(ctx context.Context, starkPublicKey string)
 		return nil, fmt.Errorf("error converting StarkKey to bigint")
 	}
 
-	isRegistered, err := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
+	isRegistered, err := c.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	if err != nil {
 		isRegistered = false
 		return &isRegistered, fmt.Errorf("error: %v", err)

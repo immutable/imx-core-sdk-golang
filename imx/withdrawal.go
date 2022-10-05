@@ -144,7 +144,7 @@ func (c *Client) completeFungiblesWithdrawal(
 		return nil, fmt.Errorf("error converting starkKeyHex to bigint")
 	}
 
-	isRegistered, _ := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
+	isRegistered, _ := c.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 
 	if isRegistered {
 		return c.withdrawFungibles(ctx, l1signer, starkKey, assetType, overrides)
@@ -159,7 +159,7 @@ func (c *Client) withdrawFungibles(
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	opts := c.buildTransactOpts(ctx, l1signer, overrides)
-	tnx, err := c.coreContract.Withdraw(opts, starkKey, assetType)
+	tnx, err := c.CoreContract.Withdraw(opts, starkKey, assetType)
 	if err != nil {
 		return nil, err
 	}
@@ -186,7 +186,7 @@ func (c *Client) registerAndWithdrawFungibles(
 	if err != nil {
 		return nil, err
 	}
-	transaction, err := c.registrationContract.RegisterAndWithdraw(opts, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType)
+	transaction, err := c.RegistrationContract.RegisterAndWithdraw(opts, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType)
 	if err != nil {
 		return nil, err
 	}
@@ -210,9 +210,9 @@ func (w *ERC721Withdrawal) withdrawMintedNft(
 		return nil, fmt.Errorf("error converting starkKeyHex to bigint")
 	}
 
-	isRegistered, err := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
+	isRegistered, err := c.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	if err != nil {
-		return nil, fmt.Errorf("error when calling 'ethClient.registrationContract.IsRegistered': %v", err)
+		return nil, fmt.Errorf("error when calling 'ethClient.RegistrationContract.IsRegistered': %v", err)
 	}
 
 	tokenID, ok := new(big.Int).SetString(w.TokenID, 10)
@@ -233,7 +233,7 @@ func (c *Client) withdrawMintedNft(
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	opts := c.buildTransactOpts(ctx, l1signer, overrides)
-	tnx, err := c.coreContract.WithdrawNft(opts, starkKey, assetType, tokenID)
+	tnx, err := c.CoreContract.WithdrawNft(opts, starkKey, assetType, tokenID)
 	if err != nil {
 		return nil, err
 	}
@@ -261,7 +261,7 @@ func (c *Client) registerAndWithdrawMintedNft(
 	if err != nil {
 		return nil, err
 	}
-	tnx, err := c.registrationContract.RegisterAndWithdrawNft(opts, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType, tokenID)
+	tnx, err := c.RegistrationContract.RegisterAndWithdrawNft(opts, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType, tokenID)
 	if err != nil {
 		return nil, err
 	}
@@ -305,7 +305,7 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 		return nil, fmt.Errorf("error converting starkKeyHex to bigint")
 	}
 
-	isRegistered, _ := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
+	isRegistered, _ := c.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	// Note: if we reach here, it means we are registered off-chain.
 	// Above call will return an error user is not registered but this is for on-chain
 	// we should swallow this error to allow the register and withdraw flow to execute.
@@ -324,7 +324,7 @@ func (c *Client) withdrawAndMintNft(
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	opts := c.buildTransactOpts(ctx, l1signer, overrides)
-	tnx, err := c.coreContract.WithdrawAndMint(opts, starkKey, assetType, mintingBlob)
+	tnx, err := c.CoreContract.WithdrawAndMint(opts, starkKey, assetType, mintingBlob)
 	if err != nil {
 		return nil, err
 	}
@@ -353,7 +353,7 @@ func (c *Client) registerAndWithdrawAndMintNft(
 		return nil, err
 	}
 
-	tnx, err := c.registrationContract.RegsiterAndWithdrawAndMint(opts, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType, mintingBlob)
+	tnx, err := c.RegistrationContract.RegsiterAndWithdrawAndMint(opts, common.HexToAddress(etherKey), starkKey, operatorSignature, assetType, mintingBlob)
 	if err != nil {
 		return nil, err
 	}
