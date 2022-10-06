@@ -58,6 +58,7 @@ type Client struct {
 	assetsAPI            api.AssetsApi
 	usersAPI             api.UsersApi
 	metadataAPI          api.MetadataApi
+	metadataRefreshesAPI api.MetadataRefreshesApi
 	tokensAPI            api.TokensApi
 	balancesAPI          api.BalancesApi
 	projectsAPI          api.ProjectsApi

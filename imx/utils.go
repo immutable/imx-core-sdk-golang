@@ -24,9 +24,9 @@ func createSignatures(signableMessage, payloadHash *string, l1signer L1Signer, l
 	return ethSignature, starkSignature, nil
 }
 
-// getProjectOwnerAuthorisationHeaders gets the Unix epoch timestamp and its signature signed with given ETH key.
+// createIMXAuthorisationHeaders gets the Unix epoch timestamp and its signature signed with given ETH key.
 // It is required for performing some of the administrative level tasks.
-func getProjectOwnerAuthorisationHeaders(l1signer L1Signer) (timestamp, signature string, err error) {
+func createIMXAuthorisationHeaders(l1signer L1Signer) (timestamp, signature string, err error) {
 	timestamp = strconv.FormatInt(time.Now().Unix(), 10)
 	signedTimestamp, err := l1signer.SignMessage(timestamp)
 	if err != nil {

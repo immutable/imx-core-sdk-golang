@@ -24,7 +24,7 @@ func (c *Client) CreateCollection(
 	l1signer L1Signer,
 	createCollectionRequest *api.CreateCollectionRequest,
 ) (*api.Collection, error) {
-	timestamp, signature, err := getProjectOwnerAuthorisationHeaders(l1signer)
+	timestamp, signature, err := createIMXAuthorisationHeaders(l1signer)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func (c *Client) UpdateCollection(
 	contractAddress string,
 	updateCollectionRequest *api.UpdateCollectionRequest,
 ) (*api.Collection, error) {
-	timestamp, signature, err := getProjectOwnerAuthorisationHeaders(l1signer)
+	timestamp, signature, err := createIMXAuthorisationHeaders(l1signer)
 	if err != nil {
 		return nil, err
 	}
