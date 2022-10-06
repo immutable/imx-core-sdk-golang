@@ -45,7 +45,7 @@ func CommonInitialise(configFilePath string) (context.Context, map[string]string
 
 	c, err := imx.NewClient(&cfg)
 	if err != nil {
-		log.Panicf("error on NewClient: %v\n", err)
+		log.Panicf("error in NewClient: %v\n", err)
 	}
 	defer c.EthClient.Close()
 
