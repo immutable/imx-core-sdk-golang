@@ -9,14 +9,33 @@ import (
 )
 
 func TestStarkSigner_VerifySignature(t *testing.T) {
-	key, _ := GenerateKey()
-	l2Signer, _ := NewSigner(key)
+	key, err := GenerateKey()
+	assert.NoError(t, err)
+
+	l2Signer, err := NewSigner(key)
+	assert.NoError(t, err)
+
 	message := "0x074180eaec7e68712b5a0fbf5d63a70c33940c9b02e60565e36f84d705b669e"
-	hash, _ := hexutil.DecodeBig(message)
-	signature, _ := l2Signer.SignMessage(message)
+	hash, ok := new(big.Int).SetString(message, 0)
+	assert.True(t, ok)
+
+	signature, err := l2Signer.SignMessage(message)
+	assert.NoError(t, err)
+
 	starkPubKey := l2Signer.GetAddress()
-	err := l2Signer.VerifySignature(hash, signature, starkPubKey)
-	assert.Nil(t, err)
+	err = l2Signer.VerifySignature(hash, signature, starkPubKey)
+	assert.NoError(t, err)
+}
+
+func TestStarkSigner_ShouldReturnCorrectAddress(t *testing.T) {
+	mockPrivateKey, ok := new(big.Int).SetString("019b5de47e5fc8f2e8c3415b42a126aadb462637f2feca1df3733fe3f37cf50f", 16)
+	assert.True(t, ok)
+
+	expectedPublicKey := "0x0790436373c1d5b7a88ce4fd7ac96591a385b2b6392d1ea44a165f75115b82ac"
+	l2Signer, err := NewSigner(mockPrivateKey)
+	assert.NoError(t, err)
+
+	assert.Equalf(t, expectedPublicKey, l2Signer.GetAddress(), "Check the generated public key is as expected")
 }
 
 func TestStarkSigner_GetAddress(t *testing.T) {
