@@ -9,7 +9,6 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/go-openapi/runtime"
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
 	"github.com/immutable/imx-core-sdk-golang/imx/internal/convert"
 )
@@ -287,7 +286,7 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 ) (*types.Transaction, error) {
 	mintableTokenResponse, httpResponse, err := c.mintsAPI.GetMintableTokenDetailsByClientTokenId(ctx, w.TokenAddress, w.TokenID).Execute()
 	if err != nil {
-		if err.(*runtime.APIError).IsCode(404) {
+		if httpResponse.StatusCode == 404 {
 			// Token is already minted on L1
 			return w.withdrawMintedNft(ctx, c, l1signer, starkKeyHex, overrides)
 		}
