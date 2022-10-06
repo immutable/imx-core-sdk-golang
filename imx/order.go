@@ -109,13 +109,23 @@ func (c *Client) GetOrder(ctx context.Context, id string) (*api.Order, error) {
 }
 
 /*
-ListOrders Gets a list of orders
+NewListOrdersRequest Creates a new ApiListOrdersRequest object with required params.
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@return ApiListOrdersRequest
+*/
+func (c *Client) NewListOrdersRequest(ctx context.Context) api.ApiListOrdersRequest {
+	return c.ordersAPI.ListOrders(ctx)
+}
+
+/*
+ListOrders Gets a list of orders
+
+@param req the api request struct with all params populated to make the request
 @return ListOrdersResponse
 */
-func (c *Client) ListOrders(ctx context.Context) (*api.ListOrdersResponse, error) {
-	response, httpResponse, err := c.ordersAPI.ListOrders(ctx).Execute()
+func (c *Client) ListOrders(req *api.ApiListOrdersRequest) (*api.ListOrdersResponse, error) {
+	response, httpResponse, err := c.ordersAPI.ListOrdersExecute(*req)
 	if err != nil {
 		return nil, NewAPIError(httpResponse, err)
 	}

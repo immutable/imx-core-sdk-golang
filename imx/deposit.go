@@ -85,13 +85,23 @@ func (c *Client) GetDeposit(ctx context.Context, id string) (*api.Deposit, error
 }
 
 /*
-ListDeposits Gets a list of deposits
+NewListDepositsRequest Creates a new ApiListDepositsRequest object with required params.
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@return ApiListDepositsRequest
+*/
+func (c *Client) NewListDepositsRequest(ctx context.Context) api.ApiListDepositsRequest {
+	return c.depositsAPI.ListDeposits(ctx)
+}
+
+/*
+ListDeposits Gets a list of deposits
+
+@param req the api request struct with all params populated to make the request
 @return ListDepositsResponse
 */
-func (c *Client) ListDeposits(ctx context.Context) (*api.ListDepositsResponse, error) {
-	response, httpResponse, err := c.depositsAPI.ListDeposits(ctx).Execute()
+func (c *Client) ListDeposits(req *api.ApiListDepositsRequest) (*api.ListDepositsResponse, error) {
+	response, httpResponse, err := c.depositsAPI.ListDepositsExecute(*req)
 	if err != nil {
 		return nil, NewAPIError(httpResponse, err)
 	}
