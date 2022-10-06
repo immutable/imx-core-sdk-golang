@@ -1,12 +1,14 @@
-module github.com/immutable/imx-core-sdk-golang/imx/examples
+module github.com/immutable/imx-core-sdk-golang/imx/examples/withdrawal
 
 go 1.18
 
-replace github.com/immutable/imx-core-sdk-golang => ./../../
+replace github.com/immutable/imx-core-sdk-golang => ./../../../
+
+replace github.com/immutable/imx-core-sdk-golang/imx/examples => ./../
 
 require (
 	github.com/immutable/imx-core-sdk-golang v0.0.0-00010101000000-000000000000
-	github.com/joho/godotenv v1.4.0
+	github.com/immutable/imx-core-sdk-golang/imx/examples v0.0.0-00010101000000-000000000000
 )
 
 require (
@@ -25,6 +27,7 @@ require (
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/google/uuid v1.2.0 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
+	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mitchellh/mapstructure v1.4.3 // indirect
