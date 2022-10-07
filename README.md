@@ -40,7 +40,7 @@ go get github.com/immutable/imx-core-sdk-golang
 
 ## Initialization
 
-Initialize the Core SDK client with the network on which you want your application to run (see [all networks available](./imx/interface.go)):
+Initialize the Core SDK client with the network on which you want your application to run (see [all networks available](https://github.com/immutable/imx-core-sdk-golang/blob/69af5db9a0be05afd9c91c6b371547cfe3bea719/imx/interface.go)):
 
 Select one of the following Ethereum networks Immutable X platform currently supports.
 
@@ -139,10 +139,10 @@ As Immutable X enables applications to execute signed transactions on both Ether
 
 ### 1. Generate your own signers
 
-The Core SDK provides functionality for applications to generate Stark (L2) [private keys](./imx/signers/stark/factory.go#L22) and [signers](./imx/signers/stark/signer.go#L16).
+The Core SDK provides functionality for applications to generate Stark (L2) [private keys](https://github.com/immutable/imx-core-sdk-golang/blob/69af5db9a0be05afd9c91c6b371547cfe3bea719/imx/signers/stark/factory.go#L22) and [signers](https://github.com/immutable/imx-core-sdk-golang/blob/69af5db9a0be05afd9c91c6b371547cfe3bea719/imx/signers/stark/signer.go#L16).
 
 #### 🚨🚨🚨 Warning 🚨🚨🚨
-> If you generate your own Stark private key, you will have to persist it. The key is [randomly generated](./imx/signers/stark/factory.go#L22) so **_cannot_** be deterministically re-generated.
+> If you generate your own Stark private key, you will have to persist it. The key is [randomly generated](https://github.com/immutable/imx-core-sdk-golang/blob/69af5db9a0be05afd9c91c6b371547cfe3bea719/imx/signers/stark/factory.go#L22) so **_cannot_** be deterministically re-generated.
 
 ```go
 apiConfiguration := api.NewConfiguration()
@@ -241,7 +241,7 @@ The Core SDK provides interfaces for all smart contracts required to interact wi
 
 ```go
 // This example is only to demonstrate using the generated smart contract clients
-// We recommend using the Deposit method from ./imx/deposit.go to deposit NFT
+// We recommend using the Deposit method from https://github.com/immutable/imx-core-sdk-golang/blob/69af5db9a0be05afd9c91c6b371547cfe3bea719/imx/deposit.go to deposit NFT
 func DepositNft(l1signer immutable.L1Signer, starkPublicKey, assetType, vaultID, tokenID *big.Int, overrides *bind.TransactOpts) (*types.Transaction, error) {
     apiConfiguration := api.NewConfiguration()
     cfg := imx.Config{
