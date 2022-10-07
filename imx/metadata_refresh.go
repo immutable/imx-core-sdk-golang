@@ -23,7 +23,7 @@ func (c *Client) ListMetadataRefreshes(
 	pageSize *int32,
 	cursor *string,
 ) (*api.GetMetadataRefreshes, error) {
-	timestamp, signature, err := createIMXAuthorisationHeaders(l1signer)
+	timestamp, signature, err := generateIMXAuthorisationHeaders(l1signer)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (c *Client) GetMetadataRefreshErrors(
 	pageSize *int32,
 	cursor *string,
 ) (*api.GetMetadataRefreshErrorsResponse, error) {
-	timestamp, signature, err := createIMXAuthorisationHeaders(l1signer)
+	timestamp, signature, err := generateIMXAuthorisationHeaders(l1signer)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +106,7 @@ func (c *Client) GetMetadataRefreshResults(
 	l1signer L1Signer,
 	refreshID string,
 ) (*api.GetMetadataRefreshResponse, error) {
-	timestamp, signature, err := createIMXAuthorisationHeaders(l1signer)
+	timestamp, signature, err := generateIMXAuthorisationHeaders(l1signer)
 	if err != nil {
 		return nil, err
 	}
@@ -136,7 +136,7 @@ func (c *Client) CreateMetadataRefresh(
 	l1signer L1Signer,
 	createMetadataRefreshRequest *api.CreateMetadataRefreshRequest,
 ) (*api.CreateMetadataRefreshResponse, error) {
-	timestamp, signature, err := createIMXAuthorisationHeaders(l1signer)
+	timestamp, signature, err := generateIMXAuthorisationHeaders(l1signer)
 	if err != nil {
 		return nil, err
 	}
