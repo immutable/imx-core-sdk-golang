@@ -33,7 +33,7 @@ type Config struct {
 	Environment
 }
 
-// Environment holds ethereum network and contract address information. Part of the config.
+// Environment holds Ethereum network and contract address information.
 type Environment struct {
 	BaseAPIPath                 string
 	EthereumRPC                 string
