@@ -3,8 +3,8 @@ module github.com/immutable/imx-core-sdk-golang
 go 1.18
 
 require (
-	github.com/dontpanicdao/caigo v0.3.0
-	github.com/ethereum/go-ethereum v1.10.23
+	github.com/dontpanicdao/caigo v0.2.0
+	github.com/ethereum/go-ethereum v1.10.25
 	github.com/stretchr/testify v1.8.0
 )
 
