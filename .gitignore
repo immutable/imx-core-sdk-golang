@@ -6,3 +6,6 @@
 # mac 
 
 .DS_Store
+
+# Generated files
+solidity/generated

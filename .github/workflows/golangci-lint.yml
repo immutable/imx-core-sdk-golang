@@ -29,9 +29,7 @@ jobs:
     strategy:
       matrix:
         workdir:
-          - examples/workflows
-          - examples/publicapi/list_assets
-          - examples/publicapi/create_project
+          - imx/examples
     steps:
       - uses: actions/setup-go@v3
         with:

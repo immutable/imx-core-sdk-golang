@@ -12,9 +12,10 @@
 Its public interface shouldn't be considered final, and we may need to release breaking changes as we push towards v1.0.
 
 ---
+
 # Immutable Core SDK Golang
 
-The Immutable Core SDK Golang provides convenient access to the Immutable X API and Ethereum contract methods for applications written on the Immutable X platform.
+The Immutable Core SDK Golang provides convenient access to the Immutable X API and Ethereum smart contracts for applications written on the Immutable X platform.
 
 Currently, our SDK supports interactions with our application-specific rollup based on StarkWare's [StarkEx](https://starkware.co/starkex/). In the future, we'll be adding [StarkNet](https://starknet.io/) support across our platform.
 
@@ -24,7 +25,11 @@ See the [Developer Home](https://docs.x.immutable.com/) for general information 
 
 * Getting started, see [Developer Docs](https://docs.x.immutable.com/docs/welcome/)
 * See the [API reference documentation](https://docs.x.immutable.com/reference) for more information on our API's.
-* Reference docs related to this (Golang imx core) SDK can be found [here](https://docs.x.immutable.com/sdk-docs/core-sdk-golang/overview) 
+* Reference docs related to this (Golang imx core) SDK can be found [here](https://docs.x.immutable.com/sdk-docs/core-sdk-golang/overview)
+
+The following code snippets talk about how to get setup and use the various sections of the Golang SDK for most common use cases. Any questions that are not covered here please reach out to team. See [Getting Help](#getting-help)
+
+
 ## Installation
 
 The supported go versions are 1.18 or above.
@@ -33,160 +38,197 @@ The supported go versions are 1.18 or above.
 go get github.com/immutable/imx-core-sdk-golang 
 ```
 
-## How to use
+## Initialization
 
-The following code snippets talk about how to get setup and use the various sections of the Golang SDK for most common use cases. Any sections that are not covered here please reach out to team. See [Getting Help](#getting-help)
-
-### Configuration
-
-A configuration object is provided with preset configurations for both Test and Production networks to simplify the environment setup required for which the Core SDK requests are made. This can be obtained by using the `GetConfig` function available within the `config` package of Core SDK. 
+Initialize the Core SDK client with the network on which you want your application to run (see [all networks available](https://github.com/immutable/imx-core-sdk-golang/blob/69af5db9a0be05afd9c91c6b371547cfe3bea719/imx/interface.go)):
 
 Select one of the following Ethereum networks Immutable X platform currently supports.
 
 | Environment | Description   |  
 |-------------|---------------|
-| Sandbox     | Test network  |
-| Mainnet     | Production    | 
+| Sandbox     | The default test network (currently, it is Goërli)  |
+| Mainnet     | Ethereum network    | 
 
 ```go
-import "github.com/immutable/imx-core-sdk-golang/config"
+import "github.com/immutable/imx-core-sdk-golang/imx/api"
 
 const alchemyAPIKey = "alchemy api key"
 
 func main() {
-   cfg := config.GetConfig(config.Sandbox, alchemyAPIKey)
-   ...
+    apiConfiguration := api.NewConfiguration()
+    cfg := imx.Config{
+        APIConfig:     apiConfiguration,
+        AlchemyAPIKey: YOUR_ALCHEMY_API_KEY,
+        Environment:   imx.Sandbox,
+    }
+    client, err := imx.NewClient(&cfg)
+    if err != nil {
+        log.Panicf("error in NewClient: %v\n", err)
+    }
+    defer c.EthClient.Close()
 }
 ```
 
-#### Ethereum Client
+## Get data (on assets, orders, past transactions, etc.)
 
-For information about how Ethereum client is setup, see `examples/workflows/main.go`
+These methods allow you to read data about events, transactions or current state on Immutable X (layer 2). They do not require any user authentication because no state is being changed.
 
-### How to generate the required signers
+Examples of the types of data that are typically retrieved include:
 
-#### L1 Signer
+- Assets or details of a particular asset
+- Token balances for a particular user
+- Orders or details about a particular order
+- Historical trades and transfers
 
-Almost all the POST requests will need signed message. To sign a message as a minimum an L1 signer is required. An Ethereum wallet can be used to implement an L1 signer ([Getting started > Wallet](https://docs.x.immutable.com/docs/getting-started-guide/#wallet)).
+### Examples
 
-When you implement an L1signer, it must satisfy [L1Signer interface](signers/signers.go). See [BaseL1Signer](examples/workflows/utils/signer.go) for a sample implementation of L1 Signer.
-
-Also refer `examples/publicapi/list_assets/main.go` for environment setup examples.
-#### L2 Signer
-
-Some of the endpoints like Withdrawal, Orders, Trades, Transfers require an L2 signer. See `signers/stark` for information about generating your own L2 signer and also the following code snippet.
+#### Get all collections and get assets from a particular collection:
 
 ```go
-import (
-   "github.com/immutable/imx-core-sdk-golang/signers/stark"
-   ...
-)
+listCollectionsRequest := c.NewListCollectionsRequest(context.TODO())
+listCollectionsRequest.PageSize(2)
 
-func main() {
-   // L1 credentials
-   l1signer := YourImplementationOfL1SignerInterface() // See examples/workflows/utils/signer.go 
+listCollectionsResponse, err := c.ListCollections(&listCollectionsRequest)
+if err != nil {
+    log.Panicf("error in ListCollections: %v\n", err)
+}
 
-   // L2 credentials
-   // Obtain the stark signer associated with this user.
-   l2signer, err := stark.GenerateStarkSigner(l1signer) // this is the sdk helper function
-   if err != nil {
-      ...
-   }
+collection := listCollectionsResponse.Result[0]
+
+listAssetsRequest := c.NewListAssetsRequest(context.TODO())
+listAssetsRequest.Collection(collection.Address)
+listAssetsRequest.PageSize(10)
+
+listAssetsResponse, err := c.ListAssets(&listAssetsRequest)
+if err != nil {
+    log.Panicf("error in ListAssets: %v\n", err)
 }
 ```
 
-Also see the examples for a sample l2 signer usage `examples/workflows/main.go`
+## Operations requiring user signatures
 
-### Standard API Requests
+There are two types of operations requiring user signatures:
 
-The Core SDK includes classes that interact with the Immutable X APIs.
+1. Transactions that update blockchain state
+2. Operations that Immutable X require authorization for
+
+In order to get user signatures, applications need to [generate "signers"](#how-do-applications-generate-and-use-signers).
+
+### What are transactions that update blockchain state?
+
+A common transaction type is the transfer of asset ownership from one user to another (ie. asset sale). These operations require users to sign (approve) them to prove that they are valid.
+
+### What are operations that require authorization?
+
+These operations add to or update data in Immutable's databases and typically require the authorization of an object's owner (ie. a user creating a project on Immutable X).
+
+### How do applications generate and use signers?
+
+Signers are abstractions of user accounts that can be used to sign transactions. A user's private key is required to generate them.
+
+There are two ways to get signers in your application:
+
+1. [Generate your own by obtaining and using the user's private keys](#1-generate-your-own-signers)
+2. [Use our Wallet SDK to connect to a user's wallet application](#2-generate-signers-using-the-wallet-sdk)
+
+The first option, where an application obtains a user's private key directly, is risky because these keys allow anyone in possession of them full control of an account.
+
+The second option provides an application with an interface to the user's account by prompting the user to connect with their wallet application (ie. mobile or browser wallet). Once connected the app can begin asking the user to sign transactions and messages without having to reveal their private key.
+
+As Immutable X enables applications to execute signed transactions on both Ethereum (layer 1) and StarkEx (layer 2), signers are required for both these layers.
+
+### 1. Generate your own signers
+
+The Core SDK provides functionality for applications to generate Stark (L2) [private keys](https://github.com/immutable/imx-core-sdk-golang/blob/69af5db9a0be05afd9c91c6b371547cfe3bea719/imx/signers/stark/factory.go#L22) and [signers](https://github.com/immutable/imx-core-sdk-golang/blob/69af5db9a0be05afd9c91c6b371547cfe3bea719/imx/signers/stark/signer.go#L16).
+
+#### 🚨🚨🚨 Warning 🚨🚨🚨
+> If you generate your own Stark private key, you will have to persist it. The key is [randomly generated](https://github.com/immutable/imx-core-sdk-golang/blob/69af5db9a0be05afd9c91c6b371547cfe3bea719/imx/signers/stark/factory.go#L22) so **_cannot_** be deterministically re-generated.
 
 ```go
-// Standard API request example usage
+apiConfiguration := api.NewConfiguration()
+cfg := imx.Config{
+    APIConfig:     apiConfiguration,
+    AlchemyAPIKey: YOUR_ALCHEMY_API_KEY,
+    Environment:   imx.Sandbox,
+}
 
-import (
-    "context"
-    "fmt"
-    "github.com/immutable/imx-core-sdk-golang/generated/api"
-    "github.com/immutable/imx-core-sdk-golang/config"
-)
+// Create Ethereum signer
+l1signer, err := ethereum.NewSigner(YOUR_PRIVATE_ETH_KEY, cfg.ChainID)
+if err != nil {
+    log.Panicf("error in creating L1Signer: %v\n", err)
+}
 
-func GetYourAsset(tokenID, tokenAddress string) (*api.Asset, error) {
-    configuration := api.NewConfiguration()
-    apiClient := api.NewAPIClient(configuration)
-    ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
+// Endpoints like Withdrawal, Orders, Trades, Transfers require an L2 (stark) signer
+// Create Stark signer
+starkPrivateKey, err = stark.GenerateKey() // Or retrieve previously generated key
+if err != nil {
+    log.Panicf("error in Generating Stark Private Key: %v\n", err)
+}
 
-    getAssetResponse, httpResp, err := apiClient.AssetsApi.GetAsset(ctx, tokenAddress, tokenID).Execute()
-    if err != nil {
-        return nil, fmt.Errorf("error when calling `GetAsset`: %v, HTTP response body: %v", err, httpResp.Body)
-    }
-
-    return getAssetResponse, nil
+l2signer, err := stark.NewSigner(starkPrivateKey)
+if err != nil {
+    log.Panicf("error in creating StarkSigner: %v\n", err)
 }
 ```
 
-View the [OpenAPI spec](openapi.json) for a full list of API requests available in the Core SDK.
+### 2. Generate signers using the Wallet SDK
 
-### Authorised project owner requests
+The [Wallet SDK Web](https://docs.x.immutable.com/sdk-docs/wallet-sdk-web/overview) provides connections to Metamask and WalletConnect browser wallets.
 
-Some methods require authorisation by the project owner, which consists of a Unix epoch timestamp signed with your ETH key and included in the request header.
+See [this guide](https://docs.x.immutable.com/sdk-docs/wallet-sdk-web/quickstart) for how to set this up.
 
-On project and collection methods that require authorisation, this signed timestamp string can typically be passed as the `IMXSignature` and `IMXTimestamp` parameters.
-See [here](#how-to-generate-the-required-signers) for how to generate the signers required.
+### Examples
+
+#### Create a project (requires an Ethereum layer 1 signer)
 
 ```go
-// Example method to generate authorisation headers
-func GetProjectOwnerAuthorisationHeaders(l1signer signers.L1Signer) (timestamp, signature string, err error) {
-    timestamp = strconv.FormatInt(time.Now().Unix(), 10)
-    signedTimestamp, err := l1signer.SignMessage(timestamp)
-    if err != nil {
-        return "", "", err
-    }
-    signature = hexutil.Encode(signedTimestamp)
-    return timestamp, signature, nil
+// Create a new project demo.
+createProjectResponse, err := c.CreateProject(ctx, l1signer, "My Company", "Project name", "project@company.com")
+if err != nil {
+    log.Panicf("error in CreateProject: %v\n", err)
 }
 
-func CreateProject(l1signer signers.L1Signer, name, companyName, contactEmail string) (*api.CreateProjectResponse, error) {
-    configuration := api.NewConfiguration()
-    apiClient := api.NewAPIClient(configuration)
-    ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
-
-    timestamp, signature, err := GetProjectOwnerAuthorisationHeaders(l1signer)
-    if err != nil {
-        return nil, err
-    }
-
-    createProjectRequest := api.NewCreateProjectRequest(companyName, contactEmail, name)
-    createProjectResponse, httpResp, err := apiClient.ProjectsApi.CreateProject(ctx).
-        CreateProjectRequest(*createProjectRequest).
-        IMXTimestamp(timestamp).
-        IMXSignature(signature).
-        Execute()
-    if err != nil {
-        return nil, fmt.Errorf("error when calling `CreateProject`: %v, HTTP response body: %v", err, httpResp.Body)
-    }
-
-    return createProjectResponse, nil
+// Get the project details we just created.
+projectId := strconv.FormatInt(int64(createProjectResponse.Id), 10)
+getProjectResponse, err := c.GetProject(ctx, l1signer, projectId)
+if err != nil {
+    log.Panicf("error in GetProject: %v", err)
 }
 ```
 
-The following methods require project owner authorisation:
+#### Deposit tokens from L1 to L2 (requires an Ethereum layer 1 signer)
 
-**Projects**
+```go
+// Eth Deposit
+ethAmountInWei := uint(500000000000000000) // Amount in wei
+depositResponse, err := imx.NewETHDeposit(ethAmountInWei).Deposit(ctx, c, l1signer, nil)
+if err != nil {
+    log.Panicf("error calling Eth deposit workflow: %v", err)
+}
+```
 
-- createProject
-- getProject
-- getProjects
+#### Create an order (requires an Ethereum layer 1 and StarkEx layer 2 signer)
 
-**Collections**
+```go
+// The amount (listing price) should be in Wei for Eth tokens,
+// see https://docs.starkware.co/starkex-v4/starkex-deep-dive/starkex-specific-concepts
+// and https://eth-converter.com/
+createOrderRequest := &api.GetSignableOrderRequest{
+    AmountBuy:  strconv.FormatUint(amount, 10),
+    AmountSell: "1",
+    Fees:       nil,
+    TokenBuy:   imx.SignableETHToken(),                         // The listed asset can be bought with 
+    TokenSell:  imx.SignableERC721Token(tokenID, tokenAddress), // NFT Token
+    User:       l1signer.GetAddress(),                          // Address of the user listing for sale.
+}
+createOrderRequest.SetExpirationTimestamp(0)
 
-- createCollection
-- updateCollection
-
-**Metadata**
-
-- addMetadataSchemaToCollection
-- updateMetadataSchemaByName
+// Create order will list the given asset for sale.
+createOrderResponse, err := c.CreateOrder(ctx, l1signer, l2signer, createOrderRequest)
+if err != nil {
+    log.Panicf("error in CreateOrder: %v", err)
+}
+```
 
 
 ### Contract requests
@@ -199,108 +241,29 @@ The Core SDK provides interfaces for all smart contracts required to interact wi
 
 ```go
 // This example is only to demonstrate using the generated smart contract clients
-// We recommend using the workflows to deposit NFT
-func DepositNft(l1signer signers.L1Signer, starkKey, assetType, vaultID, tokenID *big.Int) {
-   cfg := config.GetConfig(config.Sandbox, "alchemy api key")
-   client, err := ethclient.Dial(cfg.EthereumClientEndpoint)
-   if err != nil {
-      log.Panic(err)
-   }
-   defer client.Close()
+// We recommend using the Deposit method from https://github.com/immutable/imx-core-sdk-golang/blob/69af5db9a0be05afd9c91c6b371547cfe3bea719/imx/deposit.go to deposit NFT
+func DepositNft(l1signer immutable.L1Signer, starkPublicKey, assetType, vaultID, tokenID *big.Int, overrides *bind.TransactOpts) (*types.Transaction, error) {
+    apiConfiguration := api.NewConfiguration()
+    cfg := imx.Config{
+        APIConfig:     apiConfiguration,
+        AlchemyAPIKey: YOUR_ALCHEMY_API_KEY,
+        Environment:   imx.Sandbox,
+    }
+    client, err := imx.NewClient(&cfg)
+    if err != nil {
+        log.Panicf("error in NewClient: %v\n", err)
+    }
+    defer c.EthClient.Close()
 
-   ethAddress := ethcommon.HexToAddress(l1signer.GetAddress())
-   auth := &bind.TransactOpts{
-      From: ethAddress,
-      Signer: func(address ethcommon.Address, tx *types.Transaction) (*types.Transaction, error) {
-         if address != ethAddress {
-            return nil, bind.ErrNotAuthorized
-         }
-         return l1signer.SignTx(tx)
-      },
-      Context: context.Background(),
-   }
-
-   core, err := contracts.NewCore(ethcommon.HexToAddress(cfg.StarkContractAddress), client)
-   transaction, err := core.DepositNft(auth, starkKey, assetType, vaultID, tokenID)
-   log.Println("transaction hash:", transaction.Hash())
+    opts := c.buildTransactOpts(ctx, l1signer, overrides)
+    transaction, err := client.CoreContract.DepositNft(opts, starkPublicKey, assetType, vaultID, tokenID)
+    if err != nil {
+        return nil, err
+    }
+    log.Println("transaction hash:", transaction.Hash())
+    return transaction, nil
 }
 ```
-
-### Workflows
-
-A workflow is a combination of API and contract calls required for more complicated functionality.
-
-```go
-package onboarding
-
-import (
-    "context"
-    "fmt"
-    "math/big"
-
-    "github.com/immutable/imx-core-sdk-golang/config"
-    "github.com/immutable/imx-core-sdk-golang/examples/workflows/utils"
-    "github.com/immutable/imx-core-sdk-golang/generated/api"
-    "github.com/immutable/imx-core-sdk-golang/signers/stark"
-    "github.com/immutable/imx-core-sdk-golang/workflows/registration"
-)
-
-func Register(signerPrivateKey string, chainID *big.Int) (*api.RegisterUserResponse, error) {
-    // User registration workflow example
-    configuration := api.NewConfiguration()
-    apiClient := api.NewAPIClient(configuration)
-    ctx := context.WithValue(context.Background(), api.ContextServerIndex, config.Sandbox)
-
-    // Setup L1 signer
-    l1signer, err := utils.NewBaseL1Signer(signerPrivateKey, chainID)
-    if err != nil {
-        return nil, fmt.Errorf("error in creating BaseL1Signer: %v", err)
-    }
-
-    // Setup L2 signer
-    l2signer, err := stark.GenerateStarkSigner(l1signer)
-    if err != nil {
-        return nil, fmt.Errorf("error in creating StarkSigner: %v", err)
-    }
-
-    response, err := registration.RegisterOffchain(ctx, apiClient.UsersApi, l1signer, l2signer, "user@email.com")
-    if err != nil {
-        return nil, fmt.Errorf("error in RegisterOffchain: %v", err)
-    }
-    return response, nil
-}
-```
-
-The workflows can be found in the [workflows directory](workflows/).
-Sample usage of workflows can be found in [examples](examples/workflows).
-
-### Available workflows
-
-| Workflow                  | Description                                         |
-|---------------------------|-----------------------------------------------------|
-| `RegisterOffchain`        | Register L2 wallet.                                 |
-| `IsRegisteredOnchain`     | Check wallet registered on L1.                      |
-| `MintTokensWorkflow`      | Mint tokens on L2.                                  |
-| `CreateTransfer`          | Transfer tokens to another wallet.                  |
-| `CreateBatchTransfer`     | Batch transfer NFT tokens.                          |
-| `Burn`                    | Burn tokens.                                        |
-| `GetBurn`                 | Verify burn/transfer details.                       |
-| `Deposit`                 | Deposit based on token type. (ETH, ERC20, ERC721)   |
-| `PrepareWithdrawal`       | Prepare token (ETH, ERC20, ERC721) for withdrawal.  |
-| `CompleteEthWithdrawal`   | Withdraw ETH to L1.                                 |
-| `CompleteWithdrawal`      | Withdraw to L1 based on token type. (ERC20, ERC721) |
-| `CreateOrder`             | Create an order to sell an asset.                   |
-| `CancelOrder`             | Cancel an order.                                    |
-| `CreateTrade`             | Create a trade to buy an asset.                     |
-
-## Autogenerated code
-
-Parts of the Core SDK are automagically generated.
-
-### API autogenerated code
-
-We use OpenAPI (formally known as Swagger) to auto-generate the API clients that connect to the public APIs.
-The OpenAPI spec is retrieved from https://api.x.immutable.com/openapi and also saved in the repo.
 
 ### Smart contract autogeneration
 
@@ -310,7 +273,7 @@ The Immutable Solidity contracts can be found in the `contracts` folder. Contrac
 
 The Core contract is Immutable's main interface with the Ethereum blockchain, based on [StarkEx](https://docs.starkware.co/starkex-v4).
 
-[View contract](contracts/Core.sol)
+[View contract](./solidity/Core.sol)
 
 #### Registration
 
@@ -318,7 +281,7 @@ The Registration contract is a proxy smart contract for the Core contract that c
 
 For example, instead of making subsequent transaction requests to the Core contract, i.e. `registerUser` and `depositNft`, a single transaction request can be made to the proxy Registration contract - `registerAndWithdrawNft`.
 
-[View contract](contracts/Registration.sol)
+[View contract](./solidity/Registration.sol)
 
 #### IERC20
 
@@ -327,6 +290,57 @@ Standard interface for interacting with ERC20 contracts, taken from [OpenZeppeli
 #### IERC721
 
 Standard interface for interacting with ERC721 contracts, taken from [OpenZeppelin](https://docs.openzeppelin.com/contracts/4.x/api/token/erc721#IERC721).
+
+
+### API autogenerated code
+
+We use OpenAPI (formally known as Swagger) to auto-generate the API clients that connect to the [public APIs](https://docs.x.immutable.com/reference). The OpenAPI spec is retrieved from https://api.x.immutable.com/openapi and also saved in the repo.
+
+To re-generate the API client, run:
+
+```make
+make generate-openapi-prod
+```
+
+### Changelog management
+
+This repository is using [release-it](https://github.com/release-it/release-it) to manage the CHANGELOG.md.
+
+The following headings should be used as appropriate
+
+- **Added**
+- **Changed**
+- **Deprecated**
+- **Removed**
+- **Fixed**
+
+This is an example with all the change headings. For actual usage, use only the one heading that is relevant. This goes at the top of the CHANGELOG.md above the most recent release.
+
+```markdown
+...
+
+## [Unreleased]
+
+### Added
+
+For new features.
+
+### Changed
+
+For changes in existing functionality.
+
+### Deprecated
+
+For soon-to-be removed features.
+
+### Removed
+
+For now removed features.
+
+### Fixed
+
+For any bug fixes.
+
 
 
 ## Getting help
