@@ -9,7 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/immutable/imx-core-sdk-golang/imx/internal/contracts"
+	"github.com/immutable/imx-core-sdk-golang/imx/contracts"
 )
 
 const (
@@ -17,14 +17,14 @@ const (
 	EthClientError       = "ethereum_client_error"
 )
 
-func (c *Client) newIERC20Contract(ctx context.Context, address string) (*contracts.IERC20, error) {
+func (c *Client) NewIERC20Contract(ctx context.Context, address string) (*contracts.IERC20, error) {
 	if err := c.validateContract(ctx, address); err != nil {
 		return nil, err
 	}
 	return contracts.NewIERC20(common.HexToAddress(address), c.EthClient)
 }
 
-func (c *Client) newIERC721Contract(ctx context.Context, address string) (*contracts.IERC721, error) {
+func (c *Client) NewIERC721Contract(ctx context.Context, address string) (*contracts.IERC721, error) {
 	if err := c.validateContract(ctx, address); err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func (c *Client) attachRegistrationContract(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	c.registrationContract = client
+	c.RegistrationContract = client
 	return nil
 }
 
@@ -51,7 +51,7 @@ func (c *Client) attachCoreContract(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	c.coreContract = client
+	c.CoreContract = client
 	return nil
 }
 

@@ -21,7 +21,7 @@ func (c *Client) AddMetadataSchemaToCollection(
 	contractAddress string,
 	addMetadataSchemaToCollectionRequest api.AddMetadataSchemaToCollectionRequest,
 ) (*api.SuccessResponse, error) {
-	timestamp, signature, err := createIMXAuthorisationHeaders(l1signer)
+	timestamp, signature, err := generateIMXAuthorisationHeaders(l1signer)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (c *Client) UpdateMetadataSchemaByName(
 	contractAddress, metadataSchemaName string,
 	metadataSchemaRequest api.MetadataSchemaRequest,
 ) (*api.SuccessResponse, error) {
-	timestamp, signature, err := createIMXAuthorisationHeaders(l1signer)
+	timestamp, signature, err := generateIMXAuthorisationHeaders(l1signer)
 	if err != nil {
 		return nil, err
 	}
