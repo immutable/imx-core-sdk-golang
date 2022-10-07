@@ -36,7 +36,7 @@ func (c *Client) RegisterOffchain(ctx context.Context,
 	signableRegistrationRequest := api.NewGetSignableRegistrationRequest(etherKey, starkKey)
 	signableResponse, httpResponse, err := c.usersAPI.GetSignableRegistrationOffchain(ctx).GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 
 	ethSignature, starkSignature, err := createSignatures(&signableResponse.SignableMessage, &signableResponse.PayloadHash, l1signer, l2signer)
@@ -47,7 +47,7 @@ func (c *Client) RegisterOffchain(ctx context.Context,
 	registerUserRequest := api.NewRegisterUserRequest(ethSignature, etherKey, starkKey, starkSignature)
 	registerUserResponse, httpResponse, err := c.usersAPI.RegisterUser(ctx).RegisterUserRequest(*registerUserRequest).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return registerUserResponse, nil
 }
@@ -65,7 +65,7 @@ func (c *Client) IsRegisteredOnChain(ctx context.Context, starkPublicKey string)
 		return nil, fmt.Errorf("error converting StarkKey to bigint")
 	}
 
-	isRegistered, err := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
+	isRegistered, err := c.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	if err != nil {
 		isRegistered = false
 		return &isRegistered, fmt.Errorf("error: %v", err)
@@ -84,7 +84,7 @@ Can also be used to check if the user is registered or not when it returns an er
 func (c *Client) GetUsers(ctx context.Context, user string) (*api.GetUsersApiResponse, error) {
 	response, httpResponse, err := c.usersAPI.GetUsers(ctx, user).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -98,7 +98,7 @@ func (c *Client) getSignableRegistrationOnchain(
 	signableRegistrationResponse, httpResponse, err := c.usersAPI.GetSignableRegistration(ctx).
 		GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return signableRegistrationResponse, nil
 }

@@ -25,7 +25,7 @@ func (c *Client) Transfer(
 ) (*api.CreateTransferResponseV1, error) {
 	data, httpResponse, err := c.transfersAPI.GetSignableTransferV1(ctx).GetSignableTransferRequest(request).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 
 	ethSignature, starkSignature, err := createSignatures(&data.SignableMessage, &data.PayloadHash, l1signer, l2signer)
@@ -49,7 +49,7 @@ func (c *Client) Transfer(
 		XImxEthAddress(ethAddress).
 		XImxEthSignature(ethSignature).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -71,7 +71,7 @@ func (c *Client) BatchNftTransfer(
 ) (*api.CreateTransferResponse, error) {
 	data, httpResponse, err := c.transfersAPI.GetSignableTransfer(ctx).GetSignableTransferRequestV2(request).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 
 	ethSignatureBytes, err := l1signer.SignMessage(data.SignableMessage)
@@ -95,7 +95,7 @@ func (c *Client) BatchNftTransfer(
 		XImxEthAddress(ethAddress).
 		XImxEthSignature(ethSignature).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -110,7 +110,7 @@ GetTransfer Get details of a transfer with the given ID
 func (c *Client) GetTransfer(ctx context.Context, id string) (*api.Transfer, error) {
 	response, httpResponse, err := c.transfersAPI.GetTransfer(ctx, id).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -134,7 +134,7 @@ ListTransfers Gets a list of transfers
 func (c *Client) ListTransfers(req *api.ApiListTransfersRequest) (*api.ListTransfersResponse, error) {
 	response, httpResponse, err := c.transfersAPI.ListTransfersExecute(*req)
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }

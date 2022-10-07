@@ -78,7 +78,7 @@ GetDeposit Gets details of a deposit with the given ID
 func (c *Client) GetDeposit(ctx context.Context, id string) (*api.Deposit, error) {
 	response, httpResponse, err := c.depositsAPI.GetDeposit(ctx, id).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -102,7 +102,7 @@ ListDeposits Gets a list of deposits
 func (c *Client) ListDeposits(req *api.ApiListDepositsRequest) (*api.ListDepositsResponse, error) {
 	response, httpResponse, err := c.depositsAPI.ListDepositsExecute(*req)
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }
@@ -133,7 +133,7 @@ func (d *ETHDeposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer, 
 		return nil, fmt.Errorf("error converting StarkKey to bigint")
 	}
 
-	isRegistered, _ := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
+	isRegistered, _ := c.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	// Note: if we reach here, it means we are registered off-chain.
 	// Above call will return an error user is not registered but this is for on-chain
 	// we should swallow this error to allow the register and deposit flow to execute.
@@ -153,7 +153,7 @@ func (c *Client) getSignableDeposit(
 	request *api.GetSignableDepositRequest) (*api.GetSignableDepositResponse, error) {
 	signableDepositResponse, httpResponse, err := c.depositsAPI.GetSignableDeposit(ctx).GetSignableDepositRequest(*request).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return signableDepositResponse, nil
 }
@@ -189,7 +189,7 @@ func (c *Client) registerAndDepositEth(
 		return nil, err
 	}
 	opts.Value = amount
-	tnx, err := c.coreContract.RegisterAndDepositEth(
+	tnx, err := c.CoreContract.RegisterAndDepositEth(
 		opts,
 		common.HexToAddress(etherKey),
 		starkKey,
@@ -214,7 +214,7 @@ func (c *Client) depositEth(
 ) (*types.Transaction, error) {
 	opts := c.buildTransactOpts(ctx, l1signer, overrides)
 	opts.Value = amount
-	tnx, err := c.coreContract.Deposit(opts, starkPublicKey, assetType, vaultID)
+	tnx, err := c.CoreContract.Deposit(opts, starkPublicKey, assetType, vaultID)
 	if err != nil {
 		return nil, err
 	}
@@ -237,7 +237,7 @@ func (d *ERC721Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signe
 	if !ok {
 		return nil, fmt.Errorf("error converting tokenID to bigint: %v", d.TokenID)
 	}
-	ierc721Contract, err := c.newIERC721Contract(ctx, d.TokenAddress)
+	ierc721Contract, err := c.NewIERC721Contract(ctx, d.TokenAddress)
 	if err != nil {
 		return nil, err
 	}
@@ -264,7 +264,7 @@ func (d *ERC721Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signe
 		return nil, fmt.Errorf("error converting StarkKey to bigint")
 	}
 
-	isRegistered, _ := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
+	isRegistered, _ := c.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	// Note: if we reach here, it means we are registered off-chain.
 	// Above call will return an error user is not registered but this is for on-chain
 	// we should swallow this error to allow the register and deposit flow to execute.
@@ -294,7 +294,7 @@ func (c *Client) depositERC721(
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	opts := c.buildTransactOpts(ctx, l1signer, overrides)
-	tnx, err := c.coreContract.DepositNft(opts, starkPublicKey, assetType, vaultID, tokenID)
+	tnx, err := c.CoreContract.DepositNft(opts, starkPublicKey, assetType, vaultID, tokenID)
 	if err != nil {
 		return nil, err
 	}
@@ -323,7 +323,7 @@ func (c *Client) registerAndDepositERC721(
 	if err != nil {
 		return nil, err
 	}
-	tnx, err := c.registrationContract.RegisterAndDepositNft(
+	tnx, err := c.RegistrationContract.RegisterAndDepositNft(
 		opts,
 		common.HexToAddress(etherKey),
 		starkKey,
@@ -351,12 +351,12 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer
 	// Get decimals for this specific ERC20
 	token, httpResponse, err := c.tokensAPI.GetToken(ctx, d.TokenAddress).Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 
 	// Approve whether an amount of token from an account can be spent by a third-party account
 	opts := c.buildTransactOpts(ctx, l1signer, overrides)
-	ierc20Contract, err := c.newIERC20Contract(ctx, d.TokenAddress)
+	ierc20Contract, err := c.NewIERC20Contract(ctx, d.TokenAddress)
 	if err != nil {
 		return nil, err
 	}
@@ -396,7 +396,7 @@ func (d *ERC20Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer
 		return nil, fmt.Errorf("error converting StarkKey to bigint")
 	}
 
-	isRegistered, _ := c.registrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
+	isRegistered, _ := c.RegistrationContract.IsRegistered(&bind.CallOpts{Context: ctx}, starkKey)
 	// Note: if we reach here, it means we are registered off-chain.
 	// Above call will return an error user is not registered but this is for on-chain
 	// we should swallow this error to allow the register and deposit flow to execute.
@@ -431,7 +431,7 @@ func (c *Client) depositERC20(
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	opts := c.buildTransactOpts(ctx, l1signer, overrides)
-	tnx, err := c.coreContract.DepositERC20(opts, starkKey, assetType, vaultID, quantizedAmount)
+	tnx, err := c.CoreContract.DepositERC20(opts, starkKey, assetType, vaultID, quantizedAmount)
 	if err != nil {
 		return nil, err
 	}
@@ -461,7 +461,7 @@ func (c *Client) registerAndDepositERC20(
 		return nil, err
 	}
 
-	tnx, err := c.coreContract.RegisterAndDepositERC20(
+	tnx, err := c.CoreContract.RegisterAndDepositERC20(
 		opts,
 		common.HexToAddress(etherKey),
 		starkKey,

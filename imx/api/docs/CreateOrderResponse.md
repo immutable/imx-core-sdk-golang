@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **OrderId** | **int32** | ID of the created order | 
+**RequestId** | Pointer to **string** | Request ID as a reference for an asynchronous order creation request | [optional] 
 **Status** | **string** | Status of the created order | 
 **Time** | **int32** | Timestamp of the created order | 
 
@@ -46,6 +47,31 @@ and a boolean to check if the value has been set.
 
 SetOrderId sets OrderId field to given value.
 
+
+### GetRequestId
+
+`func (o *CreateOrderResponse) GetRequestId() string`
+
+GetRequestId returns the RequestId field if non-nil, zero value otherwise.
+
+### GetRequestIdOk
+
+`func (o *CreateOrderResponse) GetRequestIdOk() (*string, bool)`
+
+GetRequestIdOk returns a tuple with the RequestId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRequestId
+
+`func (o *CreateOrderResponse) SetRequestId(v string)`
+
+SetRequestId sets RequestId field to given value.
+
+### HasRequestId
+
+`func (o *CreateOrderResponse) HasRequestId() bool`
+
+HasRequestId returns a boolean if a field has been set.
 
 ### GetStatus
 

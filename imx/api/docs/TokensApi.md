@@ -1,6 +1,6 @@
 # \TokensApi
 
-All URIs are relative to *https://api.ropsten.x.immutable.com*
+All URIs are relative to *https://api.sandbox.x.immutable.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -82,7 +82,7 @@ No authorization required
 
 ## ListTokens
 
-> ListTokensResponse ListTokens(ctx).Address(address).Symbols(symbols).Execute()
+> ListTokensResponse ListTokens(ctx).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).Address(address).Symbols(symbols).Execute()
 
 Get a list of tokens
 
@@ -102,12 +102,16 @@ import (
 )
 
 func main() {
+    pageSize := int32(56) // int32 | Page size of the result (optional)
+    cursor := "cursor_example" // string | Cursor (optional)
+    orderBy := "orderBy_example" // string | Property to sort by (optional)
+    direction := "direction_example" // string | Direction to sort (asc/desc) (optional)
     address := "address_example" // string | Contract address of the token (optional)
     symbols := "symbols_example" // string | Token symbols for the token, e.g. ?symbols=IMX,ETH (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.TokensApi.ListTokens(context.Background()).Address(address).Symbols(symbols).Execute()
+    resp, r, err := apiClient.TokensApi.ListTokens(context.Background()).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).Address(address).Symbols(symbols).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `TokensApi.ListTokens``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -128,6 +132,10 @@ Other parameters are passed through a pointer to a apiListTokensRequest struct v
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **pageSize** | **int32** | Page size of the result | 
+ **cursor** | **string** | Cursor | 
+ **orderBy** | **string** | Property to sort by | 
+ **direction** | **string** | Direction to sort (asc/desc) | 
  **address** | **string** | Contract address of the token | 
  **symbols** | **string** | Token symbols for the token, e.g. ?symbols&#x3D;IMX,ETH | 
 

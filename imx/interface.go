@@ -6,7 +6,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/immutable/imx-core-sdk-golang/imx/api"
-	"github.com/immutable/imx-core-sdk-golang/imx/internal/contracts"
+	"github.com/immutable/imx-core-sdk-golang/imx/contracts"
 )
 
 var (
@@ -47,8 +47,8 @@ type Environment struct {
 type Client struct {
 	Environment          Environment
 	EthClient            *ethclient.Client
-	registrationContract *contracts.Registration
-	coreContract         *contracts.Core
+	RegistrationContract *contracts.Registration
+	CoreContract         *contracts.Core
 	tradesAPI            api.TradesApi
 	ordersAPI            api.OrdersApi
 	transfersAPI         api.TransfersApi
@@ -58,6 +58,7 @@ type Client struct {
 	assetsAPI            api.AssetsApi
 	usersAPI             api.UsersApi
 	metadataAPI          api.MetadataApi
+	metadataRefreshesAPI api.MetadataRefreshesApi
 	tokensAPI            api.TokensApi
 	balancesAPI          api.BalancesApi
 	projectsAPI          api.ProjectsApi

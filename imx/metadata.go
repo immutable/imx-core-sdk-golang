@@ -21,7 +21,7 @@ func (c *Client) AddMetadataSchemaToCollection(
 	contractAddress string,
 	addMetadataSchemaToCollectionRequest api.AddMetadataSchemaToCollectionRequest,
 ) (*api.SuccessResponse, error) {
-	timestamp, signature, err := getProjectOwnerAuthorisationHeaders(l1signer)
+	timestamp, signature, err := generateIMXAuthorisationHeaders(l1signer)
 	if err != nil {
 		return nil, err
 	}
@@ -32,9 +32,24 @@ func (c *Client) AddMetadataSchemaToCollection(
 		IMXSignature(signature).
 		Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return successResponse, nil
+}
+
+/*
+GetMetadataSchema Gets collection metadata schema
+
+@param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
+@param collectionContractAddress Collection contract address
+@return []MetadataSchemaProperty
+*/
+func (c *Client) GetMetadataSchema(ctx context.Context, collectionContractAddress string) ([]api.MetadataSchemaProperty, error) {
+	metadataSchemaProperties, httpResponse, err := c.metadataAPI.GetMetadataSchema(ctx, collectionContractAddress).Execute()
+	if err != nil {
+		return nil, NewIMXError(httpResponse, err)
+	}
+	return metadataSchemaProperties, nil
 }
 
 /*
@@ -53,7 +68,7 @@ func (c *Client) UpdateMetadataSchemaByName(
 	contractAddress, metadataSchemaName string,
 	metadataSchemaRequest api.MetadataSchemaRequest,
 ) (*api.SuccessResponse, error) {
-	timestamp, signature, err := getProjectOwnerAuthorisationHeaders(l1signer)
+	timestamp, signature, err := generateIMXAuthorisationHeaders(l1signer)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +79,7 @@ func (c *Client) UpdateMetadataSchemaByName(
 		IMXSignature(signature).
 		Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return successResponse, nil
 }

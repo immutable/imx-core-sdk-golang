@@ -25,7 +25,7 @@ func (c *Client) CreateProject(
 	l1signer L1Signer,
 	projectName, companyName, contactEmail string,
 ) (*api.CreateProjectResponse, error) {
-	timestamp, signature, err := getProjectOwnerAuthorisationHeaders(l1signer)
+	timestamp, signature, err := generateIMXAuthorisationHeaders(l1signer)
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func (c *Client) CreateProject(
 		IMXSignature(signature).
 		Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return createProjectResponse, nil
 }
@@ -51,7 +51,7 @@ GetProject Gets a project detail
 @return Balance
 */
 func (c *Client) GetProject(ctx context.Context, l1signer L1Signer, id string) (*api.Project, error) {
-	timestamp, signature, err := getProjectOwnerAuthorisationHeaders(l1signer)
+	timestamp, signature, err := generateIMXAuthorisationHeaders(l1signer)
 	if err != nil {
 		return nil, err
 	}
@@ -61,16 +61,20 @@ func (c *Client) GetProject(ctx context.Context, l1signer L1Signer, id string) (
 		IMXSignature(signature).
 		Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }
 
 /*
-GetProjects Gets projects info
+GetProjects Gets projects owned by given user
 
 @param ctx context.Context - for cancellation, deadlines, tracing, etc or context.Background().
 @param l1signer Ethereum signer used for ownership authentication.
+@param pageSize The page size of the result
+@param cursor The cursor
+@param orderBy The property to sort by
+@param direction Direction to sort (asc/desc)
 @return GetProjectsResponse
 */
 func (c *Client) GetProjects(
@@ -79,7 +83,7 @@ func (c *Client) GetProjects(
 	pageSize *int32,
 	cursor, orderBy, direction *string,
 ) (*api.GetProjectsResponse, error) {
-	timestamp, signature, err := getProjectOwnerAuthorisationHeaders(l1signer)
+	timestamp, signature, err := generateIMXAuthorisationHeaders(l1signer)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +107,7 @@ func (c *Client) GetProjects(
 
 	response, httpResponse, err := getProjectsRequest.Execute()
 	if err != nil {
-		return nil, NewAPIError(httpResponse, err)
+		return nil, NewIMXError(httpResponse, err)
 	}
 	return response, nil
 }

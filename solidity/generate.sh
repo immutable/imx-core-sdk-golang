@@ -5,7 +5,7 @@
 # Referenced https://goethereumbook.org/smart-contract-compile/
 
 # Outpiut directory for the generated contracts go files.
-OUT_DIR="../imx/internal/contracts"
+OUT_DIR="../imx/contracts"
 
 ABI_TEMP_DIR="generated/abi"
 BIN_TEMP_DIR="generated/abi"
