@@ -28,7 +28,7 @@ func main() {
 	// Get the project details we just created.
 	projectReponse, err := c.GetProject(ctx, l1signer, strconv.FormatInt(int64(response.Id), 10))
 	if err != nil {
-		log.Panicf("error when calling `GetProject: %v", err)
+		log.Panicf("error in GetProject: %v", err)
 	}
-	log.Println("Created Project Id: , save this to be used when creating collection.", projectReponse.Id)
+	log.Println("Created Project Id: %v, save this to be used when creating collection.", projectReponse.Id)
 }

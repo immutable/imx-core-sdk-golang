@@ -142,7 +142,8 @@ func DemoCompleteEthWithdrawalWorkflow(
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", common.GetCurrentFunctionName())
 
-	transaction, err := c.CompleteEthWithdrawal(ctx, l1signer, l2signer.GetAddress(), nil)
+	ethWithdrawal := imx.NewEthWithdrawal()
+	transaction, err := ethWithdrawal.CompleteWithdrawal(ctx, c, l1signer, l2signer.GetAddress(), nil)
 	if err != nil {
 		log.Panicf("error calling withdrawalsWorkflow.CompleteEthWithdrawal workflow: %v", err)
 	}
