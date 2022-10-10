@@ -11,11 +11,11 @@ import (
 
 var (
 	Sandbox = Environment{
-		BaseAPIPath:                 "https://api.ropsten.x.immutable.com",
-		EthereumRPC:                 "https://eth-ropsten.alchemyapi.io/v2/",
-		RegistrationContractAddress: "0x6C21EC8DE44AE44D0992ec3e2d9f1aBb6207D864",
-		CoreContractAddress:         "0x4527BE8f31E2ebFbEF4fCADDb5a17447B27d2aef",
-		ChainID:                     big.NewInt(3), // Ropsten
+		BaseAPIPath:                 "https://api.sandbox.x.immutable.com",
+		EthereumRPC:                 "https://eth-goerli.alchemyapi.io/v2/",
+		RegistrationContractAddress: "0x1C97Ada273C9A52253f463042f29117090Cd7D83",
+		CoreContractAddress:         "0x7917eDb51ecD6CdB3F9854c3cc593F33de10c623",
+		ChainID:                     big.NewInt(5), // Goërli
 	}
 	Mainnet = Environment{
 		BaseAPIPath:                 "https://api.x.immutable.com",
@@ -23,6 +23,13 @@ var (
 		RegistrationContractAddress: "0x72a06bf2a1CE5e39cBA06c0CAb824960B587d64c",
 		CoreContractAddress:         "0x5FDCCA53617f4d2b9134B29090C87D01058e27e9",
 		ChainID:                     big.NewInt(1),
+	}
+	Ropsten = Environment{
+		BaseAPIPath:                 "https://api.ropsten.x.immutable.com",
+		EthereumRPC:                 "https://eth-ropsten.alchemyapi.io/v2/",
+		RegistrationContractAddress: "0x6C21EC8DE44AE44D0992ec3e2d9f1aBb6207D864",
+		CoreContractAddress:         "0x4527BE8f31E2ebFbEF4fCADDb5a17447B27d2aef",
+		ChainID:                     big.NewInt(3), // Ropsten
 	}
 )
 
