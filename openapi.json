@@ -5773,7 +5773,7 @@
           "type": "string"
         },
         "id": {
-          "description": "Token ID",
+          "description": "Token ID\nNote: While the Token ID is required to be a string, it still needs to be a valid uint256 as per the ERC-721 token standard.",
           "type": "string"
         },
         "royalties": {
@@ -6059,7 +6059,7 @@
       "type": "object",
       "properties": {
         "data": {
-          "description": "Token data. See https://docs.x.immutable.com/docs/token-data-object\""
+          "description": "Token data. See https://docs.x.immutable.com/docs/token-data-object"
         },
         "type": {
           "description": "Type of token",

@@ -19,7 +19,7 @@ import (
 type MintTokenDataV2 struct {
 	// Token metadata blueprint
 	Blueprint *string `json:"blueprint,omitempty"`
-	// Token ID
+	// Token ID Note: While the Token ID is required to be a string, it still needs to be a valid uint256 as per the ERC-721 token standard.
 	Id string `json:"id"`
 	// List of mint fees
 	Royalties []MintFee `json:"royalties,omitempty"`

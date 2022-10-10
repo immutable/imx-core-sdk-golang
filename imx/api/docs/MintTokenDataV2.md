@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Blueprint** | Pointer to **string** | Token metadata blueprint | [optional] 
-**Id** | **string** | Token ID | 
+**Id** | **string** | Token ID Note: While the Token ID is required to be a string, it still needs to be a valid uint256 as per the ERC-721 token standard. | 
 **Royalties** | Pointer to [**[]MintFee**](MintFee.md) | List of mint fees | [optional] 
 
 ## Methods
