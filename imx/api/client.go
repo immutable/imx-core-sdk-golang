@@ -396,7 +396,7 @@ func (c *APIClient) prepareRequest(
 		localVarRequest.Header.Add(header, value)
 	}
 
-	localVarRequest.Header.Add("x-sdk-version", "imx-core-sdk-golang-0.2.0")
+	localVarRequest.Header.Add("x-sdk-version", "imx-core-sdk-golang-0.2.1")
 
 	return localVarRequest, nil
 }
