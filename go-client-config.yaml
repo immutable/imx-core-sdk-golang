@@ -7,6 +7,6 @@ enablePostProcessFile: true
 additionalProperties:
   enumClassPrefix: "true"
   packageName: api
-  packageVersion: 0.2.0   # Todo: Auto generate this version string from the release git tags.
+  packageVersion: 0.2.1   # Todo: Auto generate this version string from the release git tags.
   generateInterfaces: true
   isGoSubmodule: true
