@@ -42,16 +42,16 @@ func CommonInitialise(configFilePath string) (context.Context, map[string]string
 	}
 	defer c.EthClient.Close()
 
-	l1signer, err := ethereum.NewSigner(envs["OWNER_ACCOUNT_PRIVATE_KEY"], cfg.ChainID)
+	l1signer, err := ethereum.NewSigner(envs["OWNER_ACCOUNT_PRIVATE_KEY_IN_HEX"], cfg.ChainID)
 	if err != nil {
 		log.Panicf("error in creating L1Signer: %v\n", err)
 	}
 
 	var starkPrivateKey *big.Int
-	privateStarkKeyStr := envs["STARK_PRIVATE_KEY"]
+	privateStarkKeyStr := envs["STARK_PRIVATE_KEY_IN_HEX"]
 	if privateStarkKeyStr != "" {
 		var ok bool
-		starkPrivateKey, ok = new(big.Int).SetString(privateStarkKeyStr, 10)
+		starkPrivateKey, ok = new(big.Int).SetString(privateStarkKeyStr, 16)
 		if !ok {
 			log.Panicf("error in converting stark private key value from string to big.Int")
 		}
