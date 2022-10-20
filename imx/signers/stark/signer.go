@@ -84,7 +84,7 @@ func (base *Signer) VerifySignature(hash *big.Int, signature, signersPublicKey s
 }
 
 // GetAddress returns the stark public key of the StarkSigner as a 64 digit hex string prefixed with 0x.
-func (base *Signer) GetAddress() string {
+func (base *Signer) GetPublicKey() string {
 	return fmt.Sprintf("0x%064x", base.publicKey)
 }
 

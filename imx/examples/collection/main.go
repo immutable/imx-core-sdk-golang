@@ -25,7 +25,7 @@ func main() {
 
 	createCollectionRequest := api.NewCreateCollectionRequest(envs["COLLECTION_CONTRACT_ADDRESS"],
 		"TinkerCollection",
-		l1signer.GetAddress(),
+		l1signer.GetPublicKey(),
 		projectID)
 
 	response, err := c.CreateCollection(ctx, l1signer, createCollectionRequest)

@@ -5,6 +5,7 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/immutable/imx-core-sdk-golang/imx"
@@ -30,10 +31,16 @@ func NewSigner(privateKeyInHex string, chainID *big.Int) (imx.L1Signer, error) {
 	return &Signer{privateKey: privateKeyInEcdsa, chainID: chainID}, nil
 }
 
-// GetAddress gets the address which is the public key associated with this signer.
+// GetAddress gets the address which is the checksum of the public key associated with this signer.
 func (b *Signer) GetAddress() string {
 	address := crypto.PubkeyToAddress(b.privateKey.PublicKey)
 	return address.Hex()
+}
+
+// GetPublicKey gets the public key associated with this signer.
+func (b *Signer) GetPublicKey() string {
+	pubKey := crypto.FromECDSAPub(&b.privateKey.PublicKey)
+	return hexutil.Encode(pubKey)
 }
 
 // SignMessage signs the given message using the private key and returns the signature.

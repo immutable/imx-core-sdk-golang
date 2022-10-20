@@ -22,7 +22,7 @@ func TestStarkSigner_VerifySignature(t *testing.T) {
 	signature, err := l2Signer.SignMessage(message)
 	assert.NoError(t, err)
 
-	starkPubKey := l2Signer.GetAddress()
+	starkPubKey := l2Signer.GetPublicKey()
 	err = l2Signer.VerifySignature(hash, signature, starkPubKey)
 	assert.NoError(t, err)
 }
@@ -35,7 +35,7 @@ func TestStarkSigner_ShouldReturnCorrectAddress(t *testing.T) {
 	l2Signer, err := NewSigner(mockPrivateKey)
 	assert.NoError(t, err)
 
-	assert.Equalf(t, expectedPublicKey, l2Signer.GetAddress(), "Check the generated public key is as expected")
+	assert.Equalf(t, expectedPublicKey, l2Signer.GetPublicKey(), "Check the generated public key is as expected")
 }
 
 func TestStarkSigner_GetAddress(t *testing.T) {
@@ -68,7 +68,7 @@ func TestStarkSigner_GetAddress(t *testing.T) {
 			s := &Signer{
 				publicKey: tt.fields.publicKey,
 			}
-			assert.Equalf(t, tt.want, s.GetAddress(), "GetAddress()")
+			assert.Equalf(t, tt.want, s.GetPublicKey(), "GetPublicKey()")
 		})
 	}
 }

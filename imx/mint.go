@@ -19,19 +19,20 @@ type MintFee struct {
 }
 
 type MintableTokenData struct {
-	ID        string    `json:"id"`
-	Blueprint *string   `json:"blueprint"`
-	Royalties []MintFee `json:"royalties,omitempty"` // token-level overridable fees (optional)
+	ID           string    `json:"id"`
+	Blueprint    *string   `json:"blueprint" validate:"max=15000"`
+	TokenAddress string    `json:"token_address,omitempty"`
+	Royalties    []MintFee `json:"royalties,omitempty" validate:"max=50"` // token-level overridable fees (optional)
 }
 
 type User struct {
-	User   string              `json:"ether_key"`
-	Tokens []MintableTokenData `json:"tokens"`
+	User   string              `json:"ether_key" validate:"required,eth_addr"`
+	Tokens []MintableTokenData `json:"tokens" validate:"required,dive,min=1"`
 }
 
 type UnsignedMintRequest struct {
 	ContractAddress string    `json:"contract_address" validate:"required,eth_addr"`
-	Royalties       []MintFee `json:"royalties,omitempty" validate:"dive"` // contract-level (optional)
+	Royalties       []MintFee `json:"royalties,omitempty" validate:"max=50,dive"` // contract-level (optional)
 	Users           []User    `json:"users" validate:"required,dive,min=1"`
 	AuthSignature   string    `json:"auth_signature" validate:"required"`
 }
