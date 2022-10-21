@@ -31,7 +31,7 @@ func (c *Client) RegisterOffchain(ctx context.Context,
 	}
 
 	etherKey := l1signer.GetAddress()
-	starkKey := l2signer.GetAddress()
+	starkKey := l2signer.GetPublicKey()
 
 	signableRegistrationRequest := api.NewGetSignableRegistrationRequest(etherKey, starkKey)
 	signableResponse, httpResponse, err := c.usersAPI.GetSignableRegistrationOffchain(ctx).GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()

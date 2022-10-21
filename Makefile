@@ -19,7 +19,7 @@ get-openapi-prod:
 get-openapi-sandbox:
 	rm -f openapi.json && touch openapi.json && \
 	curl -H "Accept: application/json+v3" \
-    https://api.ropsten.x.immutable.com/openapi \
+    https://api.sandbox.x.immutable.com/openapi \
     -o openapi.json
 
 .PHONY: generate-api
