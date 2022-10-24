@@ -14,8 +14,8 @@ github.com/deckarep/golang-set v1.8.0/go.mod h1:5nI87KwE7wgsBU1F4GKAw2Qod7p5kyS3
 github.com/decred/dcrd/crypto/blake256 v1.0.0 h1:/8DMNYp9SGi5f0w7uCm6d6M4OU2rGFK09Y2A4Xv7EE0=
 github.com/decred/dcrd/dcrec/secp256k1/v4 v4.1.0 h1:HbphB4TFFXpv7MNrT52FGrrgVXF1owhMVTHFZIlnvd4=
 github.com/decred/dcrd/dcrec/secp256k1/v4 v4.1.0/go.mod h1:DZGJHZMqrU4JJqFAWUS2UO1+lbSKsdiOoYi9Zzey7Fc=
-github.com/dontpanicdao/caigo v0.3.1 h1:Hc1zioOtJ40PUjBHz1IiIlaz8of/zcS31o0tQP7CwtE=
-github.com/dontpanicdao/caigo v0.3.1/go.mod h1:AilbIgy6IRkL9ZL2Z2rZ4aVBEjPSc7SV3KjONbipon0=
+github.com/dontpanicdao/caigo v0.2.0 h1:1BL0fP63BwsW7rDKDHS7oNcOADuuokTApCx/paCiNv0=
+github.com/dontpanicdao/caigo v0.2.0/go.mod h1:K0f4x/iyRXQZUjK60D3Oe891Rj3zOOQEXEbkuSeYpSM=
 github.com/edsrzf/mmap-go v1.0.0 h1:CEBF7HpRnUCSJgGUb5h1Gm7e3VkmVDrR8lvWVLtrOFw=
 github.com/ethereum/go-ethereum v1.10.25 h1:5dFrKJDnYf8L6/5o42abCE6a9yJm9cs4EJVRyYMr55s=
 github.com/ethereum/go-ethereum v1.10.25/go.mod h1:EYFyF19u3ezGLD4RqOkLq+ZCXzYbLoNDdZlMt7kyKFg=
