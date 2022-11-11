@@ -95,6 +95,7 @@ func NewClient(cfg *Config) (*Client, error) {
 	c.depositsAPI = apiClient.DepositsApi
 	c.EncodingApi = apiClient.EncodingApi
 	c.metadataAPI = apiClient.MetadataApi
+	c.metadataRefreshesAPI = apiClient.MetadataRefreshesApi
 	c.mintsAPI = apiClient.MintsApi
 	c.ordersAPI = apiClient.OrdersApi
 	c.projectsAPI = apiClient.ProjectsApi
