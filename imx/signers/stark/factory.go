@@ -6,7 +6,6 @@ import (
 	"crypto/sha256"
 	"errors"
 	"math/big"
-	"path"
 	"path/filepath"
 	"runtime"
 
@@ -41,7 +40,7 @@ func loadCurve() (*caigo.StarkCurve, error) {
 	if err != nil {
 		return nil, err
 	}
-	pedersenParamsFilePath := path.Join(dir, "pedersen_params.json")
+	pedersenParamsFilePath := filepath.Join(dir, "pedersen_params.json")
 	sc, err := caigo.SC(caigo.WithConstants(pedersenParamsFilePath))
 	if err != nil {
 		return nil, err
