@@ -16,7 +16,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func CommonInitialise(configFilePath string) (context.Context, map[string]string, *imx.Client, imx.L1Signer, imx.L2Signer) {
+func CommonInitialise(configFilePath string) (context.Context, map[string]string, *imx.Client, imx.L1Signer) {
 	var envs map[string]string
 	envs, err := godotenv.Read(configFilePath)
 	if err != nil {
@@ -42,13 +42,19 @@ func CommonInitialise(configFilePath string) (context.Context, map[string]string
 	}
 	defer c.EthClient.Close()
 
+	log.Println(envs["OWNER_ACCOUNT_PRIVATE_KEY_IN_HEX"])
 	l1signer, err := ethereum.NewSigner(envs["OWNER_ACCOUNT_PRIVATE_KEY_IN_HEX"], cfg.ChainID)
 	if err != nil {
 		log.Panicf("error in creating L1Signer: %v\n", err)
 	}
 
+	// Using context value to switch/specify the server before sending request.
+	// If nothing is specified, the default server will be used which will be first one in the open api spec list.
+	return context.TODO(), envs, c, l1signer
+}
+
+func NewStarkSigner(privateStarkKeyStr string) imx.L2Signer {
 	var starkPrivateKey *big.Int
-	privateStarkKeyStr := envs["STARK_PRIVATE_KEY_IN_HEX"]
 	if privateStarkKeyStr != "" {
 		var ok bool
 		starkPrivateKey, ok = new(big.Int).SetString(privateStarkKeyStr, 16)
@@ -56,7 +62,8 @@ func CommonInitialise(configFilePath string) (context.Context, map[string]string
 			log.Panicf("error in converting stark private key value from string to big.Int")
 		}
 	} else {
-		starkPrivateKey, err = stark.GenerateKey()
+		starkPrivateKey, err := stark.GenerateKey()
+		log.Println("Stark Private key: ", starkPrivateKey.String())
 		if err != nil {
 			log.Panicf("error in Generating Stark Private Key: %v\n", err)
 		}
@@ -66,10 +73,7 @@ func CommonInitialise(configFilePath string) (context.Context, map[string]string
 	if err != nil {
 		log.Panicf("error in creating StarkSigner: %v\n", err)
 	}
-
-	// Using context value to switch/specify the server before sending request.
-	// If nothing is specified, the default server will be used which will be first one in the open api spec list.
-	return context.TODO(), envs, c, l1signer, l2signer
+	return l2signer
 }
 
 func PrettyStruct(data interface{}) (string, error) {

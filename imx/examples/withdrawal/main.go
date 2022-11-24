@@ -16,7 +16,8 @@ const (
 )
 
 func main() {
-	ctx, envs, c, l1signer, l2signer := common.CommonInitialise(".env")
+	ctx, envs, c, l1signer := common.CommonInitialise(".env")
+	l2signer := common.NewStarkSigner(envs["STARK_PRIVATE_KEY_IN_HEX"])
 
 	// Withdrawals Demo
 	// For overview of the withdrawal process, please see https://docs.x.immutable.com/docs/guides/asset-management/asset-withdrawals/#withdrawal-process

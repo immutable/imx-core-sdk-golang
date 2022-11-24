@@ -11,11 +11,18 @@ import (
 )
 
 func main() {
-	ctx, envs, c, l1signer, l2signer := common.CommonInitialise(".env")
+	ctx, envs, c, l1signer := common.CommonInitialise(".env")
+
+	// For transfer to work the user need to supply the same stark private key associated with their account.
+	// Ethereum wallet and stark wallet are 1:1 mapping.
+	if envs["STARK_PRIVATE_KEY_IN_HEX"] == "" {
+		log.Fatalf("No STARK_PRIVATE_KEY_IN_HEX supplied, a registered user required to perform transfer. See Registration example to register user")
+	}
+	l2signer := common.NewStarkSigner(envs["STARK_PRIVATE_KEY_IN_HEX"])
 
 	// Transfer workflow demo
 	DemoTransferWorkflow(ctx, c, l1signer, l2signer, envs)
-	DemoBatchNftTransferWorkflow(ctx, c, l1signer, l2signer, envs)
+	//DemoBatchNftTransferWorkflow(ctx, c, l1signer, l2signer, envs)
 }
 
 func DemoTransferWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Signer, l2signer imx.L2Signer, envs map[string]string) {
@@ -26,7 +33,7 @@ func DemoTransferWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Sig
 	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
 
 	transferRequest := api.GetSignableTransferRequestV1{
-		Amount:   envs["TRANFER_AMOUNT"],
+		Amount:   envs["TRANSFER_NUMBER_OF_TOKENS"],
 		Sender:   l1signer.GetAddress(),
 		Token:    imx.SignableETHToken(),
 		Receiver: envs["RECEIVER_ETHEREUM_ACCOUNT_ADDRESS"],

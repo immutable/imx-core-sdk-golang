@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	ctx, envs, c, l1signer, _ := common.CommonInitialise(".env")
+	ctx, envs, c, l1signer := common.CommonInitialise(".env")
 
 	// Deposit tokens demo.
 
