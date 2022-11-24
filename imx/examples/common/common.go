@@ -55,6 +55,7 @@ func CommonInitialise(configFilePath string) (context.Context, map[string]string
 
 func NewStarkSigner(privateStarkKeyStr string) imx.L2Signer {
 	var starkPrivateKey *big.Int
+	var err error
 	if privateStarkKeyStr != "" {
 		var ok bool
 		starkPrivateKey, ok = new(big.Int).SetString(privateStarkKeyStr, 16)
@@ -62,7 +63,7 @@ func NewStarkSigner(privateStarkKeyStr string) imx.L2Signer {
 			log.Panicf("error in converting stark private key value from string to big.Int")
 		}
 	} else {
-		starkPrivateKey, err := stark.GenerateKey()
+		starkPrivateKey, err = stark.GenerateKey()
 		log.Println("Stark Private key: ", starkPrivateKey.String())
 		if err != nil {
 			log.Panicf("error in Generating Stark Private Key: %v\n", err)
