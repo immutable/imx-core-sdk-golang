@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - In examples moved stark signer creation to separate function as not every workflow will need it. Also done to address [ISSUE-94](https://github.com/immutable/imx-core-sdk-golang/issues/94)
 
+### Fixed
+
+- Deposit workflow for register and deposit NFT
+
 ## [v0.2.2] - 2022-11-11
 
 ### Fixed
