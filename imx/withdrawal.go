@@ -31,7 +31,7 @@ func (c *Client) PrepareWithdrawal(
 ) (*api.CreateWithdrawalResponse, error) {
 	ethAddress := l1signer.GetAddress()
 	request.User = ethAddress
-	signableResponse, httpResponse, err := c.withdrawalsAPI.GetSignableWithdrawal(ctx).GetSignableWithdrawalRequest(request).Execute()
+	signableResponse, httpResponse, err := c.WithdrawalsAPI.GetSignableWithdrawal(ctx).GetSignableWithdrawalRequest(request).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -49,7 +49,7 @@ func (c *Client) PrepareWithdrawal(
 		StarkSignature: starkSignature,
 		VaultId:        signableResponse.VaultId,
 	}
-	apiCreateWithdrawalRequest := c.withdrawalsAPI.CreateWithdrawal(ctx).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature)
+	apiCreateWithdrawalRequest := c.WithdrawalsAPI.CreateWithdrawal(ctx).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature)
 	withdrawalResponse, httpResponse, err := apiCreateWithdrawalRequest.CreateWithdrawalRequest(withdrawalRequest).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
@@ -296,7 +296,7 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 	starkKeyHex string,
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
-	mintableTokenResponse, httpResponse, err := c.mintsAPI.GetMintableTokenDetailsByClientTokenId(ctx, w.TokenAddress, w.TokenID).Execute()
+	mintableTokenResponse, httpResponse, err := c.MintsAPI.GetMintableTokenDetailsByClientTokenId(ctx, w.TokenAddress, w.TokenID).Execute()
 	if err != nil {
 		if httpResponse.StatusCode == 404 {
 			// Token is already minted on L1
@@ -383,7 +383,7 @@ GetWithdrawal Get details of a withdrawal with the given ID
 @return Withdrawal
 */
 func (c *Client) GetWithdrawal(ctx context.Context, id string) (*api.Withdrawal, error) {
-	response, httpResponse, err := c.withdrawalsAPI.GetWithdrawal(ctx, id).Execute()
+	response, httpResponse, err := c.WithdrawalsAPI.GetWithdrawal(ctx, id).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -397,7 +397,7 @@ NewListWithdrawalsRequest Creates a new ApiListWithdrawalsRequest object with re
 @return ApiListWithdrawalsRequest
 */
 func (c *Client) NewListWithdrawalsRequest(ctx context.Context) api.ApiListWithdrawalsRequest {
-	return c.withdrawalsAPI.ListWithdrawals(ctx)
+	return c.WithdrawalsAPI.ListWithdrawals(ctx)
 }
 
 /*
@@ -407,7 +407,7 @@ ListWithdrawals Gets a list of withdrawals
 @return ListWithdrawalsResponse
 */
 func (c *Client) ListWithdrawals(req *api.ApiListWithdrawalsRequest) (*api.ListWithdrawalsResponse, error) {
-	response, httpResponse, err := c.withdrawalsAPI.ListWithdrawalsExecute(*req)
+	response, httpResponse, err := c.WithdrawalsAPI.ListWithdrawalsExecute(*req)
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

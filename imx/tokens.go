@@ -59,7 +59,7 @@ GetToken Get details of a token with the given ID
 @return TokenDetails
 */
 func (c *Client) GetToken(ctx context.Context, id string) (*api.TokenDetails, error) {
-	response, httpResponse, err := c.tokensAPI.GetToken(ctx, id).Execute()
+	response, httpResponse, err := c.TokensAPI.GetToken(ctx, id).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -73,7 +73,7 @@ NewListTokensRequest Creates a new ApiListTokensRequest object with required par
 @return ApiListTokensRequest
 */
 func (c *Client) NewListTokensRequest(ctx context.Context) api.ApiListTokensRequest {
-	return c.tokensAPI.ListTokens(ctx)
+	return c.TokensAPI.ListTokens(ctx)
 }
 
 /*
@@ -83,7 +83,7 @@ ListTokens Gets a list of tokens
 @return ListTokensResponse
 */
 func (c *Client) ListTokens(req *api.ApiListTokensRequest) (*api.ListTokensResponse, error) {
-	response, httpResponse, err := c.tokensAPI.ListTokensExecute(*req)
+	response, httpResponse, err := c.TokensAPI.ListTokensExecute(*req)
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

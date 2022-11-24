@@ -103,7 +103,7 @@ func (c *Client) Mint(
 		}
 	}
 
-	mintTokensResponse, httpResponse, err := c.mintsAPI.MintTokens(ctx).MintTokensRequestV2(mintRequest).Execute()
+	mintTokensResponse, httpResponse, err := c.MintsAPI.MintTokens(ctx).MintTokensRequestV2(mintRequest).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -118,7 +118,7 @@ GetMint Get details of a mint with the given ID
 @return ApiGetMintRequest
 */
 func (c *Client) GetMint(ctx context.Context, id string) (*api.Mint, error) {
-	response, httpResponse, err := c.mintsAPI.GetMint(ctx, id).Execute()
+	response, httpResponse, err := c.MintsAPI.GetMint(ctx, id).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -132,7 +132,7 @@ NewListMintsRequest Creates a new ApiListMintsRequest object with required param
 @return ApiListMintsRequest
 */
 func (c *Client) NewListMintsRequest(ctx context.Context) api.ApiListMintsRequest {
-	return c.mintsAPI.ListMints(ctx)
+	return c.MintsAPI.ListMints(ctx)
 }
 
 /*
@@ -142,7 +142,7 @@ ListMints Gets a list of mints
 @return ListMintsResponse
 */
 func (c *Client) ListMints(req *api.ApiListMintsRequest) (*api.ListMintsResponse, error) {
-	response, httpResponse, err := c.mintsAPI.ListMintsExecute(*req)
+	response, httpResponse, err := c.MintsAPI.ListMintsExecute(*req)
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
