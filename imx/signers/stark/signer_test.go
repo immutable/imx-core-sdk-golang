@@ -28,9 +28,7 @@ func TestStarkSigner_VerifySignature(t *testing.T) {
 }
 
 func TestStarkSigner_ShouldReturnCorrectAddress(t *testing.T) {
-	mockPrivateKey, ok := new(big.Int).SetString("019b5de47e5fc8f2e8c3415b42a126aadb462637f2feca1df3733fe3f37cf50f", 16)
-	assert.True(t, ok)
-
+	mockPrivateKey := "019b5de47e5fc8f2e8c3415b42a126aadb462637f2feca1df3733fe3f37cf50f"
 	expectedPublicKey := "0x0790436373c1d5b7a88ce4fd7ac96591a385b2b6392d1ea44a165f75115b82ac"
 	l2Signer, err := NewSigner(mockPrivateKey)
 	assert.NoError(t, err)

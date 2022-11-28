@@ -3,6 +3,7 @@ package convert
 import (
 	"encoding/hex"
 	"fmt"
+	"math/big"
 )
 
 // EtherDecimals for Ether is expressed in 18 decimals
@@ -25,4 +26,16 @@ func HexToByteArray(hexString string) ([]byte, error) {
 		return nil, err
 	}
 	return hex.DecodeString(hexString)
+}
+
+func HexToBigInt(hexString string) (*big.Int, error) {
+	hexString, err := TrimHexPrefix(hexString)
+	if err != nil {
+		return nil, err
+	}
+	bigIntValue, ok := new(big.Int).SetString(hexString, 16)
+	if !ok {
+		return nil, fmt.Errorf("error in converting stark private key value from string to big.Int")
+	}
+	return bigIntValue, nil
 }

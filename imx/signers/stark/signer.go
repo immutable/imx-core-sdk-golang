@@ -4,6 +4,8 @@ package stark
 import (
 	"fmt"
 	"math/big"
+
+	"github.com/immutable/imx-core-sdk-golang/imx/internal/convert"
 )
 
 // StarkSigner implements L2Signer interface.
@@ -13,7 +15,11 @@ type Signer struct {
 }
 
 // NewSigner created a new stark signer with the given private stark key.
-func NewSigner(privateKey *big.Int) (*Signer, error) {
+func NewSigner(privateKeyInHex string) (*Signer, error) {
+	privateKey, err := convert.HexToBigInt(privateKeyInHex)
+	if err != nil {
+		return nil, err
+	}
 	if curve == nil {
 		var err error
 		curve, err = loadCurve()

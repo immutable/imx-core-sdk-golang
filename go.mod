@@ -3,6 +3,7 @@ module github.com/immutable/imx-core-sdk-golang
 go 1.18
 
 require (
+	github.com/aarbt/hdkeys v0.0.0-20151205172415-ee76d77aba2f
 	github.com/dontpanicdao/caigo v0.3.1
 	github.com/ethereum/go-ethereum v1.10.25
 	github.com/stretchr/testify v1.8.0
@@ -22,6 +23,9 @@ require (
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rjeczalik/notify v0.9.2 // indirect
+	github.com/runeaune/bitcoin-base58 v0.0.0-20151205172436-67fa270fe8dd // indirect
+	github.com/runeaune/bitcoin-crypto v0.0.0-20151230101850-703c6210df67 // indirect
+	github.com/runeaune/mnemonic v0.0.0-20221016192020-d1c5a6dee70f // indirect
 	github.com/shirou/gopsutil v3.21.11+incompatible // indirect
 	github.com/tklauser/go-sysconf v0.3.10 // indirect
 	github.com/tklauser/numcpus v0.5.0 // indirect
