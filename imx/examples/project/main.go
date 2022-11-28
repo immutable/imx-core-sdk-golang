@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	ctx, _, c, l1signer, _ := common.CommonInitialise(".env")
+	ctx, _, c, l1signer := common.CommonInitialise(".env")
 
 	// Note: Next step after creating a project would be to create a collection.
 

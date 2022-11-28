@@ -16,7 +16,8 @@ const (
 )
 
 func main() {
-	ctx, envs, c, l1signer, l2signer := common.CommonInitialise(".env")
+	ctx, envs, c, l1signer := common.CommonInitialise(".env")
+	l2signer := common.NewStarkSigner(envs["STARK_PRIVATE_KEY_IN_HEX"])
 
 	// Withdrawals Demo
 	// For overview of the withdrawal process, please see https://docs.x.immutable.com/docs/guides/asset-management/asset-withdrawals/#withdrawal-process
@@ -143,7 +144,7 @@ func DemoCompleteEthWithdrawalWorkflow(
 	log.Printf("Running %s", common.GetCurrentFunctionName())
 
 	ethWithdrawal := imx.NewEthWithdrawal()
-	transaction, err := ethWithdrawal.CompleteWithdrawal(ctx, c, l1signer, l2signer.GetAddress(), nil)
+	transaction, err := ethWithdrawal.CompleteWithdrawal(ctx, c, l1signer, l2signer.GetPublicKey(), nil)
 	if err != nil {
 		log.Panicf("error calling withdrawalsWorkflow.CompleteEthWithdrawal workflow: %v", err)
 	}
@@ -165,7 +166,7 @@ func DemoCompleteERC20WithdrawalWorkflow(
 	log.Printf("Running %s", common.GetCurrentFunctionName())
 
 	erc20Withdrawal := imx.NewERC20Withdrawal(tokenAddress)
-	transaction, err := erc20Withdrawal.CompleteWithdrawal(ctx, c, l1signer, l2signer.GetAddress(), nil)
+	transaction, err := erc20Withdrawal.CompleteWithdrawal(ctx, c, l1signer, l2signer.GetPublicKey(), nil)
 
 	if err != nil {
 		log.Panicf("error calling complete withdrawal workflow: %v", err)
@@ -188,7 +189,7 @@ func DemoCompleteERC721WithdrawalWorkflow(
 	log.Printf("Running %s", common.GetCurrentFunctionName())
 
 	erc721Withdrawal := imx.NewERC721Withdrawal(tokenID, tokenAddress)
-	transaction, err := erc721Withdrawal.CompleteWithdrawal(ctx, c, l1signer, l2signer.GetAddress(), nil)
+	transaction, err := erc721Withdrawal.CompleteWithdrawal(ctx, c, l1signer, l2signer.GetPublicKey(), nil)
 
 	if err != nil {
 		log.Panicf("error calling complete withdrawal workflow: %v", err)

@@ -11,7 +11,8 @@ import (
 )
 
 func main() {
-	ctx, envs, c, l1signer, l2signer := common.CommonInitialise(".env")
+	ctx, envs, c, l1signer := common.CommonInitialise(".env")
+	l2signer := common.NewStarkSigner(envs["STARK_PRIVATE_KEY_IN_HEX"])
 
 	// Note: To list assets for sale on marketplace, you will need to have some assets added to account.
 

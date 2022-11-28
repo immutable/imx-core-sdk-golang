@@ -8,7 +8,8 @@ import (
 )
 
 func main() {
-	ctx, _, c, l1signer, l2signer := common.CommonInitialise(".env")
+	ctx, envs, c, l1signer := common.CommonInitialise(".env")
+	l2signer := common.NewStarkSigner(envs["STARK_PRIVATE_KEY_IN_HEX"])
 
 	// Note:	This is the first step to perform for a new user wanting to use IMX.
 	// 			After user registration, next step will be to create a project.
