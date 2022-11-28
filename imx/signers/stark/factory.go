@@ -7,11 +7,12 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/immutable/imx-core-sdk-golang/imx"
 	"math/big"
 	"path"
 	"path/filepath"
 	"runtime"
+
+	"github.com/immutable/imx-core-sdk-golang/imx"
 
 	"github.com/aarbt/hdkeys"
 	"github.com/dontpanicdao/caigo"
@@ -129,18 +130,18 @@ func generateSeed(signer imx.L1Signer, seedMessage string) ([]byte, error) {
 }
 
 func geStarkPath(layerName, applicationName, ethereumAddress, index string) string {
-
 	// Starkware keys are derived with the following BIP43-compatible derivation path, with direct inspiration from BIP44:
 	//
 	// m / purpose' / layer' / application' / eth_address_1' / eth_address_2' / index
 	// where:
 	//
-	// m - the seed.
-	// purpose - 2645 (the number of this EIP).
-	// layer - the 31 lowest bits of sha256 on the layer name. Serve as a domain separator between different technologies. In the context of starkex, the value would be 579218131.
-	// application - the 31 lowest bits of sha256 of the application name. Serve as a domain separator between different applications. In the context of DeversiFi in June 2020, it is the 31 lowest bits of sha256(starkexdvf) and the value would be 1393043894.
+	// m 			- the seed.
+	// purpose 		- 2645 (the number of this EIP).
+	// layer 		- the 31 lowest bits of sha256 on the layer name. Serve as a domain separator between different technologies. In the context of starkex, the value would be 579218131.
+	// application 	- the 31 lowest bits of sha256 of the application name. Serve as a domain separator between different applications.
+	// 					In the context of DeversiFi in June 2020, it is the 31 lowest bits of sha256(starkexdvf) and the value would be 1393043894.
 	// eth_address_1 / eth_address_2 - the first and second 31 lowest bits of the corresponding eth_address.
-	// index - to allow multiple keys per eth_address.
+	// index 		- to allow multiple keys per eth_address.
 	//
 	// See for more info regarding path derivation https://docs.starkware.co/starkex/key-derivation.html and https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2645.md
 
