@@ -269,11 +269,29 @@ func (d *ERC721Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signe
 	// Above call will return an error user is not registered but this is for on-chain
 	// we should swallow this error to allow the register and deposit flow to execute.
 
-	if isRegistered {
-		return c.depositERC721(ctx, l1signer, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, tokenID, overrides)
+	if !isRegistered {
+		etherKey := l1signer.GetAddress()
+		// Passing starkKey string in hex format to register method because it may be padded and converting back from Int loses the padding
+		signableRegistration, err := c.getSignableRegistrationOnchain(ctx, etherKey, signableDeposit.StarkKey)
+		if err != nil {
+			return nil, err
+		}
+
+		opts := c.buildTransactOpts(ctx, l1signer, overrides)
+		operatorSignature, err := convert.HexToByteArray(signableRegistration.OperatorSignature)
+		if err != nil {
+			return nil, err
+		}
+		if _, err = c.CoreContract.RegisterUser(
+			opts,
+			common.HexToAddress(etherKey),
+			starkKey,
+			operatorSignature,
+		); err != nil {
+			return nil, err
+		}
 	}
-	// Passing starkKey string in hex format to register method because it may be padded and converting back from Int loses the padding
-	return c.registerAndDepositERC721(ctx, l1signer, signableDeposit.StarkKey, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, tokenID, overrides)
+	return c.depositERC721(ctx, l1signer, starkKey, big.NewInt(int64(signableDeposit.VaultId)), assetType, tokenID, overrides)
 }
 
 func newSignableDepositRequestForERC721(amount, tokenID, tokenAddress, user string) *api.GetSignableDepositRequest {
@@ -295,43 +313,6 @@ func (c *Client) depositERC721(
 ) (*types.Transaction, error) {
 	opts := c.buildTransactOpts(ctx, l1signer, overrides)
 	tnx, err := c.CoreContract.DepositNft(opts, starkPublicKey, assetType, vaultID, tokenID)
-	if err != nil {
-		return nil, err
-	}
-	return tnx, nil
-}
-
-func (c *Client) registerAndDepositERC721(
-	ctx context.Context,
-	l1signer L1Signer,
-	starkKeyHex string,
-	starkKey *big.Int,
-	vaultID *big.Int,
-	assetType *big.Int,
-	tokenID *big.Int,
-	overrides *bind.TransactOpts,
-) (*types.Transaction, error) {
-	etherKey := l1signer.GetAddress()
-	signableRegistration, err := c.getSignableRegistrationOnchain(ctx, etherKey, starkKeyHex)
-	if err != nil {
-		return nil, err
-	}
-
-	opts := c.buildTransactOpts(ctx, l1signer, overrides)
-
-	operatorSignature, err := convert.HexToByteArray(signableRegistration.OperatorSignature)
-	if err != nil {
-		return nil, err
-	}
-	tnx, err := c.RegistrationContract.RegisterAndDepositNft(
-		opts,
-		common.HexToAddress(etherKey),
-		starkKey,
-		operatorSignature,
-		assetType,
-		vaultID,
-		tokenID,
-	)
 	if err != nil {
 		return nil, err
 	}
