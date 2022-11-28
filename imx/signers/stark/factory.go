@@ -55,7 +55,7 @@ func GenerateLegacyKey(signer imx.L1Signer) (string, error) {
 		return "", fmt.Errorf("failed to generate seed using l1signer: %v", err)
 	}
 
-	starkPath := geStarkPath(LayerName, ApplicationName, signer.GetAddress(), Index)
+	starkPath := getStarkPath(LayerName, ApplicationName, signer.GetAddress(), Index)
 	childKey, err := hdkeys.NewMasterKey(seed).Chain(starkPath)
 	if err != nil {
 		return "", err
@@ -129,7 +129,7 @@ func generateSeed(signer imx.L1Signer, seedMessage string) ([]byte, error) {
 	return signature[32:64], nil
 }
 
-func geStarkPath(layerName, applicationName, ethereumAddress, index string) string {
+func getStarkPath(layerName, applicationName, ethereumAddress, index string) string {
 	// Starkware keys are derived with the following BIP43-compatible derivation path, with direct inspiration from BIP44:
 	//
 	// m / purpose' / layer' / application' / eth_address_1' / eth_address_2' / index
