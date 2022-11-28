@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] - YYYY-MM-DD
+
 ### Changed
 
 - In examples moved stark signer creation to separate function as not every workflow will need it. Also done to address [ISSUE-94](https://github.com/immutable/imx-core-sdk-golang/issues/94)
