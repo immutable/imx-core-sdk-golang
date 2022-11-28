@@ -28,7 +28,7 @@ func (c *Client) ListMetadataRefreshes(
 		return nil, err
 	}
 
-	req := c.metadataRefreshesAPI.GetAListOfMetadataRefreshes(ctx)
+	req := c.MetadataRefreshesAPI.GetAListOfMetadataRefreshes(ctx)
 	req.XImxEthAddress(l1signer.GetAddress()).
 		XImxEthSignature(signature).
 		XImxEthTimestamp(timestamp)
@@ -43,7 +43,7 @@ func (c *Client) ListMetadataRefreshes(
 		req.Cursor(*cursor)
 	}
 
-	metadataRefreshes, httpResponse, err := c.metadataRefreshesAPI.GetAListOfMetadataRefreshesExecute(req)
+	metadataRefreshes, httpResponse, err := c.MetadataRefreshesAPI.GetAListOfMetadataRefreshesExecute(req)
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -72,7 +72,7 @@ func (c *Client) GetMetadataRefreshErrors(
 		return nil, err
 	}
 
-	req := c.metadataRefreshesAPI.GetMetadataRefreshErrors(ctx, refreshID)
+	req := c.MetadataRefreshesAPI.GetMetadataRefreshErrors(ctx, refreshID)
 	req.XImxEthAddress(l1signer.GetAddress()).
 		XImxEthSignature(signature).
 		XImxEthTimestamp(timestamp)
@@ -84,7 +84,7 @@ func (c *Client) GetMetadataRefreshErrors(
 		req.Cursor(*cursor)
 	}
 
-	metadataRefreshErrorsResponse, httpResponse, err := c.metadataRefreshesAPI.GetMetadataRefreshErrorsExecute(req)
+	metadataRefreshErrorsResponse, httpResponse, err := c.MetadataRefreshesAPI.GetMetadataRefreshErrorsExecute(req)
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -111,12 +111,12 @@ func (c *Client) GetMetadataRefreshResults(
 		return nil, err
 	}
 
-	req := c.metadataRefreshesAPI.GetMetadataRefreshResults(ctx, refreshID)
+	req := c.MetadataRefreshesAPI.GetMetadataRefreshResults(ctx, refreshID)
 	req.XImxEthAddress(l1signer.GetAddress()).
 		XImxEthSignature(signature).
 		XImxEthTimestamp(timestamp)
 
-	metadataRefreshResponse, httpResponse, err := c.metadataRefreshesAPI.GetMetadataRefreshResultsExecute(req)
+	metadataRefreshResponse, httpResponse, err := c.MetadataRefreshesAPI.GetMetadataRefreshResultsExecute(req)
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -141,14 +141,14 @@ func (c *Client) CreateMetadataRefresh(
 		return nil, err
 	}
 
-	req := c.metadataRefreshesAPI.RequestAMetadataRefresh(ctx)
+	req := c.MetadataRefreshesAPI.RequestAMetadataRefresh(ctx)
 	req.XImxEthAddress(l1signer.GetAddress()).
 		XImxEthSignature(signature).
 		XImxEthTimestamp(timestamp)
 
 	req.CreateMetadataRefreshRequest(*createMetadataRefreshRequest)
 
-	createMetadataRefreshResponse, httpResponse, err := c.metadataRefreshesAPI.RequestAMetadataRefreshExecute(req)
+	createMetadataRefreshResponse, httpResponse, err := c.MetadataRefreshesAPI.RequestAMetadataRefreshExecute(req)
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

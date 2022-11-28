@@ -31,7 +31,7 @@ func (c *Client) CreateProject(
 	}
 
 	createProjectRequest := api.NewCreateProjectRequest(companyName, contactEmail, projectName)
-	createProjectResponse, httpResponse, err := c.projectsAPI.CreateProject(ctx).
+	createProjectResponse, httpResponse, err := c.ProjectsAPI.CreateProject(ctx).
 		CreateProjectRequest(*createProjectRequest).
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
@@ -56,7 +56,7 @@ func (c *Client) GetProject(ctx context.Context, l1signer L1Signer, id string) (
 		return nil, err
 	}
 
-	response, httpResponse, err := c.projectsAPI.GetProject(ctx, id).
+	response, httpResponse, err := c.ProjectsAPI.GetProject(ctx, id).
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
 		Execute()
@@ -88,7 +88,7 @@ func (c *Client) GetProjects(
 		return nil, err
 	}
 
-	getProjectsRequest := c.projectsAPI.GetProjects(ctx).
+	getProjectsRequest := c.ProjectsAPI.GetProjects(ctx).
 		IMXTimestamp(timestamp).
 		IMXSignature(signature)
 

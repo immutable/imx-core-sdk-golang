@@ -16,7 +16,7 @@ GetAsset Get details of an asset
 @return Asset
 */
 func (c *Client) GetAsset(ctx context.Context, tokenAddress, tokenID string, includeFees *bool) (*api.Asset, error) {
-	apiGetAssetRequest := c.assetsAPI.GetAsset(ctx, tokenAddress, tokenID)
+	apiGetAssetRequest := c.AssetsAPI.GetAsset(ctx, tokenAddress, tokenID)
 	if includeFees != nil {
 		apiGetAssetRequest.IncludeFees(*includeFees)
 	}
@@ -35,7 +35,7 @@ NewListAssetsRequest Creates a new ApiListAssetsRequest object with required par
 @return ApiListAssetsRequest
 */
 func (c *Client) NewListAssetsRequest(ctx context.Context) api.ApiListAssetsRequest {
-	return c.assetsAPI.ListAssets(ctx)
+	return c.AssetsAPI.ListAssets(ctx)
 }
 
 /*
@@ -45,7 +45,7 @@ ListAssets Get a list of assets
 @return ListAssetsResponse
 */
 func (c *Client) ListAssets(req *api.ApiListAssetsRequest) (*api.ListAssetsResponse, error) {
-	response, httpResponse, err := c.assetsAPI.ListAssetsExecute(*req)
+	response, httpResponse, err := c.AssetsAPI.ListAssetsExecute(*req)
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

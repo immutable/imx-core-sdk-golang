@@ -23,7 +23,7 @@ func (c *Client) CreateOrder(ctx context.Context,
 ) (*api.CreateOrderResponse, error) {
 	ethAddress := l1signer.GetAddress()
 	request.User = ethAddress
-	signableOrder, httpResponse, err := c.ordersAPI.GetSignableOrder(ctx).GetSignableOrderRequestV3(*request).Execute()
+	signableOrder, httpResponse, err := c.OrdersAPI.GetSignableOrder(ctx).GetSignableOrderRequestV3(*request).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -34,7 +34,7 @@ func (c *Client) CreateOrder(ctx context.Context,
 	}
 
 	includeFees := true
-	createOrderResponse, httpResponse, err := c.ordersAPI.CreateOrder(ctx).
+	createOrderResponse, httpResponse, err := c.OrdersAPI.CreateOrder(ctx).
 		CreateOrderRequest(api.CreateOrderRequest{
 			AmountBuy: signableOrder.AmountBuy, // The amount (listing price) should be in Wei for Eth tokens,
 			// see https://docs.starkware.co/starkex-v4/starkex-deep-dive/starkex-specific-concepts and https://eth-converter.com/
@@ -70,7 +70,7 @@ func (c *Client) CancelOrder(ctx context.Context,
 	l2signer L2Signer,
 	request api.GetSignableCancelOrderRequest,
 ) (*api.CancelOrderResponse, error) {
-	signableCancelOrder, httpResponse, err := c.ordersAPI.GetSignableCancelOrder(ctx).GetSignableCancelOrderRequest(request).Execute()
+	signableCancelOrder, httpResponse, err := c.OrdersAPI.GetSignableCancelOrder(ctx).GetSignableCancelOrderRequest(request).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -82,7 +82,7 @@ func (c *Client) CancelOrder(ctx context.Context,
 
 	ethAddress := l1signer.GetAddress()
 	orderID := strconv.FormatInt(int64(request.OrderId), 10)
-	cancelOrderResponse, httpResponse, err := c.ordersAPI.CancelOrder(ctx, orderID).
+	cancelOrderResponse, httpResponse, err := c.OrdersAPI.CancelOrder(ctx, orderID).
 		CancelOrderRequest(api.CancelOrderRequest{
 			OrderId:        request.OrderId,
 			StarkSignature: starkSignature,
@@ -101,7 +101,7 @@ GetOrder Get details of an order with the given ID
 @return Order
 */
 func (c *Client) GetOrder(ctx context.Context, id string) (*api.Order, error) {
-	response, httpResponse, err := c.ordersAPI.GetOrder(ctx, id).Execute()
+	response, httpResponse, err := c.OrdersAPI.GetOrder(ctx, id).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -115,7 +115,7 @@ NewListOrdersRequest Creates a new ApiListOrdersRequest object with required par
 @return ApiListOrdersRequest
 */
 func (c *Client) NewListOrdersRequest(ctx context.Context) api.ApiListOrdersRequest {
-	return c.ordersAPI.ListOrders(ctx)
+	return c.OrdersAPI.ListOrders(ctx)
 }
 
 /*
@@ -125,7 +125,7 @@ ListOrders Gets a list of orders
 @return ListOrdersResponse
 */
 func (c *Client) ListOrders(req *api.ApiListOrdersRequest) (*api.ListOrdersResponse, error) {
-	response, httpResponse, err := c.ordersAPI.ListOrdersExecute(*req)
+	response, httpResponse, err := c.OrdersAPI.ListOrdersExecute(*req)
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

@@ -26,7 +26,7 @@ func (c *Client) AddMetadataSchemaToCollection(
 		return nil, err
 	}
 
-	successResponse, httpResponse, err := c.metadataAPI.AddMetadataSchemaToCollection(ctx, contractAddress).
+	successResponse, httpResponse, err := c.MetadataAPI.AddMetadataSchemaToCollection(ctx, contractAddress).
 		AddMetadataSchemaToCollectionRequest(addMetadataSchemaToCollectionRequest).
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
@@ -45,7 +45,7 @@ GetMetadataSchema Gets collection metadata schema
 @return []MetadataSchemaProperty
 */
 func (c *Client) GetMetadataSchema(ctx context.Context, collectionContractAddress string) ([]api.MetadataSchemaProperty, error) {
-	metadataSchemaProperties, httpResponse, err := c.metadataAPI.GetMetadataSchema(ctx, collectionContractAddress).Execute()
+	metadataSchemaProperties, httpResponse, err := c.MetadataAPI.GetMetadataSchema(ctx, collectionContractAddress).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -73,7 +73,7 @@ func (c *Client) UpdateMetadataSchemaByName(
 		return nil, err
 	}
 
-	successResponse, httpResponse, err := c.metadataAPI.UpdateMetadataSchemaByName(ctx, contractAddress, metadataSchemaName).
+	successResponse, httpResponse, err := c.MetadataAPI.UpdateMetadataSchemaByName(ctx, contractAddress, metadataSchemaName).
 		MetadataSchemaRequest(metadataSchemaRequest).
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).

@@ -34,7 +34,7 @@ func (c *Client) RegisterOffchain(ctx context.Context,
 	starkKey := l2signer.GetPublicKey()
 
 	signableRegistrationRequest := api.NewGetSignableRegistrationRequest(etherKey, starkKey)
-	signableResponse, httpResponse, err := c.usersAPI.GetSignableRegistrationOffchain(ctx).GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
+	signableResponse, httpResponse, err := c.UsersAPI.GetSignableRegistrationOffchain(ctx).GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -45,7 +45,7 @@ func (c *Client) RegisterOffchain(ctx context.Context,
 	}
 
 	registerUserRequest := api.NewRegisterUserRequest(ethSignature, etherKey, starkKey, starkSignature)
-	registerUserResponse, httpResponse, err := c.usersAPI.RegisterUser(ctx).RegisterUserRequest(*registerUserRequest).Execute()
+	registerUserResponse, httpResponse, err := c.UsersAPI.RegisterUser(ctx).RegisterUserRequest(*registerUserRequest).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -82,7 +82,7 @@ Can also be used to check if the user is registered or not when it returns an er
 @return GetUsersApiResponse
 */
 func (c *Client) GetUsers(ctx context.Context, user string) (*api.GetUsersApiResponse, error) {
-	response, httpResponse, err := c.usersAPI.GetUsers(ctx, user).Execute()
+	response, httpResponse, err := c.UsersAPI.GetUsers(ctx, user).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -95,7 +95,7 @@ func (c *Client) getSignableRegistrationOnchain(
 	etherKey, starkKey string,
 ) (*api.GetSignableRegistrationResponse, error) {
 	signableRegistrationRequest := api.NewGetSignableRegistrationRequest(etherKey, starkKey)
-	signableRegistrationResponse, httpResponse, err := c.usersAPI.GetSignableRegistration(ctx).
+	signableRegistrationResponse, httpResponse, err := c.UsersAPI.GetSignableRegistration(ctx).
 		GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)

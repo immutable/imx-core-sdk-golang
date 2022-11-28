@@ -24,7 +24,7 @@ func (c *Client) CreateTrade(
 ) (*api.CreateTradeResponse, error) {
 	ethAddress := l1signer.GetAddress()
 	request.User = ethAddress
-	signableTrade, httpResponse, err := c.tradesAPI.GetSignableTrade(ctx).GetSignableTradeRequest(request).Execute()
+	signableTrade, httpResponse, err := c.TradesAPI.GetSignableTrade(ctx).GetSignableTradeRequest(request).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -35,7 +35,7 @@ func (c *Client) CreateTrade(
 	}
 
 	includeFees := true
-	createTradeResponse, httpResponse, err := c.tradesAPI.CreateTrade(ctx).
+	createTradeResponse, httpResponse, err := c.TradesAPI.CreateTrade(ctx).
 		CreateTradeRequest(api.CreateTradeRequestV1{
 			AmountBuy:           signableTrade.AmountBuy,
 			AmountSell:          signableTrade.AmountSell,
@@ -67,7 +67,7 @@ GetTrade Get details of a trade with the given ID
 @return Trade
 */
 func (c *Client) GetTrade(ctx context.Context, id string) (*api.Trade, error) {
-	response, httpResponse, err := c.tradesAPI.GetTrade(ctx, id).Execute()
+	response, httpResponse, err := c.TradesAPI.GetTrade(ctx, id).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -81,7 +81,7 @@ NewListTradesRequest Creates a new ApiListTradesRequest object with required par
 @return ApiListTradesRequest
 */
 func (c *Client) NewListTradesRequest(ctx context.Context) api.ApiListTradesRequest {
-	return c.tradesAPI.ListTrades(ctx)
+	return c.TradesAPI.ListTrades(ctx)
 }
 
 /*
@@ -91,7 +91,7 @@ ListTrades Gets a list of trades
 @return ListTradesResponse
 */
 func (c *Client) ListTrades(req *api.ApiListTradesRequest) (*api.ListTradesResponse, error) {
-	response, httpResponse, err := c.tradesAPI.ListTradesExecute(*req)
+	response, httpResponse, err := c.TradesAPI.ListTradesExecute(*req)
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

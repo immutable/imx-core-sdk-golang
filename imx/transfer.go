@@ -23,7 +23,7 @@ func (c *Client) Transfer(
 	l2signer L2Signer,
 	request api.GetSignableTransferRequestV1,
 ) (*api.CreateTransferResponseV1, error) {
-	data, httpResponse, err := c.transfersAPI.GetSignableTransferV1(ctx).GetSignableTransferRequest(request).Execute()
+	data, httpResponse, err := c.TransfersAPI.GetSignableTransferV1(ctx).GetSignableTransferRequest(request).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -34,7 +34,7 @@ func (c *Client) Transfer(
 	}
 
 	ethAddress := l1signer.GetAddress()
-	response, httpResponse, err := c.transfersAPI.CreateTransferV1(ctx).
+	response, httpResponse, err := c.TransfersAPI.CreateTransferV1(ctx).
 		CreateTransferRequest(api.CreateTransferRequestV1{
 			Amount:              data.Amount,
 			AssetId:             data.AssetId,
@@ -69,7 +69,7 @@ func (c *Client) BatchNftTransfer(
 	l2signer L2Signer,
 	request api.GetSignableTransferRequest,
 ) (*api.CreateTransferResponse, error) {
-	data, httpResponse, err := c.transfersAPI.GetSignableTransfer(ctx).GetSignableTransferRequestV2(request).Execute()
+	data, httpResponse, err := c.TransfersAPI.GetSignableTransfer(ctx).GetSignableTransferRequestV2(request).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -87,7 +87,7 @@ func (c *Client) BatchNftTransfer(
 		return nil, err
 	}
 
-	response, httpResponse, err := c.transfersAPI.CreateTransfer(ctx).
+	response, httpResponse, err := c.TransfersAPI.CreateTransfer(ctx).
 		CreateTransferRequestV2(api.CreateTransferRequest{
 			Requests:       transferRequests,
 			SenderStarkKey: data.SenderStarkKey,
@@ -108,7 +108,7 @@ GetTransfer Get details of a transfer with the given ID
 @return Transfer
 */
 func (c *Client) GetTransfer(ctx context.Context, id string) (*api.Transfer, error) {
-	response, httpResponse, err := c.transfersAPI.GetTransfer(ctx, id).Execute()
+	response, httpResponse, err := c.TransfersAPI.GetTransfer(ctx, id).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -122,7 +122,7 @@ NewListTransfersRequest Creates a new ApiListTransfersRequest object with requir
 @return ApiListTransfersRequest
 */
 func (c *Client) NewListTransfersRequest(ctx context.Context) api.ApiListTransfersRequest {
-	return c.transfersAPI.ListTransfers(ctx)
+	return c.TransfersAPI.ListTransfers(ctx)
 }
 
 /*
@@ -132,7 +132,7 @@ ListTransfers Gets a list of transfers
 @return ListTransfersResponse
 */
 func (c *Client) ListTransfers(req *api.ApiListTransfersRequest) (*api.ListTransfersResponse, error) {
-	response, httpResponse, err := c.transfersAPI.ListTransfersExecute(*req)
+	response, httpResponse, err := c.TransfersAPI.ListTransfersExecute(*req)
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

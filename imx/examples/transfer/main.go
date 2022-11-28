@@ -29,7 +29,7 @@ func DemoTransferWorkflow(ctx context.Context, c *imx.Client, l1signer imx.L1Sig
 	log.Println("-------------------------------------------------------")
 	log.Printf("Running %s", common.GetCurrentFunctionName())
 
-	// To declare tokens, use utils.NewSignableToken[type] method.
+	// To declare tokens, use imx.SignableETHToken or imx.SignableERC20Token methods based on the token type.
 	// For more information about ETH, ERC20, and ERC721 tokens see https://docs.x.immutable.com/docs/token-data-object
 
 	transferRequest := api.GetSignableTransferRequestV1{
