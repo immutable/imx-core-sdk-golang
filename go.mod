@@ -4,8 +4,8 @@ go 1.18
 
 require (
 	github.com/aarbt/hdkeys v0.0.0-20151205172415-ee76d77aba2f
-	github.com/dontpanicdao/caigo v0.3.1
-	github.com/ethereum/go-ethereum v1.10.25
+	github.com/dontpanicdao/caigo v0.2.0
+	github.com/ethereum/go-ethereum v1.10.26
 	github.com/stretchr/testify v1.8.0
 )
 
