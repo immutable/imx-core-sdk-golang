@@ -20,7 +20,7 @@ type MintFee struct {
 
 type MintableTokenData struct {
 	ID           string    `json:"id"`
-	Blueprint    *string   `json:"blueprint" validate:"max=15000"`
+	Blueprint    string    `json:"blueprint" validate:"max=15000"`
 	TokenAddress string    `json:"token_address,omitempty"`
 	Royalties    []MintFee `json:"royalties,omitempty" validate:"max=50"` // token-level overridable fees (optional)
 }

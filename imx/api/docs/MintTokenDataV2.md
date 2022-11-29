@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Blueprint** | Pointer to **string** | Token metadata blueprint | [optional] 
+**Blueprint** | **string** | Token metadata blueprint | 
 **Id** | **string** | Token ID Note: While the Token ID is required to be a string, it still needs to be a valid uint256 as per the ERC-721 token standard. | 
 **Royalties** | Pointer to [**[]MintFee**](MintFee.md) | List of mint fees | [optional] 
 
@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 
 ### NewMintTokenDataV2
 
-`func NewMintTokenDataV2(id string, ) *MintTokenDataV2`
+`func NewMintTokenDataV2(blueprint string, id string, ) *MintTokenDataV2`
 
 NewMintTokenDataV2 instantiates a new MintTokenDataV2 object
 This constructor will assign default values to properties that have it defined,
@@ -46,11 +46,6 @@ and a boolean to check if the value has been set.
 
 SetBlueprint sets Blueprint field to given value.
 
-### HasBlueprint
-
-`func (o *MintTokenDataV2) HasBlueprint() bool`
-
-HasBlueprint returns a boolean if a field has been set.
 
 ### GetId
 

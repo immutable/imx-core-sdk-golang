@@ -19,6 +19,8 @@ import (
 type ListBalancesResponse struct {
 	// Generated cursor returned by previous query
 	Cursor string `json:"cursor"`
+	// Remaining results flag. 1: there are remaining results matching this query, 0: no remaining results
+	Remaining int32 `json:"remaining"`
 	// Dictionary of tokens
 	Result []Balance `json:"result"`
 }
@@ -27,9 +29,10 @@ type ListBalancesResponse struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewListBalancesResponse(cursor string, result []Balance) *ListBalancesResponse {
+func NewListBalancesResponse(cursor string, remaining int32, result []Balance) *ListBalancesResponse {
 	this := ListBalancesResponse{}
 	this.Cursor = cursor
+	this.Remaining = remaining
 	this.Result = result
 	return &this
 }
@@ -66,6 +69,30 @@ func (o *ListBalancesResponse) SetCursor(v string) {
 	o.Cursor = v
 }
 
+// GetRemaining returns the Remaining field value
+func (o *ListBalancesResponse) GetRemaining() int32 {
+	if o == nil {
+		var ret int32
+		return ret
+	}
+
+	return o.Remaining
+}
+
+// GetRemainingOk returns a tuple with the Remaining field value
+// and a boolean to check if the value has been set.
+func (o *ListBalancesResponse) GetRemainingOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Remaining, true
+}
+
+// SetRemaining sets field value
+func (o *ListBalancesResponse) SetRemaining(v int32) {
+	o.Remaining = v
+}
+
 // GetResult returns the Result field value
 func (o *ListBalancesResponse) GetResult() []Balance {
 	if o == nil {
@@ -94,6 +121,9 @@ func (o ListBalancesResponse) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if true {
 		toSerialize["cursor"] = o.Cursor
+	}
+	if true {
+		toSerialize["remaining"] = o.Remaining
 	}
 	if true {
 		toSerialize["result"] = o.Result

@@ -17,7 +17,9 @@ import (
 
 // OrderFeeInfo struct for OrderFeeInfo
 type OrderFeeInfo struct {
+	// Address of the fee recipient
 	Address *string `json:"address,omitempty"`
+	// Fee amount
 	Amount *string `json:"amount,omitempty"`
 	Token *FeeToken `json:"token,omitempty"`
 	// Fee type

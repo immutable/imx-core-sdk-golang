@@ -58,11 +58,15 @@ type APIClient struct {
 
 	EncodingApi EncodingApi
 
+	ExchangesApi ExchangesApi
+
 	MetadataApi MetadataApi
 
 	MetadataRefreshesApi MetadataRefreshesApi
 
 	MintsApi MintsApi
+
+	NftCheckoutPrimaryApi NftCheckoutPrimaryApi
 
 	OrdersApi OrdersApi
 
@@ -100,9 +104,11 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.CollectionsApi = (*CollectionsApiService)(&c.common)
 	c.DepositsApi = (*DepositsApiService)(&c.common)
 	c.EncodingApi = (*EncodingApiService)(&c.common)
+	c.ExchangesApi = (*ExchangesApiService)(&c.common)
 	c.MetadataApi = (*MetadataApiService)(&c.common)
 	c.MetadataRefreshesApi = (*MetadataRefreshesApiService)(&c.common)
 	c.MintsApi = (*MintsApiService)(&c.common)
+	c.NftCheckoutPrimaryApi = (*NftCheckoutPrimaryApiService)(&c.common)
 	c.OrdersApi = (*OrdersApiService)(&c.common)
 	c.ProjectsApi = (*ProjectsApiService)(&c.common)
 	c.TokensApi = (*TokensApiService)(&c.common)
@@ -396,7 +402,7 @@ func (c *APIClient) prepareRequest(
 		localVarRequest.Header.Add(header, value)
 	}
 
-	localVarRequest.Header.Add("x-sdk-version", "imx-core-sdk-golang-0.2.2")
+	localVarRequest.Header.Add("x-sdk-version", "imx-core-sdk-golang-1.0.0-beta")
 
 	return localVarRequest, nil
 }

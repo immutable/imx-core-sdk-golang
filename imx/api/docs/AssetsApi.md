@@ -114,7 +114,7 @@ func main() {
     user := "user_example" // string | Ethereum address of the user who owns these assets (optional)
     status := "status_example" // string | Status of these assets (optional)
     name := "name_example" // string | Name of the asset to search (optional)
-    metadata := "metadata_example" // string | JSON-encoded metadata filters for these asset. Example: {'proto':['1147'],'quality':['Meteorite']} (optional)
+    metadata := "metadata_example" // string | URL JSON-encoded metadata filters for these assets. Javascript example: encodeURI(JSON.stringify({'proto':['1147'],'quality':['Meteorite']})) (optional)
     sellOrders := true // bool | Set flag to true to fetch an array of sell order details with accepted status associated with the asset (optional)
     buyOrders := true // bool | Set flag to true to fetch an array of buy order details  with accepted status associated with the asset (optional)
     includeFees := true // bool | Set flag to include fees associated with the asset (optional)
@@ -154,7 +154,7 @@ Name | Type | Description  | Notes
  **user** | **string** | Ethereum address of the user who owns these assets | 
  **status** | **string** | Status of these assets | 
  **name** | **string** | Name of the asset to search | 
- **metadata** | **string** | JSON-encoded metadata filters for these asset. Example: {&#39;proto&#39;:[&#39;1147&#39;],&#39;quality&#39;:[&#39;Meteorite&#39;]} | 
+ **metadata** | **string** | URL JSON-encoded metadata filters for these assets. Javascript example: encodeURI(JSON.stringify({&#39;proto&#39;:[&#39;1147&#39;],&#39;quality&#39;:[&#39;Meteorite&#39;]})) | 
  **sellOrders** | **bool** | Set flag to true to fetch an array of sell order details with accepted status associated with the asset | 
  **buyOrders** | **bool** | Set flag to true to fetch an array of buy order details  with accepted status associated with the asset | 
  **includeFees** | **bool** | Set flag to include fees associated with the asset | 

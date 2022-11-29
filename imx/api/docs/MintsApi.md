@@ -188,7 +188,7 @@ func main() {
     maxTimestamp := "maxTimestamp_example" // string | Maximum timestamp for this mint, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z' (optional)
     tokenType := "tokenType_example" // string | Token type of the minted asset (optional)
     tokenId := "tokenId_example" // string | ERC721 Token ID of the minted asset (optional)
-    assetId := "assetId_example" // string | Internal IMX ID of the minted asset (optional)
+    assetId := "assetId_example" // string | [DEPRECATED] Internal IMX ID of the minted asset (optional)
     tokenName := "tokenName_example" // string | Token Name of the minted asset (optional)
     tokenAddress := "tokenAddress_example" // string | Token address of the minted asset (optional)
     minQuantity := "minQuantity_example" // string | Min quantity for the minted asset (optional)
@@ -228,7 +228,7 @@ Name | Type | Description  | Notes
  **maxTimestamp** | **string** | Maximum timestamp for this mint, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39; | 
  **tokenType** | **string** | Token type of the minted asset | 
  **tokenId** | **string** | ERC721 Token ID of the minted asset | 
- **assetId** | **string** | Internal IMX ID of the minted asset | 
+ **assetId** | **string** | [DEPRECATED] Internal IMX ID of the minted asset | 
  **tokenName** | **string** | Token Name of the minted asset | 
  **tokenAddress** | **string** | Token address of the minted asset | 
  **minQuantity** | **string** | Min quantity for the minted asset | 
@@ -275,7 +275,7 @@ import (
 )
 
 func main() {
-    mintTokensRequestV2 := []openapiclient.MintRequest{*openapiclient.NewMintRequest("AuthSignature_example", "ContractAddress_example", []openapiclient.MintUser{*openapiclient.NewMintUser([]openapiclient.MintTokenDataV2{*openapiclient.NewMintTokenDataV2("Id_example")}, "User_example")})} // []MintRequest | details of tokens to mint
+    mintTokensRequestV2 := []openapiclient.MintRequest{*openapiclient.NewMintRequest("AuthSignature_example", "ContractAddress_example", []openapiclient.MintUser{*openapiclient.NewMintUser([]openapiclient.MintTokenDataV2{*openapiclient.NewMintTokenDataV2("Blueprint_example", "Id_example")}, "User_example")})} // []MintRequest | details of tokens to mint
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)

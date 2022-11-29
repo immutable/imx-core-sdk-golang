@@ -57,7 +57,7 @@ type MintsApi interface {
 	/*
 	ListMints Get a list of mints
 
-	Get a list of mints
+	Get information about token mints. If you want to get information about tokens that have already been minted, use the listAssets endpoint.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiListMintsRequest
@@ -425,7 +425,7 @@ func (r ApiListMintsRequest) TokenId(tokenId string) ApiListMintsRequest {
 	return r
 }
 
-// Internal IMX ID of the minted asset
+// [DEPRECATED] Internal IMX ID of the minted asset
 func (r ApiListMintsRequest) AssetId(assetId string) ApiListMintsRequest {
 	r.assetId = &assetId
 	return r
@@ -468,7 +468,7 @@ func (r ApiListMintsRequest) Execute() (*ListMintsResponse, *http.Response, erro
 /*
 ListMints Get a list of mints
 
-Get a list of mints
+Get information about token mints. If you want to get information about tokens that have already been minted, use the listAssets endpoint.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiListMintsRequest

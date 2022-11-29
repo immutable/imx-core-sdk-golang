@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Address** | Pointer to **string** |  | [optional] 
-**Amount** | Pointer to **string** |  | [optional] 
+**Address** | Pointer to **string** | Address of the fee recipient | [optional] 
+**Amount** | Pointer to **string** | Fee amount | [optional] 
 **Token** | Pointer to [**FeeToken**](FeeToken.md) |  | [optional] 
 **Type** | Pointer to **string** | Fee type | [optional] 
 

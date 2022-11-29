@@ -256,7 +256,7 @@ func (r ApiListAssetsRequest) Name(name string) ApiListAssetsRequest {
 	return r
 }
 
-// JSON-encoded metadata filters for these asset. Example: {&#39;proto&#39;:[&#39;1147&#39;],&#39;quality&#39;:[&#39;Meteorite&#39;]}
+// URL JSON-encoded metadata filters for these assets. Javascript example: encodeURI(JSON.stringify({&#39;proto&#39;:[&#39;1147&#39;],&#39;quality&#39;:[&#39;Meteorite&#39;]}))
 func (r ApiListAssetsRequest) Metadata(metadata string) ApiListAssetsRequest {
 	r.metadata = &metadata
 	return r

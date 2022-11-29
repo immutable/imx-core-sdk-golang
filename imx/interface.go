@@ -52,25 +52,27 @@ type Environment struct {
 // Client implements functions to get the work done with Immutable X API.
 // It manages communication with the Immutable X API.
 type Client struct {
-	Environment          Environment
-	EthClient            *ethclient.Client
-	RegistrationContract *contracts.Registration
-	CoreContract         *contracts.Core
-	TradesAPI            api.TradesApi
-	OrdersAPI            api.OrdersApi
-	TransfersAPI         api.TransfersApi
-	DepositsAPI          api.DepositsApi
-	WithdrawalsAPI       api.WithdrawalsApi
-	MintsAPI             api.MintsApi
-	AssetsAPI            api.AssetsApi
-	UsersAPI             api.UsersApi
-	MetadataAPI          api.MetadataApi
-	MetadataRefreshesAPI api.MetadataRefreshesApi
-	TokensAPI            api.TokensApi
-	BalancesAPI          api.BalancesApi
-	ProjectsAPI          api.ProjectsApi
-	CollectionsAPI       api.CollectionsApi
-	api.EncodingApi
+	Environment           Environment
+	EthClient             *ethclient.Client
+	RegistrationContract  *contracts.Registration
+	CoreContract          *contracts.Core
+	TradesAPI             api.TradesApi
+	OrdersAPI             api.OrdersApi
+	TransfersAPI          api.TransfersApi
+	DepositsAPI           api.DepositsApi
+	WithdrawalsAPI        api.WithdrawalsApi
+	MintsAPI              api.MintsApi
+	AssetsAPI             api.AssetsApi
+	UsersAPI              api.UsersApi
+	MetadataAPI           api.MetadataApi
+	MetadataRefreshesAPI  api.MetadataRefreshesApi
+	TokensAPI             api.TokensApi
+	BalancesAPI           api.BalancesApi
+	ProjectsAPI           api.ProjectsApi
+	CollectionsAPI        api.CollectionsApi
+	EncodingAPI           api.EncodingApi
+	ExchangesAPI          api.ExchangesApi
+	NftCheckoutPrimaryAPI api.NftCheckoutPrimaryApi
 }
 
 // NewClient creates a new Client. Requires config to setup and initialise.
@@ -93,10 +95,12 @@ func NewClient(cfg *Config) (*Client, error) {
 	c.BalancesAPI = apiClient.BalancesApi
 	c.CollectionsAPI = apiClient.CollectionsApi
 	c.DepositsAPI = apiClient.DepositsApi
-	c.EncodingApi = apiClient.EncodingApi
+	c.EncodingAPI = apiClient.EncodingApi
+	c.ExchangesAPI = apiClient.ExchangesApi
 	c.MetadataAPI = apiClient.MetadataApi
 	c.MetadataRefreshesAPI = apiClient.MetadataRefreshesApi
 	c.MintsAPI = apiClient.MintsApi
+	c.NftCheckoutPrimaryAPI = apiClient.NftCheckoutPrimaryApi
 	c.OrdersAPI = apiClient.OrdersApi
 	c.ProjectsAPI = apiClient.ProjectsApi
 	c.TokensAPI = apiClient.TokensApi
