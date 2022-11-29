@@ -4,6 +4,8 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/immutable/imx-core-sdk-golang/imx/signers/ethereum"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -23,4 +25,17 @@ func TestStarkSignerFactory_Grinding(t *testing.T) {
 	assert.True(t, ok)
 
 	assert.Equalf(t, expectedKeyValueAfterGrinding, grind(privateKey), "Verify grinding logic")
+}
+
+func TestStarkSignerFactory_GenerateLegacyKey(t *testing.T) {
+	l1Signer, err := ethereum.NewSigner("5c7b4b5cad9a3fc7b1ba235a49cd74e615488a18b0d6a531739fd1062935104d", big.NewInt(5))
+	assert.NoError(t, err)
+	key1, err := GenerateLegacyKey(l1Signer)
+	assert.NoError(t, err)
+	assert.Equalf(t, "0x556413893a023efd75f62cd4eca825f2be7e918b5188f1db06cbec12d7d1b88", key1, "Check the generated key matches")
+
+	key2, err := GenerateLegacyKey(l1Signer)
+	assert.NoError(t, err)
+
+	assert.Equalf(t, key1, key2, "Generated keys are same")
 }

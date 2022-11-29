@@ -4,13 +4,19 @@ import (
 	"crypto/ecdsa"
 	"crypto/rand"
 	"crypto/sha256"
+	"encoding/binary"
 	"errors"
+	"fmt"
 	"math/big"
 	"path"
 	"path/filepath"
 	"runtime"
 
+	"github.com/immutable/imx-core-sdk-golang/imx"
+
+	"github.com/aarbt/hdkeys"
 	"github.com/dontpanicdao/caigo"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 // package-global variable to represent our standard stark curve
@@ -19,20 +25,45 @@ var curve *caigo.StarkCurve
 // GenerateKey generates a random key that can be used to create StarkSigner.
 // On creation save this key for future usage as this key will be required to reuse your stark signer.
 // @return Randomly generated private key.
-func GenerateKey() (*big.Int, error) {
+func GenerateKey() (string, error) {
 	if curve == nil {
 		var err error
 		curve, err = loadCurve()
 		if err != nil {
-			return nil, err
+			return "", err
 		}
 	}
 	privKey, err := ecdsa.GenerateKey(curve, rand.Reader)
 	if err != nil {
-		return nil, err
+		return "", err
+	}
+	return hexutil.EncodeBig(grind(privKey.D)), nil
+}
+
+const (
+	DefaultSeedMessage = "Only sign this request if you’ve initiated an action with Immutable X."
+	ApplicationName    = "immutablex"
+	LayerName          = "starkex"
+	Index              = "1"
+)
+
+// GenerateLegacyKey Generates a deterministic Stark private key from the provided signer.
+// @return Deterministically generated private key.
+func GenerateLegacyKey(signer imx.L1Signer) (string, error) {
+	seed, err := generateSeed(signer, DefaultSeedMessage)
+	if err != nil {
+		return "", fmt.Errorf("failed to generate seed using l1signer: %v", err)
 	}
 
-	return grind(privKey.D), nil
+	starkPath := getStarkPath(LayerName, ApplicationName, signer.GetAddress(), Index)
+	childKey, err := hdkeys.NewMasterKey(seed).Chain(starkPath)
+	if err != nil {
+		return "", err
+	}
+
+	// Last 32 bits
+	childPrivateKey := childKey.Serialize()[46:]
+	return hexutil.EncodeBig(grind(new(big.Int).SetBytes(childPrivateKey))), nil
 }
 
 // Initialises the Stark Elliptic Curve.
@@ -87,4 +118,42 @@ func currentDirname() (string, error) {
 		return "", errors.New("unable to get the current filename")
 	}
 	return filepath.Dir(filename), nil
+}
+
+// generateSeed generates the seed value for the given seed message.
+func generateSeed(signer imx.L1Signer, seedMessage string) ([]byte, error) {
+	signature, err := signer.SignMessage(seedMessage)
+	if err != nil {
+		return nil, err
+	}
+	return signature[32:64], nil
+}
+
+func getStarkPath(layerName, applicationName, ethereumAddress, index string) string {
+	// Starkware keys are derived with the following BIP43-compatible derivation path, with direct inspiration from BIP44:
+	//
+	// m / purpose' / layer' / application' / eth_address_1' / eth_address_2' / index
+	// where:
+	//
+	// m 			- the seed.
+	// purpose 		- 2645 (the number of this EIP).
+	// layer 		- the 31 lowest bits of sha256 on the layer name. Serve as a domain separator between different technologies. In the context of starkex, the value would be 579218131.
+	// application 	- the 31 lowest bits of sha256 of the application name. Serve as a domain separator between different applications.
+	// 					In the context of DeversiFi in June 2020, it is the 31 lowest bits of sha256(starkexdvf) and the value would be 1393043894.
+	// eth_address_1 / eth_address_2 - the first and second 31 lowest bits of the corresponding eth_address.
+	// index 		- to allow multiple keys per eth_address.
+	//
+	// See for more info regarding path derivation https://docs.starkware.co/starkex/key-derivation.html and https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2645.md
+
+	layerHash := sha256.Sum256([]byte(layerName))
+	appHash := sha256.Sum256([]byte(applicationName))
+	layer := binary.BigEndian.Uint32(layerHash[28:]) & (1<<31 - 1)
+	application := binary.BigEndian.Uint32(appHash[28:]) & (1<<31 - 1)
+
+	ethereumAddressInBytes := hexutil.MustDecode(ethereumAddress)
+	ethAddress1 := binary.BigEndian.Uint32(ethereumAddressInBytes[16:]) & (1<<31 - 1)
+	// Mask of 31 binary 1 digits, at the position 32 from the end (counting from 1)
+	ethAddress2 := (binary.BigEndian.Uint64(ethereumAddressInBytes[12:]) & ((1<<31 - 1) << 31)) >> 31
+
+	return fmt.Sprintf("m/2645'/%d'/%d'/%d'/%d'/%s", layer, application, ethAddress1, ethAddress2, index)
 }

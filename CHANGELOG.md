@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - In examples moved stark signer creation to separate function as not every workflow will need it. Also done to address [ISSUE-94](https://github.com/immutable/imx-core-sdk-golang/issues/94)
 
 - IMX `Client` class now exposes public API methods for users who need access outside of basic workflows
+- Added GenerateLegacyKey to stark package.
 
 ### Fixed
 
