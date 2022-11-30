@@ -45,13 +45,20 @@ paths:
         in: query
         name: status
         schema:
+          enum:
+          - eth
+          - imx
+          - preparing_withdrawal
+          - withdrawable
+          - burned
           type: string
       - description: Name of the asset to search
         in: query
         name: name
         schema:
           type: string
-      - description: "JSON-encoded metadata filters for these asset. Example: {'proto':['1147'],'quality':['Meteorite']}"
+      - description: "URL JSON-encoded metadata filters for these assets. Javascript\
+          \ example: encodeURI(JSON.stringify({'proto':['1147'],'quality':['Meteorite']}))"
         in: query
         name: metadata
         schema:
@@ -1120,7 +1127,8 @@ paths:
       - mints
   /v1/mints:
     get:
-      description: Get a list of mints
+      description: "Get information about token mints. If you want to get information\
+        \ about tokens that have already been minted, use the listAssets endpoint."
       operationId: listMints
       parameters:
       - description: Page size of the result
@@ -1180,7 +1188,7 @@ paths:
         name: token_id
         schema:
           type: string
-      - description: Internal IMX ID of the minted asset
+      - description: "[DEPRECATED] Internal IMX ID of the minted asset"
         in: query
         name: asset_id
         schema:
@@ -1443,10 +1451,22 @@ paths:
       responses:
         "200":
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/ListOrdersResponse'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get a list of orders
       tags:
       - orders
@@ -1480,6 +1500,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateOrderResponse'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Create an order
       tags:
       - orders
@@ -1559,6 +1591,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/Order'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get details of an order with the given ID
       tags:
       - orders
@@ -2555,6 +2605,26 @@ paths:
       description: Get a list of balances for given user
       operationId: listBalances
       parameters:
+      - description: Page size of the result
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: Property to sort by
+        in: query
+        name: order_by
+        schema:
+          type: string
+      - description: Direction to sort (asc/desc)
+        in: query
+        name: direction
+        schema:
+          type: string
       - description: Ethereum wallet address for user
         in: path
         name: owner
@@ -2568,6 +2638,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListBalancesResponse'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get a list of balances for given user
       tags:
       - balances
@@ -2598,6 +2680,90 @@ paths:
       summary: Fetches the token balances of the user
       tags:
       - balances
+  /v2/exchanges/{id}/signable-transfer-details:
+    post:
+      description: Send a request for signable-transfer-details (offramp)
+      operationId: getExchangeSignableTransfer
+      parameters:
+      - description: Transaction ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetSignableTransferRequestV1'
+        description: get details of signable transfer
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSignableTransferResponseV1'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/lambdas.APIError'
+          description: Bad Request
+      summary: Send a request for signable-transfer-details (offramp)
+      tags:
+      - exchanges
+      x-codegen-request-body-name: GetSignableTransferRequest
+  /v2/exchanges/{id}/transfers:
+    post:
+      description: Accepts a transfer request and updates the transfer_status after
+        processing transfer (offramp)
+      operationId: createExchangeTransfer
+      parameters:
+      - description: Transaction ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: eth address
+        in: header
+        name: x-imx-eth-address
+        required: true
+        schema:
+          type: string
+      - description: eth signature
+        in: header
+        name: x-imx-eth-signature
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTransferRequestV1'
+        description: Create a transfer
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTransferResponseV1'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/lambdas.APIError'
+          description: Bad Request
+      summary: Accepts a transfer request and updates the transfer_status after processing
+        transfer (offramp)
+      tags:
+      - exchanges
+      x-codegen-request-body-name: CreateTransferRequest
   /v2/mints:
     post:
       description: Mint tokens in a batch with fees
@@ -2660,6 +2826,176 @@ paths:
       tags:
       - mints
       x-codegen-request-body-name: MintTokensRequestV2
+  /v2/nft/primary:
+    get:
+      description: Returns a list of NFT primary transactions
+      operationId: getNftPrimaryTransactions
+      parameters:
+      - description: Page size of the result
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: Property to sort by
+        in: query
+        name: order_by
+        schema:
+          enum:
+          - transaction_id
+          - status
+          - amount
+          - mint_id
+          type: string
+      - description: Direction to sort (asc/desc)
+        in: query
+        name: direction
+        schema:
+          type: string
+      - description: Transaction id
+        in: query
+        name: transaction_id
+        schema:
+          type: string
+      - description: Contract address of the asset
+        in: query
+        name: contract_address
+        schema:
+          type: string
+      - description: Ethereum address of the seller
+        in: query
+        name: seller_wallet_address
+        schema:
+          type: string
+      - description: Ethereum address of the user who wants to create transaction
+        in: query
+        name: wallet_address
+        schema:
+          type: string
+      - description: Transaction status
+        in: query
+        name: status
+        schema:
+          type: string
+      - description: Provider name
+        in: query
+        name: provider
+        schema:
+          enum:
+          - moonpay
+          type: string
+      - description: Mint id
+        in: query
+        name: mint_id
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nftprimarytransaction.ListTransactionsResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/lambdas.APIError'
+          description: Bad Request
+      summary: Get a list of NFT primary transactions
+      tags:
+      - nft-checkout-primary
+    post:
+      description: creates nft primary transaction
+      operationId: createNftPrimary
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/nftprimarytransaction.CreateAPIRequest'
+        description: req
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nftprimarytransaction.CreateResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/lambdas.APIError'
+          description: Bad Request
+      summary: Create nft primary transaction
+      tags:
+      - nft-checkout-primary
+      x-codegen-request-body-name: CreateAPIRequest
+  /v2/nft/primary/currencies:
+    get:
+      description: Returns a list of supported currencies and their limits
+      operationId: getCurrenciesNFTCheckoutPrimary
+      parameters:
+      - description: Provider name
+        in: query
+        name: provider
+        schema:
+          enum:
+          - moonpay
+          type: string
+      - description: Flag if limits should be included in the response or not
+        in: query
+        name: include_limits
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrencyWithLimits'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/lambdas.APIError'
+          description: Bad Request
+      summary: Get currencies with limits
+      tags:
+      - nft-checkout-primary
+  /v2/nft/primary/{transaction_id}:
+    get:
+      description: gets nft primary transaction by transaction id
+      operationId: getNftPrimaryTransaction
+      parameters:
+      - description: Transaction id
+        in: path
+        name: transaction_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nftprimarytransaction.GetResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/lambdas.APIError'
+          description: Bad Request
+      summary: Get nft primary transaction by id
+      tags:
+      - nft-checkout-primary
   /v2/signable-transfer-details:
     post:
       description: Gets bulk details of a signable transfer
@@ -2765,6 +3101,187 @@ paths:
       tags:
       - transfers
       x-codegen-request-body-name: CreateTransferRequestV2
+  /v2/{provider}/transaction_status:
+    get:
+      description: gets mint status by transaction ids
+      operationId: getMintStatusById
+      parameters:
+      - description: Provider name
+        in: path
+        name: provider
+        required: true
+        schema:
+          enum:
+          - moonpay
+          type: string
+      - description: transaction id
+        in: query
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/provider.GetMintStatusResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/lambdas.APIError'
+          description: Bad Request
+      summary: Get mint status by transaction id
+      tags:
+      - nft-checkout-primary
+  /v3/exchanges:
+    get:
+      description: Returns a list of exchanges based on the request
+      operationId: getExchanges
+      parameters:
+      - description: Page size of the result
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: Property to sort by
+        in: query
+        name: order_by
+        schema:
+          enum:
+          - id
+          - status
+          - exchange
+          - amount
+          - transfer_id
+          type: string
+      - description: Direction to sort
+        in: query
+        name: direction
+        schema:
+          enum:
+          - asc
+          - desc
+          type: string
+      - description: Transaction ID
+        in: query
+        name: id
+        schema:
+          type: integer
+      - description: Ethereum address of the user who created transaction
+        in: query
+        name: wallet_address
+        schema:
+          type: string
+      - description: Transaction status
+        in: query
+        name: status
+        schema:
+          enum:
+          - created
+          - pending
+          - completed
+          - failed
+          - waitingPayment
+          - timedOut
+          type: string
+      - description: Provider name
+        in: query
+        name: provider
+        schema:
+          enum:
+          - moonpay
+          - layerswap
+          type: string
+      - description: Transfer ID
+        in: query
+        name: transfer_id
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTransactionsResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/lambdas.APIError'
+          description: Bad Request
+      summary: Returns a list of exchanges based on the request
+      tags:
+      - exchanges
+    post:
+      description: "Receive wallet_address, provider, type and widget information\
+        \ to create a base exchange transaction and return widget URL"
+      operationId: createExchange
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateExchangeAndURLAPIRequest'
+        description: req
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/exchange.CreateExchangeAndURLResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/lambdas.APIError'
+          description: Bad Request
+      summary: Create an exchange with URL
+      tags:
+      - exchanges
+      x-codegen-request-body-name: CreateExchangeAPIRequest
+  /v3/exchanges/{id}:
+    get:
+      description: Get an exchange by ID
+      operationId: getExchange
+      parameters:
+      - description: Exchange ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Exchange'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/lambdas.APIError'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/lambdas.APIError'
+          description: Not Found
+      summary: Get an exchange by ID
+      tags:
+      - exchanges
   /v3/signable-order-details:
     post:
       description: Get a signable order request (V3)
@@ -2783,6 +3300,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetSignableOrderResponse'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+          description: Internal Server Error
       summary: Get a signable order request (V3)
       tags:
       - orders
@@ -3257,7 +3786,8 @@ components:
           description: Name of the collection
           type: string
         owner_public_key:
-          description: "Owner Public Key: The public key of the owner of the contract"
+          description: "Owner Public Key: The uncompressed public key of the owner\
+            \ of the contract"
           type: string
         project_id:
           description: The collection's project ID
@@ -3267,6 +3797,36 @@ components:
       - name
       - owner_public_key
       - project_id
+      type: object
+    CreateExchangeAndURLAPIRequest:
+      example:
+        wallet_address: wallet_address
+        widget:
+          amount: amount
+          theme: light
+          supported_currencies:
+          - ETH
+          - USDC
+        provider: moonpay
+        type: onramp
+      properties:
+        provider:
+          description: Provider name
+          enum:
+          - moonpay
+          - layerswap
+          type: string
+        type:
+          description: Transaction type
+          enum:
+          - onramp
+          - offramp
+          type: string
+        wallet_address:
+          description: Ethereum address of the user who wants to create transaction
+          type: string
+        widget:
+          $ref: '#/components/schemas/WidgetParams'
       type: object
     CreateMetadataRefreshRequest:
       example:
@@ -3699,6 +4259,30 @@ components:
       - time
       - withdrawal_id
       type: object
+    CurrencyWithLimits:
+      example:
+        symbol: ETH
+        provider: moonpay
+        currency_code: eth_immutable
+        limits:
+          min_amount: 6.027456183070403
+          max_amount: 0.8008281904610115
+      properties:
+        currency_code:
+          description: Provider currency code
+          example: eth_immutable
+          type: string
+        limits:
+          $ref: '#/components/schemas/aggregate.Limit'
+        provider:
+          description: Provider name (e.g. moonpay)
+          example: moonpay
+          type: string
+        symbol:
+          description: Currency Symbol
+          example: ETH
+          type: string
+      type: object
     Deposit:
       example:
         transaction_id: 1
@@ -3792,6 +4376,52 @@ components:
           type: string
         token_id:
           description: TokenId of the token to be encoded. Used if token is non-mintable
+          type: string
+      type: object
+    Exchange:
+      example:
+        wallet_address: wallet_address
+        data:
+          fees_amount: 6.027456183070403
+          provider_wallet_address: provider_wallet_address
+          to_amount: 5.962133916683182
+          from_currency: from_currency
+          from_amount: 1.4658129805029452
+          external_id: external_id
+          transfer_id: transfer_id
+          to_currency: to_currency
+        updated_at: updated_at
+        provider: "moonpay, layerswap"
+        created_at: created_at
+        id: 5
+        type: onramp
+        status: "created, pending, completed, failed, waitingPayment, timedOut"
+      properties:
+        created_at:
+          description: Time this transaction was created
+          type: string
+        data:
+          $ref: '#/components/schemas/OptionalExchangeData'
+        id:
+          description: Transaction ID
+          type: integer
+        provider:
+          description: Provider name
+          example: "moonpay, layerswap"
+          type: string
+        status:
+          description: Transaction status
+          example: "created, pending, completed, failed, waitingPayment, timedOut"
+          type: string
+        type:
+          description: Transaction type
+          example: onramp
+          type: string
+        updated_at:
+          description: Time this transaction was updates
+          type: string
+        wallet_address:
+          description: Ethereum address of the user who created transaction
           type: string
       type: object
     Fee:
@@ -4581,6 +5211,57 @@ components:
       - stark_key
       - vault_id
       type: object
+    GetTransactionsResponse:
+      example:
+        cursor: cursor
+        result:
+        - wallet_address: wallet_address
+          data:
+            fees_amount: 6.027456183070403
+            provider_wallet_address: provider_wallet_address
+            to_amount: 5.962133916683182
+            from_currency: from_currency
+            from_amount: 1.4658129805029452
+            external_id: external_id
+            transfer_id: transfer_id
+            to_currency: to_currency
+          updated_at: updated_at
+          provider: "moonpay, layerswap"
+          created_at: created_at
+          id: 5
+          type: onramp
+          status: "created, pending, completed, failed, waitingPayment, timedOut"
+        - wallet_address: wallet_address
+          data:
+            fees_amount: 6.027456183070403
+            provider_wallet_address: provider_wallet_address
+            to_amount: 5.962133916683182
+            from_currency: from_currency
+            from_amount: 1.4658129805029452
+            external_id: external_id
+            transfer_id: transfer_id
+            to_currency: to_currency
+          updated_at: updated_at
+          provider: "moonpay, layerswap"
+          created_at: created_at
+          id: 5
+          type: onramp
+          status: "created, pending, completed, failed, waitingPayment, timedOut"
+        remaining: 0
+      properties:
+        cursor:
+          description: Generated cursor returned by previous query
+          type: string
+        remaining:
+          description: "Remaining results flag. 1: there are remaining results matching\
+            \ this query, 0: no remaining results"
+          type: integer
+        result:
+          description: Transactions matching query parameters
+          items:
+            $ref: '#/components/schemas/Exchange'
+          type: array
+      type: object
     GetUsersApiResponse:
       example:
         accounts:
@@ -4690,10 +5371,15 @@ components:
           balance: balance
           withdrawable: withdrawable
           token_address: token_address
+        remaining: 0
       properties:
         cursor:
           description: Generated cursor returned by previous query
           type: string
+        remaining:
+          description: "Remaining results flag. 1: there are remaining results matching\
+            \ this query, 0: no remaining results"
+          type: integer
         result:
           description: Dictionary of tokens
           items:
@@ -4701,6 +5387,7 @@ components:
           type: array
       required:
       - cursor
+      - remaining
       - result
       type: object
     ListCollectionsResponse:
@@ -5552,6 +6239,7 @@ components:
             $ref: '#/components/schemas/MintFee'
           type: array
       required:
+      - blueprint
       - id
       type: object
     MintTokensResponse:
@@ -5622,6 +6310,42 @@ components:
       - blueprint
       - client_token_id
       - token_id
+      type: object
+    OptionalExchangeData:
+      example:
+        fees_amount: 6.027456183070403
+        provider_wallet_address: provider_wallet_address
+        to_amount: 5.962133916683182
+        from_currency: from_currency
+        from_amount: 1.4658129805029452
+        external_id: external_id
+        transfer_id: transfer_id
+        to_currency: to_currency
+      properties:
+        external_id:
+          description: Provider transaction ID
+          type: string
+        fees_amount:
+          description: Fees amount
+          type: number
+        from_amount:
+          description: Amount that was exchanged from
+          type: number
+        from_currency:
+          description: Currency that was exchanged from
+          type: string
+        provider_wallet_address:
+          description: Provider wallet address that was used for transferring crypto
+          type: string
+        to_amount:
+          description: Amount that was exchanged to
+          type: number
+        to_currency:
+          description: Currency that was exchanged to
+          type: string
+        transfer_id:
+          description: Transfer ID
+          type: string
       type: object
     Order:
       example:
@@ -5761,8 +6485,10 @@ components:
           type: ETH
       properties:
         address:
+          description: Address of the fee recipient
           type: string
         amount:
+          description: Fee amount
           type: string
         token:
           $ref: '#/components/schemas/FeeToken'
@@ -6263,6 +6989,31 @@ components:
           description: Name of the collection
           type: string
       type: object
+    WidgetParams:
+      example:
+        amount: amount
+        theme: light
+        supported_currencies:
+        - ETH
+        - USDC
+      properties:
+        amount:
+          description: Amount that will be prefilled in the widget
+          type: string
+        supported_currencies:
+          description: Currencies that will be available in the widget. If not defined
+            all available currencies will be shown
+          example:
+          - ETH
+          - USDC
+          items:
+            type: string
+          type: array
+        theme:
+          description: Widget theme dark by default
+          example: light
+          type: string
+      type: object
     Withdrawal:
       example:
         transaction_id: 6
@@ -6317,6 +7068,18 @@ components:
       - transaction_id
       - withdrawn_to_wallet
       type: object
+    aggregate.Limit:
+      example:
+        min_amount: 6.027456183070403
+        max_amount: 0.8008281904610115
+      properties:
+        max_amount:
+          description: Max transaction amount
+          type: number
+        min_amount:
+          description: Min transaction amount
+          type: number
+      type: object
     encodeAssetRequestToken:
       example:
         data:
@@ -6337,4 +7100,330 @@ components:
           type: string
       type: object
       x-go-gen-location: models
+    exchange.CreateExchangeAndURLResponse:
+      example:
+        wallet_address: wallet_address
+        provider: moonpay
+        id: 0
+        type: onramp
+        url: url
+      properties:
+        id:
+          description: Created transaction ID
+          type: integer
+        provider:
+          description: Provider name (e.g. moonpay)
+          example: moonpay
+          type: string
+        type:
+          description: Transaction type
+          example: onramp
+          type: string
+        url:
+          description: Widget URL
+          type: string
+        wallet_address:
+          description: Ethereum address of the user who created transaction
+          type: string
+      type: object
+    lambdas.APIError:
+      properties:
+        code:
+          description: The error code
+          type: string
+        details:
+          description: The error details
+          type: string
+        message:
+          description: The error message
+          type: string
+        status_code:
+          description: The error status code
+          type: integer
+      type: object
+    nftprimarytransaction.CreateAPIRequest:
+      properties:
+        contract_address:
+          description: Contract address of the asset to be created
+          type: string
+        offer_id:
+          description: Temporary asset id
+          type: string
+        provider:
+          description: Provider name
+          example: moonpay
+          type: string
+        user_wallet_address:
+          description: Ethereum address of the user who wants to create transaction
+          type: string
+        widget:
+          $ref: '#/components/schemas/nftprimarytransaction.WidgetParams'
+      type: object
+    nftprimarytransaction.CreateResponse:
+      example:
+        transaction_id: transaction_id
+        token_id: token_id
+        provider: provider
+        user_wallet_address: user_wallet_address
+        contract_address: contract_address
+        offer_id: offer_id
+        seller_wallet_address: seller_wallet_address
+        url: url
+      properties:
+        contract_address:
+          description: Contract address of the asset to be created
+          type: string
+        offer_id:
+          description: Temporary asset id
+          type: string
+        provider:
+          description: Provider name
+          type: string
+        seller_wallet_address:
+          description: Ethereum address of the seller
+          type: string
+        token_id:
+          description: Asset id
+          type: string
+        transaction_id:
+          description: Transaction id
+          type: string
+        url:
+          description: Widget Url signed by provider
+          type: string
+        user_wallet_address:
+          description: Ethereum address of the user who wants to create transaction
+          type: string
+      type: object
+    nftprimarytransaction.GetResponse:
+      example:
+        transaction_id: transaction_id
+        token_id: token_id
+        provider: provider
+        user_wallet_address: user_wallet_address
+        contract_address: contract_address
+        offer_id: offer_id
+        seller_wallet_address: seller_wallet_address
+        status: status
+      properties:
+        contract_address:
+          description: Contract address of the asset
+          type: string
+        offer_id:
+          description: Temporary asset id
+          type: string
+        provider:
+          description: Provider name
+          type: string
+        seller_wallet_address:
+          description: Ethereum address of the seller
+          type: string
+        status:
+          description: Transaction status
+          type: string
+        token_id:
+          description: Asset id
+          type: string
+        transaction_id:
+          description: Transaction id
+          type: string
+        user_wallet_address:
+          description: Ethereum address of the user who wants to create transaction
+          type: string
+      type: object
+    nftprimarytransaction.ListTransactionsResponse:
+      example:
+        cursor: cursor
+        result:
+        - fees_amount: 6.027456183070403
+          mint_id: mint_id
+          transaction_id: transaction_id
+          mint_status: mint_status
+          from_amount: 1.4658129805029452
+          created_at: created_at
+          external_id: external_id
+          contract_address: contract_address
+          offer_id: offer_id
+          to_amount: 5.962133916683182
+          token_id: token_id
+          updated_at: updated_at
+          provider: provider
+          from_currency: from_currency
+          user_wallet_address: user_wallet_address
+          seller_wallet_address: seller_wallet_address
+          status: status
+          to_currency: to_currency
+        - fees_amount: 6.027456183070403
+          mint_id: mint_id
+          transaction_id: transaction_id
+          mint_status: mint_status
+          from_amount: 1.4658129805029452
+          created_at: created_at
+          external_id: external_id
+          contract_address: contract_address
+          offer_id: offer_id
+          to_amount: 5.962133916683182
+          token_id: token_id
+          updated_at: updated_at
+          provider: provider
+          from_currency: from_currency
+          user_wallet_address: user_wallet_address
+          seller_wallet_address: seller_wallet_address
+          status: status
+          to_currency: to_currency
+        remaining: 0
+      properties:
+        cursor:
+          description: Generated cursor returned by previous query
+          type: string
+        remaining:
+          description: "Remaining results flag. 1: there are remaining results matching\
+            \ this query, 0: no remaining results"
+          type: integer
+        result:
+          description: Transactions matching query parameters
+          items:
+            $ref: '#/components/schemas/nftprimarytransaction.TransactionData'
+          type: array
+      type: object
+    nftprimarytransaction.TransactionData:
+      example:
+        fees_amount: 6.027456183070403
+        mint_id: mint_id
+        transaction_id: transaction_id
+        mint_status: mint_status
+        from_amount: 1.4658129805029452
+        created_at: created_at
+        external_id: external_id
+        contract_address: contract_address
+        offer_id: offer_id
+        to_amount: 5.962133916683182
+        token_id: token_id
+        updated_at: updated_at
+        provider: provider
+        from_currency: from_currency
+        user_wallet_address: user_wallet_address
+        seller_wallet_address: seller_wallet_address
+        status: status
+        to_currency: to_currency
+      properties:
+        contract_address:
+          description: Contract address of the asset
+          type: string
+        created_at:
+          description: Timestamp when the transaction was created
+          type: string
+        external_id:
+          description: External transaction id
+          type: string
+        fees_amount:
+          description: Fees to pay on this transaction
+          type: number
+        from_amount:
+          description: Amount of currency (from_currency) used for transaction
+          type: number
+        from_currency:
+          description: Currency used for transaction
+          type: string
+        mint_id:
+          description: Mint id
+          type: string
+        mint_status:
+          description: Mint status
+          type: string
+        offer_id:
+          description: Temporary asset id
+          type: string
+        provider:
+          description: Provider name
+          type: string
+        seller_wallet_address:
+          description: Ethereum address of the seller
+          type: string
+        status:
+          description: Transaction status
+          type: string
+        to_amount:
+          description: Amount of target currency (to_currency) bought
+          type: number
+        to_currency:
+          description: Target currency
+          type: string
+        token_id:
+          description: Asset id
+          type: string
+        transaction_id:
+          description: Transaction id
+          type: string
+        updated_at:
+          description: Timestamp when the transaction was updated
+          type: string
+        user_wallet_address:
+          description: Ethereum address of the user who wants to create transaction
+          type: string
+      type: object
+    nftprimarytransaction.WidgetParams:
+      properties:
+        theme:
+          example: light
+          type: string
+      type: object
+    provider.GetMintStatusResponse:
+      example:
+        data:
+        - statusChangedAt: statusChangedAt
+          tokenId: tokenId
+          failureReason: failureReason
+          id: id
+          transactionHash:
+          - transactionHash
+          - transactionHash
+          status: status
+        - statusChangedAt: statusChangedAt
+          tokenId: tokenId
+          failureReason: failureReason
+          id: id
+          transactionHash:
+          - transactionHash
+          - transactionHash
+          status: status
+      properties:
+        data:
+          description: Mint status for requested transactions
+          items:
+            $ref: '#/components/schemas/provider.MintStatus'
+          type: array
+      type: object
+    provider.MintStatus:
+      example:
+        statusChangedAt: statusChangedAt
+        tokenId: tokenId
+        failureReason: failureReason
+        id: id
+        transactionHash:
+        - transactionHash
+        - transactionHash
+        status: status
+      properties:
+        failureReason:
+          description: reason for mint failure
+          type: string
+        id:
+          description: External transaction id
+          type: string
+        status:
+          description: Mint status
+          type: string
+        statusChangedAt:
+          description: status updated-at timestamp
+          type: string
+        tokenId:
+          description: Asset id
+          type: string
+        transactionHash:
+          description: Transaction hash
+          items:
+            type: string
+          type: array
+      type: object
 x-original-swagger-version: "2.0"

@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **IconUrl** | Pointer to **string** | URL of the icon for this collection | [optional] 
 **MetadataApiUrl** | Pointer to **string** | URL of the metadata for this collection | [optional] 
 **Name** | **string** | Name of the collection | 
-**OwnerPublicKey** | **string** | Owner Public Key: The public key of the owner of the contract | 
+**OwnerPublicKey** | **string** | Owner Public Key: The uncompressed public key of the owner of the contract | 
 **ProjectId** | **int32** | The collection&#39;s project ID | 
 
 ## Methods

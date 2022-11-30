@@ -36,7 +36,7 @@ func main() {
 								Recipient:  ethAddress,
 							},
 						},
-						Blueprint: &blueprint,
+						Blueprint: blueprint,
 					},
 				},
 			},

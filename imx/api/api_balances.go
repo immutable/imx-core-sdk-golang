@@ -169,6 +169,34 @@ type ApiListBalancesRequest struct {
 	ctx context.Context
 	ApiService BalancesApi
 	owner string
+	pageSize *int32
+	cursor *string
+	orderBy *string
+	direction *string
+}
+
+// Page size of the result
+func (r ApiListBalancesRequest) PageSize(pageSize int32) ApiListBalancesRequest {
+	r.pageSize = &pageSize
+	return r
+}
+
+// Cursor
+func (r ApiListBalancesRequest) Cursor(cursor string) ApiListBalancesRequest {
+	r.cursor = &cursor
+	return r
+}
+
+// Property to sort by
+func (r ApiListBalancesRequest) OrderBy(orderBy string) ApiListBalancesRequest {
+	r.orderBy = &orderBy
+	return r
+}
+
+// Direction to sort (asc/desc)
+func (r ApiListBalancesRequest) Direction(direction string) ApiListBalancesRequest {
+	r.direction = &direction
+	return r
 }
 
 func (r ApiListBalancesRequest) Execute() (*ListBalancesResponse, *http.Response, error) {
@@ -214,6 +242,18 @@ func (a *BalancesApiService) ListBalancesExecute(r ApiListBalancesRequest) (*Lis
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	if r.pageSize != nil {
+		localVarQueryParams.Add("page_size", parameterToString(*r.pageSize, ""))
+	}
+	if r.cursor != nil {
+		localVarQueryParams.Add("cursor", parameterToString(*r.cursor, ""))
+	}
+	if r.orderBy != nil {
+		localVarQueryParams.Add("order_by", parameterToString(*r.orderBy, ""))
+	}
+	if r.direction != nil {
+		localVarQueryParams.Add("direction", parameterToString(*r.direction, ""))
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -252,6 +292,25 @@ func (a *BalancesApiService) ListBalancesExecute(r ApiListBalancesRequest) (*Lis
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v APIError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v APIError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

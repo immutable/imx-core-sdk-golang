@@ -64,7 +64,7 @@ func (c *Client) encodedAssetType(
 	encodeAssetRequest := api.EncodeAssetRequest{
 		Token: *encodeAssetRequestToken,
 	}
-	encodedAssetResponse, httpResponse, err := c.EncodeAsset(ctx, assetType).EncodeAssetRequest(encodeAssetRequest).Execute()
+	encodedAssetResponse, httpResponse, err := c.EncodingAPI.EncodeAsset(ctx, assetType).EncodeAssetRequest(encodeAssetRequest).Execute()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

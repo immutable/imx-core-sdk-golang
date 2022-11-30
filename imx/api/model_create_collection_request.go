@@ -29,7 +29,7 @@ type CreateCollectionRequest struct {
 	MetadataApiUrl *string `json:"metadata_api_url,omitempty"`
 	// Name of the collection
 	Name string `json:"name"`
-	// Owner Public Key: The public key of the owner of the contract
+	// Owner Public Key: The uncompressed public key of the owner of the contract
 	OwnerPublicKey string `json:"owner_public_key"`
 	// The collection's project ID
 	ProjectId int32 `json:"project_id"`

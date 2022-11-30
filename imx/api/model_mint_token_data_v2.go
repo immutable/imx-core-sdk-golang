@@ -18,7 +18,7 @@ import (
 // MintTokenDataV2 struct for MintTokenDataV2
 type MintTokenDataV2 struct {
 	// Token metadata blueprint
-	Blueprint *string `json:"blueprint,omitempty"`
+	Blueprint string `json:"blueprint"`
 	// Token ID Note: While the Token ID is required to be a string, it still needs to be a valid uint256 as per the ERC-721 token standard.
 	Id string `json:"id"`
 	// List of mint fees
@@ -29,8 +29,9 @@ type MintTokenDataV2 struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMintTokenDataV2(id string) *MintTokenDataV2 {
+func NewMintTokenDataV2(blueprint string, id string) *MintTokenDataV2 {
 	this := MintTokenDataV2{}
+	this.Blueprint = blueprint
 	this.Id = id
 	return &this
 }
@@ -43,36 +44,28 @@ func NewMintTokenDataV2WithDefaults() *MintTokenDataV2 {
 	return &this
 }
 
-// GetBlueprint returns the Blueprint field value if set, zero value otherwise.
+// GetBlueprint returns the Blueprint field value
 func (o *MintTokenDataV2) GetBlueprint() string {
-	if o == nil || o.Blueprint == nil {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Blueprint
+
+	return o.Blueprint
 }
 
-// GetBlueprintOk returns a tuple with the Blueprint field value if set, nil otherwise
+// GetBlueprintOk returns a tuple with the Blueprint field value
 // and a boolean to check if the value has been set.
 func (o *MintTokenDataV2) GetBlueprintOk() (*string, bool) {
-	if o == nil || o.Blueprint == nil {
+	if o == nil {
 		return nil, false
 	}
-	return o.Blueprint, true
+	return &o.Blueprint, true
 }
 
-// HasBlueprint returns a boolean if a field has been set.
-func (o *MintTokenDataV2) HasBlueprint() bool {
-	if o != nil && o.Blueprint != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetBlueprint gets a reference to the given string and assigns it to the Blueprint field.
+// SetBlueprint sets field value
 func (o *MintTokenDataV2) SetBlueprint(v string) {
-	o.Blueprint = &v
+	o.Blueprint = v
 }
 
 // GetId returns the Id field value
@@ -133,7 +126,7 @@ func (o *MintTokenDataV2) SetRoyalties(v []MintFee) {
 
 func (o MintTokenDataV2) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Blueprint != nil {
+	if true {
 		toSerialize["blueprint"] = o.Blueprint
 	}
 	if true {

@@ -85,7 +85,7 @@ No authorization required
 
 ## ListBalances
 
-> ListBalancesResponse ListBalances(ctx, owner).Execute()
+> ListBalancesResponse ListBalances(ctx, owner).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).Execute()
 
 Get a list of balances for given user
 
@@ -106,10 +106,14 @@ import (
 
 func main() {
     owner := "owner_example" // string | Ethereum wallet address for user
+    pageSize := int32(56) // int32 | Page size of the result (optional)
+    cursor := "cursor_example" // string | Cursor (optional)
+    orderBy := "orderBy_example" // string | Property to sort by (optional)
+    direction := "direction_example" // string | Direction to sort (asc/desc) (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.BalancesApi.ListBalances(context.Background(), owner).Execute()
+    resp, r, err := apiClient.BalancesApi.ListBalances(context.Background(), owner).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `BalancesApi.ListBalances``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -135,6 +139,10 @@ Other parameters are passed through a pointer to a apiListBalancesRequest struct
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
+ **pageSize** | **int32** | Page size of the result | 
+ **cursor** | **string** | Cursor | 
+ **orderBy** | **string** | Property to sort by | 
+ **direction** | **string** | Direction to sort (asc/desc) | 
 
 ### Return type
 
