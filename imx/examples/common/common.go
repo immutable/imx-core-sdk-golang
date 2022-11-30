@@ -30,7 +30,7 @@ func CommonInitialise(configFilePath string) (context.Context, map[string]string
 	}
 
 	var ethNetwork imx.Environment
-	switch envs["ALCHEMY_API_KEY"] {
+	switch envs["ETH_NETWORK"] {
 	case "mainnet":
 		ethNetwork = imx.Mainnet
 	case "sandbox":
