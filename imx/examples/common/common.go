@@ -29,10 +29,21 @@ func CommonInitialise(configFilePath string) (context.Context, map[string]string
 		apiConfiguration.Debug = true
 	}
 
+	var ethNetwork imx.Environment
+	switch envs["ETH_NETWORK"] {
+	case "mainnet":
+		ethNetwork = imx.Mainnet
+	case "sandbox":
+		ethNetwork = imx.Sandbox
+	default:
+		log.Println("No eth network specified, using Sandbox as default")
+		ethNetwork = imx.Sandbox
+	}
+
 	cfg := imx.Config{
 		APIConfig:     apiConfiguration,
 		AlchemyAPIKey: envs["ALCHEMY_API_KEY"],
-		Environment:   imx.Sandbox,
+		Environment:   ethNetwork,
 	}
 
 	c, err := imx.NewClient(&cfg)
