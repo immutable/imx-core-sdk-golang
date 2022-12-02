@@ -13,10 +13,11 @@ require (
 	github.com/btcsuite/btcd/btcec/v2 v2.2.1 // indirect
 	github.com/deckarep/golang-set v1.8.0 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.1.0 // indirect
-	github.com/dontpanicdao/caigo v0.3.1 // indirect
-	github.com/ethereum/go-ethereum v1.10.25 // indirect
+	github.com/dontpanicdao/caigo v0.4.1 // indirect
+	github.com/ethereum/go-ethereum v1.10.26 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
+	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/immutable/imx-core-sdk-golang v0.1.0 // indirect

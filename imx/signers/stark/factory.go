@@ -4,13 +4,10 @@ import (
 	"crypto/ecdsa"
 	"crypto/rand"
 	"crypto/sha256"
+	"embed"
 	"encoding/binary"
-	"errors"
 	"fmt"
 	"math/big"
-	"path"
-	"path/filepath"
-	"runtime"
 
 	"github.com/immutable/imx-core-sdk-golang/imx"
 
@@ -19,8 +16,16 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
-// package-global variable to represent our standard stark curve
-var curve *caigo.StarkCurve
+var (
+	// package-global variable to represent our standard stark curve
+	curve *caigo.StarkCurve
+
+	//go:embed pedersen_params.json
+	pedersenParamsBytes []byte
+
+	//go:embed *.json
+	_ embed.FS // Unused but required to import the embed module
+)
 
 // GenerateKey generates a random key that can be used to create StarkSigner.
 // On creation save this key for future usage as this key will be required to reuse your stark signer.
@@ -68,16 +73,8 @@ func GenerateLegacyKey(signer imx.L1Signer) (string, error) {
 
 // Initialises the Stark Elliptic Curve.
 func loadCurve() (*caigo.StarkCurve, error) {
-	dir, err := currentDirname()
-	if err != nil {
-		return nil, err
-	}
-	pedersenParamsFilePath := path.Join(dir, "pedersen_params.json")
-	sc, err := caigo.SC(caigo.WithConstants(pedersenParamsFilePath))
-	if err != nil {
-		return nil, err
-	}
-	return &sc, nil
+	caigo.PedersenParamsRaw = pedersenParamsBytes
+	return &caigo.Curve, nil
 }
 
 // Create a hash from a key + an index
@@ -109,15 +106,6 @@ func grind(key *big.Int) *big.Int {
 		i += 1
 	}
 	return new(big.Int).Rem(key, starkEcOrder)
-}
-
-// currentDirname gets the full directory path of the caller of this function.
-func currentDirname() (string, error) {
-	_, filename, _, ok := runtime.Caller(1) // Caller 1 will get this function callers path.
-	if !ok {
-		return "", errors.New("unable to get the current filename")
-	}
-	return filepath.Dir(filename), nil
 }
 
 // generateSeed generates the seed value for the given seed message.
