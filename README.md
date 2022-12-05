@@ -135,14 +135,49 @@ The first option, where an application obtains a user's private key directly, is
 
 The second option provides an application with an interface to the user's account by prompting the user to connect with their wallet application (ie. mobile or browser wallet). Once connected the app can begin asking the user to sign transactions and messages without having to reveal their private key.
 
-As Immutable X enables applications to execute signed transactions on both Ethereum (layer 1) and StarkEx (layer 2), signers are required for both these layers.
+### Pre-requisite: User must have Ethereum (L1) and Stark (L2) keys
+
+As Immutable X enables applications to execute signed transactions on both Ethereum (layer 1) and StarkEx (layer 2), signers are required for both these layers. In order to generate an Ethereum or Stark signer, a user's Ethereum or Stark private key is required.
+
+The Core SDK can be used to generate a Stark key for a user. Previously, this key was deterministically generated so that the same key could always be obtained using the user's Ethereum key. This meant that if someone had access to a user's L1 (Ethereum) private keys, they could also obtain the user's L2 (Stark) private keys. This has been updated so that Stark keys are now randomly generated and non-reproducible.
+
+If your user has a Stark key that was generated using the previous, deterministic method, you can still retrieve their Stark private key by using the [GenerateLegacyKey()](https://github.com/immutable/imx-core-sdk-golang/blob/main/imx/signers/stark/factory.go#L57) method:
+```go
+apiConfiguration := api.NewConfiguration()
+cfg := imx.Config{
+    APIConfig:     apiConfiguration,
+    AlchemyAPIKey: YOUR_ALCHEMY_API_KEY,
+    Environment:   imx.Sandbox,
+}
+
+// Create Ethereum signer
+l1signer, err := ethereum.NewSigner(YOUR_PRIVATE_ETH_KEY, cfg.ChainID)
+if err != nil {
+    log.Panicf("error in creating L1Signer: %v\n", err)
+}
+
+// Generate Stark legacy key
+starkPrivateKey, err = stark.GenerateLegacyKey(l1signer)
+if err != nil {
+    log.Panicf("error in Generating Stark Legacy Private Key: %v\n", err)
+}
+```
+
+If they do not yet have a Stark key, you can use the Core SDK to generate one for them using [GenerateKey()](https://github.com/immutable/imx-core-sdk-golang/blob/main/imx/signers/stark/factory.go#L30-L33):
+
+#### 🚨🚨🚨 Warning 🚨🚨🚨
+> If you generate your own Stark private key, you will have to persist it. The key is [randomly generated](https://github.com/immutable/imx-core-sdk-golang/blob/main/imx/signers/stark/factory.go#L33) so **_cannot_** be deterministically re-generated.
+
+```go
+starkPrivateKey, err = stark.GenerateKey(l1signer)
+if err != nil {
+    log.Panicf("error in Generating Stark Private Key: %v\n", err)
+}
+```
 
 ### 1. Generate your own signers
 
-The Core SDK provides functionality for applications to generate Stark (L2) [private keys](https://github.com/immutable/imx-core-sdk-golang/blob/69af5db9a0be05afd9c91c6b371547cfe3bea719/imx/signers/stark/factory.go#L22) and [signers](https://github.com/immutable/imx-core-sdk-golang/blob/69af5db9a0be05afd9c91c6b371547cfe3bea719/imx/signers/stark/signer.go#L16).
-
-#### 🚨🚨🚨 Warning 🚨🚨🚨
-> If you generate your own Stark private key, you will have to persist it. The key is [randomly generated](https://github.com/immutable/imx-core-sdk-golang/blob/69af5db9a0be05afd9c91c6b371547cfe3bea719/imx/signers/stark/factory.go#L22) so **_cannot_** be deterministically re-generated.
+The Core SDK provides functionality for applications to generate Stark (L2) [signers](https://github.com/immutable/imx-core-sdk-golang/blob/69af5db9a0be05afd9c91c6b371547cfe3bea719/imx/signers/stark/signer.go#L16).
 
 ```go
 apiConfiguration := api.NewConfiguration()
@@ -158,13 +193,19 @@ if err != nil {
     log.Panicf("error in creating L1Signer: %v\n", err)
 }
 
-// Endpoints like Withdrawal, Orders, Trades, Transfers require an L2 (stark) signer
-// Create Stark signer
-starkPrivateKey, err = stark.GenerateKey() // Or retrieve previously generated key
+// Generate Stark private key
+starkPrivateKey, err = stark.GenerateKey()
 if err != nil {
     log.Panicf("error in Generating Stark Private Key: %v\n", err)
 }
+// Or retrieve previously generated key
+// starkPrivateKey, err = stark.GenerateLegacyKey()
+// if err != nil {
+//     log.Panicf("error in Generating Stark Private Key: %v\n", err)
+// }
 
+// Endpoints like Withdrawal, Orders, Trades, Transfers require an L2 (stark) signer
+// Create Stark signer
 l2signer, err := stark.NewSigner(starkPrivateKey)
 if err != nil {
     log.Panicf("error in creating StarkSigner: %v\n", err)
