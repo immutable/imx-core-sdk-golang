@@ -6,13 +6,6 @@
   </p>
 </div>
 
----
-**The Golang SDK interface is under active development and hasn't hit v1.0 yet.**
-
-Its public interface shouldn't be considered final, and we may need to release breaking changes as we push towards v1.0.
-
----
-
 # Immutable Core SDK Golang
 
 The Immutable Core SDK Golang provides convenient access to the Immutable X API and Ethereum smart contracts for applications written on the Immutable X platform.
