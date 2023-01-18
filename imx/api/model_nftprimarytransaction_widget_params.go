@@ -15,8 +15,12 @@ import (
 	"encoding/json"
 )
 
+// checks if the NftprimarytransactionWidgetParams type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &NftprimarytransactionWidgetParams{}
+
 // NftprimarytransactionWidgetParams struct for NftprimarytransactionWidgetParams
 type NftprimarytransactionWidgetParams struct {
+	// enums(light, dark)
 	Theme *string `json:"theme,omitempty"`
 }
 
@@ -39,7 +43,7 @@ func NewNftprimarytransactionWidgetParamsWithDefaults() *NftprimarytransactionWi
 
 // GetTheme returns the Theme field value if set, zero value otherwise.
 func (o *NftprimarytransactionWidgetParams) GetTheme() string {
-	if o == nil || o.Theme == nil {
+	if o == nil || isNil(o.Theme) {
 		var ret string
 		return ret
 	}
@@ -49,7 +53,7 @@ func (o *NftprimarytransactionWidgetParams) GetTheme() string {
 // GetThemeOk returns a tuple with the Theme field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *NftprimarytransactionWidgetParams) GetThemeOk() (*string, bool) {
-	if o == nil || o.Theme == nil {
+	if o == nil || isNil(o.Theme) {
 		return nil, false
 	}
 	return o.Theme, true
@@ -57,7 +61,7 @@ func (o *NftprimarytransactionWidgetParams) GetThemeOk() (*string, bool) {
 
 // HasTheme returns a boolean if a field has been set.
 func (o *NftprimarytransactionWidgetParams) HasTheme() bool {
-	if o != nil && o.Theme != nil {
+	if o != nil && !isNil(o.Theme) {
 		return true
 	}
 
@@ -70,11 +74,19 @@ func (o *NftprimarytransactionWidgetParams) SetTheme(v string) {
 }
 
 func (o NftprimarytransactionWidgetParams) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Theme != nil {
-		toSerialize["theme"] = o.Theme
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o NftprimarytransactionWidgetParams) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.Theme) {
+		toSerialize["theme"] = o.Theme
+	}
+	return toSerialize, nil
 }
 
 type NullableNftprimarytransactionWidgetParams struct {

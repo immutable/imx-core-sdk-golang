@@ -104,8 +104,8 @@ func (a *BalancesApiService) GetBalanceExecute(r ApiGetBalanceRequest) (*Balance
 	}
 
 	localVarPath := localBasePath + "/v2/balances/{owner}/{address}"
-	localVarPath = strings.Replace(localVarPath, "{"+"owner"+"}", url.PathEscape(parameterToString(r.owner, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"address"+"}", url.PathEscape(parameterToString(r.address, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"owner"+"}", url.PathEscape(parameterValueToString(r.owner, "owner")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"address"+"}", url.PathEscape(parameterValueToString(r.address, "address")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -236,23 +236,23 @@ func (a *BalancesApiService) ListBalancesExecute(r ApiListBalancesRequest) (*Lis
 	}
 
 	localVarPath := localBasePath + "/v2/balances/{owner}"
-	localVarPath = strings.Replace(localVarPath, "{"+"owner"+"}", url.PathEscape(parameterToString(r.owner, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"owner"+"}", url.PathEscape(parameterValueToString(r.owner, "owner")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
 	if r.pageSize != nil {
-		localVarQueryParams.Add("page_size", parameterToString(*r.pageSize, ""))
+		parameterAddToQuery(localVarQueryParams, "page_size", r.pageSize, "")
 	}
 	if r.cursor != nil {
-		localVarQueryParams.Add("cursor", parameterToString(*r.cursor, ""))
+		parameterAddToQuery(localVarQueryParams, "cursor", r.cursor, "")
 	}
 	if r.orderBy != nil {
-		localVarQueryParams.Add("order_by", parameterToString(*r.orderBy, ""))
+		parameterAddToQuery(localVarQueryParams, "order_by", r.orderBy, "")
 	}
 	if r.direction != nil {
-		localVarQueryParams.Add("direction", parameterToString(*r.direction, ""))
+		parameterAddToQuery(localVarQueryParams, "direction", r.direction, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -300,7 +300,8 @@ func (a *BalancesApiService) ListBalancesExecute(r ApiListBalancesRequest) (*Lis
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -310,7 +311,8 @@ func (a *BalancesApiService) ListBalancesExecute(r ApiListBalancesRequest) (*Lis
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

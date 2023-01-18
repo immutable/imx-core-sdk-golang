@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the EncodeAssetResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &EncodeAssetResponse{}
+
 // EncodeAssetResponse struct for EncodeAssetResponse
 type EncodeAssetResponse struct {
 	// Stark encoded asset id
@@ -91,14 +94,18 @@ func (o *EncodeAssetResponse) SetAssetType(v string) {
 }
 
 func (o EncodeAssetResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["asset_id"] = o.AssetId
-	}
-	if true {
-		toSerialize["asset_type"] = o.AssetType
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o EncodeAssetResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["asset_id"] = o.AssetId
+	toSerialize["asset_type"] = o.AssetType
+	return toSerialize, nil
 }
 
 type NullableEncodeAssetResponse struct {

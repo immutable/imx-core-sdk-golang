@@ -203,7 +203,8 @@ func (a *ExchangesApiService) CreateExchangeExecute(r ApiCreateExchangeRequest) 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -284,7 +285,7 @@ func (a *ExchangesApiService) CreateExchangeTransferExecute(r ApiCreateExchangeT
 	}
 
 	localVarPath := localBasePath + "/v2/exchanges/{id}/transfers"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -316,8 +317,8 @@ func (a *ExchangesApiService) CreateExchangeTransferExecute(r ApiCreateExchangeT
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["x-imx-eth-address"] = parameterToString(*r.xImxEthAddress, "")
-	localVarHeaderParams["x-imx-eth-signature"] = parameterToString(*r.xImxEthSignature, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-address", r.xImxEthAddress, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-signature", r.xImxEthSignature, "")
 	// body params
 	localVarPostBody = r.createTransferRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -349,7 +350,8 @@ func (a *ExchangesApiService) CreateExchangeTransferExecute(r ApiCreateExchangeT
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -409,7 +411,7 @@ func (a *ExchangesApiService) GetExchangeExecute(r ApiGetExchangeRequest) (*Exch
 	}
 
 	localVarPath := localBasePath + "/v3/exchanges/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -461,7 +463,8 @@ func (a *ExchangesApiService) GetExchangeExecute(r ApiGetExchangeRequest) (*Exch
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -471,7 +474,8 @@ func (a *ExchangesApiService) GetExchangeExecute(r ApiGetExchangeRequest) (*Exch
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -538,7 +542,7 @@ func (a *ExchangesApiService) GetExchangeSignableTransferExecute(r ApiGetExchang
 	}
 
 	localVarPath := localBasePath + "/v2/exchanges/{id}/signable-transfer-details"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -595,7 +599,8 @@ func (a *ExchangesApiService) GetExchangeSignableTransferExecute(r ApiGetExchang
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -721,31 +726,31 @@ func (a *ExchangesApiService) GetExchangesExecute(r ApiGetExchangesRequest) (*Ge
 	localVarFormParams := url.Values{}
 
 	if r.pageSize != nil {
-		localVarQueryParams.Add("page_size", parameterToString(*r.pageSize, ""))
+		parameterAddToQuery(localVarQueryParams, "page_size", r.pageSize, "")
 	}
 	if r.cursor != nil {
-		localVarQueryParams.Add("cursor", parameterToString(*r.cursor, ""))
+		parameterAddToQuery(localVarQueryParams, "cursor", r.cursor, "")
 	}
 	if r.orderBy != nil {
-		localVarQueryParams.Add("order_by", parameterToString(*r.orderBy, ""))
+		parameterAddToQuery(localVarQueryParams, "order_by", r.orderBy, "")
 	}
 	if r.direction != nil {
-		localVarQueryParams.Add("direction", parameterToString(*r.direction, ""))
+		parameterAddToQuery(localVarQueryParams, "direction", r.direction, "")
 	}
 	if r.id != nil {
-		localVarQueryParams.Add("id", parameterToString(*r.id, ""))
+		parameterAddToQuery(localVarQueryParams, "id", r.id, "")
 	}
 	if r.walletAddress != nil {
-		localVarQueryParams.Add("wallet_address", parameterToString(*r.walletAddress, ""))
+		parameterAddToQuery(localVarQueryParams, "wallet_address", r.walletAddress, "")
 	}
 	if r.status != nil {
-		localVarQueryParams.Add("status", parameterToString(*r.status, ""))
+		parameterAddToQuery(localVarQueryParams, "status", r.status, "")
 	}
 	if r.provider != nil {
-		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
+		parameterAddToQuery(localVarQueryParams, "provider", r.provider, "")
 	}
 	if r.transferId != nil {
-		localVarQueryParams.Add("transfer_id", parameterToString(*r.transferId, ""))
+		parameterAddToQuery(localVarQueryParams, "transfer_id", r.transferId, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -793,7 +798,8 @@ func (a *ExchangesApiService) GetExchangesExecute(r ApiGetExchangesRequest) (*Ge
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

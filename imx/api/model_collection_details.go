@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CollectionDetails type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CollectionDetails{}
+
 // CollectionDetails struct for CollectionDetails
 type CollectionDetails struct {
 	// URL of the icon of the collection
@@ -93,14 +96,18 @@ func (o *CollectionDetails) SetName(v string) {
 }
 
 func (o CollectionDetails) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["icon_url"] = o.IconUrl.Get()
-	}
-	if true {
-		toSerialize["name"] = o.Name
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CollectionDetails) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["icon_url"] = o.IconUrl.Get()
+	toSerialize["name"] = o.Name
+	return toSerialize, nil
 }
 
 type NullableCollectionDetails struct {

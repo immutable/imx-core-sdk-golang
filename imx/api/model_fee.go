@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Fee type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Fee{}
+
 // Fee struct for Fee
 type Fee struct {
 	// Wallet address
@@ -118,17 +121,19 @@ func (o *Fee) SetType(v string) {
 }
 
 func (o Fee) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["address"] = o.Address
-	}
-	if true {
-		toSerialize["percentage"] = o.Percentage
-	}
-	if true {
-		toSerialize["type"] = o.Type
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Fee) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["address"] = o.Address
+	toSerialize["percentage"] = o.Percentage
+	toSerialize["type"] = o.Type
+	return toSerialize, nil
 }
 
 type NullableFee struct {

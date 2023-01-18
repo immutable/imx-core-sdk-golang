@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the TransferRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &TransferRequest{}
+
 // TransferRequest struct for TransferRequest
 type TransferRequest struct {
 	// Amount to transfer
@@ -253,32 +256,24 @@ func (o *TransferRequest) SetStarkSignature(v string) {
 }
 
 func (o TransferRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["amount"] = o.Amount
-	}
-	if true {
-		toSerialize["asset_id"] = o.AssetId
-	}
-	if true {
-		toSerialize["expiration_timestamp"] = o.ExpirationTimestamp
-	}
-	if true {
-		toSerialize["nonce"] = o.Nonce
-	}
-	if true {
-		toSerialize["receiver_stark_key"] = o.ReceiverStarkKey
-	}
-	if true {
-		toSerialize["receiver_vault_id"] = o.ReceiverVaultId
-	}
-	if true {
-		toSerialize["sender_vault_id"] = o.SenderVaultId
-	}
-	if true {
-		toSerialize["stark_signature"] = o.StarkSignature
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o TransferRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["amount"] = o.Amount
+	toSerialize["asset_id"] = o.AssetId
+	toSerialize["expiration_timestamp"] = o.ExpirationTimestamp
+	toSerialize["nonce"] = o.Nonce
+	toSerialize["receiver_stark_key"] = o.ReceiverStarkKey
+	toSerialize["receiver_vault_id"] = o.ReceiverVaultId
+	toSerialize["sender_vault_id"] = o.SenderVaultId
+	toSerialize["stark_signature"] = o.StarkSignature
+	return toSerialize, nil
 }
 
 type NullableTransferRequest struct {

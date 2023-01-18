@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the TokenData type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &TokenData{}
+
 // TokenData struct for TokenData
 type TokenData struct {
 	// Number of decimals supported by this asset
@@ -55,7 +58,7 @@ func NewTokenDataWithDefaults() *TokenData {
 
 // GetDecimals returns the Decimals field value if set, zero value otherwise.
 func (o *TokenData) GetDecimals() int32 {
-	if o == nil || o.Decimals == nil {
+	if o == nil || isNil(o.Decimals) {
 		var ret int32
 		return ret
 	}
@@ -65,7 +68,7 @@ func (o *TokenData) GetDecimals() int32 {
 // GetDecimalsOk returns a tuple with the Decimals field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TokenData) GetDecimalsOk() (*int32, bool) {
-	if o == nil || o.Decimals == nil {
+	if o == nil || isNil(o.Decimals) {
 		return nil, false
 	}
 	return o.Decimals, true
@@ -73,7 +76,7 @@ func (o *TokenData) GetDecimalsOk() (*int32, bool) {
 
 // HasDecimals returns a boolean if a field has been set.
 func (o *TokenData) HasDecimals() bool {
-	if o != nil && o.Decimals != nil {
+	if o != nil && !isNil(o.Decimals) {
 		return true
 	}
 
@@ -87,7 +90,7 @@ func (o *TokenData) SetDecimals(v int32) {
 
 // GetId returns the Id field value if set, zero value otherwise.
 func (o *TokenData) GetId() string {
-	if o == nil || o.Id == nil {
+	if o == nil || isNil(o.Id) {
 		var ret string
 		return ret
 	}
@@ -97,7 +100,7 @@ func (o *TokenData) GetId() string {
 // GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TokenData) GetIdOk() (*string, bool) {
-	if o == nil || o.Id == nil {
+	if o == nil || isNil(o.Id) {
 		return nil, false
 	}
 	return o.Id, true
@@ -105,7 +108,7 @@ func (o *TokenData) GetIdOk() (*string, bool) {
 
 // HasId returns a boolean if a field has been set.
 func (o *TokenData) HasId() bool {
-	if o != nil && o.Id != nil {
+	if o != nil && !isNil(o.Id) {
 		return true
 	}
 
@@ -119,7 +122,7 @@ func (o *TokenData) SetId(v string) {
 
 // GetProperties returns the Properties field value if set, zero value otherwise.
 func (o *TokenData) GetProperties() AssetProperties {
-	if o == nil || o.Properties == nil {
+	if o == nil || isNil(o.Properties) {
 		var ret AssetProperties
 		return ret
 	}
@@ -129,7 +132,7 @@ func (o *TokenData) GetProperties() AssetProperties {
 // GetPropertiesOk returns a tuple with the Properties field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TokenData) GetPropertiesOk() (*AssetProperties, bool) {
-	if o == nil || o.Properties == nil {
+	if o == nil || isNil(o.Properties) {
 		return nil, false
 	}
 	return o.Properties, true
@@ -137,7 +140,7 @@ func (o *TokenData) GetPropertiesOk() (*AssetProperties, bool) {
 
 // HasProperties returns a boolean if a field has been set.
 func (o *TokenData) HasProperties() bool {
-	if o != nil && o.Properties != nil {
+	if o != nil && !isNil(o.Properties) {
 		return true
 	}
 
@@ -199,7 +202,7 @@ func (o *TokenData) SetQuantityWithFees(v string) {
 
 // GetSymbol returns the Symbol field value if set, zero value otherwise.
 func (o *TokenData) GetSymbol() string {
-	if o == nil || o.Symbol == nil {
+	if o == nil || isNil(o.Symbol) {
 		var ret string
 		return ret
 	}
@@ -209,7 +212,7 @@ func (o *TokenData) GetSymbol() string {
 // GetSymbolOk returns a tuple with the Symbol field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TokenData) GetSymbolOk() (*string, bool) {
-	if o == nil || o.Symbol == nil {
+	if o == nil || isNil(o.Symbol) {
 		return nil, false
 	}
 	return o.Symbol, true
@@ -217,7 +220,7 @@ func (o *TokenData) GetSymbolOk() (*string, bool) {
 
 // HasSymbol returns a boolean if a field has been set.
 func (o *TokenData) HasSymbol() bool {
-	if o != nil && o.Symbol != nil {
+	if o != nil && !isNil(o.Symbol) {
 		return true
 	}
 
@@ -231,7 +234,7 @@ func (o *TokenData) SetSymbol(v string) {
 
 // GetTokenAddress returns the TokenAddress field value if set, zero value otherwise.
 func (o *TokenData) GetTokenAddress() string {
-	if o == nil || o.TokenAddress == nil {
+	if o == nil || isNil(o.TokenAddress) {
 		var ret string
 		return ret
 	}
@@ -241,7 +244,7 @@ func (o *TokenData) GetTokenAddress() string {
 // GetTokenAddressOk returns a tuple with the TokenAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TokenData) GetTokenAddressOk() (*string, bool) {
-	if o == nil || o.TokenAddress == nil {
+	if o == nil || isNil(o.TokenAddress) {
 		return nil, false
 	}
 	return o.TokenAddress, true
@@ -249,7 +252,7 @@ func (o *TokenData) GetTokenAddressOk() (*string, bool) {
 
 // HasTokenAddress returns a boolean if a field has been set.
 func (o *TokenData) HasTokenAddress() bool {
-	if o != nil && o.TokenAddress != nil {
+	if o != nil && !isNil(o.TokenAddress) {
 		return true
 	}
 
@@ -263,7 +266,7 @@ func (o *TokenData) SetTokenAddress(v string) {
 
 // GetTokenId returns the TokenId field value if set, zero value otherwise.
 func (o *TokenData) GetTokenId() string {
-	if o == nil || o.TokenId == nil {
+	if o == nil || isNil(o.TokenId) {
 		var ret string
 		return ret
 	}
@@ -273,7 +276,7 @@ func (o *TokenData) GetTokenId() string {
 // GetTokenIdOk returns a tuple with the TokenId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TokenData) GetTokenIdOk() (*string, bool) {
-	if o == nil || o.TokenId == nil {
+	if o == nil || isNil(o.TokenId) {
 		return nil, false
 	}
 	return o.TokenId, true
@@ -281,7 +284,7 @@ func (o *TokenData) GetTokenIdOk() (*string, bool) {
 
 // HasTokenId returns a boolean if a field has been set.
 func (o *TokenData) HasTokenId() bool {
-	if o != nil && o.TokenId != nil {
+	if o != nil && !isNil(o.TokenId) {
 		return true
 	}
 
@@ -294,32 +297,36 @@ func (o *TokenData) SetTokenId(v string) {
 }
 
 func (o TokenData) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Decimals != nil {
-		toSerialize["decimals"] = o.Decimals
-	}
-	if o.Id != nil {
-		toSerialize["id"] = o.Id
-	}
-	if o.Properties != nil {
-		toSerialize["properties"] = o.Properties
-	}
-	if true {
-		toSerialize["quantity"] = o.Quantity
-	}
-	if true {
-		toSerialize["quantity_with_fees"] = o.QuantityWithFees
-	}
-	if o.Symbol != nil {
-		toSerialize["symbol"] = o.Symbol
-	}
-	if o.TokenAddress != nil {
-		toSerialize["token_address"] = o.TokenAddress
-	}
-	if o.TokenId != nil {
-		toSerialize["token_id"] = o.TokenId
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o TokenData) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.Decimals) {
+		toSerialize["decimals"] = o.Decimals
+	}
+	if !isNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
+	if !isNil(o.Properties) {
+		toSerialize["properties"] = o.Properties
+	}
+	toSerialize["quantity"] = o.Quantity
+	toSerialize["quantity_with_fees"] = o.QuantityWithFees
+	if !isNil(o.Symbol) {
+		toSerialize["symbol"] = o.Symbol
+	}
+	if !isNil(o.TokenAddress) {
+		toSerialize["token_address"] = o.TokenAddress
+	}
+	if !isNil(o.TokenId) {
+		toSerialize["token_id"] = o.TokenId
+	}
+	return toSerialize, nil
 }
 
 type NullableTokenData struct {

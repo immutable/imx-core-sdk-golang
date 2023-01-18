@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the GetSignableTradeRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GetSignableTradeRequest{}
+
 // GetSignableTradeRequest struct for GetSignableTradeRequest
 type GetSignableTradeRequest struct {
 	// ExpirationTimestamp in Unix time. Note: will be rounded down to the nearest hour
@@ -48,7 +51,7 @@ func NewGetSignableTradeRequestWithDefaults() *GetSignableTradeRequest {
 
 // GetExpirationTimestamp returns the ExpirationTimestamp field value if set, zero value otherwise.
 func (o *GetSignableTradeRequest) GetExpirationTimestamp() int32 {
-	if o == nil || o.ExpirationTimestamp == nil {
+	if o == nil || isNil(o.ExpirationTimestamp) {
 		var ret int32
 		return ret
 	}
@@ -58,7 +61,7 @@ func (o *GetSignableTradeRequest) GetExpirationTimestamp() int32 {
 // GetExpirationTimestampOk returns a tuple with the ExpirationTimestamp field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *GetSignableTradeRequest) GetExpirationTimestampOk() (*int32, bool) {
-	if o == nil || o.ExpirationTimestamp == nil {
+	if o == nil || isNil(o.ExpirationTimestamp) {
 		return nil, false
 	}
 	return o.ExpirationTimestamp, true
@@ -66,7 +69,7 @@ func (o *GetSignableTradeRequest) GetExpirationTimestampOk() (*int32, bool) {
 
 // HasExpirationTimestamp returns a boolean if a field has been set.
 func (o *GetSignableTradeRequest) HasExpirationTimestamp() bool {
-	if o != nil && o.ExpirationTimestamp != nil {
+	if o != nil && !isNil(o.ExpirationTimestamp) {
 		return true
 	}
 
@@ -80,7 +83,7 @@ func (o *GetSignableTradeRequest) SetExpirationTimestamp(v int32) {
 
 // GetFees returns the Fees field value if set, zero value otherwise.
 func (o *GetSignableTradeRequest) GetFees() []FeeEntry {
-	if o == nil || o.Fees == nil {
+	if o == nil || isNil(o.Fees) {
 		var ret []FeeEntry
 		return ret
 	}
@@ -90,7 +93,7 @@ func (o *GetSignableTradeRequest) GetFees() []FeeEntry {
 // GetFeesOk returns a tuple with the Fees field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *GetSignableTradeRequest) GetFeesOk() ([]FeeEntry, bool) {
-	if o == nil || o.Fees == nil {
+	if o == nil || isNil(o.Fees) {
 		return nil, false
 	}
 	return o.Fees, true
@@ -98,7 +101,7 @@ func (o *GetSignableTradeRequest) GetFeesOk() ([]FeeEntry, bool) {
 
 // HasFees returns a boolean if a field has been set.
 func (o *GetSignableTradeRequest) HasFees() bool {
-	if o != nil && o.Fees != nil {
+	if o != nil && !isNil(o.Fees) {
 		return true
 	}
 
@@ -159,20 +162,24 @@ func (o *GetSignableTradeRequest) SetUser(v string) {
 }
 
 func (o GetSignableTradeRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.ExpirationTimestamp != nil {
-		toSerialize["expiration_timestamp"] = o.ExpirationTimestamp
-	}
-	if o.Fees != nil {
-		toSerialize["fees"] = o.Fees
-	}
-	if true {
-		toSerialize["order_id"] = o.OrderId
-	}
-	if true {
-		toSerialize["user"] = o.User
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o GetSignableTradeRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.ExpirationTimestamp) {
+		toSerialize["expiration_timestamp"] = o.ExpirationTimestamp
+	}
+	if !isNil(o.Fees) {
+		toSerialize["fees"] = o.Fees
+	}
+	toSerialize["order_id"] = o.OrderId
+	toSerialize["user"] = o.User
+	return toSerialize, nil
 }
 
 type NullableGetSignableTradeRequest struct {

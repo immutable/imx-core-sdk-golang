@@ -182,13 +182,13 @@ func (a *MetadataRefreshesApiService) GetAListOfMetadataRefreshesExecute(r ApiGe
 	}
 
 	if r.pageSize != nil {
-		localVarQueryParams.Add("page_size", parameterToString(*r.pageSize, ""))
+		parameterAddToQuery(localVarQueryParams, "page_size", r.pageSize, "")
 	}
 	if r.cursor != nil {
-		localVarQueryParams.Add("cursor", parameterToString(*r.cursor, ""))
+		parameterAddToQuery(localVarQueryParams, "cursor", r.cursor, "")
 	}
 	if r.collectionAddress != nil {
-		localVarQueryParams.Add("collection_address", parameterToString(*r.collectionAddress, ""))
+		parameterAddToQuery(localVarQueryParams, "collection_address", r.collectionAddress, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -207,9 +207,9 @@ func (a *MetadataRefreshesApiService) GetAListOfMetadataRefreshesExecute(r ApiGe
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["x-imx-eth-signature"] = parameterToString(*r.xImxEthSignature, "")
-	localVarHeaderParams["x-imx-eth-timestamp"] = parameterToString(*r.xImxEthTimestamp, "")
-	localVarHeaderParams["x-imx-eth-address"] = parameterToString(*r.xImxEthAddress, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-signature", r.xImxEthSignature, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-timestamp", r.xImxEthTimestamp, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-address", r.xImxEthAddress, "")
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -239,7 +239,8 @@ func (a *MetadataRefreshesApiService) GetAListOfMetadataRefreshesExecute(r ApiGe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -249,7 +250,8 @@ func (a *MetadataRefreshesApiService) GetAListOfMetadataRefreshesExecute(r ApiGe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -259,7 +261,8 @@ func (a *MetadataRefreshesApiService) GetAListOfMetadataRefreshesExecute(r ApiGe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -269,7 +272,8 @@ func (a *MetadataRefreshesApiService) GetAListOfMetadataRefreshesExecute(r ApiGe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -364,7 +368,7 @@ func (a *MetadataRefreshesApiService) GetMetadataRefreshErrorsExecute(r ApiGetMe
 	}
 
 	localVarPath := localBasePath + "/v1/metadata-refreshes/{refresh_id}/errors"
-	localVarPath = strings.Replace(localVarPath, "{"+"refresh_id"+"}", url.PathEscape(parameterToString(r.refreshId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"refresh_id"+"}", url.PathEscape(parameterValueToString(r.refreshId, "refreshId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -380,10 +384,10 @@ func (a *MetadataRefreshesApiService) GetMetadataRefreshErrorsExecute(r ApiGetMe
 	}
 
 	if r.pageSize != nil {
-		localVarQueryParams.Add("page_size", parameterToString(*r.pageSize, ""))
+		parameterAddToQuery(localVarQueryParams, "page_size", r.pageSize, "")
 	}
 	if r.cursor != nil {
-		localVarQueryParams.Add("cursor", parameterToString(*r.cursor, ""))
+		parameterAddToQuery(localVarQueryParams, "cursor", r.cursor, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -402,9 +406,9 @@ func (a *MetadataRefreshesApiService) GetMetadataRefreshErrorsExecute(r ApiGetMe
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["x-imx-eth-signature"] = parameterToString(*r.xImxEthSignature, "")
-	localVarHeaderParams["x-imx-eth-timestamp"] = parameterToString(*r.xImxEthTimestamp, "")
-	localVarHeaderParams["x-imx-eth-address"] = parameterToString(*r.xImxEthAddress, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-signature", r.xImxEthSignature, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-timestamp", r.xImxEthTimestamp, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-address", r.xImxEthAddress, "")
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -434,7 +438,8 @@ func (a *MetadataRefreshesApiService) GetMetadataRefreshErrorsExecute(r ApiGetMe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -444,7 +449,8 @@ func (a *MetadataRefreshesApiService) GetMetadataRefreshErrorsExecute(r ApiGetMe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -454,7 +460,8 @@ func (a *MetadataRefreshesApiService) GetMetadataRefreshErrorsExecute(r ApiGetMe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -464,7 +471,8 @@ func (a *MetadataRefreshesApiService) GetMetadataRefreshErrorsExecute(r ApiGetMe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -474,7 +482,8 @@ func (a *MetadataRefreshesApiService) GetMetadataRefreshErrorsExecute(r ApiGetMe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -555,7 +564,7 @@ func (a *MetadataRefreshesApiService) GetMetadataRefreshResultsExecute(r ApiGetM
 	}
 
 	localVarPath := localBasePath + "/v1/metadata-refreshes/{refresh_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"refresh_id"+"}", url.PathEscape(parameterToString(r.refreshId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"refresh_id"+"}", url.PathEscape(parameterValueToString(r.refreshId, "refreshId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -587,9 +596,9 @@ func (a *MetadataRefreshesApiService) GetMetadataRefreshResultsExecute(r ApiGetM
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["x-imx-eth-signature"] = parameterToString(*r.xImxEthSignature, "")
-	localVarHeaderParams["x-imx-eth-timestamp"] = parameterToString(*r.xImxEthTimestamp, "")
-	localVarHeaderParams["x-imx-eth-address"] = parameterToString(*r.xImxEthAddress, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-signature", r.xImxEthSignature, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-timestamp", r.xImxEthTimestamp, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-address", r.xImxEthAddress, "")
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -619,7 +628,8 @@ func (a *MetadataRefreshesApiService) GetMetadataRefreshResultsExecute(r ApiGetM
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -629,7 +639,8 @@ func (a *MetadataRefreshesApiService) GetMetadataRefreshResultsExecute(r ApiGetM
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -639,7 +650,8 @@ func (a *MetadataRefreshesApiService) GetMetadataRefreshResultsExecute(r ApiGetM
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -649,7 +661,8 @@ func (a *MetadataRefreshesApiService) GetMetadataRefreshResultsExecute(r ApiGetM
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -659,7 +672,8 @@ func (a *MetadataRefreshesApiService) GetMetadataRefreshResultsExecute(r ApiGetM
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -778,9 +792,9 @@ func (a *MetadataRefreshesApiService) RequestAMetadataRefreshExecute(r ApiReques
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["x-imx-eth-signature"] = parameterToString(*r.xImxEthSignature, "")
-	localVarHeaderParams["x-imx-eth-timestamp"] = parameterToString(*r.xImxEthTimestamp, "")
-	localVarHeaderParams["x-imx-eth-address"] = parameterToString(*r.xImxEthAddress, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-signature", r.xImxEthSignature, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-timestamp", r.xImxEthTimestamp, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-address", r.xImxEthAddress, "")
 	// body params
 	localVarPostBody = r.createMetadataRefreshRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -812,7 +826,8 @@ func (a *MetadataRefreshesApiService) RequestAMetadataRefreshExecute(r ApiReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -822,7 +837,8 @@ func (a *MetadataRefreshesApiService) RequestAMetadataRefreshExecute(r ApiReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -832,7 +848,8 @@ func (a *MetadataRefreshesApiService) RequestAMetadataRefreshExecute(r ApiReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -842,7 +859,8 @@ func (a *MetadataRefreshesApiService) RequestAMetadataRefreshExecute(r ApiReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -852,7 +870,8 @@ func (a *MetadataRefreshesApiService) RequestAMetadataRefreshExecute(r ApiReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

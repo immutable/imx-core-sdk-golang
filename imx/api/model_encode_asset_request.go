@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the EncodeAssetRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &EncodeAssetRequest{}
+
 // EncodeAssetRequest struct for EncodeAssetRequest
 type EncodeAssetRequest struct {
 	Token EncodeAssetRequestToken `json:"token"`
@@ -63,11 +66,17 @@ func (o *EncodeAssetRequest) SetToken(v EncodeAssetRequestToken) {
 }
 
 func (o EncodeAssetRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["token"] = o.Token
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o EncodeAssetRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["token"] = o.Token
+	return toSerialize, nil
 }
 
 type NullableEncodeAssetRequest struct {

@@ -129,7 +129,7 @@ func (a *MintsApiService) GetMintExecute(r ApiGetMintRequest) (*Mint, *http.Resp
 	}
 
 	localVarPath := localBasePath + "/v1/mints/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -181,7 +181,8 @@ func (a *MintsApiService) GetMintExecute(r ApiGetMintRequest) (*Mint, *http.Resp
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -191,7 +192,8 @@ func (a *MintsApiService) GetMintExecute(r ApiGetMintRequest) (*Mint, *http.Resp
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -201,7 +203,8 @@ func (a *MintsApiService) GetMintExecute(r ApiGetMintRequest) (*Mint, *http.Resp
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -264,8 +267,8 @@ func (a *MintsApiService) GetMintableTokenDetailsByClientTokenIdExecute(r ApiGet
 	}
 
 	localVarPath := localBasePath + "/v1/mintable-token/{token_address}/{token_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"token_address"+"}", url.PathEscape(parameterToString(r.tokenAddress, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"token_id"+"}", url.PathEscape(parameterToString(r.tokenId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"token_address"+"}", url.PathEscape(parameterValueToString(r.tokenAddress, "tokenAddress")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"token_id"+"}", url.PathEscape(parameterValueToString(r.tokenId, "tokenId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -317,7 +320,8 @@ func (a *MintsApiService) GetMintableTokenDetailsByClientTokenIdExecute(r ApiGet
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -327,7 +331,8 @@ func (a *MintsApiService) GetMintableTokenDetailsByClientTokenIdExecute(r ApiGet
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -357,7 +362,6 @@ type ApiListMintsRequest struct {
 	maxTimestamp *string
 	tokenType *string
 	tokenId *string
-	assetId *string
 	tokenName *string
 	tokenAddress *string
 	minQuantity *string
@@ -422,12 +426,6 @@ func (r ApiListMintsRequest) TokenType(tokenType string) ApiListMintsRequest {
 // ERC721 Token ID of the minted asset
 func (r ApiListMintsRequest) TokenId(tokenId string) ApiListMintsRequest {
 	r.tokenId = &tokenId
-	return r
-}
-
-// [DEPRECATED] Internal IMX ID of the minted asset
-func (r ApiListMintsRequest) AssetId(assetId string) ApiListMintsRequest {
-	r.assetId = &assetId
 	return r
 }
 
@@ -502,52 +500,49 @@ func (a *MintsApiService) ListMintsExecute(r ApiListMintsRequest) (*ListMintsRes
 	localVarFormParams := url.Values{}
 
 	if r.pageSize != nil {
-		localVarQueryParams.Add("page_size", parameterToString(*r.pageSize, ""))
+		parameterAddToQuery(localVarQueryParams, "page_size", r.pageSize, "")
 	}
 	if r.cursor != nil {
-		localVarQueryParams.Add("cursor", parameterToString(*r.cursor, ""))
+		parameterAddToQuery(localVarQueryParams, "cursor", r.cursor, "")
 	}
 	if r.orderBy != nil {
-		localVarQueryParams.Add("order_by", parameterToString(*r.orderBy, ""))
+		parameterAddToQuery(localVarQueryParams, "order_by", r.orderBy, "")
 	}
 	if r.direction != nil {
-		localVarQueryParams.Add("direction", parameterToString(*r.direction, ""))
+		parameterAddToQuery(localVarQueryParams, "direction", r.direction, "")
 	}
 	if r.user != nil {
-		localVarQueryParams.Add("user", parameterToString(*r.user, ""))
+		parameterAddToQuery(localVarQueryParams, "user", r.user, "")
 	}
 	if r.status != nil {
-		localVarQueryParams.Add("status", parameterToString(*r.status, ""))
+		parameterAddToQuery(localVarQueryParams, "status", r.status, "")
 	}
 	if r.minTimestamp != nil {
-		localVarQueryParams.Add("min_timestamp", parameterToString(*r.minTimestamp, ""))
+		parameterAddToQuery(localVarQueryParams, "min_timestamp", r.minTimestamp, "")
 	}
 	if r.maxTimestamp != nil {
-		localVarQueryParams.Add("max_timestamp", parameterToString(*r.maxTimestamp, ""))
+		parameterAddToQuery(localVarQueryParams, "max_timestamp", r.maxTimestamp, "")
 	}
 	if r.tokenType != nil {
-		localVarQueryParams.Add("token_type", parameterToString(*r.tokenType, ""))
+		parameterAddToQuery(localVarQueryParams, "token_type", r.tokenType, "")
 	}
 	if r.tokenId != nil {
-		localVarQueryParams.Add("token_id", parameterToString(*r.tokenId, ""))
-	}
-	if r.assetId != nil {
-		localVarQueryParams.Add("asset_id", parameterToString(*r.assetId, ""))
+		parameterAddToQuery(localVarQueryParams, "token_id", r.tokenId, "")
 	}
 	if r.tokenName != nil {
-		localVarQueryParams.Add("token_name", parameterToString(*r.tokenName, ""))
+		parameterAddToQuery(localVarQueryParams, "token_name", r.tokenName, "")
 	}
 	if r.tokenAddress != nil {
-		localVarQueryParams.Add("token_address", parameterToString(*r.tokenAddress, ""))
+		parameterAddToQuery(localVarQueryParams, "token_address", r.tokenAddress, "")
 	}
 	if r.minQuantity != nil {
-		localVarQueryParams.Add("min_quantity", parameterToString(*r.minQuantity, ""))
+		parameterAddToQuery(localVarQueryParams, "min_quantity", r.minQuantity, "")
 	}
 	if r.maxQuantity != nil {
-		localVarQueryParams.Add("max_quantity", parameterToString(*r.maxQuantity, ""))
+		parameterAddToQuery(localVarQueryParams, "max_quantity", r.maxQuantity, "")
 	}
 	if r.metadata != nil {
-		localVarQueryParams.Add("metadata", parameterToString(*r.metadata, ""))
+		parameterAddToQuery(localVarQueryParams, "metadata", r.metadata, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -595,7 +590,8 @@ func (a *MintsApiService) ListMintsExecute(r ApiListMintsRequest) (*ListMintsRes
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -605,7 +601,8 @@ func (a *MintsApiService) ListMintsExecute(r ApiListMintsRequest) (*ListMintsRes
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -725,7 +722,8 @@ func (a *MintsApiService) MintTokensExecute(r ApiMintTokensRequest) (*MintTokens
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -735,7 +733,8 @@ func (a *MintsApiService) MintTokensExecute(r ApiMintTokensRequest) (*MintTokens
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -745,7 +744,8 @@ func (a *MintsApiService) MintTokensExecute(r ApiMintTokensRequest) (*MintTokens
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -755,7 +755,8 @@ func (a *MintsApiService) MintTokensExecute(r ApiMintTokensRequest) (*MintTokens
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

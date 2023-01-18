@@ -15,11 +15,14 @@ import (
 	"encoding/json"
 )
 
+// checks if the CreateProjectRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CreateProjectRequest{}
+
 // CreateProjectRequest struct for CreateProjectRequest
 type CreateProjectRequest struct {
 	// The company name
 	CompanyName string `json:"company_name"`
-	// The project contact email
+	// The project contact email (must be registered as a developer account with Immutable at https://hub.immutable.com)
 	ContactEmail string `json:"contact_email"`
 	// The project name
 	Name string `json:"name"`
@@ -118,17 +121,19 @@ func (o *CreateProjectRequest) SetName(v string) {
 }
 
 func (o CreateProjectRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["company_name"] = o.CompanyName
-	}
-	if true {
-		toSerialize["contact_email"] = o.ContactEmail
-	}
-	if true {
-		toSerialize["name"] = o.Name
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CreateProjectRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["company_name"] = o.CompanyName
+	toSerialize["contact_email"] = o.ContactEmail
+	toSerialize["name"] = o.Name
+	return toSerialize, nil
 }
 
 type NullableCreateProjectRequest struct {

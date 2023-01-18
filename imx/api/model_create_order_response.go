@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CreateOrderResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CreateOrderResponse{}
+
 // CreateOrderResponse struct for CreateOrderResponse
 type CreateOrderResponse struct {
 	// ID of the created order
@@ -73,7 +76,7 @@ func (o *CreateOrderResponse) SetOrderId(v int32) {
 
 // GetRequestId returns the RequestId field value if set, zero value otherwise.
 func (o *CreateOrderResponse) GetRequestId() string {
-	if o == nil || o.RequestId == nil {
+	if o == nil || isNil(o.RequestId) {
 		var ret string
 		return ret
 	}
@@ -83,7 +86,7 @@ func (o *CreateOrderResponse) GetRequestId() string {
 // GetRequestIdOk returns a tuple with the RequestId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateOrderResponse) GetRequestIdOk() (*string, bool) {
-	if o == nil || o.RequestId == nil {
+	if o == nil || isNil(o.RequestId) {
 		return nil, false
 	}
 	return o.RequestId, true
@@ -91,7 +94,7 @@ func (o *CreateOrderResponse) GetRequestIdOk() (*string, bool) {
 
 // HasRequestId returns a boolean if a field has been set.
 func (o *CreateOrderResponse) HasRequestId() bool {
-	if o != nil && o.RequestId != nil {
+	if o != nil && !isNil(o.RequestId) {
 		return true
 	}
 
@@ -152,20 +155,22 @@ func (o *CreateOrderResponse) SetTime(v int32) {
 }
 
 func (o CreateOrderResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["order_id"] = o.OrderId
-	}
-	if o.RequestId != nil {
-		toSerialize["request_id"] = o.RequestId
-	}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if true {
-		toSerialize["time"] = o.Time
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CreateOrderResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["order_id"] = o.OrderId
+	if !isNil(o.RequestId) {
+		toSerialize["request_id"] = o.RequestId
+	}
+	toSerialize["status"] = o.Status
+	toSerialize["time"] = o.Time
+	return toSerialize, nil
 }
 
 type NullableCreateOrderResponse struct {

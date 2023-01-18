@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Trade type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Trade{}
+
 // Trade struct for Trade
 type Trade struct {
 	A TradeSide `json:"a"`
@@ -172,23 +175,21 @@ func (o *Trade) SetTransactionId(v int32) {
 }
 
 func (o Trade) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["a"] = o.A
-	}
-	if true {
-		toSerialize["b"] = o.B
-	}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if true {
-		toSerialize["timestamp"] = o.Timestamp.Get()
-	}
-	if true {
-		toSerialize["transaction_id"] = o.TransactionId
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Trade) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["a"] = o.A
+	toSerialize["b"] = o.B
+	toSerialize["status"] = o.Status
+	toSerialize["timestamp"] = o.Timestamp.Get()
+	toSerialize["transaction_id"] = o.TransactionId
+	return toSerialize, nil
 }
 
 type NullableTrade struct {

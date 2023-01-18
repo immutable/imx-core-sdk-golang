@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the EncodeAssetRequestToken type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &EncodeAssetRequestToken{}
+
 // EncodeAssetRequestToken struct for EncodeAssetRequestToken
 type EncodeAssetRequestToken struct {
 	Data *EncodeAssetTokenData `json:"data,omitempty"`
@@ -41,7 +44,7 @@ func NewEncodeAssetRequestTokenWithDefaults() *EncodeAssetRequestToken {
 
 // GetData returns the Data field value if set, zero value otherwise.
 func (o *EncodeAssetRequestToken) GetData() EncodeAssetTokenData {
-	if o == nil || o.Data == nil {
+	if o == nil || isNil(o.Data) {
 		var ret EncodeAssetTokenData
 		return ret
 	}
@@ -51,7 +54,7 @@ func (o *EncodeAssetRequestToken) GetData() EncodeAssetTokenData {
 // GetDataOk returns a tuple with the Data field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EncodeAssetRequestToken) GetDataOk() (*EncodeAssetTokenData, bool) {
-	if o == nil || o.Data == nil {
+	if o == nil || isNil(o.Data) {
 		return nil, false
 	}
 	return o.Data, true
@@ -59,7 +62,7 @@ func (o *EncodeAssetRequestToken) GetDataOk() (*EncodeAssetTokenData, bool) {
 
 // HasData returns a boolean if a field has been set.
 func (o *EncodeAssetRequestToken) HasData() bool {
-	if o != nil && o.Data != nil {
+	if o != nil && !isNil(o.Data) {
 		return true
 	}
 
@@ -73,7 +76,7 @@ func (o *EncodeAssetRequestToken) SetData(v EncodeAssetTokenData) {
 
 // GetType returns the Type field value if set, zero value otherwise.
 func (o *EncodeAssetRequestToken) GetType() string {
-	if o == nil || o.Type == nil {
+	if o == nil || isNil(o.Type) {
 		var ret string
 		return ret
 	}
@@ -83,7 +86,7 @@ func (o *EncodeAssetRequestToken) GetType() string {
 // GetTypeOk returns a tuple with the Type field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EncodeAssetRequestToken) GetTypeOk() (*string, bool) {
-	if o == nil || o.Type == nil {
+	if o == nil || isNil(o.Type) {
 		return nil, false
 	}
 	return o.Type, true
@@ -91,7 +94,7 @@ func (o *EncodeAssetRequestToken) GetTypeOk() (*string, bool) {
 
 // HasType returns a boolean if a field has been set.
 func (o *EncodeAssetRequestToken) HasType() bool {
-	if o != nil && o.Type != nil {
+	if o != nil && !isNil(o.Type) {
 		return true
 	}
 
@@ -104,14 +107,22 @@ func (o *EncodeAssetRequestToken) SetType(v string) {
 }
 
 func (o EncodeAssetRequestToken) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Data != nil {
-		toSerialize["data"] = o.Data
-	}
-	if o.Type != nil {
-		toSerialize["type"] = o.Type
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o EncodeAssetRequestToken) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.Data) {
+		toSerialize["data"] = o.Data
+	}
+	if !isNil(o.Type) {
+		toSerialize["type"] = o.Type
+	}
+	return toSerialize, nil
 }
 
 type NullableEncodeAssetRequestToken struct {

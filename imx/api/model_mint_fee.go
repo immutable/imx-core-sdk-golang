@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the MintFee type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &MintFee{}
+
 // MintFee struct for MintFee
 type MintFee struct {
 	// Fee percentage
@@ -91,14 +94,18 @@ func (o *MintFee) SetRecipient(v string) {
 }
 
 func (o MintFee) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["percentage"] = o.Percentage
-	}
-	if true {
-		toSerialize["recipient"] = o.Recipient
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o MintFee) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["percentage"] = o.Percentage
+	toSerialize["recipient"] = o.Recipient
+	return toSerialize, nil
 }
 
 type NullableMintFee struct {

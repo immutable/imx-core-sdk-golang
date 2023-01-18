@@ -177,7 +177,7 @@ func (a *OrdersApiService) CancelOrderExecute(r ApiCancelOrderRequest) (*CancelO
 	}
 
 	localVarPath := localBasePath + "/v1/orders/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -209,8 +209,8 @@ func (a *OrdersApiService) CancelOrderExecute(r ApiCancelOrderRequest) (*CancelO
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["x-imx-eth-address"] = parameterToString(*r.xImxEthAddress, "")
-	localVarHeaderParams["x-imx-eth-signature"] = parameterToString(*r.xImxEthSignature, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-address", r.xImxEthAddress, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-signature", r.xImxEthSignature, "")
 	// body params
 	localVarPostBody = r.cancelOrderRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -342,8 +342,8 @@ func (a *OrdersApiService) CreateOrderExecute(r ApiCreateOrderRequest) (*CreateO
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["x-imx-eth-address"] = parameterToString(*r.xImxEthAddress, "")
-	localVarHeaderParams["x-imx-eth-signature"] = parameterToString(*r.xImxEthSignature, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-address", r.xImxEthAddress, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-signature", r.xImxEthSignature, "")
 	// body params
 	localVarPostBody = r.createOrderRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -375,7 +375,8 @@ func (a *OrdersApiService) CreateOrderExecute(r ApiCreateOrderRequest) (*CreateO
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -385,7 +386,8 @@ func (a *OrdersApiService) CreateOrderExecute(r ApiCreateOrderRequest) (*CreateO
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -466,20 +468,20 @@ func (a *OrdersApiService) GetOrderExecute(r ApiGetOrderRequest) (*Order, *http.
 	}
 
 	localVarPath := localBasePath + "/v1/orders/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
 	if r.includeFees != nil {
-		localVarQueryParams.Add("include_fees", parameterToString(*r.includeFees, ""))
+		parameterAddToQuery(localVarQueryParams, "include_fees", r.includeFees, "")
 	}
 	if r.auxiliaryFeePercentages != nil {
-		localVarQueryParams.Add("auxiliary_fee_percentages", parameterToString(*r.auxiliaryFeePercentages, ""))
+		parameterAddToQuery(localVarQueryParams, "auxiliary_fee_percentages", r.auxiliaryFeePercentages, "")
 	}
 	if r.auxiliaryFeeRecipients != nil {
-		localVarQueryParams.Add("auxiliary_fee_recipients", parameterToString(*r.auxiliaryFeeRecipients, ""))
+		parameterAddToQuery(localVarQueryParams, "auxiliary_fee_recipients", r.auxiliaryFeeRecipients, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -527,7 +529,8 @@ func (a *OrdersApiService) GetOrderExecute(r ApiGetOrderRequest) (*Order, *http.
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -537,7 +540,8 @@ func (a *OrdersApiService) GetOrderExecute(r ApiGetOrderRequest) (*Order, *http.
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -547,7 +551,8 @@ func (a *OrdersApiService) GetOrderExecute(r ApiGetOrderRequest) (*Order, *http.
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -778,7 +783,8 @@ func (a *OrdersApiService) GetSignableOrderExecute(r ApiGetSignableOrderRequest)
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -788,7 +794,8 @@ func (a *OrdersApiService) GetSignableOrderExecute(r ApiGetSignableOrderRequest)
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1054,91 +1061,91 @@ func (a *OrdersApiService) ListOrdersExecute(r ApiListOrdersRequest) (*ListOrder
 	localVarFormParams := url.Values{}
 
 	if r.pageSize != nil {
-		localVarQueryParams.Add("page_size", parameterToString(*r.pageSize, ""))
+		parameterAddToQuery(localVarQueryParams, "page_size", r.pageSize, "")
 	}
 	if r.cursor != nil {
-		localVarQueryParams.Add("cursor", parameterToString(*r.cursor, ""))
+		parameterAddToQuery(localVarQueryParams, "cursor", r.cursor, "")
 	}
 	if r.orderBy != nil {
-		localVarQueryParams.Add("order_by", parameterToString(*r.orderBy, ""))
+		parameterAddToQuery(localVarQueryParams, "order_by", r.orderBy, "")
 	}
 	if r.direction != nil {
-		localVarQueryParams.Add("direction", parameterToString(*r.direction, ""))
+		parameterAddToQuery(localVarQueryParams, "direction", r.direction, "")
 	}
 	if r.user != nil {
-		localVarQueryParams.Add("user", parameterToString(*r.user, ""))
+		parameterAddToQuery(localVarQueryParams, "user", r.user, "")
 	}
 	if r.status != nil {
-		localVarQueryParams.Add("status", parameterToString(*r.status, ""))
+		parameterAddToQuery(localVarQueryParams, "status", r.status, "")
 	}
 	if r.minTimestamp != nil {
-		localVarQueryParams.Add("min_timestamp", parameterToString(*r.minTimestamp, ""))
+		parameterAddToQuery(localVarQueryParams, "min_timestamp", r.minTimestamp, "")
 	}
 	if r.maxTimestamp != nil {
-		localVarQueryParams.Add("max_timestamp", parameterToString(*r.maxTimestamp, ""))
+		parameterAddToQuery(localVarQueryParams, "max_timestamp", r.maxTimestamp, "")
 	}
 	if r.updatedMinTimestamp != nil {
-		localVarQueryParams.Add("updated_min_timestamp", parameterToString(*r.updatedMinTimestamp, ""))
+		parameterAddToQuery(localVarQueryParams, "updated_min_timestamp", r.updatedMinTimestamp, "")
 	}
 	if r.updatedMaxTimestamp != nil {
-		localVarQueryParams.Add("updated_max_timestamp", parameterToString(*r.updatedMaxTimestamp, ""))
+		parameterAddToQuery(localVarQueryParams, "updated_max_timestamp", r.updatedMaxTimestamp, "")
 	}
 	if r.buyTokenType != nil {
-		localVarQueryParams.Add("buy_token_type", parameterToString(*r.buyTokenType, ""))
+		parameterAddToQuery(localVarQueryParams, "buy_token_type", r.buyTokenType, "")
 	}
 	if r.buyTokenId != nil {
-		localVarQueryParams.Add("buy_token_id", parameterToString(*r.buyTokenId, ""))
+		parameterAddToQuery(localVarQueryParams, "buy_token_id", r.buyTokenId, "")
 	}
 	if r.buyAssetId != nil {
-		localVarQueryParams.Add("buy_asset_id", parameterToString(*r.buyAssetId, ""))
+		parameterAddToQuery(localVarQueryParams, "buy_asset_id", r.buyAssetId, "")
 	}
 	if r.buyTokenAddress != nil {
-		localVarQueryParams.Add("buy_token_address", parameterToString(*r.buyTokenAddress, ""))
+		parameterAddToQuery(localVarQueryParams, "buy_token_address", r.buyTokenAddress, "")
 	}
 	if r.buyTokenName != nil {
-		localVarQueryParams.Add("buy_token_name", parameterToString(*r.buyTokenName, ""))
+		parameterAddToQuery(localVarQueryParams, "buy_token_name", r.buyTokenName, "")
 	}
 	if r.buyMinQuantity != nil {
-		localVarQueryParams.Add("buy_min_quantity", parameterToString(*r.buyMinQuantity, ""))
+		parameterAddToQuery(localVarQueryParams, "buy_min_quantity", r.buyMinQuantity, "")
 	}
 	if r.buyMaxQuantity != nil {
-		localVarQueryParams.Add("buy_max_quantity", parameterToString(*r.buyMaxQuantity, ""))
+		parameterAddToQuery(localVarQueryParams, "buy_max_quantity", r.buyMaxQuantity, "")
 	}
 	if r.buyMetadata != nil {
-		localVarQueryParams.Add("buy_metadata", parameterToString(*r.buyMetadata, ""))
+		parameterAddToQuery(localVarQueryParams, "buy_metadata", r.buyMetadata, "")
 	}
 	if r.sellTokenType != nil {
-		localVarQueryParams.Add("sell_token_type", parameterToString(*r.sellTokenType, ""))
+		parameterAddToQuery(localVarQueryParams, "sell_token_type", r.sellTokenType, "")
 	}
 	if r.sellTokenId != nil {
-		localVarQueryParams.Add("sell_token_id", parameterToString(*r.sellTokenId, ""))
+		parameterAddToQuery(localVarQueryParams, "sell_token_id", r.sellTokenId, "")
 	}
 	if r.sellAssetId != nil {
-		localVarQueryParams.Add("sell_asset_id", parameterToString(*r.sellAssetId, ""))
+		parameterAddToQuery(localVarQueryParams, "sell_asset_id", r.sellAssetId, "")
 	}
 	if r.sellTokenAddress != nil {
-		localVarQueryParams.Add("sell_token_address", parameterToString(*r.sellTokenAddress, ""))
+		parameterAddToQuery(localVarQueryParams, "sell_token_address", r.sellTokenAddress, "")
 	}
 	if r.sellTokenName != nil {
-		localVarQueryParams.Add("sell_token_name", parameterToString(*r.sellTokenName, ""))
+		parameterAddToQuery(localVarQueryParams, "sell_token_name", r.sellTokenName, "")
 	}
 	if r.sellMinQuantity != nil {
-		localVarQueryParams.Add("sell_min_quantity", parameterToString(*r.sellMinQuantity, ""))
+		parameterAddToQuery(localVarQueryParams, "sell_min_quantity", r.sellMinQuantity, "")
 	}
 	if r.sellMaxQuantity != nil {
-		localVarQueryParams.Add("sell_max_quantity", parameterToString(*r.sellMaxQuantity, ""))
+		parameterAddToQuery(localVarQueryParams, "sell_max_quantity", r.sellMaxQuantity, "")
 	}
 	if r.sellMetadata != nil {
-		localVarQueryParams.Add("sell_metadata", parameterToString(*r.sellMetadata, ""))
+		parameterAddToQuery(localVarQueryParams, "sell_metadata", r.sellMetadata, "")
 	}
 	if r.auxiliaryFeePercentages != nil {
-		localVarQueryParams.Add("auxiliary_fee_percentages", parameterToString(*r.auxiliaryFeePercentages, ""))
+		parameterAddToQuery(localVarQueryParams, "auxiliary_fee_percentages", r.auxiliaryFeePercentages, "")
 	}
 	if r.auxiliaryFeeRecipients != nil {
-		localVarQueryParams.Add("auxiliary_fee_recipients", parameterToString(*r.auxiliaryFeeRecipients, ""))
+		parameterAddToQuery(localVarQueryParams, "auxiliary_fee_recipients", r.auxiliaryFeeRecipients, "")
 	}
 	if r.includeFees != nil {
-		localVarQueryParams.Add("include_fees", parameterToString(*r.includeFees, ""))
+		parameterAddToQuery(localVarQueryParams, "include_fees", r.includeFees, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1186,7 +1193,8 @@ func (a *OrdersApiService) ListOrdersExecute(r ApiListOrdersRequest) (*ListOrder
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -1196,7 +1204,8 @@ func (a *OrdersApiService) ListOrdersExecute(r ApiListOrdersRequest) (*ListOrder
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

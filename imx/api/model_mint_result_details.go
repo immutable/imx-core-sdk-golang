@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the MintResultDetails type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &MintResultDetails{}
+
 // MintResultDetails struct for MintResultDetails
 type MintResultDetails struct {
 	// Contract address of this token
@@ -118,17 +121,19 @@ func (o *MintResultDetails) SetTxId(v int32) {
 }
 
 func (o MintResultDetails) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["contract_address"] = o.ContractAddress
-	}
-	if true {
-		toSerialize["token_id"] = o.TokenId
-	}
-	if true {
-		toSerialize["tx_id"] = o.TxId
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o MintResultDetails) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["contract_address"] = o.ContractAddress
+	toSerialize["token_id"] = o.TokenId
+	toSerialize["tx_id"] = o.TxId
+	return toSerialize, nil
 }
 
 type NullableMintResultDetails struct {

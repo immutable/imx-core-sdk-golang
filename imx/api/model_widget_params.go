@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the WidgetParams type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &WidgetParams{}
+
 // WidgetParams struct for WidgetParams
 type WidgetParams struct {
 	// Amount that will be prefilled in the widget
@@ -44,7 +47,7 @@ func NewWidgetParamsWithDefaults() *WidgetParams {
 
 // GetAmount returns the Amount field value if set, zero value otherwise.
 func (o *WidgetParams) GetAmount() string {
-	if o == nil || o.Amount == nil {
+	if o == nil || isNil(o.Amount) {
 		var ret string
 		return ret
 	}
@@ -54,7 +57,7 @@ func (o *WidgetParams) GetAmount() string {
 // GetAmountOk returns a tuple with the Amount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *WidgetParams) GetAmountOk() (*string, bool) {
-	if o == nil || o.Amount == nil {
+	if o == nil || isNil(o.Amount) {
 		return nil, false
 	}
 	return o.Amount, true
@@ -62,7 +65,7 @@ func (o *WidgetParams) GetAmountOk() (*string, bool) {
 
 // HasAmount returns a boolean if a field has been set.
 func (o *WidgetParams) HasAmount() bool {
-	if o != nil && o.Amount != nil {
+	if o != nil && !isNil(o.Amount) {
 		return true
 	}
 
@@ -76,7 +79,7 @@ func (o *WidgetParams) SetAmount(v string) {
 
 // GetSupportedCurrencies returns the SupportedCurrencies field value if set, zero value otherwise.
 func (o *WidgetParams) GetSupportedCurrencies() []string {
-	if o == nil || o.SupportedCurrencies == nil {
+	if o == nil || isNil(o.SupportedCurrencies) {
 		var ret []string
 		return ret
 	}
@@ -86,7 +89,7 @@ func (o *WidgetParams) GetSupportedCurrencies() []string {
 // GetSupportedCurrenciesOk returns a tuple with the SupportedCurrencies field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *WidgetParams) GetSupportedCurrenciesOk() ([]string, bool) {
-	if o == nil || o.SupportedCurrencies == nil {
+	if o == nil || isNil(o.SupportedCurrencies) {
 		return nil, false
 	}
 	return o.SupportedCurrencies, true
@@ -94,7 +97,7 @@ func (o *WidgetParams) GetSupportedCurrenciesOk() ([]string, bool) {
 
 // HasSupportedCurrencies returns a boolean if a field has been set.
 func (o *WidgetParams) HasSupportedCurrencies() bool {
-	if o != nil && o.SupportedCurrencies != nil {
+	if o != nil && !isNil(o.SupportedCurrencies) {
 		return true
 	}
 
@@ -108,7 +111,7 @@ func (o *WidgetParams) SetSupportedCurrencies(v []string) {
 
 // GetTheme returns the Theme field value if set, zero value otherwise.
 func (o *WidgetParams) GetTheme() string {
-	if o == nil || o.Theme == nil {
+	if o == nil || isNil(o.Theme) {
 		var ret string
 		return ret
 	}
@@ -118,7 +121,7 @@ func (o *WidgetParams) GetTheme() string {
 // GetThemeOk returns a tuple with the Theme field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *WidgetParams) GetThemeOk() (*string, bool) {
-	if o == nil || o.Theme == nil {
+	if o == nil || isNil(o.Theme) {
 		return nil, false
 	}
 	return o.Theme, true
@@ -126,7 +129,7 @@ func (o *WidgetParams) GetThemeOk() (*string, bool) {
 
 // HasTheme returns a boolean if a field has been set.
 func (o *WidgetParams) HasTheme() bool {
-	if o != nil && o.Theme != nil {
+	if o != nil && !isNil(o.Theme) {
 		return true
 	}
 
@@ -139,17 +142,25 @@ func (o *WidgetParams) SetTheme(v string) {
 }
 
 func (o WidgetParams) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Amount != nil {
-		toSerialize["amount"] = o.Amount
-	}
-	if o.SupportedCurrencies != nil {
-		toSerialize["supported_currencies"] = o.SupportedCurrencies
-	}
-	if o.Theme != nil {
-		toSerialize["theme"] = o.Theme
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o WidgetParams) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.Amount) {
+		toSerialize["amount"] = o.Amount
+	}
+	if !isNil(o.SupportedCurrencies) {
+		toSerialize["supported_currencies"] = o.SupportedCurrencies
+	}
+	if !isNil(o.Theme) {
+		toSerialize["theme"] = o.Theme
+	}
+	return toSerialize, nil
 }
 
 type NullableWidgetParams struct {

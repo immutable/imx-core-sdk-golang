@@ -113,7 +113,7 @@ func (a *DepositsApiService) GetDepositExecute(r ApiGetDepositRequest) (*Deposit
 	}
 
 	localVarPath := localBasePath + "/v1/deposits/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -293,8 +293,8 @@ type ApiListDepositsRequest struct {
 	direction *string
 	user *string
 	status *string
-	updatedMinTimestamp *string
-	updatedMaxTimestamp *string
+	minTimestamp *string
+	maxTimestamp *string
 	tokenType *string
 	tokenId *string
 	assetId *string
@@ -342,14 +342,14 @@ func (r ApiListDepositsRequest) Status(status string) ApiListDepositsRequest {
 }
 
 // Minimum timestamp for this deposit, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39;
-func (r ApiListDepositsRequest) UpdatedMinTimestamp(updatedMinTimestamp string) ApiListDepositsRequest {
-	r.updatedMinTimestamp = &updatedMinTimestamp
+func (r ApiListDepositsRequest) MinTimestamp(minTimestamp string) ApiListDepositsRequest {
+	r.minTimestamp = &minTimestamp
 	return r
 }
 
 // Maximum timestamp for this deposit, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39;
-func (r ApiListDepositsRequest) UpdatedMaxTimestamp(updatedMaxTimestamp string) ApiListDepositsRequest {
-	r.updatedMaxTimestamp = &updatedMaxTimestamp
+func (r ApiListDepositsRequest) MaxTimestamp(maxTimestamp string) ApiListDepositsRequest {
+	r.maxTimestamp = &maxTimestamp
 	return r
 }
 
@@ -442,52 +442,52 @@ func (a *DepositsApiService) ListDepositsExecute(r ApiListDepositsRequest) (*Lis
 	localVarFormParams := url.Values{}
 
 	if r.pageSize != nil {
-		localVarQueryParams.Add("page_size", parameterToString(*r.pageSize, ""))
+		parameterAddToQuery(localVarQueryParams, "page_size", r.pageSize, "")
 	}
 	if r.cursor != nil {
-		localVarQueryParams.Add("cursor", parameterToString(*r.cursor, ""))
+		parameterAddToQuery(localVarQueryParams, "cursor", r.cursor, "")
 	}
 	if r.orderBy != nil {
-		localVarQueryParams.Add("order_by", parameterToString(*r.orderBy, ""))
+		parameterAddToQuery(localVarQueryParams, "order_by", r.orderBy, "")
 	}
 	if r.direction != nil {
-		localVarQueryParams.Add("direction", parameterToString(*r.direction, ""))
+		parameterAddToQuery(localVarQueryParams, "direction", r.direction, "")
 	}
 	if r.user != nil {
-		localVarQueryParams.Add("user", parameterToString(*r.user, ""))
+		parameterAddToQuery(localVarQueryParams, "user", r.user, "")
 	}
 	if r.status != nil {
-		localVarQueryParams.Add("status", parameterToString(*r.status, ""))
+		parameterAddToQuery(localVarQueryParams, "status", r.status, "")
 	}
-	if r.updatedMinTimestamp != nil {
-		localVarQueryParams.Add("updated_min_timestamp", parameterToString(*r.updatedMinTimestamp, ""))
+	if r.minTimestamp != nil {
+		parameterAddToQuery(localVarQueryParams, "min_timestamp", r.minTimestamp, "")
 	}
-	if r.updatedMaxTimestamp != nil {
-		localVarQueryParams.Add("updated_max_timestamp", parameterToString(*r.updatedMaxTimestamp, ""))
+	if r.maxTimestamp != nil {
+		parameterAddToQuery(localVarQueryParams, "max_timestamp", r.maxTimestamp, "")
 	}
 	if r.tokenType != nil {
-		localVarQueryParams.Add("token_type", parameterToString(*r.tokenType, ""))
+		parameterAddToQuery(localVarQueryParams, "token_type", r.tokenType, "")
 	}
 	if r.tokenId != nil {
-		localVarQueryParams.Add("token_id", parameterToString(*r.tokenId, ""))
+		parameterAddToQuery(localVarQueryParams, "token_id", r.tokenId, "")
 	}
 	if r.assetId != nil {
-		localVarQueryParams.Add("asset_id", parameterToString(*r.assetId, ""))
+		parameterAddToQuery(localVarQueryParams, "asset_id", r.assetId, "")
 	}
 	if r.tokenAddress != nil {
-		localVarQueryParams.Add("token_address", parameterToString(*r.tokenAddress, ""))
+		parameterAddToQuery(localVarQueryParams, "token_address", r.tokenAddress, "")
 	}
 	if r.tokenName != nil {
-		localVarQueryParams.Add("token_name", parameterToString(*r.tokenName, ""))
+		parameterAddToQuery(localVarQueryParams, "token_name", r.tokenName, "")
 	}
 	if r.minQuantity != nil {
-		localVarQueryParams.Add("min_quantity", parameterToString(*r.minQuantity, ""))
+		parameterAddToQuery(localVarQueryParams, "min_quantity", r.minQuantity, "")
 	}
 	if r.maxQuantity != nil {
-		localVarQueryParams.Add("max_quantity", parameterToString(*r.maxQuantity, ""))
+		parameterAddToQuery(localVarQueryParams, "max_quantity", r.maxQuantity, "")
 	}
 	if r.metadata != nil {
-		localVarQueryParams.Add("metadata", parameterToString(*r.metadata, ""))
+		parameterAddToQuery(localVarQueryParams, "metadata", r.metadata, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

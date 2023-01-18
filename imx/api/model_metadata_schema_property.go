@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the MetadataSchemaProperty type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &MetadataSchemaProperty{}
+
 // MetadataSchemaProperty struct for MetadataSchemaProperty
 type MetadataSchemaProperty struct {
 	// Sets the metadata as filterable
@@ -118,17 +121,19 @@ func (o *MetadataSchemaProperty) SetType(v string) {
 }
 
 func (o MetadataSchemaProperty) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["filterable"] = o.Filterable
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["type"] = o.Type
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o MetadataSchemaProperty) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["filterable"] = o.Filterable
+	toSerialize["name"] = o.Name
+	toSerialize["type"] = o.Type
+	return toSerialize, nil
 }
 
 type NullableMetadataSchemaProperty struct {

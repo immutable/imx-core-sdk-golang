@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the GetSignableWithdrawalRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GetSignableWithdrawalRequest{}
+
 // GetSignableWithdrawalRequest struct for GetSignableWithdrawalRequest
 type GetSignableWithdrawalRequest struct {
 	// Amount of the token to withdraw
@@ -117,17 +120,19 @@ func (o *GetSignableWithdrawalRequest) SetUser(v string) {
 }
 
 func (o GetSignableWithdrawalRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["amount"] = o.Amount
-	}
-	if true {
-		toSerialize["token"] = o.Token
-	}
-	if true {
-		toSerialize["user"] = o.User
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o GetSignableWithdrawalRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["amount"] = o.Amount
+	toSerialize["token"] = o.Token
+	toSerialize["user"] = o.User
+	return toSerialize, nil
 }
 
 type NullableGetSignableWithdrawalRequest struct {

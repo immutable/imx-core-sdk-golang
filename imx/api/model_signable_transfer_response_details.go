@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SignableTransferResponseDetails type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SignableTransferResponseDetails{}
+
 // SignableTransferResponseDetails struct for SignableTransferResponseDetails
 type SignableTransferResponseDetails struct {
 	// Amount of the asset being transferred
@@ -279,35 +282,25 @@ func (o *SignableTransferResponseDetails) SetToken(v SignableToken) {
 }
 
 func (o SignableTransferResponseDetails) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["amount"] = o.Amount
-	}
-	if true {
-		toSerialize["asset_id"] = o.AssetId
-	}
-	if true {
-		toSerialize["expiration_timestamp"] = o.ExpirationTimestamp
-	}
-	if true {
-		toSerialize["nonce"] = o.Nonce
-	}
-	if true {
-		toSerialize["payload_hash"] = o.PayloadHash
-	}
-	if true {
-		toSerialize["receiver_stark_key"] = o.ReceiverStarkKey
-	}
-	if true {
-		toSerialize["receiver_vault_id"] = o.ReceiverVaultId
-	}
-	if true {
-		toSerialize["sender_vault_id"] = o.SenderVaultId
-	}
-	if true {
-		toSerialize["token"] = o.Token
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SignableTransferResponseDetails) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["amount"] = o.Amount
+	toSerialize["asset_id"] = o.AssetId
+	toSerialize["expiration_timestamp"] = o.ExpirationTimestamp
+	toSerialize["nonce"] = o.Nonce
+	toSerialize["payload_hash"] = o.PayloadHash
+	toSerialize["receiver_stark_key"] = o.ReceiverStarkKey
+	toSerialize["receiver_vault_id"] = o.ReceiverVaultId
+	toSerialize["sender_vault_id"] = o.SenderVaultId
+	toSerialize["token"] = o.Token
+	return toSerialize, nil
 }
 
 type NullableSignableTransferResponseDetails struct {

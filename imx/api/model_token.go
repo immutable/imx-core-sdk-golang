@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Token type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Token{}
+
 // Token struct for Token
 type Token struct {
 	Data TokenData `json:"data"`
@@ -90,14 +93,18 @@ func (o *Token) SetType(v string) {
 }
 
 func (o Token) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["data"] = o.Data
-	}
-	if true {
-		toSerialize["type"] = o.Type
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Token) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["data"] = o.Data
+	toSerialize["type"] = o.Type
+	return toSerialize, nil
 }
 
 type NullableToken struct {

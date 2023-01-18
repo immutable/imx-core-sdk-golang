@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CreateOrderRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CreateOrderRequest{}
+
 // CreateOrderRequest struct for CreateOrderRequest
 type CreateOrderRequest struct {
 	// Amount to buy
@@ -192,7 +195,7 @@ func (o *CreateOrderRequest) SetExpirationTimestamp(v int32) {
 
 // GetFees returns the Fees field value if set, zero value otherwise.
 func (o *CreateOrderRequest) GetFees() []FeeEntry {
-	if o == nil || o.Fees == nil {
+	if o == nil || isNil(o.Fees) {
 		var ret []FeeEntry
 		return ret
 	}
@@ -202,7 +205,7 @@ func (o *CreateOrderRequest) GetFees() []FeeEntry {
 // GetFeesOk returns a tuple with the Fees field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateOrderRequest) GetFeesOk() ([]FeeEntry, bool) {
-	if o == nil || o.Fees == nil {
+	if o == nil || isNil(o.Fees) {
 		return nil, false
 	}
 	return o.Fees, true
@@ -210,7 +213,7 @@ func (o *CreateOrderRequest) GetFeesOk() ([]FeeEntry, bool) {
 
 // HasFees returns a boolean if a field has been set.
 func (o *CreateOrderRequest) HasFees() bool {
-	if o != nil && o.Fees != nil {
+	if o != nil && !isNil(o.Fees) {
 		return true
 	}
 
@@ -224,7 +227,7 @@ func (o *CreateOrderRequest) SetFees(v []FeeEntry) {
 
 // GetIncludeFees returns the IncludeFees field value if set, zero value otherwise.
 func (o *CreateOrderRequest) GetIncludeFees() bool {
-	if o == nil || o.IncludeFees == nil {
+	if o == nil || isNil(o.IncludeFees) {
 		var ret bool
 		return ret
 	}
@@ -234,7 +237,7 @@ func (o *CreateOrderRequest) GetIncludeFees() bool {
 // GetIncludeFeesOk returns a tuple with the IncludeFees field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateOrderRequest) GetIncludeFeesOk() (*bool, bool) {
-	if o == nil || o.IncludeFees == nil {
+	if o == nil || isNil(o.IncludeFees) {
 		return nil, false
 	}
 	return o.IncludeFees, true
@@ -242,7 +245,7 @@ func (o *CreateOrderRequest) GetIncludeFeesOk() (*bool, bool) {
 
 // HasIncludeFees returns a boolean if a field has been set.
 func (o *CreateOrderRequest) HasIncludeFees() bool {
-	if o != nil && o.IncludeFees != nil {
+	if o != nil && !isNil(o.IncludeFees) {
 		return true
 	}
 
@@ -375,44 +378,32 @@ func (o *CreateOrderRequest) SetVaultIdSell(v int32) {
 }
 
 func (o CreateOrderRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["amount_buy"] = o.AmountBuy
-	}
-	if true {
-		toSerialize["amount_sell"] = o.AmountSell
-	}
-	if true {
-		toSerialize["asset_id_buy"] = o.AssetIdBuy
-	}
-	if true {
-		toSerialize["asset_id_sell"] = o.AssetIdSell
-	}
-	if true {
-		toSerialize["expiration_timestamp"] = o.ExpirationTimestamp
-	}
-	if o.Fees != nil {
-		toSerialize["fees"] = o.Fees
-	}
-	if o.IncludeFees != nil {
-		toSerialize["include_fees"] = o.IncludeFees
-	}
-	if true {
-		toSerialize["nonce"] = o.Nonce
-	}
-	if true {
-		toSerialize["stark_key"] = o.StarkKey
-	}
-	if true {
-		toSerialize["stark_signature"] = o.StarkSignature
-	}
-	if true {
-		toSerialize["vault_id_buy"] = o.VaultIdBuy
-	}
-	if true {
-		toSerialize["vault_id_sell"] = o.VaultIdSell
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CreateOrderRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["amount_buy"] = o.AmountBuy
+	toSerialize["amount_sell"] = o.AmountSell
+	toSerialize["asset_id_buy"] = o.AssetIdBuy
+	toSerialize["asset_id_sell"] = o.AssetIdSell
+	toSerialize["expiration_timestamp"] = o.ExpirationTimestamp
+	if !isNil(o.Fees) {
+		toSerialize["fees"] = o.Fees
+	}
+	if !isNil(o.IncludeFees) {
+		toSerialize["include_fees"] = o.IncludeFees
+	}
+	toSerialize["nonce"] = o.Nonce
+	toSerialize["stark_key"] = o.StarkKey
+	toSerialize["stark_signature"] = o.StarkSignature
+	toSerialize["vault_id_buy"] = o.VaultIdBuy
+	toSerialize["vault_id_sell"] = o.VaultIdSell
+	return toSerialize, nil
 }
 
 type NullableCreateOrderRequest struct {

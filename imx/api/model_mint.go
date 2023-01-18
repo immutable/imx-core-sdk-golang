@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Mint type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Mint{}
+
 // Mint struct for Mint
 type Mint struct {
 	// Fee details
@@ -54,7 +57,7 @@ func NewMintWithDefaults() *Mint {
 
 // GetFees returns the Fees field value if set, zero value otherwise.
 func (o *Mint) GetFees() []Fee {
-	if o == nil || o.Fees == nil {
+	if o == nil || isNil(o.Fees) {
 		var ret []Fee
 		return ret
 	}
@@ -64,7 +67,7 @@ func (o *Mint) GetFees() []Fee {
 // GetFeesOk returns a tuple with the Fees field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Mint) GetFeesOk() ([]Fee, bool) {
-	if o == nil || o.Fees == nil {
+	if o == nil || isNil(o.Fees) {
 		return nil, false
 	}
 	return o.Fees, true
@@ -72,7 +75,7 @@ func (o *Mint) GetFeesOk() ([]Fee, bool) {
 
 // HasFees returns a boolean if a field has been set.
 func (o *Mint) HasFees() bool {
-	if o != nil && o.Fees != nil {
+	if o != nil && !isNil(o.Fees) {
 		return true
 	}
 
@@ -205,26 +208,24 @@ func (o *Mint) SetUser(v string) {
 }
 
 func (o Mint) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Fees != nil {
-		toSerialize["fees"] = o.Fees
-	}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if true {
-		toSerialize["timestamp"] = o.Timestamp
-	}
-	if true {
-		toSerialize["token"] = o.Token
-	}
-	if true {
-		toSerialize["transaction_id"] = o.TransactionId
-	}
-	if true {
-		toSerialize["user"] = o.User
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Mint) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.Fees) {
+		toSerialize["fees"] = o.Fees
+	}
+	toSerialize["status"] = o.Status
+	toSerialize["timestamp"] = o.Timestamp
+	toSerialize["token"] = o.Token
+	toSerialize["transaction_id"] = o.TransactionId
+	toSerialize["user"] = o.User
+	return toSerialize, nil
 }
 
 type NullableMint struct {

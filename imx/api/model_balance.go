@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Balance type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Balance{}
+
 // Balance struct for Balance
 type Balance struct {
 	// Amount which is currently inside the exchange
@@ -172,23 +175,21 @@ func (o *Balance) SetWithdrawable(v string) {
 }
 
 func (o Balance) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["balance"] = o.Balance
-	}
-	if true {
-		toSerialize["preparing_withdrawal"] = o.PreparingWithdrawal
-	}
-	if true {
-		toSerialize["symbol"] = o.Symbol
-	}
-	if true {
-		toSerialize["token_address"] = o.TokenAddress
-	}
-	if true {
-		toSerialize["withdrawable"] = o.Withdrawable
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Balance) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["balance"] = o.Balance
+	toSerialize["preparing_withdrawal"] = o.PreparingWithdrawal
+	toSerialize["symbol"] = o.Symbol
+	toSerialize["token_address"] = o.TokenAddress
+	toSerialize["withdrawable"] = o.Withdrawable
+	return toSerialize, nil
 }
 
 type NullableBalance struct {

@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the GetSignableTransferRequestV1 type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GetSignableTransferRequestV1{}
+
 // GetSignableTransferRequestV1 struct for GetSignableTransferRequestV1
 type GetSignableTransferRequestV1 struct {
 	// Amount of the token to transfer
@@ -144,20 +147,20 @@ func (o *GetSignableTransferRequestV1) SetToken(v SignableToken) {
 }
 
 func (o GetSignableTransferRequestV1) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["amount"] = o.Amount
-	}
-	if true {
-		toSerialize["receiver"] = o.Receiver
-	}
-	if true {
-		toSerialize["sender"] = o.Sender
-	}
-	if true {
-		toSerialize["token"] = o.Token
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o GetSignableTransferRequestV1) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["amount"] = o.Amount
+	toSerialize["receiver"] = o.Receiver
+	toSerialize["sender"] = o.Sender
+	toSerialize["token"] = o.Token
+	return toSerialize, nil
 }
 
 type NullableGetSignableTransferRequestV1 struct {

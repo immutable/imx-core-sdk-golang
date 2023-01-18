@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the MetadataRefreshSummary type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &MetadataRefreshSummary{}
+
 // MetadataRefreshSummary struct for MetadataRefreshSummary
 type MetadataRefreshSummary struct {
 	// The number of tokens with failed metadata refreshes
@@ -44,7 +47,7 @@ func NewMetadataRefreshSummaryWithDefaults() *MetadataRefreshSummary {
 
 // GetFailed returns the Failed field value if set, zero value otherwise.
 func (o *MetadataRefreshSummary) GetFailed() int32 {
-	if o == nil || o.Failed == nil {
+	if o == nil || isNil(o.Failed) {
 		var ret int32
 		return ret
 	}
@@ -54,7 +57,7 @@ func (o *MetadataRefreshSummary) GetFailed() int32 {
 // GetFailedOk returns a tuple with the Failed field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MetadataRefreshSummary) GetFailedOk() (*int32, bool) {
-	if o == nil || o.Failed == nil {
+	if o == nil || isNil(o.Failed) {
 		return nil, false
 	}
 	return o.Failed, true
@@ -62,7 +65,7 @@ func (o *MetadataRefreshSummary) GetFailedOk() (*int32, bool) {
 
 // HasFailed returns a boolean if a field has been set.
 func (o *MetadataRefreshSummary) HasFailed() bool {
-	if o != nil && o.Failed != nil {
+	if o != nil && !isNil(o.Failed) {
 		return true
 	}
 
@@ -76,7 +79,7 @@ func (o *MetadataRefreshSummary) SetFailed(v int32) {
 
 // GetPending returns the Pending field value if set, zero value otherwise.
 func (o *MetadataRefreshSummary) GetPending() int32 {
-	if o == nil || o.Pending == nil {
+	if o == nil || isNil(o.Pending) {
 		var ret int32
 		return ret
 	}
@@ -86,7 +89,7 @@ func (o *MetadataRefreshSummary) GetPending() int32 {
 // GetPendingOk returns a tuple with the Pending field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MetadataRefreshSummary) GetPendingOk() (*int32, bool) {
-	if o == nil || o.Pending == nil {
+	if o == nil || isNil(o.Pending) {
 		return nil, false
 	}
 	return o.Pending, true
@@ -94,7 +97,7 @@ func (o *MetadataRefreshSummary) GetPendingOk() (*int32, bool) {
 
 // HasPending returns a boolean if a field has been set.
 func (o *MetadataRefreshSummary) HasPending() bool {
-	if o != nil && o.Pending != nil {
+	if o != nil && !isNil(o.Pending) {
 		return true
 	}
 
@@ -108,7 +111,7 @@ func (o *MetadataRefreshSummary) SetPending(v int32) {
 
 // GetSucceeded returns the Succeeded field value if set, zero value otherwise.
 func (o *MetadataRefreshSummary) GetSucceeded() int32 {
-	if o == nil || o.Succeeded == nil {
+	if o == nil || isNil(o.Succeeded) {
 		var ret int32
 		return ret
 	}
@@ -118,7 +121,7 @@ func (o *MetadataRefreshSummary) GetSucceeded() int32 {
 // GetSucceededOk returns a tuple with the Succeeded field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MetadataRefreshSummary) GetSucceededOk() (*int32, bool) {
-	if o == nil || o.Succeeded == nil {
+	if o == nil || isNil(o.Succeeded) {
 		return nil, false
 	}
 	return o.Succeeded, true
@@ -126,7 +129,7 @@ func (o *MetadataRefreshSummary) GetSucceededOk() (*int32, bool) {
 
 // HasSucceeded returns a boolean if a field has been set.
 func (o *MetadataRefreshSummary) HasSucceeded() bool {
-	if o != nil && o.Succeeded != nil {
+	if o != nil && !isNil(o.Succeeded) {
 		return true
 	}
 
@@ -139,17 +142,25 @@ func (o *MetadataRefreshSummary) SetSucceeded(v int32) {
 }
 
 func (o MetadataRefreshSummary) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Failed != nil {
-		toSerialize["failed"] = o.Failed
-	}
-	if o.Pending != nil {
-		toSerialize["pending"] = o.Pending
-	}
-	if o.Succeeded != nil {
-		toSerialize["succeeded"] = o.Succeeded
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o MetadataRefreshSummary) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.Failed) {
+		toSerialize["failed"] = o.Failed
+	}
+	if !isNil(o.Pending) {
+		toSerialize["pending"] = o.Pending
+	}
+	if !isNil(o.Succeeded) {
+		toSerialize["succeeded"] = o.Succeeded
+	}
+	return toSerialize, nil
 }
 
 type NullableMetadataRefreshSummary struct {

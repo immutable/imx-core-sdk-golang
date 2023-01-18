@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the GetSignableTransferRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GetSignableTransferRequest{}
+
 // GetSignableTransferRequest struct for GetSignableTransferRequest
 type GetSignableTransferRequest struct {
 	// Ethereum address of the transferring user
@@ -91,14 +94,18 @@ func (o *GetSignableTransferRequest) SetSignableRequests(v []SignableTransferDet
 }
 
 func (o GetSignableTransferRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["sender_ether_key"] = o.SenderEtherKey
-	}
-	if true {
-		toSerialize["signable_requests"] = o.SignableRequests
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o GetSignableTransferRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["sender_ether_key"] = o.SenderEtherKey
+	toSerialize["signable_requests"] = o.SignableRequests
+	return toSerialize, nil
 }
 
 type NullableGetSignableTransferRequest struct {

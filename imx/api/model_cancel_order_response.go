@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CancelOrderResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CancelOrderResponse{}
+
 // CancelOrderResponse struct for CancelOrderResponse
 type CancelOrderResponse struct {
 	// ID of the cancelled order
@@ -91,14 +94,18 @@ func (o *CancelOrderResponse) SetStatus(v string) {
 }
 
 func (o CancelOrderResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["order_id"] = o.OrderId
-	}
-	if true {
-		toSerialize["status"] = o.Status
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CancelOrderResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["order_id"] = o.OrderId
+	toSerialize["status"] = o.Status
+	return toSerialize, nil
 }
 
 type NullableCancelOrderResponse struct {

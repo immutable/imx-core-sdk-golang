@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the AggregateLimit type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &AggregateLimit{}
+
 // AggregateLimit struct for AggregateLimit
 type AggregateLimit struct {
 	// Max transaction amount
@@ -42,7 +45,7 @@ func NewAggregateLimitWithDefaults() *AggregateLimit {
 
 // GetMaxAmount returns the MaxAmount field value if set, zero value otherwise.
 func (o *AggregateLimit) GetMaxAmount() float32 {
-	if o == nil || o.MaxAmount == nil {
+	if o == nil || isNil(o.MaxAmount) {
 		var ret float32
 		return ret
 	}
@@ -52,7 +55,7 @@ func (o *AggregateLimit) GetMaxAmount() float32 {
 // GetMaxAmountOk returns a tuple with the MaxAmount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AggregateLimit) GetMaxAmountOk() (*float32, bool) {
-	if o == nil || o.MaxAmount == nil {
+	if o == nil || isNil(o.MaxAmount) {
 		return nil, false
 	}
 	return o.MaxAmount, true
@@ -60,7 +63,7 @@ func (o *AggregateLimit) GetMaxAmountOk() (*float32, bool) {
 
 // HasMaxAmount returns a boolean if a field has been set.
 func (o *AggregateLimit) HasMaxAmount() bool {
-	if o != nil && o.MaxAmount != nil {
+	if o != nil && !isNil(o.MaxAmount) {
 		return true
 	}
 
@@ -74,7 +77,7 @@ func (o *AggregateLimit) SetMaxAmount(v float32) {
 
 // GetMinAmount returns the MinAmount field value if set, zero value otherwise.
 func (o *AggregateLimit) GetMinAmount() float32 {
-	if o == nil || o.MinAmount == nil {
+	if o == nil || isNil(o.MinAmount) {
 		var ret float32
 		return ret
 	}
@@ -84,7 +87,7 @@ func (o *AggregateLimit) GetMinAmount() float32 {
 // GetMinAmountOk returns a tuple with the MinAmount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AggregateLimit) GetMinAmountOk() (*float32, bool) {
-	if o == nil || o.MinAmount == nil {
+	if o == nil || isNil(o.MinAmount) {
 		return nil, false
 	}
 	return o.MinAmount, true
@@ -92,7 +95,7 @@ func (o *AggregateLimit) GetMinAmountOk() (*float32, bool) {
 
 // HasMinAmount returns a boolean if a field has been set.
 func (o *AggregateLimit) HasMinAmount() bool {
-	if o != nil && o.MinAmount != nil {
+	if o != nil && !isNil(o.MinAmount) {
 		return true
 	}
 
@@ -105,14 +108,22 @@ func (o *AggregateLimit) SetMinAmount(v float32) {
 }
 
 func (o AggregateLimit) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.MaxAmount != nil {
-		toSerialize["max_amount"] = o.MaxAmount
-	}
-	if o.MinAmount != nil {
-		toSerialize["min_amount"] = o.MinAmount
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o AggregateLimit) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.MaxAmount) {
+		toSerialize["max_amount"] = o.MaxAmount
+	}
+	if !isNil(o.MinAmount) {
+		toSerialize["min_amount"] = o.MinAmount
+	}
+	return toSerialize, nil
 }
 
 type NullableAggregateLimit struct {

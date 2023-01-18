@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the GetSignableTradeResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GetSignableTradeResponse{}
+
 // GetSignableTradeResponse struct for GetSignableTradeResponse
 type GetSignableTradeResponse struct {
 	// Amount to buy
@@ -192,7 +195,7 @@ func (o *GetSignableTradeResponse) SetExpirationTimestamp(v int32) {
 
 // GetFeeInfo returns the FeeInfo field value if set, zero value otherwise.
 func (o *GetSignableTradeResponse) GetFeeInfo() FeeInfo {
-	if o == nil || o.FeeInfo == nil {
+	if o == nil || isNil(o.FeeInfo) {
 		var ret FeeInfo
 		return ret
 	}
@@ -202,7 +205,7 @@ func (o *GetSignableTradeResponse) GetFeeInfo() FeeInfo {
 // GetFeeInfoOk returns a tuple with the FeeInfo field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *GetSignableTradeResponse) GetFeeInfoOk() (*FeeInfo, bool) {
-	if o == nil || o.FeeInfo == nil {
+	if o == nil || isNil(o.FeeInfo) {
 		return nil, false
 	}
 	return o.FeeInfo, true
@@ -210,7 +213,7 @@ func (o *GetSignableTradeResponse) GetFeeInfoOk() (*FeeInfo, bool) {
 
 // HasFeeInfo returns a boolean if a field has been set.
 func (o *GetSignableTradeResponse) HasFeeInfo() bool {
-	if o != nil && o.FeeInfo != nil {
+	if o != nil && !isNil(o.FeeInfo) {
 		return true
 	}
 
@@ -367,44 +370,30 @@ func (o *GetSignableTradeResponse) SetVaultIdSell(v int32) {
 }
 
 func (o GetSignableTradeResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["amount_buy"] = o.AmountBuy
-	}
-	if true {
-		toSerialize["amount_sell"] = o.AmountSell
-	}
-	if true {
-		toSerialize["asset_id_buy"] = o.AssetIdBuy
-	}
-	if true {
-		toSerialize["asset_id_sell"] = o.AssetIdSell
-	}
-	if true {
-		toSerialize["expiration_timestamp"] = o.ExpirationTimestamp
-	}
-	if o.FeeInfo != nil {
-		toSerialize["fee_info"] = o.FeeInfo
-	}
-	if true {
-		toSerialize["nonce"] = o.Nonce
-	}
-	if true {
-		toSerialize["payload_hash"] = o.PayloadHash
-	}
-	if true {
-		toSerialize["signable_message"] = o.SignableMessage
-	}
-	if true {
-		toSerialize["stark_key"] = o.StarkKey
-	}
-	if true {
-		toSerialize["vault_id_buy"] = o.VaultIdBuy
-	}
-	if true {
-		toSerialize["vault_id_sell"] = o.VaultIdSell
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o GetSignableTradeResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["amount_buy"] = o.AmountBuy
+	toSerialize["amount_sell"] = o.AmountSell
+	toSerialize["asset_id_buy"] = o.AssetIdBuy
+	toSerialize["asset_id_sell"] = o.AssetIdSell
+	toSerialize["expiration_timestamp"] = o.ExpirationTimestamp
+	if !isNil(o.FeeInfo) {
+		toSerialize["fee_info"] = o.FeeInfo
+	}
+	toSerialize["nonce"] = o.Nonce
+	toSerialize["payload_hash"] = o.PayloadHash
+	toSerialize["signable_message"] = o.SignableMessage
+	toSerialize["stark_key"] = o.StarkKey
+	toSerialize["vault_id_buy"] = o.VaultIdBuy
+	toSerialize["vault_id_sell"] = o.VaultIdSell
+	return toSerialize, nil
 }
 
 type NullableGetSignableTradeResponse struct {

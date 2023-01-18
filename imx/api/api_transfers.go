@@ -204,8 +204,8 @@ func (a *TransfersApiService) CreateTransferExecute(r ApiCreateTransferRequest) 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["x-imx-eth-address"] = parameterToString(*r.xImxEthAddress, "")
-	localVarHeaderParams["x-imx-eth-signature"] = parameterToString(*r.xImxEthSignature, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-address", r.xImxEthAddress, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-signature", r.xImxEthSignature, "")
 	// body params
 	localVarPostBody = r.createTransferRequestV2
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -237,7 +237,8 @@ func (a *TransfersApiService) CreateTransferExecute(r ApiCreateTransferRequest) 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -247,7 +248,8 @@ func (a *TransfersApiService) CreateTransferExecute(r ApiCreateTransferRequest) 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -257,7 +259,8 @@ func (a *TransfersApiService) CreateTransferExecute(r ApiCreateTransferRequest) 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -267,7 +270,8 @@ func (a *TransfersApiService) CreateTransferExecute(r ApiCreateTransferRequest) 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -376,8 +380,8 @@ func (a *TransfersApiService) CreateTransferV1Execute(r ApiCreateTransferV1Reque
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["x-imx-eth-address"] = parameterToString(*r.xImxEthAddress, "")
-	localVarHeaderParams["x-imx-eth-signature"] = parameterToString(*r.xImxEthSignature, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-address", r.xImxEthAddress, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-signature", r.xImxEthSignature, "")
 	// body params
 	localVarPostBody = r.createTransferRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -409,7 +413,8 @@ func (a *TransfersApiService) CreateTransferV1Execute(r ApiCreateTransferV1Reque
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -419,7 +424,8 @@ func (a *TransfersApiService) CreateTransferV1Execute(r ApiCreateTransferV1Reque
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -429,7 +435,8 @@ func (a *TransfersApiService) CreateTransferV1Execute(r ApiCreateTransferV1Reque
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -439,7 +446,8 @@ func (a *TransfersApiService) CreateTransferV1Execute(r ApiCreateTransferV1Reque
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -559,7 +567,8 @@ func (a *TransfersApiService) GetSignableTransferExecute(r ApiGetSignableTransfe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -569,7 +578,8 @@ func (a *TransfersApiService) GetSignableTransferExecute(r ApiGetSignableTransfe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -579,7 +589,8 @@ func (a *TransfersApiService) GetSignableTransferExecute(r ApiGetSignableTransfe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -589,7 +600,8 @@ func (a *TransfersApiService) GetSignableTransferExecute(r ApiGetSignableTransfe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -760,7 +772,7 @@ func (a *TransfersApiService) GetTransferExecute(r ApiGetTransferRequest) (*Tran
 	}
 
 	localVarPath := localBasePath + "/v1/transfers/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -812,7 +824,8 @@ func (a *TransfersApiService) GetTransferExecute(r ApiGetTransferRequest) (*Tran
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -822,7 +835,8 @@ func (a *TransfersApiService) GetTransferExecute(r ApiGetTransferRequest) (*Tran
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1004,55 +1018,55 @@ func (a *TransfersApiService) ListTransfersExecute(r ApiListTransfersRequest) (*
 	localVarFormParams := url.Values{}
 
 	if r.pageSize != nil {
-		localVarQueryParams.Add("page_size", parameterToString(*r.pageSize, ""))
+		parameterAddToQuery(localVarQueryParams, "page_size", r.pageSize, "")
 	}
 	if r.cursor != nil {
-		localVarQueryParams.Add("cursor", parameterToString(*r.cursor, ""))
+		parameterAddToQuery(localVarQueryParams, "cursor", r.cursor, "")
 	}
 	if r.orderBy != nil {
-		localVarQueryParams.Add("order_by", parameterToString(*r.orderBy, ""))
+		parameterAddToQuery(localVarQueryParams, "order_by", r.orderBy, "")
 	}
 	if r.direction != nil {
-		localVarQueryParams.Add("direction", parameterToString(*r.direction, ""))
+		parameterAddToQuery(localVarQueryParams, "direction", r.direction, "")
 	}
 	if r.user != nil {
-		localVarQueryParams.Add("user", parameterToString(*r.user, ""))
+		parameterAddToQuery(localVarQueryParams, "user", r.user, "")
 	}
 	if r.receiver != nil {
-		localVarQueryParams.Add("receiver", parameterToString(*r.receiver, ""))
+		parameterAddToQuery(localVarQueryParams, "receiver", r.receiver, "")
 	}
 	if r.status != nil {
-		localVarQueryParams.Add("status", parameterToString(*r.status, ""))
+		parameterAddToQuery(localVarQueryParams, "status", r.status, "")
 	}
 	if r.minTimestamp != nil {
-		localVarQueryParams.Add("min_timestamp", parameterToString(*r.minTimestamp, ""))
+		parameterAddToQuery(localVarQueryParams, "min_timestamp", r.minTimestamp, "")
 	}
 	if r.maxTimestamp != nil {
-		localVarQueryParams.Add("max_timestamp", parameterToString(*r.maxTimestamp, ""))
+		parameterAddToQuery(localVarQueryParams, "max_timestamp", r.maxTimestamp, "")
 	}
 	if r.tokenType != nil {
-		localVarQueryParams.Add("token_type", parameterToString(*r.tokenType, ""))
+		parameterAddToQuery(localVarQueryParams, "token_type", r.tokenType, "")
 	}
 	if r.tokenId != nil {
-		localVarQueryParams.Add("token_id", parameterToString(*r.tokenId, ""))
+		parameterAddToQuery(localVarQueryParams, "token_id", r.tokenId, "")
 	}
 	if r.assetId != nil {
-		localVarQueryParams.Add("asset_id", parameterToString(*r.assetId, ""))
+		parameterAddToQuery(localVarQueryParams, "asset_id", r.assetId, "")
 	}
 	if r.tokenAddress != nil {
-		localVarQueryParams.Add("token_address", parameterToString(*r.tokenAddress, ""))
+		parameterAddToQuery(localVarQueryParams, "token_address", r.tokenAddress, "")
 	}
 	if r.tokenName != nil {
-		localVarQueryParams.Add("token_name", parameterToString(*r.tokenName, ""))
+		parameterAddToQuery(localVarQueryParams, "token_name", r.tokenName, "")
 	}
 	if r.minQuantity != nil {
-		localVarQueryParams.Add("min_quantity", parameterToString(*r.minQuantity, ""))
+		parameterAddToQuery(localVarQueryParams, "min_quantity", r.minQuantity, "")
 	}
 	if r.maxQuantity != nil {
-		localVarQueryParams.Add("max_quantity", parameterToString(*r.maxQuantity, ""))
+		parameterAddToQuery(localVarQueryParams, "max_quantity", r.maxQuantity, "")
 	}
 	if r.metadata != nil {
-		localVarQueryParams.Add("metadata", parameterToString(*r.metadata, ""))
+		parameterAddToQuery(localVarQueryParams, "metadata", r.metadata, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1100,7 +1114,8 @@ func (a *TransfersApiService) ListTransfersExecute(r ApiListTransfersRequest) (*
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -1110,7 +1125,8 @@ func (a *TransfersApiService) ListTransfersExecute(r ApiListTransfersRequest) (*
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

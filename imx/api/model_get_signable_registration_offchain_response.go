@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the GetSignableRegistrationOffchainResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GetSignableRegistrationOffchainResponse{}
+
 // GetSignableRegistrationOffchainResponse struct for GetSignableRegistrationOffchainResponse
 type GetSignableRegistrationOffchainResponse struct {
 	// Hash of the payload to be signed for user registration offchain
@@ -91,14 +94,18 @@ func (o *GetSignableRegistrationOffchainResponse) SetSignableMessage(v string) {
 }
 
 func (o GetSignableRegistrationOffchainResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["payload_hash"] = o.PayloadHash
-	}
-	if true {
-		toSerialize["signable_message"] = o.SignableMessage
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o GetSignableRegistrationOffchainResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["payload_hash"] = o.PayloadHash
+	toSerialize["signable_message"] = o.SignableMessage
+	return toSerialize, nil
 }
 
 type NullableGetSignableRegistrationOffchainResponse struct {

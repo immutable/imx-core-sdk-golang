@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Withdrawal type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Withdrawal{}
+
 // Withdrawal struct for Withdrawal
 type Withdrawal struct {
 	// Status of the on-chain batch confirmation for this withdrawal
@@ -225,29 +228,23 @@ func (o *Withdrawal) SetWithdrawnToWallet(v bool) {
 }
 
 func (o Withdrawal) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["rollup_status"] = o.RollupStatus
-	}
-	if true {
-		toSerialize["sender"] = o.Sender
-	}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if true {
-		toSerialize["timestamp"] = o.Timestamp
-	}
-	if true {
-		toSerialize["token"] = o.Token
-	}
-	if true {
-		toSerialize["transaction_id"] = o.TransactionId
-	}
-	if true {
-		toSerialize["withdrawn_to_wallet"] = o.WithdrawnToWallet
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Withdrawal) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["rollup_status"] = o.RollupStatus
+	toSerialize["sender"] = o.Sender
+	toSerialize["status"] = o.Status
+	toSerialize["timestamp"] = o.Timestamp
+	toSerialize["token"] = o.Token
+	toSerialize["transaction_id"] = o.TransactionId
+	toSerialize["withdrawn_to_wallet"] = o.WithdrawnToWallet
+	return toSerialize, nil
 }
 
 type NullableWithdrawal struct {

@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the MintUser type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &MintUser{}
+
 // MintUser struct for MintUser
 type MintUser struct {
 	// List of Mint tokens
@@ -91,14 +94,18 @@ func (o *MintUser) SetUser(v string) {
 }
 
 func (o MintUser) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["tokens"] = o.Tokens
-	}
-	if true {
-		toSerialize["user"] = o.User
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o MintUser) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["tokens"] = o.Tokens
+	toSerialize["user"] = o.User
+	return toSerialize, nil
 }
 
 type NullableMintUser struct {

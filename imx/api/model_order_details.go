@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the OrderDetails type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &OrderDetails{}
+
 // OrderDetails struct for OrderDetails
 type OrderDetails struct {
 	// Buy orders for this asset
@@ -42,7 +45,7 @@ func NewOrderDetailsWithDefaults() *OrderDetails {
 
 // GetBuyOrders returns the BuyOrders field value if set, zero value otherwise.
 func (o *OrderDetails) GetBuyOrders() []map[string]interface{} {
-	if o == nil || o.BuyOrders == nil {
+	if o == nil || isNil(o.BuyOrders) {
 		var ret []map[string]interface{}
 		return ret
 	}
@@ -52,7 +55,7 @@ func (o *OrderDetails) GetBuyOrders() []map[string]interface{} {
 // GetBuyOrdersOk returns a tuple with the BuyOrders field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrderDetails) GetBuyOrdersOk() ([]map[string]interface{}, bool) {
-	if o == nil || o.BuyOrders == nil {
+	if o == nil || isNil(o.BuyOrders) {
 		return nil, false
 	}
 	return o.BuyOrders, true
@@ -60,7 +63,7 @@ func (o *OrderDetails) GetBuyOrdersOk() ([]map[string]interface{}, bool) {
 
 // HasBuyOrders returns a boolean if a field has been set.
 func (o *OrderDetails) HasBuyOrders() bool {
-	if o != nil && o.BuyOrders != nil {
+	if o != nil && !isNil(o.BuyOrders) {
 		return true
 	}
 
@@ -74,7 +77,7 @@ func (o *OrderDetails) SetBuyOrders(v []map[string]interface{}) {
 
 // GetSellOrders returns the SellOrders field value if set, zero value otherwise.
 func (o *OrderDetails) GetSellOrders() []map[string]interface{} {
-	if o == nil || o.SellOrders == nil {
+	if o == nil || isNil(o.SellOrders) {
 		var ret []map[string]interface{}
 		return ret
 	}
@@ -84,7 +87,7 @@ func (o *OrderDetails) GetSellOrders() []map[string]interface{} {
 // GetSellOrdersOk returns a tuple with the SellOrders field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrderDetails) GetSellOrdersOk() ([]map[string]interface{}, bool) {
-	if o == nil || o.SellOrders == nil {
+	if o == nil || isNil(o.SellOrders) {
 		return nil, false
 	}
 	return o.SellOrders, true
@@ -92,7 +95,7 @@ func (o *OrderDetails) GetSellOrdersOk() ([]map[string]interface{}, bool) {
 
 // HasSellOrders returns a boolean if a field has been set.
 func (o *OrderDetails) HasSellOrders() bool {
-	if o != nil && o.SellOrders != nil {
+	if o != nil && !isNil(o.SellOrders) {
 		return true
 	}
 
@@ -105,14 +108,22 @@ func (o *OrderDetails) SetSellOrders(v []map[string]interface{}) {
 }
 
 func (o OrderDetails) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.BuyOrders != nil {
-		toSerialize["buy_orders"] = o.BuyOrders
-	}
-	if o.SellOrders != nil {
-		toSerialize["sell_orders"] = o.SellOrders
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o OrderDetails) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.BuyOrders) {
+		toSerialize["buy_orders"] = o.BuyOrders
+	}
+	if !isNil(o.SellOrders) {
+		toSerialize["sell_orders"] = o.SellOrders
+	}
+	return toSerialize, nil
 }
 
 type NullableOrderDetails struct {

@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Transfer type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Transfer{}
+
 // Transfer struct for Transfer
 type Transfer struct {
 	// Ethereum address of the user who received this transfer
@@ -200,26 +203,22 @@ func (o *Transfer) SetUser(v string) {
 }
 
 func (o Transfer) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["receiver"] = o.Receiver
-	}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if true {
-		toSerialize["timestamp"] = o.Timestamp.Get()
-	}
-	if true {
-		toSerialize["token"] = o.Token
-	}
-	if true {
-		toSerialize["transaction_id"] = o.TransactionId
-	}
-	if true {
-		toSerialize["user"] = o.User
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Transfer) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["receiver"] = o.Receiver
+	toSerialize["status"] = o.Status
+	toSerialize["timestamp"] = o.Timestamp.Get()
+	toSerialize["token"] = o.Token
+	toSerialize["transaction_id"] = o.TransactionId
+	toSerialize["user"] = o.User
+	return toSerialize, nil
 }
 
 type NullableTransfer struct {

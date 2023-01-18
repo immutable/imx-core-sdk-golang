@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the AddMetadataSchemaToCollectionRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &AddMetadataSchemaToCollectionRequest{}
+
 // AddMetadataSchemaToCollectionRequest struct for AddMetadataSchemaToCollectionRequest
 type AddMetadataSchemaToCollectionRequest struct {
 	// Not required from API user
@@ -43,7 +46,7 @@ func NewAddMetadataSchemaToCollectionRequestWithDefaults() *AddMetadataSchemaToC
 
 // GetContractAddress returns the ContractAddress field value if set, zero value otherwise.
 func (o *AddMetadataSchemaToCollectionRequest) GetContractAddress() string {
-	if o == nil || o.ContractAddress == nil {
+	if o == nil || isNil(o.ContractAddress) {
 		var ret string
 		return ret
 	}
@@ -53,7 +56,7 @@ func (o *AddMetadataSchemaToCollectionRequest) GetContractAddress() string {
 // GetContractAddressOk returns a tuple with the ContractAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AddMetadataSchemaToCollectionRequest) GetContractAddressOk() (*string, bool) {
-	if o == nil || o.ContractAddress == nil {
+	if o == nil || isNil(o.ContractAddress) {
 		return nil, false
 	}
 	return o.ContractAddress, true
@@ -61,7 +64,7 @@ func (o *AddMetadataSchemaToCollectionRequest) GetContractAddressOk() (*string, 
 
 // HasContractAddress returns a boolean if a field has been set.
 func (o *AddMetadataSchemaToCollectionRequest) HasContractAddress() bool {
-	if o != nil && o.ContractAddress != nil {
+	if o != nil && !isNil(o.ContractAddress) {
 		return true
 	}
 
@@ -98,14 +101,20 @@ func (o *AddMetadataSchemaToCollectionRequest) SetMetadata(v []MetadataSchemaReq
 }
 
 func (o AddMetadataSchemaToCollectionRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.ContractAddress != nil {
-		toSerialize["contract_address"] = o.ContractAddress
-	}
-	if true {
-		toSerialize["metadata"] = o.Metadata
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o AddMetadataSchemaToCollectionRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.ContractAddress) {
+		toSerialize["contract_address"] = o.ContractAddress
+	}
+	toSerialize["metadata"] = o.Metadata
+	return toSerialize, nil
 }
 
 type NullableAddMetadataSchemaToCollectionRequest struct {

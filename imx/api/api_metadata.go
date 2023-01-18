@@ -137,7 +137,7 @@ func (a *MetadataApiService) AddMetadataSchemaToCollectionExecute(r ApiAddMetada
 	}
 
 	localVarPath := localBasePath + "/v1/collections/{address}/metadata-schema"
-	localVarPath = strings.Replace(localVarPath, "{"+"address"+"}", url.PathEscape(parameterToString(r.address, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"address"+"}", url.PathEscape(parameterValueToString(r.address, "address")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -169,8 +169,8 @@ func (a *MetadataApiService) AddMetadataSchemaToCollectionExecute(r ApiAddMetada
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["IMX-Signature"] = parameterToString(*r.iMXSignature, "")
-	localVarHeaderParams["IMX-Timestamp"] = parameterToString(*r.iMXTimestamp, "")
+	parameterAddToQuery(localVarQueryParams, "IMX-Signature", r.iMXSignature, "")
+	parameterAddToQuery(localVarQueryParams, "IMX-Timestamp", r.iMXTimestamp, "")
 	// body params
 	localVarPostBody = r.addMetadataSchemaToCollectionRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -202,7 +202,8 @@ func (a *MetadataApiService) AddMetadataSchemaToCollectionExecute(r ApiAddMetada
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -212,7 +213,8 @@ func (a *MetadataApiService) AddMetadataSchemaToCollectionExecute(r ApiAddMetada
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -222,7 +224,8 @@ func (a *MetadataApiService) AddMetadataSchemaToCollectionExecute(r ApiAddMetada
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -232,7 +235,8 @@ func (a *MetadataApiService) AddMetadataSchemaToCollectionExecute(r ApiAddMetada
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -242,7 +246,8 @@ func (a *MetadataApiService) AddMetadataSchemaToCollectionExecute(r ApiAddMetada
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -302,7 +307,7 @@ func (a *MetadataApiService) GetMetadataSchemaExecute(r ApiGetMetadataSchemaRequ
 	}
 
 	localVarPath := localBasePath + "/v1/collections/{address}/metadata-schema"
-	localVarPath = strings.Replace(localVarPath, "{"+"address"+"}", url.PathEscape(parameterToString(r.address, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"address"+"}", url.PathEscape(parameterValueToString(r.address, "address")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -354,7 +359,8 @@ func (a *MetadataApiService) GetMetadataSchemaExecute(r ApiGetMetadataSchemaRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -364,7 +370,8 @@ func (a *MetadataApiService) GetMetadataSchemaExecute(r ApiGetMetadataSchemaRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -448,8 +455,8 @@ func (a *MetadataApiService) UpdateMetadataSchemaByNameExecute(r ApiUpdateMetada
 	}
 
 	localVarPath := localBasePath + "/v1/collections/{address}/metadata-schema/{name}"
-	localVarPath = strings.Replace(localVarPath, "{"+"address"+"}", url.PathEscape(parameterToString(r.address, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"name"+"}", url.PathEscape(parameterToString(r.name, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"address"+"}", url.PathEscape(parameterValueToString(r.address, "address")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"name"+"}", url.PathEscape(parameterValueToString(r.name, "name")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -481,8 +488,8 @@ func (a *MetadataApiService) UpdateMetadataSchemaByNameExecute(r ApiUpdateMetada
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["IMX-Signature"] = parameterToString(*r.iMXSignature, "")
-	localVarHeaderParams["IMX-Timestamp"] = parameterToString(*r.iMXTimestamp, "")
+	parameterAddToQuery(localVarQueryParams, "IMX-Signature", r.iMXSignature, "")
+	parameterAddToQuery(localVarQueryParams, "IMX-Timestamp", r.iMXTimestamp, "")
 	// body params
 	localVarPostBody = r.metadataSchemaRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -514,7 +521,8 @@ func (a *MetadataApiService) UpdateMetadataSchemaByNameExecute(r ApiUpdateMetada
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -524,7 +532,8 @@ func (a *MetadataApiService) UpdateMetadataSchemaByNameExecute(r ApiUpdateMetada
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -534,7 +543,8 @@ func (a *MetadataApiService) UpdateMetadataSchemaByNameExecute(r ApiUpdateMetada
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -544,7 +554,8 @@ func (a *MetadataApiService) UpdateMetadataSchemaByNameExecute(r ApiUpdateMetada
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

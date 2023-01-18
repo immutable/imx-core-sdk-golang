@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the TokenDetails type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &TokenDetails{}
+
 // TokenDetails struct for TokenDetails
 type TokenDetails struct {
 	// Number of decimals for token
@@ -199,26 +202,22 @@ func (o *TokenDetails) SetTokenAddress(v string) {
 }
 
 func (o TokenDetails) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["decimals"] = o.Decimals
-	}
-	if true {
-		toSerialize["image_url"] = o.ImageUrl
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["quantum"] = o.Quantum
-	}
-	if true {
-		toSerialize["symbol"] = o.Symbol
-	}
-	if true {
-		toSerialize["token_address"] = o.TokenAddress
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o TokenDetails) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["decimals"] = o.Decimals
+	toSerialize["image_url"] = o.ImageUrl
+	toSerialize["name"] = o.Name
+	toSerialize["quantum"] = o.Quantum
+	toSerialize["symbol"] = o.Symbol
+	toSerialize["token_address"] = o.TokenAddress
+	return toSerialize, nil
 }
 
 type NullableTokenDetails struct {

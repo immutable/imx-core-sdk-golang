@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the AssetProperties type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &AssetProperties{}
+
 // AssetProperties struct for AssetProperties
 type AssetProperties struct {
 	Collection *CollectionDetails `json:"collection,omitempty"`
@@ -43,7 +46,7 @@ func NewAssetPropertiesWithDefaults() *AssetProperties {
 
 // GetCollection returns the Collection field value if set, zero value otherwise.
 func (o *AssetProperties) GetCollection() CollectionDetails {
-	if o == nil || o.Collection == nil {
+	if o == nil || isNil(o.Collection) {
 		var ret CollectionDetails
 		return ret
 	}
@@ -53,7 +56,7 @@ func (o *AssetProperties) GetCollection() CollectionDetails {
 // GetCollectionOk returns a tuple with the Collection field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AssetProperties) GetCollectionOk() (*CollectionDetails, bool) {
-	if o == nil || o.Collection == nil {
+	if o == nil || isNil(o.Collection) {
 		return nil, false
 	}
 	return o.Collection, true
@@ -61,7 +64,7 @@ func (o *AssetProperties) GetCollectionOk() (*CollectionDetails, bool) {
 
 // HasCollection returns a boolean if a field has been set.
 func (o *AssetProperties) HasCollection() bool {
-	if o != nil && o.Collection != nil {
+	if o != nil && !isNil(o.Collection) {
 		return true
 	}
 
@@ -75,7 +78,7 @@ func (o *AssetProperties) SetCollection(v CollectionDetails) {
 
 // GetImageUrl returns the ImageUrl field value if set, zero value otherwise.
 func (o *AssetProperties) GetImageUrl() string {
-	if o == nil || o.ImageUrl == nil {
+	if o == nil || isNil(o.ImageUrl) {
 		var ret string
 		return ret
 	}
@@ -85,7 +88,7 @@ func (o *AssetProperties) GetImageUrl() string {
 // GetImageUrlOk returns a tuple with the ImageUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AssetProperties) GetImageUrlOk() (*string, bool) {
-	if o == nil || o.ImageUrl == nil {
+	if o == nil || isNil(o.ImageUrl) {
 		return nil, false
 	}
 	return o.ImageUrl, true
@@ -93,7 +96,7 @@ func (o *AssetProperties) GetImageUrlOk() (*string, bool) {
 
 // HasImageUrl returns a boolean if a field has been set.
 func (o *AssetProperties) HasImageUrl() bool {
-	if o != nil && o.ImageUrl != nil {
+	if o != nil && !isNil(o.ImageUrl) {
 		return true
 	}
 
@@ -107,7 +110,7 @@ func (o *AssetProperties) SetImageUrl(v string) {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *AssetProperties) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || isNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -117,7 +120,7 @@ func (o *AssetProperties) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AssetProperties) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
+	if o == nil || isNil(o.Name) {
 		return nil, false
 	}
 	return o.Name, true
@@ -125,7 +128,7 @@ func (o *AssetProperties) GetNameOk() (*string, bool) {
 
 // HasName returns a boolean if a field has been set.
 func (o *AssetProperties) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !isNil(o.Name) {
 		return true
 	}
 
@@ -138,17 +141,25 @@ func (o *AssetProperties) SetName(v string) {
 }
 
 func (o AssetProperties) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Collection != nil {
-		toSerialize["collection"] = o.Collection
-	}
-	if o.ImageUrl != nil {
-		toSerialize["image_url"] = o.ImageUrl
-	}
-	if o.Name != nil {
-		toSerialize["name"] = o.Name
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o AssetProperties) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.Collection) {
+		toSerialize["collection"] = o.Collection
+	}
+	if !isNil(o.ImageUrl) {
+		toSerialize["image_url"] = o.ImageUrl
+	}
+	if !isNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
+	return toSerialize, nil
 }
 
 type NullableAssetProperties struct {

@@ -92,7 +92,7 @@ func (a *EncodingApiService) EncodeAssetExecute(r ApiEncodeAssetRequest) (*Encod
 	}
 
 	localVarPath := localBasePath + "/v1/encode/{assetType}"
-	localVarPath = strings.Replace(localVarPath, "{"+"assetType"+"}", url.PathEscape(parameterToString(r.assetType, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"assetType"+"}", url.PathEscape(parameterValueToString(r.assetType, "assetType")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}

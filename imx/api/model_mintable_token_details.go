@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the MintableTokenDetails type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &MintableTokenDetails{}
+
 // MintableTokenDetails struct for MintableTokenDetails
 type MintableTokenDetails struct {
 	// Blueprint of this token
@@ -118,17 +121,19 @@ func (o *MintableTokenDetails) SetTokenId(v string) {
 }
 
 func (o MintableTokenDetails) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["blueprint"] = o.Blueprint
-	}
-	if true {
-		toSerialize["client_token_id"] = o.ClientTokenId
-	}
-	if true {
-		toSerialize["token_id"] = o.TokenId
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o MintableTokenDetails) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["blueprint"] = o.Blueprint
+	toSerialize["client_token_id"] = o.ClientTokenId
+	toSerialize["token_id"] = o.TokenId
+	return toSerialize, nil
 }
 
 type NullableMintableTokenDetails struct {

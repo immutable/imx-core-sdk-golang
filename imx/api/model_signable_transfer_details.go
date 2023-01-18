@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SignableTransferDetails type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SignableTransferDetails{}
+
 // SignableTransferDetails struct for SignableTransferDetails
 type SignableTransferDetails struct {
 	// Amount of the token to transfer
@@ -117,17 +120,19 @@ func (o *SignableTransferDetails) SetToken(v SignableToken) {
 }
 
 func (o SignableTransferDetails) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["amount"] = o.Amount
-	}
-	if true {
-		toSerialize["receiver"] = o.Receiver
-	}
-	if true {
-		toSerialize["token"] = o.Token
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SignableTransferDetails) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["amount"] = o.Amount
+	toSerialize["receiver"] = o.Receiver
+	toSerialize["token"] = o.Token
+	return toSerialize, nil
 }
 
 type NullableSignableTransferDetails struct {

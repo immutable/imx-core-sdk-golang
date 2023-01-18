@@ -187,7 +187,8 @@ func (a *UsersApiService) GetSignableRegistrationExecute(r ApiGetSignableRegistr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -197,7 +198,8 @@ func (a *UsersApiService) GetSignableRegistrationExecute(r ApiGetSignableRegistr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -317,7 +319,8 @@ func (a *UsersApiService) GetSignableRegistrationOffchainExecute(r ApiGetSignabl
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -327,7 +330,8 @@ func (a *UsersApiService) GetSignableRegistrationOffchainExecute(r ApiGetSignabl
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -387,7 +391,7 @@ func (a *UsersApiService) GetUsersExecute(r ApiGetUsersRequest) (*GetUsersApiRes
 	}
 
 	localVarPath := localBasePath + "/v1/users/{user}"
-	localVarPath = strings.Replace(localVarPath, "{"+"user"+"}", url.PathEscape(parameterToString(r.user, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"user"+"}", url.PathEscape(parameterValueToString(r.user, "user")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -439,7 +443,8 @@ func (a *UsersApiService) GetUsersExecute(r ApiGetUsersRequest) (*GetUsersApiRes
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -449,7 +454,8 @@ func (a *UsersApiService) GetUsersExecute(r ApiGetUsersRequest) (*GetUsersApiRes
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -569,7 +575,8 @@ func (a *UsersApiService) RegisterUserExecute(r ApiRegisterUserRequest) (*Regist
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -579,7 +586,8 @@ func (a *UsersApiService) RegisterUserExecute(r ApiRegisterUserRequest) (*Regist
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -589,7 +597,8 @@ func (a *UsersApiService) RegisterUserExecute(r ApiRegisterUserRequest) (*Regist
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

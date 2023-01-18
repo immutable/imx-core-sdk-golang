@@ -162,8 +162,8 @@ func (a *ProjectsApiService) CreateProjectExecute(r ApiCreateProjectRequest) (*C
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["IMX-Signature"] = parameterToString(*r.iMXSignature, "")
-	localVarHeaderParams["IMX-Timestamp"] = parameterToString(*r.iMXTimestamp, "")
+	parameterAddToQuery(localVarQueryParams, "IMX-Signature", r.iMXSignature, "")
+	parameterAddToQuery(localVarQueryParams, "IMX-Timestamp", r.iMXTimestamp, "")
 	// body params
 	localVarPostBody = r.createProjectRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -195,7 +195,8 @@ func (a *ProjectsApiService) CreateProjectExecute(r ApiCreateProjectRequest) (*C
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -205,7 +206,8 @@ func (a *ProjectsApiService) CreateProjectExecute(r ApiCreateProjectRequest) (*C
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -215,7 +217,8 @@ func (a *ProjectsApiService) CreateProjectExecute(r ApiCreateProjectRequest) (*C
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -225,7 +228,8 @@ func (a *ProjectsApiService) CreateProjectExecute(r ApiCreateProjectRequest) (*C
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -299,7 +303,7 @@ func (a *ProjectsApiService) GetProjectExecute(r ApiGetProjectRequest) (*Project
 	}
 
 	localVarPath := localBasePath + "/v1/projects/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -328,8 +332,8 @@ func (a *ProjectsApiService) GetProjectExecute(r ApiGetProjectRequest) (*Project
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["IMX-Signature"] = parameterToString(*r.iMXSignature, "")
-	localVarHeaderParams["IMX-Timestamp"] = parameterToString(*r.iMXTimestamp, "")
+	parameterAddToQuery(localVarQueryParams, "IMX-Signature", r.iMXSignature, "")
+	parameterAddToQuery(localVarQueryParams, "IMX-Timestamp", r.iMXTimestamp, "")
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -359,7 +363,8 @@ func (a *ProjectsApiService) GetProjectExecute(r ApiGetProjectRequest) (*Project
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -369,7 +374,8 @@ func (a *ProjectsApiService) GetProjectExecute(r ApiGetProjectRequest) (*Project
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -379,7 +385,8 @@ func (a *ProjectsApiService) GetProjectExecute(r ApiGetProjectRequest) (*Project
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -389,7 +396,8 @@ func (a *ProjectsApiService) GetProjectExecute(r ApiGetProjectRequest) (*Project
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -500,16 +508,16 @@ func (a *ProjectsApiService) GetProjectsExecute(r ApiGetProjectsRequest) (*GetPr
 	}
 
 	if r.pageSize != nil {
-		localVarQueryParams.Add("page_size", parameterToString(*r.pageSize, ""))
+		parameterAddToQuery(localVarQueryParams, "page_size", r.pageSize, "")
 	}
 	if r.cursor != nil {
-		localVarQueryParams.Add("cursor", parameterToString(*r.cursor, ""))
+		parameterAddToQuery(localVarQueryParams, "cursor", r.cursor, "")
 	}
 	if r.orderBy != nil {
-		localVarQueryParams.Add("order_by", parameterToString(*r.orderBy, ""))
+		parameterAddToQuery(localVarQueryParams, "order_by", r.orderBy, "")
 	}
 	if r.direction != nil {
-		localVarQueryParams.Add("direction", parameterToString(*r.direction, ""))
+		parameterAddToQuery(localVarQueryParams, "direction", r.direction, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -528,8 +536,8 @@ func (a *ProjectsApiService) GetProjectsExecute(r ApiGetProjectsRequest) (*GetPr
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["IMX-Signature"] = parameterToString(*r.iMXSignature, "")
-	localVarHeaderParams["IMX-Timestamp"] = parameterToString(*r.iMXTimestamp, "")
+	parameterAddToQuery(localVarQueryParams, "IMX-Signature", r.iMXSignature, "")
+	parameterAddToQuery(localVarQueryParams, "IMX-Timestamp", r.iMXTimestamp, "")
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -559,7 +567,8 @@ func (a *ProjectsApiService) GetProjectsExecute(r ApiGetProjectsRequest) (*GetPr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -569,7 +578,8 @@ func (a *ProjectsApiService) GetProjectsExecute(r ApiGetProjectsRequest) (*GetPr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -579,7 +589,8 @@ func (a *ProjectsApiService) GetProjectsExecute(r ApiGetProjectsRequest) (*GetPr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -589,7 +600,8 @@ func (a *ProjectsApiService) GetProjectsExecute(r ApiGetProjectsRequest) (*GetPr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

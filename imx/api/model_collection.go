@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Collection type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Collection{}
+
 // Collection struct for Collection
 type Collection struct {
 	// Ethereum address of the ERC721 contract
@@ -319,38 +322,26 @@ func (o *Collection) SetUpdatedAt(v string) {
 }
 
 func (o Collection) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["address"] = o.Address
-	}
-	if true {
-		toSerialize["collection_image_url"] = o.CollectionImageUrl.Get()
-	}
-	if true {
-		toSerialize["created_at"] = o.CreatedAt.Get()
-	}
-	if true {
-		toSerialize["description"] = o.Description.Get()
-	}
-	if true {
-		toSerialize["icon_url"] = o.IconUrl.Get()
-	}
-	if true {
-		toSerialize["metadata_api_url"] = o.MetadataApiUrl.Get()
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["project_id"] = o.ProjectId
-	}
-	if true {
-		toSerialize["project_owner_address"] = o.ProjectOwnerAddress
-	}
-	if true {
-		toSerialize["updated_at"] = o.UpdatedAt.Get()
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Collection) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["address"] = o.Address
+	toSerialize["collection_image_url"] = o.CollectionImageUrl.Get()
+	toSerialize["created_at"] = o.CreatedAt.Get()
+	toSerialize["description"] = o.Description.Get()
+	toSerialize["icon_url"] = o.IconUrl.Get()
+	toSerialize["metadata_api_url"] = o.MetadataApiUrl.Get()
+	toSerialize["name"] = o.Name
+	toSerialize["project_id"] = o.ProjectId
+	toSerialize["project_owner_address"] = o.ProjectOwnerAddress
+	toSerialize["updated_at"] = o.UpdatedAt.Get()
+	return toSerialize, nil
 }
 
 type NullableCollection struct {

@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the GetSignableRegistrationRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GetSignableRegistrationRequest{}
+
 // GetSignableRegistrationRequest struct for GetSignableRegistrationRequest
 type GetSignableRegistrationRequest struct {
 	// Ether key of user
@@ -91,14 +94,18 @@ func (o *GetSignableRegistrationRequest) SetStarkKey(v string) {
 }
 
 func (o GetSignableRegistrationRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["ether_key"] = o.EtherKey
-	}
-	if true {
-		toSerialize["stark_key"] = o.StarkKey
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o GetSignableRegistrationRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["ether_key"] = o.EtherKey
+	toSerialize["stark_key"] = o.StarkKey
+	return toSerialize, nil
 }
 
 type NullableGetSignableRegistrationRequest struct {

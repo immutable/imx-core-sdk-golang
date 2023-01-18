@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the MintTokenDataV2 type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &MintTokenDataV2{}
+
 // MintTokenDataV2 struct for MintTokenDataV2
 type MintTokenDataV2 struct {
 	// Token metadata blueprint
@@ -94,7 +97,7 @@ func (o *MintTokenDataV2) SetId(v string) {
 
 // GetRoyalties returns the Royalties field value if set, zero value otherwise.
 func (o *MintTokenDataV2) GetRoyalties() []MintFee {
-	if o == nil || o.Royalties == nil {
+	if o == nil || isNil(o.Royalties) {
 		var ret []MintFee
 		return ret
 	}
@@ -104,7 +107,7 @@ func (o *MintTokenDataV2) GetRoyalties() []MintFee {
 // GetRoyaltiesOk returns a tuple with the Royalties field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MintTokenDataV2) GetRoyaltiesOk() ([]MintFee, bool) {
-	if o == nil || o.Royalties == nil {
+	if o == nil || isNil(o.Royalties) {
 		return nil, false
 	}
 	return o.Royalties, true
@@ -112,7 +115,7 @@ func (o *MintTokenDataV2) GetRoyaltiesOk() ([]MintFee, bool) {
 
 // HasRoyalties returns a boolean if a field has been set.
 func (o *MintTokenDataV2) HasRoyalties() bool {
-	if o != nil && o.Royalties != nil {
+	if o != nil && !isNil(o.Royalties) {
 		return true
 	}
 
@@ -125,17 +128,21 @@ func (o *MintTokenDataV2) SetRoyalties(v []MintFee) {
 }
 
 func (o MintTokenDataV2) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["blueprint"] = o.Blueprint
-	}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if o.Royalties != nil {
-		toSerialize["royalties"] = o.Royalties
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o MintTokenDataV2) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["blueprint"] = o.Blueprint
+	toSerialize["id"] = o.Id
+	if !isNil(o.Royalties) {
+		toSerialize["royalties"] = o.Royalties
+	}
+	return toSerialize, nil
 }
 
 type NullableMintTokenDataV2 struct {

@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CreateWithdrawalResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CreateWithdrawalResponse{}
+
 // CreateWithdrawalResponse struct for CreateWithdrawalResponse
 type CreateWithdrawalResponse struct {
 	// Status of the withdrawal
@@ -118,17 +121,19 @@ func (o *CreateWithdrawalResponse) SetWithdrawalId(v int32) {
 }
 
 func (o CreateWithdrawalResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if true {
-		toSerialize["time"] = o.Time
-	}
-	if true {
-		toSerialize["withdrawal_id"] = o.WithdrawalId
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CreateWithdrawalResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["status"] = o.Status
+	toSerialize["time"] = o.Time
+	toSerialize["withdrawal_id"] = o.WithdrawalId
+	return toSerialize, nil
 }
 
 type NullableCreateWithdrawalResponse struct {

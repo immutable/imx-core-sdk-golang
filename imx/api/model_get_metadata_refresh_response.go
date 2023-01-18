@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the GetMetadataRefreshResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GetMetadataRefreshResponse{}
+
 // GetMetadataRefreshResponse struct for GetMetadataRefreshResponse
 type GetMetadataRefreshResponse struct {
 	// The collection address
@@ -79,7 +82,7 @@ func (o *GetMetadataRefreshResponse) SetCollectionAddress(v string) {
 
 // GetCompletedAt returns the CompletedAt field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *GetMetadataRefreshResponse) GetCompletedAt() string {
-	if o == nil || o.CompletedAt.Get() == nil {
+	if o == nil || isNil(o.CompletedAt.Get()) {
 		var ret string
 		return ret
 	}
@@ -216,26 +219,24 @@ func (o *GetMetadataRefreshResponse) SetSummary(v []MetadataRefreshSummary) {
 }
 
 func (o GetMetadataRefreshResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["collection_address"] = o.CollectionAddress
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
+	return json.Marshal(toSerialize)
+}
+
+func (o GetMetadataRefreshResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["collection_address"] = o.CollectionAddress
 	if o.CompletedAt.IsSet() {
 		toSerialize["completed_at"] = o.CompletedAt.Get()
 	}
-	if true {
-		toSerialize["refresh_id"] = o.RefreshId
-	}
-	if true {
-		toSerialize["started_at"] = o.StartedAt
-	}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if true {
-		toSerialize["summary"] = o.Summary
-	}
-	return json.Marshal(toSerialize)
+	toSerialize["refresh_id"] = o.RefreshId
+	toSerialize["started_at"] = o.StartedAt
+	toSerialize["status"] = o.Status
+	toSerialize["summary"] = o.Summary
+	return toSerialize, nil
 }
 
 type NullableGetMetadataRefreshResponse struct {

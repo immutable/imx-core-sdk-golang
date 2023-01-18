@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CreateTransferResponseV1 type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CreateTransferResponseV1{}
+
 // CreateTransferResponseV1 struct for CreateTransferResponseV1
 type CreateTransferResponseV1 struct {
 	// [deprecated] Sent signature
@@ -145,20 +148,20 @@ func (o *CreateTransferResponseV1) SetTransferId(v int32) {
 }
 
 func (o CreateTransferResponseV1) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["sent_signature"] = o.SentSignature
-	}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if true {
-		toSerialize["time"] = o.Time
-	}
-	if true {
-		toSerialize["transfer_id"] = o.TransferId
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CreateTransferResponseV1) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["sent_signature"] = o.SentSignature
+	toSerialize["status"] = o.Status
+	toSerialize["time"] = o.Time
+	toSerialize["transfer_id"] = o.TransferId
+	return toSerialize, nil
 }
 
 type NullableCreateTransferResponseV1 struct {

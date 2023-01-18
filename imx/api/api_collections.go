@@ -192,8 +192,8 @@ func (a *CollectionsApiService) CreateCollectionExecute(r ApiCreateCollectionReq
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["IMX-Signature"] = parameterToString(*r.iMXSignature, "")
-	localVarHeaderParams["IMX-Timestamp"] = parameterToString(*r.iMXTimestamp, "")
+	parameterAddToQuery(localVarQueryParams, "IMX-Signature", r.iMXSignature, "")
+	parameterAddToQuery(localVarQueryParams, "IMX-Timestamp", r.iMXTimestamp, "")
 	// body params
 	localVarPostBody = r.createCollectionRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -225,7 +225,8 @@ func (a *CollectionsApiService) CreateCollectionExecute(r ApiCreateCollectionReq
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -235,7 +236,8 @@ func (a *CollectionsApiService) CreateCollectionExecute(r ApiCreateCollectionReq
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -245,7 +247,8 @@ func (a *CollectionsApiService) CreateCollectionExecute(r ApiCreateCollectionReq
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -255,7 +258,8 @@ func (a *CollectionsApiService) CreateCollectionExecute(r ApiCreateCollectionReq
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -315,7 +319,7 @@ func (a *CollectionsApiService) GetCollectionExecute(r ApiGetCollectionRequest) 
 	}
 
 	localVarPath := localBasePath + "/v1/collections/{address}"
-	localVarPath = strings.Replace(localVarPath, "{"+"address"+"}", url.PathEscape(parameterToString(r.address, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"address"+"}", url.PathEscape(parameterValueToString(r.address, "address")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -367,7 +371,8 @@ func (a *CollectionsApiService) GetCollectionExecute(r ApiGetCollectionRequest) 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -441,17 +446,17 @@ func (a *CollectionsApiService) ListCollectionFiltersExecute(r ApiListCollection
 	}
 
 	localVarPath := localBasePath + "/v1/collections/{address}/filters"
-	localVarPath = strings.Replace(localVarPath, "{"+"address"+"}", url.PathEscape(parameterToString(r.address, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"address"+"}", url.PathEscape(parameterValueToString(r.address, "address")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
 	if r.pageSize != nil {
-		localVarQueryParams.Add("page_size", parameterToString(*r.pageSize, ""))
+		parameterAddToQuery(localVarQueryParams, "page_size", r.pageSize, "")
 	}
 	if r.nextPageToken != nil {
-		localVarQueryParams.Add("next_page_token", parameterToString(*r.nextPageToken, ""))
+		parameterAddToQuery(localVarQueryParams, "next_page_token", r.nextPageToken, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -602,25 +607,25 @@ func (a *CollectionsApiService) ListCollectionsExecute(r ApiListCollectionsReque
 	localVarFormParams := url.Values{}
 
 	if r.pageSize != nil {
-		localVarQueryParams.Add("page_size", parameterToString(*r.pageSize, ""))
+		parameterAddToQuery(localVarQueryParams, "page_size", r.pageSize, "")
 	}
 	if r.cursor != nil {
-		localVarQueryParams.Add("cursor", parameterToString(*r.cursor, ""))
+		parameterAddToQuery(localVarQueryParams, "cursor", r.cursor, "")
 	}
 	if r.orderBy != nil {
-		localVarQueryParams.Add("order_by", parameterToString(*r.orderBy, ""))
+		parameterAddToQuery(localVarQueryParams, "order_by", r.orderBy, "")
 	}
 	if r.direction != nil {
-		localVarQueryParams.Add("direction", parameterToString(*r.direction, ""))
+		parameterAddToQuery(localVarQueryParams, "direction", r.direction, "")
 	}
 	if r.blacklist != nil {
-		localVarQueryParams.Add("blacklist", parameterToString(*r.blacklist, ""))
+		parameterAddToQuery(localVarQueryParams, "blacklist", r.blacklist, "")
 	}
 	if r.whitelist != nil {
-		localVarQueryParams.Add("whitelist", parameterToString(*r.whitelist, ""))
+		parameterAddToQuery(localVarQueryParams, "whitelist", r.whitelist, "")
 	}
 	if r.keyword != nil {
-		localVarQueryParams.Add("keyword", parameterToString(*r.keyword, ""))
+		parameterAddToQuery(localVarQueryParams, "keyword", r.keyword, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -668,7 +673,8 @@ func (a *CollectionsApiService) ListCollectionsExecute(r ApiListCollectionsReque
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -678,7 +684,8 @@ func (a *CollectionsApiService) ListCollectionsExecute(r ApiListCollectionsReque
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -759,7 +766,7 @@ func (a *CollectionsApiService) UpdateCollectionExecute(r ApiUpdateCollectionReq
 	}
 
 	localVarPath := localBasePath + "/v1/collections/{address}"
-	localVarPath = strings.Replace(localVarPath, "{"+"address"+"}", url.PathEscape(parameterToString(r.address, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"address"+"}", url.PathEscape(parameterValueToString(r.address, "address")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -791,8 +798,8 @@ func (a *CollectionsApiService) UpdateCollectionExecute(r ApiUpdateCollectionReq
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["IMX-Signature"] = parameterToString(*r.iMXSignature, "")
-	localVarHeaderParams["IMX-Timestamp"] = parameterToString(*r.iMXTimestamp, "")
+	parameterAddToQuery(localVarQueryParams, "IMX-Signature", r.iMXSignature, "")
+	parameterAddToQuery(localVarQueryParams, "IMX-Timestamp", r.iMXTimestamp, "")
 	// body params
 	localVarPostBody = r.updateCollectionRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -824,7 +831,8 @@ func (a *CollectionsApiService) UpdateCollectionExecute(r ApiUpdateCollectionReq
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -834,7 +842,8 @@ func (a *CollectionsApiService) UpdateCollectionExecute(r ApiUpdateCollectionReq
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -844,7 +853,8 @@ func (a *CollectionsApiService) UpdateCollectionExecute(r ApiUpdateCollectionReq
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -854,7 +864,8 @@ func (a *CollectionsApiService) UpdateCollectionExecute(r ApiUpdateCollectionReq
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -864,7 +875,8 @@ func (a *CollectionsApiService) UpdateCollectionExecute(r ApiUpdateCollectionReq
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

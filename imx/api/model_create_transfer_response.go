@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CreateTransferResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CreateTransferResponse{}
+
 // CreateTransferResponse struct for CreateTransferResponse
 type CreateTransferResponse struct {
 	// List of transfer IDs
@@ -64,11 +67,17 @@ func (o *CreateTransferResponse) SetTransferIds(v []int32) {
 }
 
 func (o CreateTransferResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["transfer_ids"] = o.TransferIds
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CreateTransferResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["transfer_ids"] = o.TransferIds
+	return toSerialize, nil
 }
 
 type NullableCreateTransferResponse struct {

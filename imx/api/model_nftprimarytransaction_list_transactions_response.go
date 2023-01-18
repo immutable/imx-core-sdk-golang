@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the NftprimarytransactionListTransactionsResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &NftprimarytransactionListTransactionsResponse{}
+
 // NftprimarytransactionListTransactionsResponse struct for NftprimarytransactionListTransactionsResponse
 type NftprimarytransactionListTransactionsResponse struct {
 	// Generated cursor returned by previous query
@@ -44,7 +47,7 @@ func NewNftprimarytransactionListTransactionsResponseWithDefaults() *Nftprimaryt
 
 // GetCursor returns the Cursor field value if set, zero value otherwise.
 func (o *NftprimarytransactionListTransactionsResponse) GetCursor() string {
-	if o == nil || o.Cursor == nil {
+	if o == nil || isNil(o.Cursor) {
 		var ret string
 		return ret
 	}
@@ -54,7 +57,7 @@ func (o *NftprimarytransactionListTransactionsResponse) GetCursor() string {
 // GetCursorOk returns a tuple with the Cursor field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *NftprimarytransactionListTransactionsResponse) GetCursorOk() (*string, bool) {
-	if o == nil || o.Cursor == nil {
+	if o == nil || isNil(o.Cursor) {
 		return nil, false
 	}
 	return o.Cursor, true
@@ -62,7 +65,7 @@ func (o *NftprimarytransactionListTransactionsResponse) GetCursorOk() (*string, 
 
 // HasCursor returns a boolean if a field has been set.
 func (o *NftprimarytransactionListTransactionsResponse) HasCursor() bool {
-	if o != nil && o.Cursor != nil {
+	if o != nil && !isNil(o.Cursor) {
 		return true
 	}
 
@@ -76,7 +79,7 @@ func (o *NftprimarytransactionListTransactionsResponse) SetCursor(v string) {
 
 // GetRemaining returns the Remaining field value if set, zero value otherwise.
 func (o *NftprimarytransactionListTransactionsResponse) GetRemaining() int32 {
-	if o == nil || o.Remaining == nil {
+	if o == nil || isNil(o.Remaining) {
 		var ret int32
 		return ret
 	}
@@ -86,7 +89,7 @@ func (o *NftprimarytransactionListTransactionsResponse) GetRemaining() int32 {
 // GetRemainingOk returns a tuple with the Remaining field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *NftprimarytransactionListTransactionsResponse) GetRemainingOk() (*int32, bool) {
-	if o == nil || o.Remaining == nil {
+	if o == nil || isNil(o.Remaining) {
 		return nil, false
 	}
 	return o.Remaining, true
@@ -94,7 +97,7 @@ func (o *NftprimarytransactionListTransactionsResponse) GetRemainingOk() (*int32
 
 // HasRemaining returns a boolean if a field has been set.
 func (o *NftprimarytransactionListTransactionsResponse) HasRemaining() bool {
-	if o != nil && o.Remaining != nil {
+	if o != nil && !isNil(o.Remaining) {
 		return true
 	}
 
@@ -108,7 +111,7 @@ func (o *NftprimarytransactionListTransactionsResponse) SetRemaining(v int32) {
 
 // GetResult returns the Result field value if set, zero value otherwise.
 func (o *NftprimarytransactionListTransactionsResponse) GetResult() []NftprimarytransactionTransactionData {
-	if o == nil || o.Result == nil {
+	if o == nil || isNil(o.Result) {
 		var ret []NftprimarytransactionTransactionData
 		return ret
 	}
@@ -118,7 +121,7 @@ func (o *NftprimarytransactionListTransactionsResponse) GetResult() []Nftprimary
 // GetResultOk returns a tuple with the Result field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *NftprimarytransactionListTransactionsResponse) GetResultOk() ([]NftprimarytransactionTransactionData, bool) {
-	if o == nil || o.Result == nil {
+	if o == nil || isNil(o.Result) {
 		return nil, false
 	}
 	return o.Result, true
@@ -126,7 +129,7 @@ func (o *NftprimarytransactionListTransactionsResponse) GetResultOk() ([]Nftprim
 
 // HasResult returns a boolean if a field has been set.
 func (o *NftprimarytransactionListTransactionsResponse) HasResult() bool {
-	if o != nil && o.Result != nil {
+	if o != nil && !isNil(o.Result) {
 		return true
 	}
 
@@ -139,17 +142,25 @@ func (o *NftprimarytransactionListTransactionsResponse) SetResult(v []Nftprimary
 }
 
 func (o NftprimarytransactionListTransactionsResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Cursor != nil {
-		toSerialize["cursor"] = o.Cursor
-	}
-	if o.Remaining != nil {
-		toSerialize["remaining"] = o.Remaining
-	}
-	if o.Result != nil {
-		toSerialize["result"] = o.Result
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o NftprimarytransactionListTransactionsResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.Cursor) {
+		toSerialize["cursor"] = o.Cursor
+	}
+	if !isNil(o.Remaining) {
+		toSerialize["remaining"] = o.Remaining
+	}
+	if !isNil(o.Result) {
+		toSerialize["result"] = o.Result
+	}
+	return toSerialize, nil
 }
 
 type NullableNftprimarytransactionListTransactionsResponse struct {

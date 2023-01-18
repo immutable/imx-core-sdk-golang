@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the GetSignableWithdrawalResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GetSignableWithdrawalResponse{}
+
 // GetSignableWithdrawalResponse struct for GetSignableWithdrawalResponse
 type GetSignableWithdrawalResponse struct {
 	// Amount of the token we are withdrawing
@@ -226,29 +229,23 @@ func (o *GetSignableWithdrawalResponse) SetVaultId(v int32) {
 }
 
 func (o GetSignableWithdrawalResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["amount"] = o.Amount
-	}
-	if true {
-		toSerialize["asset_id"] = o.AssetId
-	}
-	if true {
-		toSerialize["nonce"] = o.Nonce
-	}
-	if true {
-		toSerialize["payload_hash"] = o.PayloadHash
-	}
-	if true {
-		toSerialize["signable_message"] = o.SignableMessage
-	}
-	if true {
-		toSerialize["stark_key"] = o.StarkKey
-	}
-	if true {
-		toSerialize["vault_id"] = o.VaultId
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o GetSignableWithdrawalResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["amount"] = o.Amount
+	toSerialize["asset_id"] = o.AssetId
+	toSerialize["nonce"] = o.Nonce
+	toSerialize["payload_hash"] = o.PayloadHash
+	toSerialize["signable_message"] = o.SignableMessage
+	toSerialize["stark_key"] = o.StarkKey
+	toSerialize["vault_id"] = o.VaultId
+	return toSerialize, nil
 }
 
 type NullableGetSignableWithdrawalResponse struct {

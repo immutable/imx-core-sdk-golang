@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CollectionFilter type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CollectionFilter{}
+
 // CollectionFilter struct for CollectionFilter
 type CollectionFilter struct {
 	// Key of this property
@@ -45,7 +48,7 @@ func NewCollectionFilterWithDefaults() *CollectionFilter {
 
 // GetKey returns the Key field value if set, zero value otherwise.
 func (o *CollectionFilter) GetKey() string {
-	if o == nil || o.Key == nil {
+	if o == nil || isNil(o.Key) {
 		var ret string
 		return ret
 	}
@@ -55,7 +58,7 @@ func (o *CollectionFilter) GetKey() string {
 // GetKeyOk returns a tuple with the Key field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CollectionFilter) GetKeyOk() (*string, bool) {
-	if o == nil || o.Key == nil {
+	if o == nil || isNil(o.Key) {
 		return nil, false
 	}
 	return o.Key, true
@@ -63,7 +66,7 @@ func (o *CollectionFilter) GetKeyOk() (*string, bool) {
 
 // HasKey returns a boolean if a field has been set.
 func (o *CollectionFilter) HasKey() bool {
-	if o != nil && o.Key != nil {
+	if o != nil && !isNil(o.Key) {
 		return true
 	}
 
@@ -77,7 +80,7 @@ func (o *CollectionFilter) SetKey(v string) {
 
 // GetRange returns the Range field value if set, zero value otherwise.
 func (o *CollectionFilter) GetRange() Range {
-	if o == nil || o.Range == nil {
+	if o == nil || isNil(o.Range) {
 		var ret Range
 		return ret
 	}
@@ -87,7 +90,7 @@ func (o *CollectionFilter) GetRange() Range {
 // GetRangeOk returns a tuple with the Range field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CollectionFilter) GetRangeOk() (*Range, bool) {
-	if o == nil || o.Range == nil {
+	if o == nil || isNil(o.Range) {
 		return nil, false
 	}
 	return o.Range, true
@@ -95,7 +98,7 @@ func (o *CollectionFilter) GetRangeOk() (*Range, bool) {
 
 // HasRange returns a boolean if a field has been set.
 func (o *CollectionFilter) HasRange() bool {
-	if o != nil && o.Range != nil {
+	if o != nil && !isNil(o.Range) {
 		return true
 	}
 
@@ -109,7 +112,7 @@ func (o *CollectionFilter) SetRange(v Range) {
 
 // GetType returns the Type field value if set, zero value otherwise.
 func (o *CollectionFilter) GetType() string {
-	if o == nil || o.Type == nil {
+	if o == nil || isNil(o.Type) {
 		var ret string
 		return ret
 	}
@@ -119,7 +122,7 @@ func (o *CollectionFilter) GetType() string {
 // GetTypeOk returns a tuple with the Type field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CollectionFilter) GetTypeOk() (*string, bool) {
-	if o == nil || o.Type == nil {
+	if o == nil || isNil(o.Type) {
 		return nil, false
 	}
 	return o.Type, true
@@ -127,7 +130,7 @@ func (o *CollectionFilter) GetTypeOk() (*string, bool) {
 
 // HasType returns a boolean if a field has been set.
 func (o *CollectionFilter) HasType() bool {
-	if o != nil && o.Type != nil {
+	if o != nil && !isNil(o.Type) {
 		return true
 	}
 
@@ -141,7 +144,7 @@ func (o *CollectionFilter) SetType(v string) {
 
 // GetValue returns the Value field value if set, zero value otherwise.
 func (o *CollectionFilter) GetValue() []string {
-	if o == nil || o.Value == nil {
+	if o == nil || isNil(o.Value) {
 		var ret []string
 		return ret
 	}
@@ -151,7 +154,7 @@ func (o *CollectionFilter) GetValue() []string {
 // GetValueOk returns a tuple with the Value field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CollectionFilter) GetValueOk() ([]string, bool) {
-	if o == nil || o.Value == nil {
+	if o == nil || isNil(o.Value) {
 		return nil, false
 	}
 	return o.Value, true
@@ -159,7 +162,7 @@ func (o *CollectionFilter) GetValueOk() ([]string, bool) {
 
 // HasValue returns a boolean if a field has been set.
 func (o *CollectionFilter) HasValue() bool {
-	if o != nil && o.Value != nil {
+	if o != nil && !isNil(o.Value) {
 		return true
 	}
 
@@ -172,20 +175,28 @@ func (o *CollectionFilter) SetValue(v []string) {
 }
 
 func (o CollectionFilter) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Key != nil {
-		toSerialize["key"] = o.Key
-	}
-	if o.Range != nil {
-		toSerialize["range"] = o.Range
-	}
-	if o.Type != nil {
-		toSerialize["type"] = o.Type
-	}
-	if o.Value != nil {
-		toSerialize["value"] = o.Value
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CollectionFilter) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.Key) {
+		toSerialize["key"] = o.Key
+	}
+	if !isNil(o.Range) {
+		toSerialize["range"] = o.Range
+	}
+	if !isNil(o.Type) {
+		toSerialize["type"] = o.Type
+	}
+	if !isNil(o.Value) {
+		toSerialize["value"] = o.Value
+	}
+	return toSerialize, nil
 }
 
 type NullableCollectionFilter struct {

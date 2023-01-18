@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CreateTradeResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CreateTradeResponse{}
+
 // CreateTradeResponse struct for CreateTradeResponse
 type CreateTradeResponse struct {
 	// Request ID as a reference for an asynchronous trade creation request
@@ -46,7 +49,7 @@ func NewCreateTradeResponseWithDefaults() *CreateTradeResponse {
 
 // GetRequestId returns the RequestId field value if set, zero value otherwise.
 func (o *CreateTradeResponse) GetRequestId() string {
-	if o == nil || o.RequestId == nil {
+	if o == nil || isNil(o.RequestId) {
 		var ret string
 		return ret
 	}
@@ -56,7 +59,7 @@ func (o *CreateTradeResponse) GetRequestId() string {
 // GetRequestIdOk returns a tuple with the RequestId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateTradeResponse) GetRequestIdOk() (*string, bool) {
-	if o == nil || o.RequestId == nil {
+	if o == nil || isNil(o.RequestId) {
 		return nil, false
 	}
 	return o.RequestId, true
@@ -64,7 +67,7 @@ func (o *CreateTradeResponse) GetRequestIdOk() (*string, bool) {
 
 // HasRequestId returns a boolean if a field has been set.
 func (o *CreateTradeResponse) HasRequestId() bool {
-	if o != nil && o.RequestId != nil {
+	if o != nil && !isNil(o.RequestId) {
 		return true
 	}
 
@@ -125,17 +128,21 @@ func (o *CreateTradeResponse) SetTradeId(v int32) {
 }
 
 func (o CreateTradeResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.RequestId != nil {
-		toSerialize["request_id"] = o.RequestId
-	}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if true {
-		toSerialize["trade_id"] = o.TradeId
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CreateTradeResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.RequestId) {
+		toSerialize["request_id"] = o.RequestId
+	}
+	toSerialize["status"] = o.Status
+	toSerialize["trade_id"] = o.TradeId
+	return toSerialize, nil
 }
 
 type NullableCreateTradeResponse struct {

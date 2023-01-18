@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CreateMetadataRefreshRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CreateMetadataRefreshRequest{}
+
 // CreateMetadataRefreshRequest struct for CreateMetadataRefreshRequest
 type CreateMetadataRefreshRequest struct {
 	// The collection contract address
@@ -91,14 +94,18 @@ func (o *CreateMetadataRefreshRequest) SetTokenIds(v []string) {
 }
 
 func (o CreateMetadataRefreshRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["collection_address"] = o.CollectionAddress
-	}
-	if true {
-		toSerialize["token_ids"] = o.TokenIds
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CreateMetadataRefreshRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["collection_address"] = o.CollectionAddress
+	toSerialize["token_ids"] = o.TokenIds
+	return toSerialize, nil
 }
 
 type NullableCreateMetadataRefreshRequest struct {

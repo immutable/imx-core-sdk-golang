@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CurrencyWithLimits type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CurrencyWithLimits{}
+
 // CurrencyWithLimits struct for CurrencyWithLimits
 type CurrencyWithLimits struct {
 	// Provider currency code
@@ -45,7 +48,7 @@ func NewCurrencyWithLimitsWithDefaults() *CurrencyWithLimits {
 
 // GetCurrencyCode returns the CurrencyCode field value if set, zero value otherwise.
 func (o *CurrencyWithLimits) GetCurrencyCode() string {
-	if o == nil || o.CurrencyCode == nil {
+	if o == nil || isNil(o.CurrencyCode) {
 		var ret string
 		return ret
 	}
@@ -55,7 +58,7 @@ func (o *CurrencyWithLimits) GetCurrencyCode() string {
 // GetCurrencyCodeOk returns a tuple with the CurrencyCode field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CurrencyWithLimits) GetCurrencyCodeOk() (*string, bool) {
-	if o == nil || o.CurrencyCode == nil {
+	if o == nil || isNil(o.CurrencyCode) {
 		return nil, false
 	}
 	return o.CurrencyCode, true
@@ -63,7 +66,7 @@ func (o *CurrencyWithLimits) GetCurrencyCodeOk() (*string, bool) {
 
 // HasCurrencyCode returns a boolean if a field has been set.
 func (o *CurrencyWithLimits) HasCurrencyCode() bool {
-	if o != nil && o.CurrencyCode != nil {
+	if o != nil && !isNil(o.CurrencyCode) {
 		return true
 	}
 
@@ -77,7 +80,7 @@ func (o *CurrencyWithLimits) SetCurrencyCode(v string) {
 
 // GetLimits returns the Limits field value if set, zero value otherwise.
 func (o *CurrencyWithLimits) GetLimits() AggregateLimit {
-	if o == nil || o.Limits == nil {
+	if o == nil || isNil(o.Limits) {
 		var ret AggregateLimit
 		return ret
 	}
@@ -87,7 +90,7 @@ func (o *CurrencyWithLimits) GetLimits() AggregateLimit {
 // GetLimitsOk returns a tuple with the Limits field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CurrencyWithLimits) GetLimitsOk() (*AggregateLimit, bool) {
-	if o == nil || o.Limits == nil {
+	if o == nil || isNil(o.Limits) {
 		return nil, false
 	}
 	return o.Limits, true
@@ -95,7 +98,7 @@ func (o *CurrencyWithLimits) GetLimitsOk() (*AggregateLimit, bool) {
 
 // HasLimits returns a boolean if a field has been set.
 func (o *CurrencyWithLimits) HasLimits() bool {
-	if o != nil && o.Limits != nil {
+	if o != nil && !isNil(o.Limits) {
 		return true
 	}
 
@@ -109,7 +112,7 @@ func (o *CurrencyWithLimits) SetLimits(v AggregateLimit) {
 
 // GetProvider returns the Provider field value if set, zero value otherwise.
 func (o *CurrencyWithLimits) GetProvider() string {
-	if o == nil || o.Provider == nil {
+	if o == nil || isNil(o.Provider) {
 		var ret string
 		return ret
 	}
@@ -119,7 +122,7 @@ func (o *CurrencyWithLimits) GetProvider() string {
 // GetProviderOk returns a tuple with the Provider field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CurrencyWithLimits) GetProviderOk() (*string, bool) {
-	if o == nil || o.Provider == nil {
+	if o == nil || isNil(o.Provider) {
 		return nil, false
 	}
 	return o.Provider, true
@@ -127,7 +130,7 @@ func (o *CurrencyWithLimits) GetProviderOk() (*string, bool) {
 
 // HasProvider returns a boolean if a field has been set.
 func (o *CurrencyWithLimits) HasProvider() bool {
-	if o != nil && o.Provider != nil {
+	if o != nil && !isNil(o.Provider) {
 		return true
 	}
 
@@ -141,7 +144,7 @@ func (o *CurrencyWithLimits) SetProvider(v string) {
 
 // GetSymbol returns the Symbol field value if set, zero value otherwise.
 func (o *CurrencyWithLimits) GetSymbol() string {
-	if o == nil || o.Symbol == nil {
+	if o == nil || isNil(o.Symbol) {
 		var ret string
 		return ret
 	}
@@ -151,7 +154,7 @@ func (o *CurrencyWithLimits) GetSymbol() string {
 // GetSymbolOk returns a tuple with the Symbol field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CurrencyWithLimits) GetSymbolOk() (*string, bool) {
-	if o == nil || o.Symbol == nil {
+	if o == nil || isNil(o.Symbol) {
 		return nil, false
 	}
 	return o.Symbol, true
@@ -159,7 +162,7 @@ func (o *CurrencyWithLimits) GetSymbolOk() (*string, bool) {
 
 // HasSymbol returns a boolean if a field has been set.
 func (o *CurrencyWithLimits) HasSymbol() bool {
-	if o != nil && o.Symbol != nil {
+	if o != nil && !isNil(o.Symbol) {
 		return true
 	}
 
@@ -172,20 +175,28 @@ func (o *CurrencyWithLimits) SetSymbol(v string) {
 }
 
 func (o CurrencyWithLimits) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.CurrencyCode != nil {
-		toSerialize["currency_code"] = o.CurrencyCode
-	}
-	if o.Limits != nil {
-		toSerialize["limits"] = o.Limits
-	}
-	if o.Provider != nil {
-		toSerialize["provider"] = o.Provider
-	}
-	if o.Symbol != nil {
-		toSerialize["symbol"] = o.Symbol
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CurrencyWithLimits) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.CurrencyCode) {
+		toSerialize["currency_code"] = o.CurrencyCode
+	}
+	if !isNil(o.Limits) {
+		toSerialize["limits"] = o.Limits
+	}
+	if !isNil(o.Provider) {
+		toSerialize["provider"] = o.Provider
+	}
+	if !isNil(o.Symbol) {
+		toSerialize["symbol"] = o.Symbol
+	}
+	return toSerialize, nil
 }
 
 type NullableCurrencyWithLimits struct {

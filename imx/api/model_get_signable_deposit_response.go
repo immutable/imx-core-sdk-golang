@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the GetSignableDepositResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GetSignableDepositResponse{}
+
 // GetSignableDepositResponse struct for GetSignableDepositResponse
 type GetSignableDepositResponse struct {
 	// Amount this user is depositing
@@ -172,23 +175,21 @@ func (o *GetSignableDepositResponse) SetVaultId(v int32) {
 }
 
 func (o GetSignableDepositResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["amount"] = o.Amount
-	}
-	if true {
-		toSerialize["asset_id"] = o.AssetId
-	}
-	if true {
-		toSerialize["nonce"] = o.Nonce
-	}
-	if true {
-		toSerialize["stark_key"] = o.StarkKey
-	}
-	if true {
-		toSerialize["vault_id"] = o.VaultId
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o GetSignableDepositResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["amount"] = o.Amount
+	toSerialize["asset_id"] = o.AssetId
+	toSerialize["nonce"] = o.Nonce
+	toSerialize["stark_key"] = o.StarkKey
+	toSerialize["vault_id"] = o.VaultId
+	return toSerialize, nil
 }
 
 type NullableGetSignableDepositResponse struct {

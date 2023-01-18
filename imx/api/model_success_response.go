@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SuccessResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SuccessResponse{}
+
 // SuccessResponse struct for SuccessResponse
 type SuccessResponse struct {
 	Result string `json:"result"`
@@ -63,11 +66,17 @@ func (o *SuccessResponse) SetResult(v string) {
 }
 
 func (o SuccessResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["result"] = o.Result
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SuccessResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["result"] = o.Result
+	return toSerialize, nil
 }
 
 type NullableSuccessResponse struct {

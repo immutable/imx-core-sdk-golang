@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CreateMetadataRefreshResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CreateMetadataRefreshResponse{}
+
 // CreateMetadataRefreshResponse struct for CreateMetadataRefreshResponse
 type CreateMetadataRefreshResponse struct {
 	// The metadata refresh ID
@@ -64,11 +67,17 @@ func (o *CreateMetadataRefreshResponse) SetRefreshId(v string) {
 }
 
 func (o CreateMetadataRefreshResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["refresh_id"] = o.RefreshId
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CreateMetadataRefreshResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["refresh_id"] = o.RefreshId
+	return toSerialize, nil
 }
 
 type NullableCreateMetadataRefreshResponse struct {

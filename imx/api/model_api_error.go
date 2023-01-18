@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the APIError type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &APIError{}
+
 // APIError struct for APIError
 type APIError struct {
 	// The error code
@@ -70,7 +73,7 @@ func (o *APIError) SetCode(v string) {
 
 // GetDetails returns the Details field value if set, zero value otherwise.
 func (o *APIError) GetDetails() string {
-	if o == nil || o.Details == nil {
+	if o == nil || isNil(o.Details) {
 		var ret string
 		return ret
 	}
@@ -80,7 +83,7 @@ func (o *APIError) GetDetails() string {
 // GetDetailsOk returns a tuple with the Details field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *APIError) GetDetailsOk() (*string, bool) {
-	if o == nil || o.Details == nil {
+	if o == nil || isNil(o.Details) {
 		return nil, false
 	}
 	return o.Details, true
@@ -88,7 +91,7 @@ func (o *APIError) GetDetailsOk() (*string, bool) {
 
 // HasDetails returns a boolean if a field has been set.
 func (o *APIError) HasDetails() bool {
-	if o != nil && o.Details != nil {
+	if o != nil && !isNil(o.Details) {
 		return true
 	}
 
@@ -125,17 +128,21 @@ func (o *APIError) SetMessage(v string) {
 }
 
 func (o APIError) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["code"] = o.Code
-	}
-	if o.Details != nil {
-		toSerialize["details"] = o.Details
-	}
-	if true {
-		toSerialize["message"] = o.Message
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o APIError) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["code"] = o.Code
+	if !isNil(o.Details) {
+		toSerialize["details"] = o.Details
+	}
+	toSerialize["message"] = o.Message
+	return toSerialize, nil
 }
 
 type NullableAPIError struct {

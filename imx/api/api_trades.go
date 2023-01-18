@@ -176,8 +176,8 @@ func (a *TradesApiService) CreateTradeExecute(r ApiCreateTradeRequest) (*CreateT
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	localVarHeaderParams["x-imx-eth-address"] = parameterToString(*r.xImxEthAddress, "")
-	localVarHeaderParams["x-imx-eth-signature"] = parameterToString(*r.xImxEthSignature, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-address", r.xImxEthAddress, "")
+	parameterAddToQuery(localVarQueryParams, "x-imx-eth-signature", r.xImxEthSignature, "")
 	// body params
 	localVarPostBody = r.createTradeRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
@@ -371,7 +371,7 @@ func (a *TradesApiService) GetTradeExecute(r ApiGetTradeRequest) (*Trade, *http.
 	}
 
 	localVarPath := localBasePath + "/v1/trades/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -554,37 +554,37 @@ func (a *TradesApiService) ListTradesExecute(r ApiListTradesRequest) (*ListTrade
 	localVarFormParams := url.Values{}
 
 	if r.partyATokenType != nil {
-		localVarQueryParams.Add("party_a_token_type", parameterToString(*r.partyATokenType, ""))
+		parameterAddToQuery(localVarQueryParams, "party_a_token_type", r.partyATokenType, "")
 	}
 	if r.partyATokenAddress != nil {
-		localVarQueryParams.Add("party_a_token_address", parameterToString(*r.partyATokenAddress, ""))
+		parameterAddToQuery(localVarQueryParams, "party_a_token_address", r.partyATokenAddress, "")
 	}
 	if r.partyBTokenType != nil {
-		localVarQueryParams.Add("party_b_token_type", parameterToString(*r.partyBTokenType, ""))
+		parameterAddToQuery(localVarQueryParams, "party_b_token_type", r.partyBTokenType, "")
 	}
 	if r.partyBTokenAddress != nil {
-		localVarQueryParams.Add("party_b_token_address", parameterToString(*r.partyBTokenAddress, ""))
+		parameterAddToQuery(localVarQueryParams, "party_b_token_address", r.partyBTokenAddress, "")
 	}
 	if r.partyBTokenId != nil {
-		localVarQueryParams.Add("party_b_token_id", parameterToString(*r.partyBTokenId, ""))
+		parameterAddToQuery(localVarQueryParams, "party_b_token_id", r.partyBTokenId, "")
 	}
 	if r.pageSize != nil {
-		localVarQueryParams.Add("page_size", parameterToString(*r.pageSize, ""))
+		parameterAddToQuery(localVarQueryParams, "page_size", r.pageSize, "")
 	}
 	if r.cursor != nil {
-		localVarQueryParams.Add("cursor", parameterToString(*r.cursor, ""))
+		parameterAddToQuery(localVarQueryParams, "cursor", r.cursor, "")
 	}
 	if r.orderBy != nil {
-		localVarQueryParams.Add("order_by", parameterToString(*r.orderBy, ""))
+		parameterAddToQuery(localVarQueryParams, "order_by", r.orderBy, "")
 	}
 	if r.direction != nil {
-		localVarQueryParams.Add("direction", parameterToString(*r.direction, ""))
+		parameterAddToQuery(localVarQueryParams, "direction", r.direction, "")
 	}
 	if r.minTimestamp != nil {
-		localVarQueryParams.Add("min_timestamp", parameterToString(*r.minTimestamp, ""))
+		parameterAddToQuery(localVarQueryParams, "min_timestamp", r.minTimestamp, "")
 	}
 	if r.maxTimestamp != nil {
-		localVarQueryParams.Add("max_timestamp", parameterToString(*r.maxTimestamp, ""))
+		parameterAddToQuery(localVarQueryParams, "max_timestamp", r.maxTimestamp, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

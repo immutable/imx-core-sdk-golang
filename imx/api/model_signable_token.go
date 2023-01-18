@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the SignableToken type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SignableToken{}
+
 // SignableToken struct for SignableToken
 type SignableToken struct {
 	// Token data. See https://docs.x.immutable.com/docs/token-data-object
@@ -42,7 +45,7 @@ func NewSignableTokenWithDefaults() *SignableToken {
 
 // GetData returns the Data field value if set, zero value otherwise.
 func (o *SignableToken) GetData() map[string]interface{} {
-	if o == nil || o.Data == nil {
+	if o == nil || isNil(o.Data) {
 		var ret map[string]interface{}
 		return ret
 	}
@@ -52,15 +55,15 @@ func (o *SignableToken) GetData() map[string]interface{} {
 // GetDataOk returns a tuple with the Data field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SignableToken) GetDataOk() (map[string]interface{}, bool) {
-	if o == nil || o.Data == nil {
-		return nil, false
+	if o == nil || isNil(o.Data) {
+		return map[string]interface{}{}, false
 	}
 	return o.Data, true
 }
 
 // HasData returns a boolean if a field has been set.
 func (o *SignableToken) HasData() bool {
-	if o != nil && o.Data != nil {
+	if o != nil && !isNil(o.Data) {
 		return true
 	}
 
@@ -74,7 +77,7 @@ func (o *SignableToken) SetData(v map[string]interface{}) {
 
 // GetType returns the Type field value if set, zero value otherwise.
 func (o *SignableToken) GetType() string {
-	if o == nil || o.Type == nil {
+	if o == nil || isNil(o.Type) {
 		var ret string
 		return ret
 	}
@@ -84,7 +87,7 @@ func (o *SignableToken) GetType() string {
 // GetTypeOk returns a tuple with the Type field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SignableToken) GetTypeOk() (*string, bool) {
-	if o == nil || o.Type == nil {
+	if o == nil || isNil(o.Type) {
 		return nil, false
 	}
 	return o.Type, true
@@ -92,7 +95,7 @@ func (o *SignableToken) GetTypeOk() (*string, bool) {
 
 // HasType returns a boolean if a field has been set.
 func (o *SignableToken) HasType() bool {
-	if o != nil && o.Type != nil {
+	if o != nil && !isNil(o.Type) {
 		return true
 	}
 
@@ -105,14 +108,22 @@ func (o *SignableToken) SetType(v string) {
 }
 
 func (o SignableToken) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Data != nil {
-		toSerialize["data"] = o.Data
-	}
-	if o.Type != nil {
-		toSerialize["type"] = o.Type
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o SignableToken) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.Data) {
+		toSerialize["data"] = o.Data
+	}
+	if !isNil(o.Type) {
+		toSerialize["type"] = o.Type
+	}
+	return toSerialize, nil
 }
 
 type NullableSignableToken struct {

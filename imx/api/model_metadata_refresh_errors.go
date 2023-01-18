@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the MetadataRefreshErrors type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &MetadataRefreshErrors{}
+
 // MetadataRefreshErrors struct for MetadataRefreshErrors
 type MetadataRefreshErrors struct {
 	// Metadata API response for the token
@@ -230,29 +233,23 @@ func (o *MetadataRefreshErrors) SetTokenId(v string) {
 }
 
 func (o MetadataRefreshErrors) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["client_response_body"] = o.ClientResponseBody.Get()
-	}
-	if true {
-		toSerialize["client_response_status_code"] = o.ClientResponseStatusCode.Get()
-	}
-	if true {
-		toSerialize["client_token_metadata_url"] = o.ClientTokenMetadataUrl
-	}
-	if true {
-		toSerialize["collection_address"] = o.CollectionAddress
-	}
-	if true {
-		toSerialize["created_at"] = o.CreatedAt
-	}
-	if true {
-		toSerialize["error_code"] = o.ErrorCode
-	}
-	if true {
-		toSerialize["token_id"] = o.TokenId
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o MetadataRefreshErrors) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["client_response_body"] = o.ClientResponseBody.Get()
+	toSerialize["client_response_status_code"] = o.ClientResponseStatusCode.Get()
+	toSerialize["client_token_metadata_url"] = o.ClientTokenMetadataUrl
+	toSerialize["collection_address"] = o.CollectionAddress
+	toSerialize["created_at"] = o.CreatedAt
+	toSerialize["error_code"] = o.ErrorCode
+	toSerialize["token_id"] = o.TokenId
+	return toSerialize, nil
 }
 
 type NullableMetadataRefreshErrors struct {

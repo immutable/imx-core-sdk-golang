@@ -99,7 +99,7 @@ func (a *TokensApiService) GetTokenExecute(r ApiGetTokenRequest) (*TokenDetails,
 	}
 
 	localVarPath := localBasePath + "/v1/tokens/{address}"
-	localVarPath = strings.Replace(localVarPath, "{"+"address"+"}", url.PathEscape(parameterToString(r.address, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"address"+"}", url.PathEscape(parameterValueToString(r.address, "address")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -247,22 +247,22 @@ func (a *TokensApiService) ListTokensExecute(r ApiListTokensRequest) (*ListToken
 	localVarFormParams := url.Values{}
 
 	if r.pageSize != nil {
-		localVarQueryParams.Add("page_size", parameterToString(*r.pageSize, ""))
+		parameterAddToQuery(localVarQueryParams, "page_size", r.pageSize, "")
 	}
 	if r.cursor != nil {
-		localVarQueryParams.Add("cursor", parameterToString(*r.cursor, ""))
+		parameterAddToQuery(localVarQueryParams, "cursor", r.cursor, "")
 	}
 	if r.orderBy != nil {
-		localVarQueryParams.Add("order_by", parameterToString(*r.orderBy, ""))
+		parameterAddToQuery(localVarQueryParams, "order_by", r.orderBy, "")
 	}
 	if r.direction != nil {
-		localVarQueryParams.Add("direction", parameterToString(*r.direction, ""))
+		parameterAddToQuery(localVarQueryParams, "direction", r.direction, "")
 	}
 	if r.address != nil {
-		localVarQueryParams.Add("address", parameterToString(*r.address, ""))
+		parameterAddToQuery(localVarQueryParams, "address", r.address, "")
 	}
 	if r.symbols != nil {
-		localVarQueryParams.Add("symbols", parameterToString(*r.symbols, ""))
+		parameterAddToQuery(localVarQueryParams, "symbols", r.symbols, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

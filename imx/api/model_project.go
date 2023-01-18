@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Project type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Project{}
+
 // Project struct for Project
 type Project struct {
 	// The current period expiry date for collection limit
@@ -25,7 +28,7 @@ type Project struct {
 	CollectionRemaining int32 `json:"collection_remaining"`
 	// The company name
 	CompanyName string `json:"company_name"`
-	// The project contact email
+	// The project contact email (must be registered as a developer account with Immutable at https://hub.immutable.com)
 	ContactEmail string `json:"contact_email"`
 	// The project ID
 	Id int32 `json:"id"`
@@ -307,38 +310,26 @@ func (o *Project) SetName(v string) {
 }
 
 func (o Project) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["collection_limit_expires_at"] = o.CollectionLimitExpiresAt
-	}
-	if true {
-		toSerialize["collection_monthly_limit"] = o.CollectionMonthlyLimit
-	}
-	if true {
-		toSerialize["collection_remaining"] = o.CollectionRemaining
-	}
-	if true {
-		toSerialize["company_name"] = o.CompanyName
-	}
-	if true {
-		toSerialize["contact_email"] = o.ContactEmail
-	}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["mint_limit_expires_at"] = o.MintLimitExpiresAt
-	}
-	if true {
-		toSerialize["mint_monthly_limit"] = o.MintMonthlyLimit
-	}
-	if true {
-		toSerialize["mint_remaining"] = o.MintRemaining
-	}
-	if true {
-		toSerialize["name"] = o.Name
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Project) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["collection_limit_expires_at"] = o.CollectionLimitExpiresAt
+	toSerialize["collection_monthly_limit"] = o.CollectionMonthlyLimit
+	toSerialize["collection_remaining"] = o.CollectionRemaining
+	toSerialize["company_name"] = o.CompanyName
+	toSerialize["contact_email"] = o.ContactEmail
+	toSerialize["id"] = o.Id
+	toSerialize["mint_limit_expires_at"] = o.MintLimitExpiresAt
+	toSerialize["mint_monthly_limit"] = o.MintMonthlyLimit
+	toSerialize["mint_remaining"] = o.MintRemaining
+	toSerialize["name"] = o.Name
+	return toSerialize, nil
 }
 
 type NullableProject struct {

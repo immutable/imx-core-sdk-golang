@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Asset type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Asset{}
+
 // Asset struct for Asset
 type Asset struct {
 	Collection CollectionDetails `json:"collection"`
@@ -154,7 +157,7 @@ func (o *Asset) SetDescription(v string) {
 
 // GetFees returns the Fees field value if set, zero value otherwise.
 func (o *Asset) GetFees() []Fee {
-	if o == nil || o.Fees == nil {
+	if o == nil || isNil(o.Fees) {
 		var ret []Fee
 		return ret
 	}
@@ -164,7 +167,7 @@ func (o *Asset) GetFees() []Fee {
 // GetFeesOk returns a tuple with the Fees field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Asset) GetFeesOk() ([]Fee, bool) {
-	if o == nil || o.Fees == nil {
+	if o == nil || isNil(o.Fees) {
 		return nil, false
 	}
 	return o.Fees, true
@@ -172,7 +175,7 @@ func (o *Asset) GetFeesOk() ([]Fee, bool) {
 
 // HasFees returns a boolean if a field has been set.
 func (o *Asset) HasFees() bool {
-	if o != nil && o.Fees != nil {
+	if o != nil && !isNil(o.Fees) {
 		return true
 	}
 
@@ -186,7 +189,7 @@ func (o *Asset) SetFees(v []Fee) {
 
 // GetId returns the Id field value if set, zero value otherwise.
 func (o *Asset) GetId() string {
-	if o == nil || o.Id == nil {
+	if o == nil || isNil(o.Id) {
 		var ret string
 		return ret
 	}
@@ -196,7 +199,7 @@ func (o *Asset) GetId() string {
 // GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Asset) GetIdOk() (*string, bool) {
-	if o == nil || o.Id == nil {
+	if o == nil || isNil(o.Id) {
 		return nil, false
 	}
 	return o.Id, true
@@ -204,7 +207,7 @@ func (o *Asset) GetIdOk() (*string, bool) {
 
 // HasId returns a boolean if a field has been set.
 func (o *Asset) HasId() bool {
-	if o != nil && o.Id != nil {
+	if o != nil && !isNil(o.Id) {
 		return true
 	}
 
@@ -257,8 +260,8 @@ func (o *Asset) GetMetadata() map[string]interface{} {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Asset) GetMetadataOk() (map[string]interface{}, bool) {
-	if o == nil || o.Metadata == nil {
-		return nil, false
+	if o == nil || isNil(o.Metadata) {
+		return map[string]interface{}{}, false
 	}
 	return o.Metadata, true
 }
@@ -296,7 +299,7 @@ func (o *Asset) SetName(v string) {
 
 // GetOrders returns the Orders field value if set, zero value otherwise.
 func (o *Asset) GetOrders() OrderDetails {
-	if o == nil || o.Orders == nil {
+	if o == nil || isNil(o.Orders) {
 		var ret OrderDetails
 		return ret
 	}
@@ -306,7 +309,7 @@ func (o *Asset) GetOrders() OrderDetails {
 // GetOrdersOk returns a tuple with the Orders field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Asset) GetOrdersOk() (*OrderDetails, bool) {
-	if o == nil || o.Orders == nil {
+	if o == nil || isNil(o.Orders) {
 		return nil, false
 	}
 	return o.Orders, true
@@ -314,7 +317,7 @@ func (o *Asset) GetOrdersOk() (*OrderDetails, bool) {
 
 // HasOrders returns a boolean if a field has been set.
 func (o *Asset) HasOrders() bool {
-	if o != nil && o.Orders != nil {
+	if o != nil && !isNil(o.Orders) {
 		return true
 	}
 
@@ -475,53 +478,39 @@ func (o *Asset) SetUser(v string) {
 }
 
 func (o Asset) MarshalJSON() ([]byte, error) {
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
+	}
+	return json.Marshal(toSerialize)
+}
+
+func (o Asset) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["collection"] = o.Collection
-	}
-	if true {
-		toSerialize["created_at"] = o.CreatedAt.Get()
-	}
-	if true {
-		toSerialize["description"] = o.Description.Get()
-	}
-	if o.Fees != nil {
+	toSerialize["collection"] = o.Collection
+	toSerialize["created_at"] = o.CreatedAt.Get()
+	toSerialize["description"] = o.Description.Get()
+	if !isNil(o.Fees) {
 		toSerialize["fees"] = o.Fees
 	}
-	if o.Id != nil {
+	if !isNil(o.Id) {
 		toSerialize["id"] = o.Id
 	}
-	if true {
-		toSerialize["image_url"] = o.ImageUrl.Get()
-	}
+	toSerialize["image_url"] = o.ImageUrl.Get()
 	if o.Metadata != nil {
 		toSerialize["metadata"] = o.Metadata
 	}
-	if true {
-		toSerialize["name"] = o.Name.Get()
-	}
-	if o.Orders != nil {
+	toSerialize["name"] = o.Name.Get()
+	if !isNil(o.Orders) {
 		toSerialize["orders"] = o.Orders
 	}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if true {
-		toSerialize["token_address"] = o.TokenAddress
-	}
-	if true {
-		toSerialize["token_id"] = o.TokenId
-	}
-	if true {
-		toSerialize["updated_at"] = o.UpdatedAt.Get()
-	}
-	if true {
-		toSerialize["uri"] = o.Uri.Get()
-	}
-	if true {
-		toSerialize["user"] = o.User
-	}
-	return json.Marshal(toSerialize)
+	toSerialize["status"] = o.Status
+	toSerialize["token_address"] = o.TokenAddress
+	toSerialize["token_id"] = o.TokenId
+	toSerialize["updated_at"] = o.UpdatedAt.Get()
+	toSerialize["uri"] = o.Uri.Get()
+	toSerialize["user"] = o.User
+	return toSerialize, nil
 }
 
 type NullableAsset struct {

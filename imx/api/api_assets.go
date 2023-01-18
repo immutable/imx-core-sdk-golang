@@ -110,15 +110,15 @@ func (a *AssetsApiService) GetAssetExecute(r ApiGetAssetRequest) (*Asset, *http.
 	}
 
 	localVarPath := localBasePath + "/v1/assets/{token_address}/{token_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"token_address"+"}", url.PathEscape(parameterToString(r.tokenAddress, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"token_id"+"}", url.PathEscape(parameterToString(r.tokenId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"token_address"+"}", url.PathEscape(parameterValueToString(r.tokenAddress, "tokenAddress")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"token_id"+"}", url.PathEscape(parameterValueToString(r.tokenId, "tokenId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
 	if r.includeFees != nil {
-		localVarQueryParams.Add("include_fees", parameterToString(*r.includeFees, ""))
+		parameterAddToQuery(localVarQueryParams, "include_fees", r.includeFees, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -166,7 +166,8 @@ func (a *AssetsApiService) GetAssetExecute(r ApiGetAssetRequest) (*Asset, *http.
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -176,7 +177,8 @@ func (a *AssetsApiService) GetAssetExecute(r ApiGetAssetRequest) (*Asset, *http.
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -351,52 +353,52 @@ func (a *AssetsApiService) ListAssetsExecute(r ApiListAssetsRequest) (*ListAsset
 	localVarFormParams := url.Values{}
 
 	if r.pageSize != nil {
-		localVarQueryParams.Add("page_size", parameterToString(*r.pageSize, ""))
+		parameterAddToQuery(localVarQueryParams, "page_size", r.pageSize, "")
 	}
 	if r.cursor != nil {
-		localVarQueryParams.Add("cursor", parameterToString(*r.cursor, ""))
+		parameterAddToQuery(localVarQueryParams, "cursor", r.cursor, "")
 	}
 	if r.orderBy != nil {
-		localVarQueryParams.Add("order_by", parameterToString(*r.orderBy, ""))
+		parameterAddToQuery(localVarQueryParams, "order_by", r.orderBy, "")
 	}
 	if r.direction != nil {
-		localVarQueryParams.Add("direction", parameterToString(*r.direction, ""))
+		parameterAddToQuery(localVarQueryParams, "direction", r.direction, "")
 	}
 	if r.user != nil {
-		localVarQueryParams.Add("user", parameterToString(*r.user, ""))
+		parameterAddToQuery(localVarQueryParams, "user", r.user, "")
 	}
 	if r.status != nil {
-		localVarQueryParams.Add("status", parameterToString(*r.status, ""))
+		parameterAddToQuery(localVarQueryParams, "status", r.status, "")
 	}
 	if r.name != nil {
-		localVarQueryParams.Add("name", parameterToString(*r.name, ""))
+		parameterAddToQuery(localVarQueryParams, "name", r.name, "")
 	}
 	if r.metadata != nil {
-		localVarQueryParams.Add("metadata", parameterToString(*r.metadata, ""))
+		parameterAddToQuery(localVarQueryParams, "metadata", r.metadata, "")
 	}
 	if r.sellOrders != nil {
-		localVarQueryParams.Add("sell_orders", parameterToString(*r.sellOrders, ""))
+		parameterAddToQuery(localVarQueryParams, "sell_orders", r.sellOrders, "")
 	}
 	if r.buyOrders != nil {
-		localVarQueryParams.Add("buy_orders", parameterToString(*r.buyOrders, ""))
+		parameterAddToQuery(localVarQueryParams, "buy_orders", r.buyOrders, "")
 	}
 	if r.includeFees != nil {
-		localVarQueryParams.Add("include_fees", parameterToString(*r.includeFees, ""))
+		parameterAddToQuery(localVarQueryParams, "include_fees", r.includeFees, "")
 	}
 	if r.collection != nil {
-		localVarQueryParams.Add("collection", parameterToString(*r.collection, ""))
+		parameterAddToQuery(localVarQueryParams, "collection", r.collection, "")
 	}
 	if r.updatedMinTimestamp != nil {
-		localVarQueryParams.Add("updated_min_timestamp", parameterToString(*r.updatedMinTimestamp, ""))
+		parameterAddToQuery(localVarQueryParams, "updated_min_timestamp", r.updatedMinTimestamp, "")
 	}
 	if r.updatedMaxTimestamp != nil {
-		localVarQueryParams.Add("updated_max_timestamp", parameterToString(*r.updatedMaxTimestamp, ""))
+		parameterAddToQuery(localVarQueryParams, "updated_max_timestamp", r.updatedMaxTimestamp, "")
 	}
 	if r.auxiliaryFeePercentages != nil {
-		localVarQueryParams.Add("auxiliary_fee_percentages", parameterToString(*r.auxiliaryFeePercentages, ""))
+		parameterAddToQuery(localVarQueryParams, "auxiliary_fee_percentages", r.auxiliaryFeePercentages, "")
 	}
 	if r.auxiliaryFeeRecipients != nil {
-		localVarQueryParams.Add("auxiliary_fee_recipients", parameterToString(*r.auxiliaryFeeRecipients, ""))
+		parameterAddToQuery(localVarQueryParams, "auxiliary_fee_recipients", r.auxiliaryFeeRecipients, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -444,7 +446,8 @@ func (a *AssetsApiService) ListAssetsExecute(r ApiListAssetsRequest) (*ListAsset
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -454,7 +457,8 @@ func (a *AssetsApiService) ListAssetsExecute(r ApiListAssetsRequest) (*ListAsset
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

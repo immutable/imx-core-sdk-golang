@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CreateTransferRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CreateTransferRequest{}
+
 // CreateTransferRequest struct for CreateTransferRequest
 type CreateTransferRequest struct {
 	// List of transfers
@@ -91,14 +94,18 @@ func (o *CreateTransferRequest) SetSenderStarkKey(v string) {
 }
 
 func (o CreateTransferRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["requests"] = o.Requests
-	}
-	if true {
-		toSerialize["sender_stark_key"] = o.SenderStarkKey
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CreateTransferRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["requests"] = o.Requests
+	toSerialize["sender_stark_key"] = o.SenderStarkKey
+	return toSerialize, nil
 }
 
 type NullableCreateTransferRequest struct {

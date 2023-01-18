@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the GetUsersApiResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GetUsersApiResponse{}
+
 // GetUsersApiResponse struct for GetUsersApiResponse
 type GetUsersApiResponse struct {
 	// Accounts
@@ -64,11 +67,17 @@ func (o *GetUsersApiResponse) SetAccounts(v []string) {
 }
 
 func (o GetUsersApiResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["accounts"] = o.Accounts
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o GetUsersApiResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["accounts"] = o.Accounts
+	return toSerialize, nil
 }
 
 type NullableGetUsersApiResponse struct {

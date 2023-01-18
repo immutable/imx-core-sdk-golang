@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the RegisterUserResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &RegisterUserResponse{}
+
 // RegisterUserResponse struct for RegisterUserResponse
 type RegisterUserResponse struct {
 	// Immutable signature authorising registration
@@ -64,11 +67,17 @@ func (o *RegisterUserResponse) SetTxHash(v string) {
 }
 
 func (o RegisterUserResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["tx_hash"] = o.TxHash
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o RegisterUserResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["tx_hash"] = o.TxHash
+	return toSerialize, nil
 }
 
 type NullableRegisterUserResponse struct {

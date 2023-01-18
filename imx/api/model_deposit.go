@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Deposit type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Deposit{}
+
 // Deposit struct for Deposit
 type Deposit struct {
 	// Status of this deposit in Immutable X
@@ -171,23 +174,21 @@ func (o *Deposit) SetUser(v string) {
 }
 
 func (o Deposit) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if true {
-		toSerialize["timestamp"] = o.Timestamp
-	}
-	if true {
-		toSerialize["token"] = o.Token
-	}
-	if true {
-		toSerialize["transaction_id"] = o.TransactionId
-	}
-	if true {
-		toSerialize["user"] = o.User
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Deposit) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["status"] = o.Status
+	toSerialize["timestamp"] = o.Timestamp
+	toSerialize["token"] = o.Token
+	toSerialize["transaction_id"] = o.TransactionId
+	toSerialize["user"] = o.User
+	return toSerialize, nil
 }
 
 type NullableDeposit struct {

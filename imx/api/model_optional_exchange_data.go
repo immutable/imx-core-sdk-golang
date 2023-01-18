@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the OptionalExchangeData type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &OptionalExchangeData{}
+
 // OptionalExchangeData struct for OptionalExchangeData
 type OptionalExchangeData struct {
 	// Provider transaction ID
@@ -54,7 +57,7 @@ func NewOptionalExchangeDataWithDefaults() *OptionalExchangeData {
 
 // GetExternalId returns the ExternalId field value if set, zero value otherwise.
 func (o *OptionalExchangeData) GetExternalId() string {
-	if o == nil || o.ExternalId == nil {
+	if o == nil || isNil(o.ExternalId) {
 		var ret string
 		return ret
 	}
@@ -64,7 +67,7 @@ func (o *OptionalExchangeData) GetExternalId() string {
 // GetExternalIdOk returns a tuple with the ExternalId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OptionalExchangeData) GetExternalIdOk() (*string, bool) {
-	if o == nil || o.ExternalId == nil {
+	if o == nil || isNil(o.ExternalId) {
 		return nil, false
 	}
 	return o.ExternalId, true
@@ -72,7 +75,7 @@ func (o *OptionalExchangeData) GetExternalIdOk() (*string, bool) {
 
 // HasExternalId returns a boolean if a field has been set.
 func (o *OptionalExchangeData) HasExternalId() bool {
-	if o != nil && o.ExternalId != nil {
+	if o != nil && !isNil(o.ExternalId) {
 		return true
 	}
 
@@ -86,7 +89,7 @@ func (o *OptionalExchangeData) SetExternalId(v string) {
 
 // GetFeesAmount returns the FeesAmount field value if set, zero value otherwise.
 func (o *OptionalExchangeData) GetFeesAmount() float32 {
-	if o == nil || o.FeesAmount == nil {
+	if o == nil || isNil(o.FeesAmount) {
 		var ret float32
 		return ret
 	}
@@ -96,7 +99,7 @@ func (o *OptionalExchangeData) GetFeesAmount() float32 {
 // GetFeesAmountOk returns a tuple with the FeesAmount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OptionalExchangeData) GetFeesAmountOk() (*float32, bool) {
-	if o == nil || o.FeesAmount == nil {
+	if o == nil || isNil(o.FeesAmount) {
 		return nil, false
 	}
 	return o.FeesAmount, true
@@ -104,7 +107,7 @@ func (o *OptionalExchangeData) GetFeesAmountOk() (*float32, bool) {
 
 // HasFeesAmount returns a boolean if a field has been set.
 func (o *OptionalExchangeData) HasFeesAmount() bool {
-	if o != nil && o.FeesAmount != nil {
+	if o != nil && !isNil(o.FeesAmount) {
 		return true
 	}
 
@@ -118,7 +121,7 @@ func (o *OptionalExchangeData) SetFeesAmount(v float32) {
 
 // GetFromAmount returns the FromAmount field value if set, zero value otherwise.
 func (o *OptionalExchangeData) GetFromAmount() float32 {
-	if o == nil || o.FromAmount == nil {
+	if o == nil || isNil(o.FromAmount) {
 		var ret float32
 		return ret
 	}
@@ -128,7 +131,7 @@ func (o *OptionalExchangeData) GetFromAmount() float32 {
 // GetFromAmountOk returns a tuple with the FromAmount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OptionalExchangeData) GetFromAmountOk() (*float32, bool) {
-	if o == nil || o.FromAmount == nil {
+	if o == nil || isNil(o.FromAmount) {
 		return nil, false
 	}
 	return o.FromAmount, true
@@ -136,7 +139,7 @@ func (o *OptionalExchangeData) GetFromAmountOk() (*float32, bool) {
 
 // HasFromAmount returns a boolean if a field has been set.
 func (o *OptionalExchangeData) HasFromAmount() bool {
-	if o != nil && o.FromAmount != nil {
+	if o != nil && !isNil(o.FromAmount) {
 		return true
 	}
 
@@ -150,7 +153,7 @@ func (o *OptionalExchangeData) SetFromAmount(v float32) {
 
 // GetFromCurrency returns the FromCurrency field value if set, zero value otherwise.
 func (o *OptionalExchangeData) GetFromCurrency() string {
-	if o == nil || o.FromCurrency == nil {
+	if o == nil || isNil(o.FromCurrency) {
 		var ret string
 		return ret
 	}
@@ -160,7 +163,7 @@ func (o *OptionalExchangeData) GetFromCurrency() string {
 // GetFromCurrencyOk returns a tuple with the FromCurrency field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OptionalExchangeData) GetFromCurrencyOk() (*string, bool) {
-	if o == nil || o.FromCurrency == nil {
+	if o == nil || isNil(o.FromCurrency) {
 		return nil, false
 	}
 	return o.FromCurrency, true
@@ -168,7 +171,7 @@ func (o *OptionalExchangeData) GetFromCurrencyOk() (*string, bool) {
 
 // HasFromCurrency returns a boolean if a field has been set.
 func (o *OptionalExchangeData) HasFromCurrency() bool {
-	if o != nil && o.FromCurrency != nil {
+	if o != nil && !isNil(o.FromCurrency) {
 		return true
 	}
 
@@ -182,7 +185,7 @@ func (o *OptionalExchangeData) SetFromCurrency(v string) {
 
 // GetProviderWalletAddress returns the ProviderWalletAddress field value if set, zero value otherwise.
 func (o *OptionalExchangeData) GetProviderWalletAddress() string {
-	if o == nil || o.ProviderWalletAddress == nil {
+	if o == nil || isNil(o.ProviderWalletAddress) {
 		var ret string
 		return ret
 	}
@@ -192,7 +195,7 @@ func (o *OptionalExchangeData) GetProviderWalletAddress() string {
 // GetProviderWalletAddressOk returns a tuple with the ProviderWalletAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OptionalExchangeData) GetProviderWalletAddressOk() (*string, bool) {
-	if o == nil || o.ProviderWalletAddress == nil {
+	if o == nil || isNil(o.ProviderWalletAddress) {
 		return nil, false
 	}
 	return o.ProviderWalletAddress, true
@@ -200,7 +203,7 @@ func (o *OptionalExchangeData) GetProviderWalletAddressOk() (*string, bool) {
 
 // HasProviderWalletAddress returns a boolean if a field has been set.
 func (o *OptionalExchangeData) HasProviderWalletAddress() bool {
-	if o != nil && o.ProviderWalletAddress != nil {
+	if o != nil && !isNil(o.ProviderWalletAddress) {
 		return true
 	}
 
@@ -214,7 +217,7 @@ func (o *OptionalExchangeData) SetProviderWalletAddress(v string) {
 
 // GetToAmount returns the ToAmount field value if set, zero value otherwise.
 func (o *OptionalExchangeData) GetToAmount() float32 {
-	if o == nil || o.ToAmount == nil {
+	if o == nil || isNil(o.ToAmount) {
 		var ret float32
 		return ret
 	}
@@ -224,7 +227,7 @@ func (o *OptionalExchangeData) GetToAmount() float32 {
 // GetToAmountOk returns a tuple with the ToAmount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OptionalExchangeData) GetToAmountOk() (*float32, bool) {
-	if o == nil || o.ToAmount == nil {
+	if o == nil || isNil(o.ToAmount) {
 		return nil, false
 	}
 	return o.ToAmount, true
@@ -232,7 +235,7 @@ func (o *OptionalExchangeData) GetToAmountOk() (*float32, bool) {
 
 // HasToAmount returns a boolean if a field has been set.
 func (o *OptionalExchangeData) HasToAmount() bool {
-	if o != nil && o.ToAmount != nil {
+	if o != nil && !isNil(o.ToAmount) {
 		return true
 	}
 
@@ -246,7 +249,7 @@ func (o *OptionalExchangeData) SetToAmount(v float32) {
 
 // GetToCurrency returns the ToCurrency field value if set, zero value otherwise.
 func (o *OptionalExchangeData) GetToCurrency() string {
-	if o == nil || o.ToCurrency == nil {
+	if o == nil || isNil(o.ToCurrency) {
 		var ret string
 		return ret
 	}
@@ -256,7 +259,7 @@ func (o *OptionalExchangeData) GetToCurrency() string {
 // GetToCurrencyOk returns a tuple with the ToCurrency field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OptionalExchangeData) GetToCurrencyOk() (*string, bool) {
-	if o == nil || o.ToCurrency == nil {
+	if o == nil || isNil(o.ToCurrency) {
 		return nil, false
 	}
 	return o.ToCurrency, true
@@ -264,7 +267,7 @@ func (o *OptionalExchangeData) GetToCurrencyOk() (*string, bool) {
 
 // HasToCurrency returns a boolean if a field has been set.
 func (o *OptionalExchangeData) HasToCurrency() bool {
-	if o != nil && o.ToCurrency != nil {
+	if o != nil && !isNil(o.ToCurrency) {
 		return true
 	}
 
@@ -278,7 +281,7 @@ func (o *OptionalExchangeData) SetToCurrency(v string) {
 
 // GetTransferId returns the TransferId field value if set, zero value otherwise.
 func (o *OptionalExchangeData) GetTransferId() string {
-	if o == nil || o.TransferId == nil {
+	if o == nil || isNil(o.TransferId) {
 		var ret string
 		return ret
 	}
@@ -288,7 +291,7 @@ func (o *OptionalExchangeData) GetTransferId() string {
 // GetTransferIdOk returns a tuple with the TransferId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OptionalExchangeData) GetTransferIdOk() (*string, bool) {
-	if o == nil || o.TransferId == nil {
+	if o == nil || isNil(o.TransferId) {
 		return nil, false
 	}
 	return o.TransferId, true
@@ -296,7 +299,7 @@ func (o *OptionalExchangeData) GetTransferIdOk() (*string, bool) {
 
 // HasTransferId returns a boolean if a field has been set.
 func (o *OptionalExchangeData) HasTransferId() bool {
-	if o != nil && o.TransferId != nil {
+	if o != nil && !isNil(o.TransferId) {
 		return true
 	}
 
@@ -309,32 +312,40 @@ func (o *OptionalExchangeData) SetTransferId(v string) {
 }
 
 func (o OptionalExchangeData) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.ExternalId != nil {
-		toSerialize["external_id"] = o.ExternalId
-	}
-	if o.FeesAmount != nil {
-		toSerialize["fees_amount"] = o.FeesAmount
-	}
-	if o.FromAmount != nil {
-		toSerialize["from_amount"] = o.FromAmount
-	}
-	if o.FromCurrency != nil {
-		toSerialize["from_currency"] = o.FromCurrency
-	}
-	if o.ProviderWalletAddress != nil {
-		toSerialize["provider_wallet_address"] = o.ProviderWalletAddress
-	}
-	if o.ToAmount != nil {
-		toSerialize["to_amount"] = o.ToAmount
-	}
-	if o.ToCurrency != nil {
-		toSerialize["to_currency"] = o.ToCurrency
-	}
-	if o.TransferId != nil {
-		toSerialize["transfer_id"] = o.TransferId
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o OptionalExchangeData) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.ExternalId) {
+		toSerialize["external_id"] = o.ExternalId
+	}
+	if !isNil(o.FeesAmount) {
+		toSerialize["fees_amount"] = o.FeesAmount
+	}
+	if !isNil(o.FromAmount) {
+		toSerialize["from_amount"] = o.FromAmount
+	}
+	if !isNil(o.FromCurrency) {
+		toSerialize["from_currency"] = o.FromCurrency
+	}
+	if !isNil(o.ProviderWalletAddress) {
+		toSerialize["provider_wallet_address"] = o.ProviderWalletAddress
+	}
+	if !isNil(o.ToAmount) {
+		toSerialize["to_amount"] = o.ToAmount
+	}
+	if !isNil(o.ToCurrency) {
+		toSerialize["to_currency"] = o.ToCurrency
+	}
+	if !isNil(o.TransferId) {
+		toSerialize["transfer_id"] = o.TransferId
+	}
+	return toSerialize, nil
 }
 
 type NullableOptionalExchangeData struct {

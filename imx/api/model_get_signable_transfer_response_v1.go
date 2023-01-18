@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the GetSignableTransferResponseV1 type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GetSignableTransferResponseV1{}
+
 // GetSignableTransferResponseV1 struct for GetSignableTransferResponseV1
 type GetSignableTransferResponseV1 struct {
 	// Amount of the asset being transferred
@@ -235,7 +238,7 @@ func (o *GetSignableTransferResponseV1) SetReceiverVaultId(v int32) {
 
 // GetSenderStarkKey returns the SenderStarkKey field value if set, zero value otherwise.
 func (o *GetSignableTransferResponseV1) GetSenderStarkKey() string {
-	if o == nil || o.SenderStarkKey == nil {
+	if o == nil || isNil(o.SenderStarkKey) {
 		var ret string
 		return ret
 	}
@@ -245,7 +248,7 @@ func (o *GetSignableTransferResponseV1) GetSenderStarkKey() string {
 // GetSenderStarkKeyOk returns a tuple with the SenderStarkKey field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferResponseV1) GetSenderStarkKeyOk() (*string, bool) {
-	if o == nil || o.SenderStarkKey == nil {
+	if o == nil || isNil(o.SenderStarkKey) {
 		return nil, false
 	}
 	return o.SenderStarkKey, true
@@ -253,7 +256,7 @@ func (o *GetSignableTransferResponseV1) GetSenderStarkKeyOk() (*string, bool) {
 
 // HasSenderStarkKey returns a boolean if a field has been set.
 func (o *GetSignableTransferResponseV1) HasSenderStarkKey() bool {
-	if o != nil && o.SenderStarkKey != nil {
+	if o != nil && !isNil(o.SenderStarkKey) {
 		return true
 	}
 
@@ -314,38 +317,28 @@ func (o *GetSignableTransferResponseV1) SetSignableMessage(v string) {
 }
 
 func (o GetSignableTransferResponseV1) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["amount"] = o.Amount
-	}
-	if true {
-		toSerialize["asset_id"] = o.AssetId
-	}
-	if true {
-		toSerialize["expiration_timestamp"] = o.ExpirationTimestamp
-	}
-	if true {
-		toSerialize["nonce"] = o.Nonce
-	}
-	if true {
-		toSerialize["payload_hash"] = o.PayloadHash
-	}
-	if true {
-		toSerialize["receiver_stark_key"] = o.ReceiverStarkKey
-	}
-	if true {
-		toSerialize["receiver_vault_id"] = o.ReceiverVaultId
-	}
-	if o.SenderStarkKey != nil {
-		toSerialize["sender_stark_key"] = o.SenderStarkKey
-	}
-	if true {
-		toSerialize["sender_vault_id"] = o.SenderVaultId
-	}
-	if true {
-		toSerialize["signable_message"] = o.SignableMessage
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o GetSignableTransferResponseV1) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["amount"] = o.Amount
+	toSerialize["asset_id"] = o.AssetId
+	toSerialize["expiration_timestamp"] = o.ExpirationTimestamp
+	toSerialize["nonce"] = o.Nonce
+	toSerialize["payload_hash"] = o.PayloadHash
+	toSerialize["receiver_stark_key"] = o.ReceiverStarkKey
+	toSerialize["receiver_vault_id"] = o.ReceiverVaultId
+	if !isNil(o.SenderStarkKey) {
+		toSerialize["sender_stark_key"] = o.SenderStarkKey
+	}
+	toSerialize["sender_vault_id"] = o.SenderVaultId
+	toSerialize["signable_message"] = o.SignableMessage
+	return toSerialize, nil
 }
 
 type NullableGetSignableTransferResponseV1 struct {

@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the TradeSide type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &TradeSide{}
+
 // TradeSide struct for TradeSide
 type TradeSide struct {
 	// The ID of the order involved in the trade
@@ -99,7 +102,7 @@ func (o *TradeSide) SetSold(v string) {
 
 // GetTokenAddress returns the TokenAddress field value if set, zero value otherwise.
 func (o *TradeSide) GetTokenAddress() string {
-	if o == nil || o.TokenAddress == nil {
+	if o == nil || isNil(o.TokenAddress) {
 		var ret string
 		return ret
 	}
@@ -109,7 +112,7 @@ func (o *TradeSide) GetTokenAddress() string {
 // GetTokenAddressOk returns a tuple with the TokenAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TradeSide) GetTokenAddressOk() (*string, bool) {
-	if o == nil || o.TokenAddress == nil {
+	if o == nil || isNil(o.TokenAddress) {
 		return nil, false
 	}
 	return o.TokenAddress, true
@@ -117,7 +120,7 @@ func (o *TradeSide) GetTokenAddressOk() (*string, bool) {
 
 // HasTokenAddress returns a boolean if a field has been set.
 func (o *TradeSide) HasTokenAddress() bool {
-	if o != nil && o.TokenAddress != nil {
+	if o != nil && !isNil(o.TokenAddress) {
 		return true
 	}
 
@@ -131,7 +134,7 @@ func (o *TradeSide) SetTokenAddress(v string) {
 
 // GetTokenId returns the TokenId field value if set, zero value otherwise.
 func (o *TradeSide) GetTokenId() string {
-	if o == nil || o.TokenId == nil {
+	if o == nil || isNil(o.TokenId) {
 		var ret string
 		return ret
 	}
@@ -141,7 +144,7 @@ func (o *TradeSide) GetTokenId() string {
 // GetTokenIdOk returns a tuple with the TokenId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TradeSide) GetTokenIdOk() (*string, bool) {
-	if o == nil || o.TokenId == nil {
+	if o == nil || isNil(o.TokenId) {
 		return nil, false
 	}
 	return o.TokenId, true
@@ -149,7 +152,7 @@ func (o *TradeSide) GetTokenIdOk() (*string, bool) {
 
 // HasTokenId returns a boolean if a field has been set.
 func (o *TradeSide) HasTokenId() bool {
-	if o != nil && o.TokenId != nil {
+	if o != nil && !isNil(o.TokenId) {
 		return true
 	}
 
@@ -186,23 +189,25 @@ func (o *TradeSide) SetTokenType(v string) {
 }
 
 func (o TradeSide) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["order_id"] = o.OrderId
-	}
-	if true {
-		toSerialize["sold"] = o.Sold
-	}
-	if o.TokenAddress != nil {
-		toSerialize["token_address"] = o.TokenAddress
-	}
-	if o.TokenId != nil {
-		toSerialize["token_id"] = o.TokenId
-	}
-	if true {
-		toSerialize["token_type"] = o.TokenType
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o TradeSide) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["order_id"] = o.OrderId
+	toSerialize["sold"] = o.Sold
+	if !isNil(o.TokenAddress) {
+		toSerialize["token_address"] = o.TokenAddress
+	}
+	if !isNil(o.TokenId) {
+		toSerialize["token_id"] = o.TokenId
+	}
+	toSerialize["token_type"] = o.TokenType
+	return toSerialize, nil
 }
 
 type NullableTradeSide struct {

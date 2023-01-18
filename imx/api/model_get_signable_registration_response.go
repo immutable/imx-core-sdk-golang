@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the GetSignableRegistrationResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GetSignableRegistrationResponse{}
+
 // GetSignableRegistrationResponse struct for GetSignableRegistrationResponse
 type GetSignableRegistrationResponse struct {
 	// Signature from authorised operator
@@ -91,14 +94,18 @@ func (o *GetSignableRegistrationResponse) SetPayloadHash(v string) {
 }
 
 func (o GetSignableRegistrationResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["operator_signature"] = o.OperatorSignature
-	}
-	if true {
-		toSerialize["payload_hash"] = o.PayloadHash
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o GetSignableRegistrationResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["operator_signature"] = o.OperatorSignature
+	toSerialize["payload_hash"] = o.PayloadHash
+	return toSerialize, nil
 }
 
 type NullableGetSignableRegistrationResponse struct {

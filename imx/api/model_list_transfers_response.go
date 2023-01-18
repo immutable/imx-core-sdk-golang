@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ListTransfersResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ListTransfersResponse{}
+
 // ListTransfersResponse struct for ListTransfersResponse
 type ListTransfersResponse struct {
 	// Generated cursor returned by previous query
@@ -118,17 +121,19 @@ func (o *ListTransfersResponse) SetResult(v []Transfer) {
 }
 
 func (o ListTransfersResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["cursor"] = o.Cursor
-	}
-	if true {
-		toSerialize["remaining"] = o.Remaining
-	}
-	if true {
-		toSerialize["result"] = o.Result
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ListTransfersResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["cursor"] = o.Cursor
+	toSerialize["remaining"] = o.Remaining
+	toSerialize["result"] = o.Result
+	return toSerialize, nil
 }
 
 type NullableListTransfersResponse struct {

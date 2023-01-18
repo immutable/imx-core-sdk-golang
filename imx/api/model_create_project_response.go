@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CreateProjectResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CreateProjectResponse{}
+
 // CreateProjectResponse struct for CreateProjectResponse
 type CreateProjectResponse struct {
 	// The project ID
@@ -64,11 +67,17 @@ func (o *CreateProjectResponse) SetId(v int32) {
 }
 
 func (o CreateProjectResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CreateProjectResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	return toSerialize, nil
 }
 
 type NullableCreateProjectResponse struct {

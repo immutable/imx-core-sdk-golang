@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the FeeData type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &FeeData{}
+
 // FeeData struct for FeeData
 type FeeData struct {
 	// Address of ERC721/ERC20 contract
@@ -42,7 +45,7 @@ func NewFeeDataWithDefaults() *FeeData {
 
 // GetContractAddress returns the ContractAddress field value if set, zero value otherwise.
 func (o *FeeData) GetContractAddress() string {
-	if o == nil || o.ContractAddress == nil {
+	if o == nil || isNil(o.ContractAddress) {
 		var ret string
 		return ret
 	}
@@ -52,7 +55,7 @@ func (o *FeeData) GetContractAddress() string {
 // GetContractAddressOk returns a tuple with the ContractAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *FeeData) GetContractAddressOk() (*string, bool) {
-	if o == nil || o.ContractAddress == nil {
+	if o == nil || isNil(o.ContractAddress) {
 		return nil, false
 	}
 	return o.ContractAddress, true
@@ -60,7 +63,7 @@ func (o *FeeData) GetContractAddressOk() (*string, bool) {
 
 // HasContractAddress returns a boolean if a field has been set.
 func (o *FeeData) HasContractAddress() bool {
-	if o != nil && o.ContractAddress != nil {
+	if o != nil && !isNil(o.ContractAddress) {
 		return true
 	}
 
@@ -74,7 +77,7 @@ func (o *FeeData) SetContractAddress(v string) {
 
 // GetDecimals returns the Decimals field value if set, zero value otherwise.
 func (o *FeeData) GetDecimals() int32 {
-	if o == nil || o.Decimals == nil {
+	if o == nil || isNil(o.Decimals) {
 		var ret int32
 		return ret
 	}
@@ -84,7 +87,7 @@ func (o *FeeData) GetDecimals() int32 {
 // GetDecimalsOk returns a tuple with the Decimals field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *FeeData) GetDecimalsOk() (*int32, bool) {
-	if o == nil || o.Decimals == nil {
+	if o == nil || isNil(o.Decimals) {
 		return nil, false
 	}
 	return o.Decimals, true
@@ -92,7 +95,7 @@ func (o *FeeData) GetDecimalsOk() (*int32, bool) {
 
 // HasDecimals returns a boolean if a field has been set.
 func (o *FeeData) HasDecimals() bool {
-	if o != nil && o.Decimals != nil {
+	if o != nil && !isNil(o.Decimals) {
 		return true
 	}
 
@@ -105,14 +108,22 @@ func (o *FeeData) SetDecimals(v int32) {
 }
 
 func (o FeeData) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.ContractAddress != nil {
-		toSerialize["contract_address"] = o.ContractAddress
-	}
-	if o.Decimals != nil {
-		toSerialize["decimals"] = o.Decimals
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o FeeData) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !isNil(o.ContractAddress) {
+		toSerialize["contract_address"] = o.ContractAddress
+	}
+	if !isNil(o.Decimals) {
+		toSerialize["decimals"] = o.Decimals
+	}
+	return toSerialize, nil
 }
 
 type NullableFeeData struct {

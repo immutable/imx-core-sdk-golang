@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the Order type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Order{}
+
 // Order struct for Order
 type Order struct {
 	// Amount of the asset already sold by this order
@@ -141,7 +144,7 @@ func (o *Order) SetExpirationTimestamp(v string) {
 
 // GetFees returns the Fees field value if set, zero value otherwise.
 func (o *Order) GetFees() []OrderFeeInfo {
-	if o == nil || o.Fees == nil {
+	if o == nil || isNil(o.Fees) {
 		var ret []OrderFeeInfo
 		return ret
 	}
@@ -151,7 +154,7 @@ func (o *Order) GetFees() []OrderFeeInfo {
 // GetFeesOk returns a tuple with the Fees field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Order) GetFeesOk() ([]OrderFeeInfo, bool) {
-	if o == nil || o.Fees == nil {
+	if o == nil || isNil(o.Fees) {
 		return nil, false
 	}
 	return o.Fees, true
@@ -159,7 +162,7 @@ func (o *Order) GetFeesOk() ([]OrderFeeInfo, bool) {
 
 // HasFees returns a boolean if a field has been set.
 func (o *Order) HasFees() bool {
-	if o != nil && o.Fees != nil {
+	if o != nil && !isNil(o.Fees) {
 		return true
 	}
 
@@ -320,38 +323,28 @@ func (o *Order) SetUser(v string) {
 }
 
 func (o Order) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["amount_sold"] = o.AmountSold.Get()
-	}
-	if true {
-		toSerialize["buy"] = o.Buy
-	}
-	if true {
-		toSerialize["expiration_timestamp"] = o.ExpirationTimestamp.Get()
-	}
-	if o.Fees != nil {
-		toSerialize["fees"] = o.Fees
-	}
-	if true {
-		toSerialize["order_id"] = o.OrderId
-	}
-	if true {
-		toSerialize["sell"] = o.Sell
-	}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if true {
-		toSerialize["timestamp"] = o.Timestamp.Get()
-	}
-	if true {
-		toSerialize["updated_timestamp"] = o.UpdatedTimestamp.Get()
-	}
-	if true {
-		toSerialize["user"] = o.User
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Order) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["amount_sold"] = o.AmountSold.Get()
+	toSerialize["buy"] = o.Buy
+	toSerialize["expiration_timestamp"] = o.ExpirationTimestamp.Get()
+	if !isNil(o.Fees) {
+		toSerialize["fees"] = o.Fees
+	}
+	toSerialize["order_id"] = o.OrderId
+	toSerialize["sell"] = o.Sell
+	toSerialize["status"] = o.Status
+	toSerialize["timestamp"] = o.Timestamp.Get()
+	toSerialize["updated_timestamp"] = o.UpdatedTimestamp.Get()
+	toSerialize["user"] = o.User
+	return toSerialize, nil
 }
 
 type NullableOrder struct {

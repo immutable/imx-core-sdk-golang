@@ -24,9 +24,9 @@ import (
 type NftCheckoutPrimaryApi interface {
 
 	/*
-	CreateNftPrimary Create nft primary transaction
+	CreateNftPrimary Create NFT primary sale transaction
 
-	creates nft primary transaction
+	Creates a transaction representing minting an NFT with a card payment.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiCreateNftPrimaryRequest
@@ -52,24 +52,9 @@ type NftCheckoutPrimaryApi interface {
 	GetCurrenciesNFTCheckoutPrimaryExecute(r ApiGetCurrenciesNFTCheckoutPrimaryRequest) (*CurrencyWithLimits, *http.Response, error)
 
 	/*
-	GetMintStatusById Get mint status by transaction id
+	GetNftPrimaryTransaction Get NFT primary sale transaction by id
 
-	gets mint status by transaction ids
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param provider Provider name
-	@return ApiGetMintStatusByIdRequest
-	*/
-	GetMintStatusById(ctx context.Context, provider string) ApiGetMintStatusByIdRequest
-
-	// GetMintStatusByIdExecute executes the request
-	//  @return ProviderGetMintStatusResponse
-	GetMintStatusByIdExecute(r ApiGetMintStatusByIdRequest) (*ProviderGetMintStatusResponse, *http.Response, error)
-
-	/*
-	GetNftPrimaryTransaction Get nft primary transaction by id
-
-	gets nft primary transaction by transaction id
+	given a transaction id, returns the corresponding transaction representing a mint executed from a card payment
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param transactionId Transaction id
@@ -82,9 +67,9 @@ type NftCheckoutPrimaryApi interface {
 	GetNftPrimaryTransactionExecute(r ApiGetNftPrimaryTransactionRequest) (*NftprimarytransactionGetResponse, *http.Response, error)
 
 	/*
-	GetNftPrimaryTransactions Get a list of NFT primary transactions
+	GetNftPrimaryTransactions Get a list of NFT primary sales transactions
 
-	Returns a list of NFT primary transactions
+	Returns a list of NFT primary sales transactions
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiGetNftPrimaryTransactionsRequest
@@ -94,6 +79,20 @@ type NftCheckoutPrimaryApi interface {
 	// GetNftPrimaryTransactionsExecute executes the request
 	//  @return NftprimarytransactionListTransactionsResponse
 	GetNftPrimaryTransactionsExecute(r ApiGetNftPrimaryTransactionsRequest) (*NftprimarytransactionListTransactionsResponse, *http.Response, error)
+
+	/*
+	RegisterNftPrimarySalesContract Executes NFT primary sales contract registration
+
+	Registers a new contract for use in the minting with fiat card flow
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiRegisterNftPrimarySalesContractRequest
+	*/
+	RegisterNftPrimarySalesContract(ctx context.Context) ApiRegisterNftPrimarySalesContractRequest
+
+	// RegisterNftPrimarySalesContractExecute executes the request
+	//  @return ContractCreateResponse
+	RegisterNftPrimarySalesContractExecute(r ApiRegisterNftPrimarySalesContractRequest) (*ContractCreateResponse, *http.Response, error)
 }
 
 // NftCheckoutPrimaryApiService NftCheckoutPrimaryApi service
@@ -116,9 +115,9 @@ func (r ApiCreateNftPrimaryRequest) Execute() (*NftprimarytransactionCreateRespo
 }
 
 /*
-CreateNftPrimary Create nft primary transaction
+CreateNftPrimary Create NFT primary sale transaction
 
-creates nft primary transaction
+Creates a transaction representing minting an NFT with a card payment.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiCreateNftPrimaryRequest
@@ -202,7 +201,8 @@ func (a *NftCheckoutPrimaryApiService) CreateNftPrimaryExecute(r ApiCreateNftPri
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -279,10 +279,10 @@ func (a *NftCheckoutPrimaryApiService) GetCurrenciesNFTCheckoutPrimaryExecute(r 
 	localVarFormParams := url.Values{}
 
 	if r.provider != nil {
-		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
+		parameterAddToQuery(localVarQueryParams, "provider", r.provider, "")
 	}
 	if r.includeLimits != nil {
-		localVarQueryParams.Add("include_limits", parameterToString(*r.includeLimits, ""))
+		parameterAddToQuery(localVarQueryParams, "include_limits", r.includeLimits, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -330,130 +330,8 @@ func (a *NftCheckoutPrimaryApiService) GetCurrenciesNFTCheckoutPrimaryExecute(r 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetMintStatusByIdRequest struct {
-	ctx context.Context
-	ApiService NftCheckoutPrimaryApi
-	provider string
-	id *string
-}
-
-// transaction id
-func (r ApiGetMintStatusByIdRequest) Id(id string) ApiGetMintStatusByIdRequest {
-	r.id = &id
-	return r
-}
-
-func (r ApiGetMintStatusByIdRequest) Execute() (*ProviderGetMintStatusResponse, *http.Response, error) {
-	return r.ApiService.GetMintStatusByIdExecute(r)
-}
-
-/*
-GetMintStatusById Get mint status by transaction id
-
-gets mint status by transaction ids
-
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param provider Provider name
- @return ApiGetMintStatusByIdRequest
-*/
-func (a *NftCheckoutPrimaryApiService) GetMintStatusById(ctx context.Context, provider string) ApiGetMintStatusByIdRequest {
-	return ApiGetMintStatusByIdRequest{
-		ApiService: a,
-		ctx: ctx,
-		provider: provider,
-	}
-}
-
-// Execute executes the request
-//  @return ProviderGetMintStatusResponse
-func (a *NftCheckoutPrimaryApiService) GetMintStatusByIdExecute(r ApiGetMintStatusByIdRequest) (*ProviderGetMintStatusResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ProviderGetMintStatusResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "NftCheckoutPrimaryApiService.GetMintStatusById")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/v2/{provider}/transaction_status"
-	localVarPath = strings.Replace(localVarPath, "{"+"provider"+"}", url.PathEscape(parameterToString(r.provider, "")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-	if r.id == nil {
-		return localVarReturnValue, nil, reportError("id is required and must be specified")
-	}
-
-	localVarQueryParams.Add("id", parameterToString(*r.id, ""))
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v LambdasAPIError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -481,9 +359,9 @@ func (r ApiGetNftPrimaryTransactionRequest) Execute() (*NftprimarytransactionGet
 }
 
 /*
-GetNftPrimaryTransaction Get nft primary transaction by id
+GetNftPrimaryTransaction Get NFT primary sale transaction by id
 
-gets nft primary transaction by transaction id
+given a transaction id, returns the corresponding transaction representing a mint executed from a card payment
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param transactionId Transaction id
@@ -513,7 +391,7 @@ func (a *NftCheckoutPrimaryApiService) GetNftPrimaryTransactionExecute(r ApiGetN
 	}
 
 	localVarPath := localBasePath + "/v2/nft/primary/{transaction_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"transaction_id"+"}", url.PathEscape(parameterToString(r.transactionId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"transaction_id"+"}", url.PathEscape(parameterValueToString(r.transactionId, "transactionId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -565,7 +443,8 @@ func (a *NftCheckoutPrimaryApiService) GetNftPrimaryTransactionExecute(r ApiGetN
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -592,7 +471,7 @@ type ApiGetNftPrimaryTransactionsRequest struct {
 	transactionId *string
 	contractAddress *string
 	sellerWalletAddress *string
-	walletAddress *string
+	userWalletAddress *string
 	status *string
 	provider *string
 	mintId *string
@@ -641,8 +520,8 @@ func (r ApiGetNftPrimaryTransactionsRequest) SellerWalletAddress(sellerWalletAdd
 }
 
 // Ethereum address of the user who wants to create transaction
-func (r ApiGetNftPrimaryTransactionsRequest) WalletAddress(walletAddress string) ApiGetNftPrimaryTransactionsRequest {
-	r.walletAddress = &walletAddress
+func (r ApiGetNftPrimaryTransactionsRequest) UserWalletAddress(userWalletAddress string) ApiGetNftPrimaryTransactionsRequest {
+	r.userWalletAddress = &userWalletAddress
 	return r
 }
 
@@ -652,13 +531,13 @@ func (r ApiGetNftPrimaryTransactionsRequest) Status(status string) ApiGetNftPrim
 	return r
 }
 
-// Provider name
+// Checkout provider name
 func (r ApiGetNftPrimaryTransactionsRequest) Provider(provider string) ApiGetNftPrimaryTransactionsRequest {
 	r.provider = &provider
 	return r
 }
 
-// Mint id
+// Minting transaction ID - see mintTokens response
 func (r ApiGetNftPrimaryTransactionsRequest) MintId(mintId string) ApiGetNftPrimaryTransactionsRequest {
 	r.mintId = &mintId
 	return r
@@ -669,9 +548,9 @@ func (r ApiGetNftPrimaryTransactionsRequest) Execute() (*NftprimarytransactionLi
 }
 
 /*
-GetNftPrimaryTransactions Get a list of NFT primary transactions
+GetNftPrimaryTransactions Get a list of NFT primary sales transactions
 
-Returns a list of NFT primary transactions
+Returns a list of NFT primary sales transactions
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiGetNftPrimaryTransactionsRequest
@@ -705,37 +584,37 @@ func (a *NftCheckoutPrimaryApiService) GetNftPrimaryTransactionsExecute(r ApiGet
 	localVarFormParams := url.Values{}
 
 	if r.pageSize != nil {
-		localVarQueryParams.Add("page_size", parameterToString(*r.pageSize, ""))
+		parameterAddToQuery(localVarQueryParams, "page_size", r.pageSize, "")
 	}
 	if r.cursor != nil {
-		localVarQueryParams.Add("cursor", parameterToString(*r.cursor, ""))
+		parameterAddToQuery(localVarQueryParams, "cursor", r.cursor, "")
 	}
 	if r.orderBy != nil {
-		localVarQueryParams.Add("order_by", parameterToString(*r.orderBy, ""))
+		parameterAddToQuery(localVarQueryParams, "order_by", r.orderBy, "")
 	}
 	if r.direction != nil {
-		localVarQueryParams.Add("direction", parameterToString(*r.direction, ""))
+		parameterAddToQuery(localVarQueryParams, "direction", r.direction, "")
 	}
 	if r.transactionId != nil {
-		localVarQueryParams.Add("transaction_id", parameterToString(*r.transactionId, ""))
+		parameterAddToQuery(localVarQueryParams, "transaction_id", r.transactionId, "")
 	}
 	if r.contractAddress != nil {
-		localVarQueryParams.Add("contract_address", parameterToString(*r.contractAddress, ""))
+		parameterAddToQuery(localVarQueryParams, "contract_address", r.contractAddress, "")
 	}
 	if r.sellerWalletAddress != nil {
-		localVarQueryParams.Add("seller_wallet_address", parameterToString(*r.sellerWalletAddress, ""))
+		parameterAddToQuery(localVarQueryParams, "seller_wallet_address", r.sellerWalletAddress, "")
 	}
-	if r.walletAddress != nil {
-		localVarQueryParams.Add("wallet_address", parameterToString(*r.walletAddress, ""))
+	if r.userWalletAddress != nil {
+		parameterAddToQuery(localVarQueryParams, "user_wallet_address", r.userWalletAddress, "")
 	}
 	if r.status != nil {
-		localVarQueryParams.Add("status", parameterToString(*r.status, ""))
+		parameterAddToQuery(localVarQueryParams, "status", r.status, "")
 	}
 	if r.provider != nil {
-		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
+		parameterAddToQuery(localVarQueryParams, "provider", r.provider, "")
 	}
 	if r.mintId != nil {
-		localVarQueryParams.Add("mint_id", parameterToString(*r.mintId, ""))
+		parameterAddToQuery(localVarQueryParams, "mint_id", r.mintId, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -783,7 +662,129 @@ func (a *NftCheckoutPrimaryApiService) GetNftPrimaryTransactionsExecute(r ApiGet
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiRegisterNftPrimarySalesContractRequest struct {
+	ctx context.Context
+	ApiService NftCheckoutPrimaryApi
+	createAPIRequest *ContractCreateAPIRequest
+}
+
+// req
+func (r ApiRegisterNftPrimarySalesContractRequest) CreateAPIRequest(createAPIRequest ContractCreateAPIRequest) ApiRegisterNftPrimarySalesContractRequest {
+	r.createAPIRequest = &createAPIRequest
+	return r
+}
+
+func (r ApiRegisterNftPrimarySalesContractRequest) Execute() (*ContractCreateResponse, *http.Response, error) {
+	return r.ApiService.RegisterNftPrimarySalesContractExecute(r)
+}
+
+/*
+RegisterNftPrimarySalesContract Executes NFT primary sales contract registration
+
+Registers a new contract for use in the minting with fiat card flow
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiRegisterNftPrimarySalesContractRequest
+*/
+func (a *NftCheckoutPrimaryApiService) RegisterNftPrimarySalesContract(ctx context.Context) ApiRegisterNftPrimarySalesContractRequest {
+	return ApiRegisterNftPrimarySalesContractRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return ContractCreateResponse
+func (a *NftCheckoutPrimaryApiService) RegisterNftPrimarySalesContractExecute(r ApiRegisterNftPrimarySalesContractRequest) (*ContractCreateResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *ContractCreateResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "NftCheckoutPrimaryApiService.RegisterNftPrimarySalesContract")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v2/nft/primary/register"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.createAPIRequest == nil {
+		return localVarReturnValue, nil, reportError("createAPIRequest is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.createAPIRequest
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v LambdasAPIError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

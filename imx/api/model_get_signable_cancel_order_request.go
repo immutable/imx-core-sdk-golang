@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the GetSignableCancelOrderRequest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GetSignableCancelOrderRequest{}
+
 // GetSignableCancelOrderRequest struct for GetSignableCancelOrderRequest
 type GetSignableCancelOrderRequest struct {
 	// ID of the order to be cancelled
@@ -64,11 +67,17 @@ func (o *GetSignableCancelOrderRequest) SetOrderId(v int32) {
 }
 
 func (o GetSignableCancelOrderRequest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["order_id"] = o.OrderId
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o GetSignableCancelOrderRequest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["order_id"] = o.OrderId
+	return toSerialize, nil
 }
 
 type NullableGetSignableCancelOrderRequest struct {

@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the GetSignableTransferResponse type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GetSignableTransferResponse{}
+
 // GetSignableTransferResponse struct for GetSignableTransferResponse
 type GetSignableTransferResponse struct {
 	// Sender of the transfer
@@ -118,17 +121,19 @@ func (o *GetSignableTransferResponse) SetSignableResponses(v []SignableTransferR
 }
 
 func (o GetSignableTransferResponse) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["sender_stark_key"] = o.SenderStarkKey
-	}
-	if true {
-		toSerialize["signable_message"] = o.SignableMessage
-	}
-	if true {
-		toSerialize["signable_responses"] = o.SignableResponses
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o GetSignableTransferResponse) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["sender_stark_key"] = o.SenderStarkKey
+	toSerialize["signable_message"] = o.SignableMessage
+	toSerialize["signable_responses"] = o.SignableResponses
+	return toSerialize, nil
 }
 
 type NullableGetSignableTransferResponse struct {
