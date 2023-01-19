@@ -54,7 +54,7 @@ func NewMintWithDefaults() *Mint {
 
 // GetFees returns the Fees field value if set, zero value otherwise.
 func (o *Mint) GetFees() []Fee {
-	if o == nil || o.Fees == nil {
+	if o == nil || isNil(o.Fees) {
 		var ret []Fee
 		return ret
 	}
@@ -64,15 +64,15 @@ func (o *Mint) GetFees() []Fee {
 // GetFeesOk returns a tuple with the Fees field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Mint) GetFeesOk() ([]Fee, bool) {
-	if o == nil || o.Fees == nil {
-		return nil, false
+	if o == nil || isNil(o.Fees) {
+    return nil, false
 	}
 	return o.Fees, true
 }
 
 // HasFees returns a boolean if a field has been set.
 func (o *Mint) HasFees() bool {
-	if o != nil && o.Fees != nil {
+	if o != nil && !isNil(o.Fees) {
 		return true
 	}
 
@@ -98,7 +98,7 @@ func (o *Mint) GetStatus() string {
 // and a boolean to check if the value has been set.
 func (o *Mint) GetStatusOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Status, true
 }
@@ -122,7 +122,7 @@ func (o *Mint) GetTimestamp() string {
 // and a boolean to check if the value has been set.
 func (o *Mint) GetTimestampOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Timestamp, true
 }
@@ -146,7 +146,7 @@ func (o *Mint) GetToken() Token {
 // and a boolean to check if the value has been set.
 func (o *Mint) GetTokenOk() (*Token, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Token, true
 }
@@ -170,7 +170,7 @@ func (o *Mint) GetTransactionId() int32 {
 // and a boolean to check if the value has been set.
 func (o *Mint) GetTransactionIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TransactionId, true
 }
@@ -194,7 +194,7 @@ func (o *Mint) GetUser() string {
 // and a boolean to check if the value has been set.
 func (o *Mint) GetUserOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.User, true
 }
@@ -206,7 +206,7 @@ func (o *Mint) SetUser(v string) {
 
 func (o Mint) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Fees != nil {
+	if !isNil(o.Fees) {
 		toSerialize["fees"] = o.Fees
 	}
 	if true {

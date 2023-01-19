@@ -67,7 +67,7 @@ func (o *GetMetadataRefreshResponse) GetCollectionAddress() string {
 // and a boolean to check if the value has been set.
 func (o *GetMetadataRefreshResponse) GetCollectionAddressOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.CollectionAddress, true
 }
@@ -79,7 +79,7 @@ func (o *GetMetadataRefreshResponse) SetCollectionAddress(v string) {
 
 // GetCompletedAt returns the CompletedAt field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *GetMetadataRefreshResponse) GetCompletedAt() string {
-	if o == nil || o.CompletedAt.Get() == nil {
+	if o == nil || isNil(o.CompletedAt.Get()) {
 		var ret string
 		return ret
 	}
@@ -91,7 +91,7 @@ func (o *GetMetadataRefreshResponse) GetCompletedAt() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *GetMetadataRefreshResponse) GetCompletedAtOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.CompletedAt.Get(), o.CompletedAt.IsSet()
 }
@@ -133,7 +133,7 @@ func (o *GetMetadataRefreshResponse) GetRefreshId() string {
 // and a boolean to check if the value has been set.
 func (o *GetMetadataRefreshResponse) GetRefreshIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.RefreshId, true
 }
@@ -157,7 +157,7 @@ func (o *GetMetadataRefreshResponse) GetStartedAt() string {
 // and a boolean to check if the value has been set.
 func (o *GetMetadataRefreshResponse) GetStartedAtOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StartedAt, true
 }
@@ -181,7 +181,7 @@ func (o *GetMetadataRefreshResponse) GetStatus() string {
 // and a boolean to check if the value has been set.
 func (o *GetMetadataRefreshResponse) GetStatusOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Status, true
 }
@@ -205,7 +205,7 @@ func (o *GetMetadataRefreshResponse) GetSummary() []MetadataRefreshSummary {
 // and a boolean to check if the value has been set.
 func (o *GetMetadataRefreshResponse) GetSummaryOk() ([]MetadataRefreshSummary, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Summary, true
 }

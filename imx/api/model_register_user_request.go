@@ -52,7 +52,7 @@ func NewRegisterUserRequestWithDefaults() *RegisterUserRequest {
 
 // GetEmail returns the Email field value if set, zero value otherwise.
 func (o *RegisterUserRequest) GetEmail() string {
-	if o == nil || o.Email == nil {
+	if o == nil || isNil(o.Email) {
 		var ret string
 		return ret
 	}
@@ -62,15 +62,15 @@ func (o *RegisterUserRequest) GetEmail() string {
 // GetEmailOk returns a tuple with the Email field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *RegisterUserRequest) GetEmailOk() (*string, bool) {
-	if o == nil || o.Email == nil {
-		return nil, false
+	if o == nil || isNil(o.Email) {
+    return nil, false
 	}
 	return o.Email, true
 }
 
 // HasEmail returns a boolean if a field has been set.
 func (o *RegisterUserRequest) HasEmail() bool {
-	if o != nil && o.Email != nil {
+	if o != nil && !isNil(o.Email) {
 		return true
 	}
 
@@ -96,7 +96,7 @@ func (o *RegisterUserRequest) GetEthSignature() string {
 // and a boolean to check if the value has been set.
 func (o *RegisterUserRequest) GetEthSignatureOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.EthSignature, true
 }
@@ -120,7 +120,7 @@ func (o *RegisterUserRequest) GetEtherKey() string {
 // and a boolean to check if the value has been set.
 func (o *RegisterUserRequest) GetEtherKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.EtherKey, true
 }
@@ -144,7 +144,7 @@ func (o *RegisterUserRequest) GetStarkKey() string {
 // and a boolean to check if the value has been set.
 func (o *RegisterUserRequest) GetStarkKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StarkKey, true
 }
@@ -168,7 +168,7 @@ func (o *RegisterUserRequest) GetStarkSignature() string {
 // and a boolean to check if the value has been set.
 func (o *RegisterUserRequest) GetStarkSignatureOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StarkSignature, true
 }
@@ -180,7 +180,7 @@ func (o *RegisterUserRequest) SetStarkSignature(v string) {
 
 func (o RegisterUserRequest) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Email != nil {
+	if !isNil(o.Email) {
 		toSerialize["email"] = o.Email
 	}
 	if true {

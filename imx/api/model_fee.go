@@ -59,7 +59,7 @@ func (o *Fee) GetAddress() string {
 // and a boolean to check if the value has been set.
 func (o *Fee) GetAddressOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Address, true
 }
@@ -83,7 +83,7 @@ func (o *Fee) GetPercentage() float32 {
 // and a boolean to check if the value has been set.
 func (o *Fee) GetPercentageOk() (*float32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Percentage, true
 }
@@ -107,7 +107,7 @@ func (o *Fee) GetType() string {
 // and a boolean to check if the value has been set.
 func (o *Fee) GetTypeOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Type, true
 }

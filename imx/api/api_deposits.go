@@ -293,8 +293,8 @@ type ApiListDepositsRequest struct {
 	direction *string
 	user *string
 	status *string
-	updatedMinTimestamp *string
-	updatedMaxTimestamp *string
+	minTimestamp *string
+	maxTimestamp *string
 	tokenType *string
 	tokenId *string
 	assetId *string
@@ -342,14 +342,14 @@ func (r ApiListDepositsRequest) Status(status string) ApiListDepositsRequest {
 }
 
 // Minimum timestamp for this deposit, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39;
-func (r ApiListDepositsRequest) UpdatedMinTimestamp(updatedMinTimestamp string) ApiListDepositsRequest {
-	r.updatedMinTimestamp = &updatedMinTimestamp
+func (r ApiListDepositsRequest) MinTimestamp(minTimestamp string) ApiListDepositsRequest {
+	r.minTimestamp = &minTimestamp
 	return r
 }
 
 // Maximum timestamp for this deposit, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39;
-func (r ApiListDepositsRequest) UpdatedMaxTimestamp(updatedMaxTimestamp string) ApiListDepositsRequest {
-	r.updatedMaxTimestamp = &updatedMaxTimestamp
+func (r ApiListDepositsRequest) MaxTimestamp(maxTimestamp string) ApiListDepositsRequest {
+	r.maxTimestamp = &maxTimestamp
 	return r
 }
 
@@ -459,11 +459,11 @@ func (a *DepositsApiService) ListDepositsExecute(r ApiListDepositsRequest) (*Lis
 	if r.status != nil {
 		localVarQueryParams.Add("status", parameterToString(*r.status, ""))
 	}
-	if r.updatedMinTimestamp != nil {
-		localVarQueryParams.Add("updated_min_timestamp", parameterToString(*r.updatedMinTimestamp, ""))
+	if r.minTimestamp != nil {
+		localVarQueryParams.Add("min_timestamp", parameterToString(*r.minTimestamp, ""))
 	}
-	if r.updatedMaxTimestamp != nil {
-		localVarQueryParams.Add("updated_max_timestamp", parameterToString(*r.updatedMaxTimestamp, ""))
+	if r.maxTimestamp != nil {
+		localVarQueryParams.Add("max_timestamp", parameterToString(*r.maxTimestamp, ""))
 	}
 	if r.tokenType != nil {
 		localVarQueryParams.Add("token_type", parameterToString(*r.tokenType, ""))

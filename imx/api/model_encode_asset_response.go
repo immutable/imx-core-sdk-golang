@@ -56,7 +56,7 @@ func (o *EncodeAssetResponse) GetAssetId() string {
 // and a boolean to check if the value has been set.
 func (o *EncodeAssetResponse) GetAssetIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AssetId, true
 }
@@ -80,7 +80,7 @@ func (o *EncodeAssetResponse) GetAssetType() string {
 // and a boolean to check if the value has been set.
 func (o *EncodeAssetResponse) GetAssetTypeOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AssetType, true
 }

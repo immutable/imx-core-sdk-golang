@@ -71,7 +71,7 @@ func (o *GetSignableWithdrawalResponse) GetAmount() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableWithdrawalResponse) GetAmountOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Amount, true
 }
@@ -95,7 +95,7 @@ func (o *GetSignableWithdrawalResponse) GetAssetId() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableWithdrawalResponse) GetAssetIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AssetId, true
 }
@@ -119,7 +119,7 @@ func (o *GetSignableWithdrawalResponse) GetNonce() int32 {
 // and a boolean to check if the value has been set.
 func (o *GetSignableWithdrawalResponse) GetNonceOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Nonce, true
 }
@@ -143,7 +143,7 @@ func (o *GetSignableWithdrawalResponse) GetPayloadHash() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableWithdrawalResponse) GetPayloadHashOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.PayloadHash, true
 }
@@ -167,7 +167,7 @@ func (o *GetSignableWithdrawalResponse) GetSignableMessage() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableWithdrawalResponse) GetSignableMessageOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.SignableMessage, true
 }
@@ -191,7 +191,7 @@ func (o *GetSignableWithdrawalResponse) GetStarkKey() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableWithdrawalResponse) GetStarkKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StarkKey, true
 }
@@ -215,7 +215,7 @@ func (o *GetSignableWithdrawalResponse) GetVaultId() int32 {
 // and a boolean to check if the value has been set.
 func (o *GetSignableWithdrawalResponse) GetVaultIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.VaultId, true
 }

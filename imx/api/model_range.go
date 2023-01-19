@@ -42,7 +42,7 @@ func NewRangeWithDefaults() *Range {
 
 // GetMax returns the Max field value if set, zero value otherwise.
 func (o *Range) GetMax() int32 {
-	if o == nil || o.Max == nil {
+	if o == nil || isNil(o.Max) {
 		var ret int32
 		return ret
 	}
@@ -52,15 +52,15 @@ func (o *Range) GetMax() int32 {
 // GetMaxOk returns a tuple with the Max field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Range) GetMaxOk() (*int32, bool) {
-	if o == nil || o.Max == nil {
-		return nil, false
+	if o == nil || isNil(o.Max) {
+    return nil, false
 	}
 	return o.Max, true
 }
 
 // HasMax returns a boolean if a field has been set.
 func (o *Range) HasMax() bool {
-	if o != nil && o.Max != nil {
+	if o != nil && !isNil(o.Max) {
 		return true
 	}
 
@@ -74,7 +74,7 @@ func (o *Range) SetMax(v int32) {
 
 // GetMin returns the Min field value if set, zero value otherwise.
 func (o *Range) GetMin() int32 {
-	if o == nil || o.Min == nil {
+	if o == nil || isNil(o.Min) {
 		var ret int32
 		return ret
 	}
@@ -84,15 +84,15 @@ func (o *Range) GetMin() int32 {
 // GetMinOk returns a tuple with the Min field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Range) GetMinOk() (*int32, bool) {
-	if o == nil || o.Min == nil {
-		return nil, false
+	if o == nil || isNil(o.Min) {
+    return nil, false
 	}
 	return o.Min, true
 }
 
 // HasMin returns a boolean if a field has been set.
 func (o *Range) HasMin() bool {
-	if o != nil && o.Min != nil {
+	if o != nil && !isNil(o.Min) {
 		return true
 	}
 
@@ -106,10 +106,10 @@ func (o *Range) SetMin(v int32) {
 
 func (o Range) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Max != nil {
+	if !isNil(o.Max) {
 		toSerialize["max"] = o.Max
 	}
-	if o.Min != nil {
+	if !isNil(o.Min) {
 		toSerialize["min"] = o.Min
 	}
 	return json.Marshal(toSerialize)

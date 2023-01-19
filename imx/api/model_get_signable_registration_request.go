@@ -56,7 +56,7 @@ func (o *GetSignableRegistrationRequest) GetEtherKey() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableRegistrationRequest) GetEtherKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.EtherKey, true
 }
@@ -80,7 +80,7 @@ func (o *GetSignableRegistrationRequest) GetStarkKey() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableRegistrationRequest) GetStarkKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StarkKey, true
 }

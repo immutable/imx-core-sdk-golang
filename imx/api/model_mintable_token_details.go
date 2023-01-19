@@ -59,7 +59,7 @@ func (o *MintableTokenDetails) GetBlueprint() string {
 // and a boolean to check if the value has been set.
 func (o *MintableTokenDetails) GetBlueprintOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Blueprint, true
 }
@@ -83,7 +83,7 @@ func (o *MintableTokenDetails) GetClientTokenId() string {
 // and a boolean to check if the value has been set.
 func (o *MintableTokenDetails) GetClientTokenIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ClientTokenId, true
 }
@@ -107,7 +107,7 @@ func (o *MintableTokenDetails) GetTokenId() string {
 // and a boolean to check if the value has been set.
 func (o *MintableTokenDetails) GetTokenIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TokenId, true
 }

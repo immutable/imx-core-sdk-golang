@@ -58,7 +58,7 @@ func (o *CollectionDetails) GetIconUrl() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *CollectionDetails) GetIconUrlOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.IconUrl.Get(), o.IconUrl.IsSet()
 }
@@ -82,7 +82,7 @@ func (o *CollectionDetails) GetName() string {
 // and a boolean to check if the value has been set.
 func (o *CollectionDetails) GetNameOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Name, true
 }

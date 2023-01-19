@@ -58,7 +58,7 @@ func NewCreateCollectionRequestWithDefaults() *CreateCollectionRequest {
 
 // GetCollectionImageUrl returns the CollectionImageUrl field value if set, zero value otherwise.
 func (o *CreateCollectionRequest) GetCollectionImageUrl() string {
-	if o == nil || o.CollectionImageUrl == nil {
+	if o == nil || isNil(o.CollectionImageUrl) {
 		var ret string
 		return ret
 	}
@@ -68,15 +68,15 @@ func (o *CreateCollectionRequest) GetCollectionImageUrl() string {
 // GetCollectionImageUrlOk returns a tuple with the CollectionImageUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateCollectionRequest) GetCollectionImageUrlOk() (*string, bool) {
-	if o == nil || o.CollectionImageUrl == nil {
-		return nil, false
+	if o == nil || isNil(o.CollectionImageUrl) {
+    return nil, false
 	}
 	return o.CollectionImageUrl, true
 }
 
 // HasCollectionImageUrl returns a boolean if a field has been set.
 func (o *CreateCollectionRequest) HasCollectionImageUrl() bool {
-	if o != nil && o.CollectionImageUrl != nil {
+	if o != nil && !isNil(o.CollectionImageUrl) {
 		return true
 	}
 
@@ -102,7 +102,7 @@ func (o *CreateCollectionRequest) GetContractAddress() string {
 // and a boolean to check if the value has been set.
 func (o *CreateCollectionRequest) GetContractAddressOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ContractAddress, true
 }
@@ -114,7 +114,7 @@ func (o *CreateCollectionRequest) SetContractAddress(v string) {
 
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *CreateCollectionRequest) GetDescription() string {
-	if o == nil || o.Description == nil {
+	if o == nil || isNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -124,15 +124,15 @@ func (o *CreateCollectionRequest) GetDescription() string {
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateCollectionRequest) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
-		return nil, false
+	if o == nil || isNil(o.Description) {
+    return nil, false
 	}
 	return o.Description, true
 }
 
 // HasDescription returns a boolean if a field has been set.
 func (o *CreateCollectionRequest) HasDescription() bool {
-	if o != nil && o.Description != nil {
+	if o != nil && !isNil(o.Description) {
 		return true
 	}
 
@@ -146,7 +146,7 @@ func (o *CreateCollectionRequest) SetDescription(v string) {
 
 // GetIconUrl returns the IconUrl field value if set, zero value otherwise.
 func (o *CreateCollectionRequest) GetIconUrl() string {
-	if o == nil || o.IconUrl == nil {
+	if o == nil || isNil(o.IconUrl) {
 		var ret string
 		return ret
 	}
@@ -156,15 +156,15 @@ func (o *CreateCollectionRequest) GetIconUrl() string {
 // GetIconUrlOk returns a tuple with the IconUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateCollectionRequest) GetIconUrlOk() (*string, bool) {
-	if o == nil || o.IconUrl == nil {
-		return nil, false
+	if o == nil || isNil(o.IconUrl) {
+    return nil, false
 	}
 	return o.IconUrl, true
 }
 
 // HasIconUrl returns a boolean if a field has been set.
 func (o *CreateCollectionRequest) HasIconUrl() bool {
-	if o != nil && o.IconUrl != nil {
+	if o != nil && !isNil(o.IconUrl) {
 		return true
 	}
 
@@ -178,7 +178,7 @@ func (o *CreateCollectionRequest) SetIconUrl(v string) {
 
 // GetMetadataApiUrl returns the MetadataApiUrl field value if set, zero value otherwise.
 func (o *CreateCollectionRequest) GetMetadataApiUrl() string {
-	if o == nil || o.MetadataApiUrl == nil {
+	if o == nil || isNil(o.MetadataApiUrl) {
 		var ret string
 		return ret
 	}
@@ -188,15 +188,15 @@ func (o *CreateCollectionRequest) GetMetadataApiUrl() string {
 // GetMetadataApiUrlOk returns a tuple with the MetadataApiUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateCollectionRequest) GetMetadataApiUrlOk() (*string, bool) {
-	if o == nil || o.MetadataApiUrl == nil {
-		return nil, false
+	if o == nil || isNil(o.MetadataApiUrl) {
+    return nil, false
 	}
 	return o.MetadataApiUrl, true
 }
 
 // HasMetadataApiUrl returns a boolean if a field has been set.
 func (o *CreateCollectionRequest) HasMetadataApiUrl() bool {
-	if o != nil && o.MetadataApiUrl != nil {
+	if o != nil && !isNil(o.MetadataApiUrl) {
 		return true
 	}
 
@@ -222,7 +222,7 @@ func (o *CreateCollectionRequest) GetName() string {
 // and a boolean to check if the value has been set.
 func (o *CreateCollectionRequest) GetNameOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Name, true
 }
@@ -246,7 +246,7 @@ func (o *CreateCollectionRequest) GetOwnerPublicKey() string {
 // and a boolean to check if the value has been set.
 func (o *CreateCollectionRequest) GetOwnerPublicKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.OwnerPublicKey, true
 }
@@ -270,7 +270,7 @@ func (o *CreateCollectionRequest) GetProjectId() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateCollectionRequest) GetProjectIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ProjectId, true
 }
@@ -282,19 +282,19 @@ func (o *CreateCollectionRequest) SetProjectId(v int32) {
 
 func (o CreateCollectionRequest) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.CollectionImageUrl != nil {
+	if !isNil(o.CollectionImageUrl) {
 		toSerialize["collection_image_url"] = o.CollectionImageUrl
 	}
 	if true {
 		toSerialize["contract_address"] = o.ContractAddress
 	}
-	if o.Description != nil {
+	if !isNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
-	if o.IconUrl != nil {
+	if !isNil(o.IconUrl) {
 		toSerialize["icon_url"] = o.IconUrl
 	}
-	if o.MetadataApiUrl != nil {
+	if !isNil(o.MetadataApiUrl) {
 		toSerialize["metadata_api_url"] = o.MetadataApiUrl
 	}
 	if true {

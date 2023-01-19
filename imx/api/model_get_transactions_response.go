@@ -44,7 +44,7 @@ func NewGetTransactionsResponseWithDefaults() *GetTransactionsResponse {
 
 // GetCursor returns the Cursor field value if set, zero value otherwise.
 func (o *GetTransactionsResponse) GetCursor() string {
-	if o == nil || o.Cursor == nil {
+	if o == nil || isNil(o.Cursor) {
 		var ret string
 		return ret
 	}
@@ -54,15 +54,15 @@ func (o *GetTransactionsResponse) GetCursor() string {
 // GetCursorOk returns a tuple with the Cursor field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *GetTransactionsResponse) GetCursorOk() (*string, bool) {
-	if o == nil || o.Cursor == nil {
-		return nil, false
+	if o == nil || isNil(o.Cursor) {
+    return nil, false
 	}
 	return o.Cursor, true
 }
 
 // HasCursor returns a boolean if a field has been set.
 func (o *GetTransactionsResponse) HasCursor() bool {
-	if o != nil && o.Cursor != nil {
+	if o != nil && !isNil(o.Cursor) {
 		return true
 	}
 
@@ -76,7 +76,7 @@ func (o *GetTransactionsResponse) SetCursor(v string) {
 
 // GetRemaining returns the Remaining field value if set, zero value otherwise.
 func (o *GetTransactionsResponse) GetRemaining() int32 {
-	if o == nil || o.Remaining == nil {
+	if o == nil || isNil(o.Remaining) {
 		var ret int32
 		return ret
 	}
@@ -86,15 +86,15 @@ func (o *GetTransactionsResponse) GetRemaining() int32 {
 // GetRemainingOk returns a tuple with the Remaining field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *GetTransactionsResponse) GetRemainingOk() (*int32, bool) {
-	if o == nil || o.Remaining == nil {
-		return nil, false
+	if o == nil || isNil(o.Remaining) {
+    return nil, false
 	}
 	return o.Remaining, true
 }
 
 // HasRemaining returns a boolean if a field has been set.
 func (o *GetTransactionsResponse) HasRemaining() bool {
-	if o != nil && o.Remaining != nil {
+	if o != nil && !isNil(o.Remaining) {
 		return true
 	}
 
@@ -108,7 +108,7 @@ func (o *GetTransactionsResponse) SetRemaining(v int32) {
 
 // GetResult returns the Result field value if set, zero value otherwise.
 func (o *GetTransactionsResponse) GetResult() []Exchange {
-	if o == nil || o.Result == nil {
+	if o == nil || isNil(o.Result) {
 		var ret []Exchange
 		return ret
 	}
@@ -118,15 +118,15 @@ func (o *GetTransactionsResponse) GetResult() []Exchange {
 // GetResultOk returns a tuple with the Result field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *GetTransactionsResponse) GetResultOk() ([]Exchange, bool) {
-	if o == nil || o.Result == nil {
-		return nil, false
+	if o == nil || isNil(o.Result) {
+    return nil, false
 	}
 	return o.Result, true
 }
 
 // HasResult returns a boolean if a field has been set.
 func (o *GetTransactionsResponse) HasResult() bool {
-	if o != nil && o.Result != nil {
+	if o != nil && !isNil(o.Result) {
 		return true
 	}
 
@@ -140,13 +140,13 @@ func (o *GetTransactionsResponse) SetResult(v []Exchange) {
 
 func (o GetTransactionsResponse) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Cursor != nil {
+	if !isNil(o.Cursor) {
 		toSerialize["cursor"] = o.Cursor
 	}
-	if o.Remaining != nil {
+	if !isNil(o.Remaining) {
 		toSerialize["remaining"] = o.Remaining
 	}
-	if o.Result != nil {
+	if !isNil(o.Result) {
 		toSerialize["result"] = o.Result
 	}
 	return json.Marshal(toSerialize)

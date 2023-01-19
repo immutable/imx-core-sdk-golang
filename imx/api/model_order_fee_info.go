@@ -45,7 +45,7 @@ func NewOrderFeeInfoWithDefaults() *OrderFeeInfo {
 
 // GetAddress returns the Address field value if set, zero value otherwise.
 func (o *OrderFeeInfo) GetAddress() string {
-	if o == nil || o.Address == nil {
+	if o == nil || isNil(o.Address) {
 		var ret string
 		return ret
 	}
@@ -55,15 +55,15 @@ func (o *OrderFeeInfo) GetAddress() string {
 // GetAddressOk returns a tuple with the Address field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrderFeeInfo) GetAddressOk() (*string, bool) {
-	if o == nil || o.Address == nil {
-		return nil, false
+	if o == nil || isNil(o.Address) {
+    return nil, false
 	}
 	return o.Address, true
 }
 
 // HasAddress returns a boolean if a field has been set.
 func (o *OrderFeeInfo) HasAddress() bool {
-	if o != nil && o.Address != nil {
+	if o != nil && !isNil(o.Address) {
 		return true
 	}
 
@@ -77,7 +77,7 @@ func (o *OrderFeeInfo) SetAddress(v string) {
 
 // GetAmount returns the Amount field value if set, zero value otherwise.
 func (o *OrderFeeInfo) GetAmount() string {
-	if o == nil || o.Amount == nil {
+	if o == nil || isNil(o.Amount) {
 		var ret string
 		return ret
 	}
@@ -87,15 +87,15 @@ func (o *OrderFeeInfo) GetAmount() string {
 // GetAmountOk returns a tuple with the Amount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrderFeeInfo) GetAmountOk() (*string, bool) {
-	if o == nil || o.Amount == nil {
-		return nil, false
+	if o == nil || isNil(o.Amount) {
+    return nil, false
 	}
 	return o.Amount, true
 }
 
 // HasAmount returns a boolean if a field has been set.
 func (o *OrderFeeInfo) HasAmount() bool {
-	if o != nil && o.Amount != nil {
+	if o != nil && !isNil(o.Amount) {
 		return true
 	}
 
@@ -109,7 +109,7 @@ func (o *OrderFeeInfo) SetAmount(v string) {
 
 // GetToken returns the Token field value if set, zero value otherwise.
 func (o *OrderFeeInfo) GetToken() FeeToken {
-	if o == nil || o.Token == nil {
+	if o == nil || isNil(o.Token) {
 		var ret FeeToken
 		return ret
 	}
@@ -119,15 +119,15 @@ func (o *OrderFeeInfo) GetToken() FeeToken {
 // GetTokenOk returns a tuple with the Token field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrderFeeInfo) GetTokenOk() (*FeeToken, bool) {
-	if o == nil || o.Token == nil {
-		return nil, false
+	if o == nil || isNil(o.Token) {
+    return nil, false
 	}
 	return o.Token, true
 }
 
 // HasToken returns a boolean if a field has been set.
 func (o *OrderFeeInfo) HasToken() bool {
-	if o != nil && o.Token != nil {
+	if o != nil && !isNil(o.Token) {
 		return true
 	}
 
@@ -141,7 +141,7 @@ func (o *OrderFeeInfo) SetToken(v FeeToken) {
 
 // GetType returns the Type field value if set, zero value otherwise.
 func (o *OrderFeeInfo) GetType() string {
-	if o == nil || o.Type == nil {
+	if o == nil || isNil(o.Type) {
 		var ret string
 		return ret
 	}
@@ -151,15 +151,15 @@ func (o *OrderFeeInfo) GetType() string {
 // GetTypeOk returns a tuple with the Type field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrderFeeInfo) GetTypeOk() (*string, bool) {
-	if o == nil || o.Type == nil {
-		return nil, false
+	if o == nil || isNil(o.Type) {
+    return nil, false
 	}
 	return o.Type, true
 }
 
 // HasType returns a boolean if a field has been set.
 func (o *OrderFeeInfo) HasType() bool {
-	if o != nil && o.Type != nil {
+	if o != nil && !isNil(o.Type) {
 		return true
 	}
 
@@ -173,16 +173,16 @@ func (o *OrderFeeInfo) SetType(v string) {
 
 func (o OrderFeeInfo) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Address != nil {
+	if !isNil(o.Address) {
 		toSerialize["address"] = o.Address
 	}
-	if o.Amount != nil {
+	if !isNil(o.Amount) {
 		toSerialize["amount"] = o.Amount
 	}
-	if o.Token != nil {
+	if !isNil(o.Token) {
 		toSerialize["token"] = o.Token
 	}
-	if o.Type != nil {
+	if !isNil(o.Type) {
 		toSerialize["type"] = o.Type
 	}
 	return json.Marshal(toSerialize)

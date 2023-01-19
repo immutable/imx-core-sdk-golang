@@ -64,7 +64,7 @@ func (o *MetadataRefreshExcludingSummary) GetCollectionAddress() string {
 // and a boolean to check if the value has been set.
 func (o *MetadataRefreshExcludingSummary) GetCollectionAddressOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.CollectionAddress, true
 }
@@ -76,7 +76,7 @@ func (o *MetadataRefreshExcludingSummary) SetCollectionAddress(v string) {
 
 // GetCompletedAt returns the CompletedAt field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *MetadataRefreshExcludingSummary) GetCompletedAt() string {
-	if o == nil || o.CompletedAt.Get() == nil {
+	if o == nil || isNil(o.CompletedAt.Get()) {
 		var ret string
 		return ret
 	}
@@ -88,7 +88,7 @@ func (o *MetadataRefreshExcludingSummary) GetCompletedAt() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *MetadataRefreshExcludingSummary) GetCompletedAtOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.CompletedAt.Get(), o.CompletedAt.IsSet()
 }
@@ -130,7 +130,7 @@ func (o *MetadataRefreshExcludingSummary) GetRefreshId() string {
 // and a boolean to check if the value has been set.
 func (o *MetadataRefreshExcludingSummary) GetRefreshIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.RefreshId, true
 }
@@ -154,7 +154,7 @@ func (o *MetadataRefreshExcludingSummary) GetStartedAt() string {
 // and a boolean to check if the value has been set.
 func (o *MetadataRefreshExcludingSummary) GetStartedAtOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StartedAt, true
 }
@@ -178,7 +178,7 @@ func (o *MetadataRefreshExcludingSummary) GetStatus() string {
 // and a boolean to check if the value has been set.
 func (o *MetadataRefreshExcludingSummary) GetStatusOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Status, true
 }

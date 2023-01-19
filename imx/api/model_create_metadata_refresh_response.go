@@ -53,7 +53,7 @@ func (o *CreateMetadataRefreshResponse) GetRefreshId() string {
 // and a boolean to check if the value has been set.
 func (o *CreateMetadataRefreshResponse) GetRefreshIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.RefreshId, true
 }

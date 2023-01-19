@@ -63,7 +63,7 @@ func (o *Trade) GetA() TradeSide {
 // and a boolean to check if the value has been set.
 func (o *Trade) GetAOk() (*TradeSide, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.A, true
 }
@@ -87,7 +87,7 @@ func (o *Trade) GetB() TradeSide {
 // and a boolean to check if the value has been set.
 func (o *Trade) GetBOk() (*TradeSide, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.B, true
 }
@@ -111,7 +111,7 @@ func (o *Trade) GetStatus() string {
 // and a boolean to check if the value has been set.
 func (o *Trade) GetStatusOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Status, true
 }
@@ -137,7 +137,7 @@ func (o *Trade) GetTimestamp() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Trade) GetTimestampOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Timestamp.Get(), o.Timestamp.IsSet()
 }
@@ -161,7 +161,7 @@ func (o *Trade) GetTransactionId() int32 {
 // and a boolean to check if the value has been set.
 func (o *Trade) GetTransactionIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TransactionId, true
 }

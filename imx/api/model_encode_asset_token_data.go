@@ -46,7 +46,7 @@ func NewEncodeAssetTokenDataWithDefaults() *EncodeAssetTokenData {
 
 // GetBlueprint returns the Blueprint field value if set, zero value otherwise.
 func (o *EncodeAssetTokenData) GetBlueprint() string {
-	if o == nil || o.Blueprint == nil {
+	if o == nil || isNil(o.Blueprint) {
 		var ret string
 		return ret
 	}
@@ -56,15 +56,15 @@ func (o *EncodeAssetTokenData) GetBlueprint() string {
 // GetBlueprintOk returns a tuple with the Blueprint field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EncodeAssetTokenData) GetBlueprintOk() (*string, bool) {
-	if o == nil || o.Blueprint == nil {
-		return nil, false
+	if o == nil || isNil(o.Blueprint) {
+    return nil, false
 	}
 	return o.Blueprint, true
 }
 
 // HasBlueprint returns a boolean if a field has been set.
 func (o *EncodeAssetTokenData) HasBlueprint() bool {
-	if o != nil && o.Blueprint != nil {
+	if o != nil && !isNil(o.Blueprint) {
 		return true
 	}
 
@@ -78,7 +78,7 @@ func (o *EncodeAssetTokenData) SetBlueprint(v string) {
 
 // GetId returns the Id field value if set, zero value otherwise.
 func (o *EncodeAssetTokenData) GetId() string {
-	if o == nil || o.Id == nil {
+	if o == nil || isNil(o.Id) {
 		var ret string
 		return ret
 	}
@@ -88,15 +88,15 @@ func (o *EncodeAssetTokenData) GetId() string {
 // GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EncodeAssetTokenData) GetIdOk() (*string, bool) {
-	if o == nil || o.Id == nil {
-		return nil, false
+	if o == nil || isNil(o.Id) {
+    return nil, false
 	}
 	return o.Id, true
 }
 
 // HasId returns a boolean if a field has been set.
 func (o *EncodeAssetTokenData) HasId() bool {
-	if o != nil && o.Id != nil {
+	if o != nil && !isNil(o.Id) {
 		return true
 	}
 
@@ -110,7 +110,7 @@ func (o *EncodeAssetTokenData) SetId(v string) {
 
 // GetTokenAddress returns the TokenAddress field value if set, zero value otherwise.
 func (o *EncodeAssetTokenData) GetTokenAddress() string {
-	if o == nil || o.TokenAddress == nil {
+	if o == nil || isNil(o.TokenAddress) {
 		var ret string
 		return ret
 	}
@@ -120,15 +120,15 @@ func (o *EncodeAssetTokenData) GetTokenAddress() string {
 // GetTokenAddressOk returns a tuple with the TokenAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EncodeAssetTokenData) GetTokenAddressOk() (*string, bool) {
-	if o == nil || o.TokenAddress == nil {
-		return nil, false
+	if o == nil || isNil(o.TokenAddress) {
+    return nil, false
 	}
 	return o.TokenAddress, true
 }
 
 // HasTokenAddress returns a boolean if a field has been set.
 func (o *EncodeAssetTokenData) HasTokenAddress() bool {
-	if o != nil && o.TokenAddress != nil {
+	if o != nil && !isNil(o.TokenAddress) {
 		return true
 	}
 
@@ -142,7 +142,7 @@ func (o *EncodeAssetTokenData) SetTokenAddress(v string) {
 
 // GetTokenId returns the TokenId field value if set, zero value otherwise.
 func (o *EncodeAssetTokenData) GetTokenId() string {
-	if o == nil || o.TokenId == nil {
+	if o == nil || isNil(o.TokenId) {
 		var ret string
 		return ret
 	}
@@ -152,15 +152,15 @@ func (o *EncodeAssetTokenData) GetTokenId() string {
 // GetTokenIdOk returns a tuple with the TokenId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EncodeAssetTokenData) GetTokenIdOk() (*string, bool) {
-	if o == nil || o.TokenId == nil {
-		return nil, false
+	if o == nil || isNil(o.TokenId) {
+    return nil, false
 	}
 	return o.TokenId, true
 }
 
 // HasTokenId returns a boolean if a field has been set.
 func (o *EncodeAssetTokenData) HasTokenId() bool {
-	if o != nil && o.TokenId != nil {
+	if o != nil && !isNil(o.TokenId) {
 		return true
 	}
 
@@ -174,16 +174,16 @@ func (o *EncodeAssetTokenData) SetTokenId(v string) {
 
 func (o EncodeAssetTokenData) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Blueprint != nil {
+	if !isNil(o.Blueprint) {
 		toSerialize["blueprint"] = o.Blueprint
 	}
-	if o.Id != nil {
+	if !isNil(o.Id) {
 		toSerialize["id"] = o.Id
 	}
-	if o.TokenAddress != nil {
+	if !isNil(o.TokenAddress) {
 		toSerialize["token_address"] = o.TokenAddress
 	}
-	if o.TokenId != nil {
+	if !isNil(o.TokenId) {
 		toSerialize["token_id"] = o.TokenId
 	}
 	return json.Marshal(toSerialize)

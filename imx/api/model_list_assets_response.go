@@ -59,7 +59,7 @@ func (o *ListAssetsResponse) GetCursor() string {
 // and a boolean to check if the value has been set.
 func (o *ListAssetsResponse) GetCursorOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Cursor, true
 }
@@ -83,7 +83,7 @@ func (o *ListAssetsResponse) GetRemaining() int32 {
 // and a boolean to check if the value has been set.
 func (o *ListAssetsResponse) GetRemainingOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Remaining, true
 }
@@ -107,7 +107,7 @@ func (o *ListAssetsResponse) GetResult() []AssetWithOrders {
 // and a boolean to check if the value has been set.
 func (o *ListAssetsResponse) GetResultOk() ([]AssetWithOrders, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Result, true
 }

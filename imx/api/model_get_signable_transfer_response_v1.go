@@ -79,7 +79,7 @@ func (o *GetSignableTransferResponseV1) GetAmount() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferResponseV1) GetAmountOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Amount, true
 }
@@ -103,7 +103,7 @@ func (o *GetSignableTransferResponseV1) GetAssetId() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferResponseV1) GetAssetIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AssetId, true
 }
@@ -127,7 +127,7 @@ func (o *GetSignableTransferResponseV1) GetExpirationTimestamp() int32 {
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferResponseV1) GetExpirationTimestampOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ExpirationTimestamp, true
 }
@@ -151,7 +151,7 @@ func (o *GetSignableTransferResponseV1) GetNonce() int32 {
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferResponseV1) GetNonceOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Nonce, true
 }
@@ -175,7 +175,7 @@ func (o *GetSignableTransferResponseV1) GetPayloadHash() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferResponseV1) GetPayloadHashOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.PayloadHash, true
 }
@@ -199,7 +199,7 @@ func (o *GetSignableTransferResponseV1) GetReceiverStarkKey() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferResponseV1) GetReceiverStarkKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ReceiverStarkKey, true
 }
@@ -223,7 +223,7 @@ func (o *GetSignableTransferResponseV1) GetReceiverVaultId() int32 {
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferResponseV1) GetReceiverVaultIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ReceiverVaultId, true
 }
@@ -235,7 +235,7 @@ func (o *GetSignableTransferResponseV1) SetReceiverVaultId(v int32) {
 
 // GetSenderStarkKey returns the SenderStarkKey field value if set, zero value otherwise.
 func (o *GetSignableTransferResponseV1) GetSenderStarkKey() string {
-	if o == nil || o.SenderStarkKey == nil {
+	if o == nil || isNil(o.SenderStarkKey) {
 		var ret string
 		return ret
 	}
@@ -245,15 +245,15 @@ func (o *GetSignableTransferResponseV1) GetSenderStarkKey() string {
 // GetSenderStarkKeyOk returns a tuple with the SenderStarkKey field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferResponseV1) GetSenderStarkKeyOk() (*string, bool) {
-	if o == nil || o.SenderStarkKey == nil {
-		return nil, false
+	if o == nil || isNil(o.SenderStarkKey) {
+    return nil, false
 	}
 	return o.SenderStarkKey, true
 }
 
 // HasSenderStarkKey returns a boolean if a field has been set.
 func (o *GetSignableTransferResponseV1) HasSenderStarkKey() bool {
-	if o != nil && o.SenderStarkKey != nil {
+	if o != nil && !isNil(o.SenderStarkKey) {
 		return true
 	}
 
@@ -279,7 +279,7 @@ func (o *GetSignableTransferResponseV1) GetSenderVaultId() int32 {
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferResponseV1) GetSenderVaultIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.SenderVaultId, true
 }
@@ -303,7 +303,7 @@ func (o *GetSignableTransferResponseV1) GetSignableMessage() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferResponseV1) GetSignableMessageOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.SignableMessage, true
 }
@@ -336,7 +336,7 @@ func (o GetSignableTransferResponseV1) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["receiver_vault_id"] = o.ReceiverVaultId
 	}
-	if o.SenderStarkKey != nil {
+	if !isNil(o.SenderStarkKey) {
 		toSerialize["sender_stark_key"] = o.SenderStarkKey
 	}
 	if true {

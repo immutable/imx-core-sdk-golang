@@ -56,7 +56,7 @@ func (o *GetSignableRegistrationOffchainResponse) GetPayloadHash() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableRegistrationOffchainResponse) GetPayloadHashOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.PayloadHash, true
 }
@@ -80,7 +80,7 @@ func (o *GetSignableRegistrationOffchainResponse) GetSignableMessage() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableRegistrationOffchainResponse) GetSignableMessageOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.SignableMessage, true
 }

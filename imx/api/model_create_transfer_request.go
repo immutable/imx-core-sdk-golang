@@ -56,7 +56,7 @@ func (o *CreateTransferRequest) GetRequests() []TransferRequest {
 // and a boolean to check if the value has been set.
 func (o *CreateTransferRequest) GetRequestsOk() ([]TransferRequest, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Requests, true
 }
@@ -80,7 +80,7 @@ func (o *CreateTransferRequest) GetSenderStarkKey() string {
 // and a boolean to check if the value has been set.
 func (o *CreateTransferRequest) GetSenderStarkKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.SenderStarkKey, true
 }

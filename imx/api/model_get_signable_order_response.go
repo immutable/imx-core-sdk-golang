@@ -84,7 +84,7 @@ func (o *GetSignableOrderResponse) GetAmountBuy() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableOrderResponse) GetAmountBuyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AmountBuy, true
 }
@@ -108,7 +108,7 @@ func (o *GetSignableOrderResponse) GetAmountSell() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableOrderResponse) GetAmountSellOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AmountSell, true
 }
@@ -132,7 +132,7 @@ func (o *GetSignableOrderResponse) GetAssetIdBuy() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableOrderResponse) GetAssetIdBuyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AssetIdBuy, true
 }
@@ -156,7 +156,7 @@ func (o *GetSignableOrderResponse) GetAssetIdSell() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableOrderResponse) GetAssetIdSellOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AssetIdSell, true
 }
@@ -180,7 +180,7 @@ func (o *GetSignableOrderResponse) GetExpirationTimestamp() int32 {
 // and a boolean to check if the value has been set.
 func (o *GetSignableOrderResponse) GetExpirationTimestampOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ExpirationTimestamp, true
 }
@@ -192,7 +192,7 @@ func (o *GetSignableOrderResponse) SetExpirationTimestamp(v int32) {
 
 // GetFeeInfo returns the FeeInfo field value if set, zero value otherwise.
 func (o *GetSignableOrderResponse) GetFeeInfo() FeeInfo {
-	if o == nil || o.FeeInfo == nil {
+	if o == nil || isNil(o.FeeInfo) {
 		var ret FeeInfo
 		return ret
 	}
@@ -202,15 +202,15 @@ func (o *GetSignableOrderResponse) GetFeeInfo() FeeInfo {
 // GetFeeInfoOk returns a tuple with the FeeInfo field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *GetSignableOrderResponse) GetFeeInfoOk() (*FeeInfo, bool) {
-	if o == nil || o.FeeInfo == nil {
-		return nil, false
+	if o == nil || isNil(o.FeeInfo) {
+    return nil, false
 	}
 	return o.FeeInfo, true
 }
 
 // HasFeeInfo returns a boolean if a field has been set.
 func (o *GetSignableOrderResponse) HasFeeInfo() bool {
-	if o != nil && o.FeeInfo != nil {
+	if o != nil && !isNil(o.FeeInfo) {
 		return true
 	}
 
@@ -236,7 +236,7 @@ func (o *GetSignableOrderResponse) GetNonce() int32 {
 // and a boolean to check if the value has been set.
 func (o *GetSignableOrderResponse) GetNonceOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Nonce, true
 }
@@ -260,7 +260,7 @@ func (o *GetSignableOrderResponse) GetPayloadHash() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableOrderResponse) GetPayloadHashOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.PayloadHash, true
 }
@@ -284,7 +284,7 @@ func (o *GetSignableOrderResponse) GetSignableMessage() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableOrderResponse) GetSignableMessageOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.SignableMessage, true
 }
@@ -308,7 +308,7 @@ func (o *GetSignableOrderResponse) GetStarkKey() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableOrderResponse) GetStarkKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StarkKey, true
 }
@@ -332,7 +332,7 @@ func (o *GetSignableOrderResponse) GetVaultIdBuy() int32 {
 // and a boolean to check if the value has been set.
 func (o *GetSignableOrderResponse) GetVaultIdBuyOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.VaultIdBuy, true
 }
@@ -356,7 +356,7 @@ func (o *GetSignableOrderResponse) GetVaultIdSell() int32 {
 // and a boolean to check if the value has been set.
 func (o *GetSignableOrderResponse) GetVaultIdSellOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.VaultIdSell, true
 }
@@ -383,7 +383,7 @@ func (o GetSignableOrderResponse) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["expiration_timestamp"] = o.ExpirationTimestamp
 	}
-	if o.FeeInfo != nil {
+	if !isNil(o.FeeInfo) {
 		toSerialize["fee_info"] = o.FeeInfo
 	}
 	if true {

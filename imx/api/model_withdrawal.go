@@ -70,7 +70,7 @@ func (o *Withdrawal) GetRollupStatus() string {
 // and a boolean to check if the value has been set.
 func (o *Withdrawal) GetRollupStatusOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.RollupStatus, true
 }
@@ -94,7 +94,7 @@ func (o *Withdrawal) GetSender() string {
 // and a boolean to check if the value has been set.
 func (o *Withdrawal) GetSenderOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Sender, true
 }
@@ -118,7 +118,7 @@ func (o *Withdrawal) GetStatus() string {
 // and a boolean to check if the value has been set.
 func (o *Withdrawal) GetStatusOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Status, true
 }
@@ -142,7 +142,7 @@ func (o *Withdrawal) GetTimestamp() string {
 // and a boolean to check if the value has been set.
 func (o *Withdrawal) GetTimestampOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Timestamp, true
 }
@@ -166,7 +166,7 @@ func (o *Withdrawal) GetToken() Token {
 // and a boolean to check if the value has been set.
 func (o *Withdrawal) GetTokenOk() (*Token, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Token, true
 }
@@ -190,7 +190,7 @@ func (o *Withdrawal) GetTransactionId() int32 {
 // and a boolean to check if the value has been set.
 func (o *Withdrawal) GetTransactionIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TransactionId, true
 }
@@ -214,7 +214,7 @@ func (o *Withdrawal) GetWithdrawnToWallet() bool {
 // and a boolean to check if the value has been set.
 func (o *Withdrawal) GetWithdrawnToWalletOk() (*bool, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.WithdrawnToWallet, true
 }

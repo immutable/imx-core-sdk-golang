@@ -59,7 +59,7 @@ func (o *MintResultDetails) GetContractAddress() string {
 // and a boolean to check if the value has been set.
 func (o *MintResultDetails) GetContractAddressOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ContractAddress, true
 }
@@ -83,7 +83,7 @@ func (o *MintResultDetails) GetTokenId() string {
 // and a boolean to check if the value has been set.
 func (o *MintResultDetails) GetTokenIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TokenId, true
 }
@@ -107,7 +107,7 @@ func (o *MintResultDetails) GetTxId() int32 {
 // and a boolean to check if the value has been set.
 func (o *MintResultDetails) GetTxIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TxId, true
 }

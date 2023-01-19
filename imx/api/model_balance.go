@@ -65,7 +65,7 @@ func (o *Balance) GetBalance() string {
 // and a boolean to check if the value has been set.
 func (o *Balance) GetBalanceOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Balance, true
 }
@@ -89,7 +89,7 @@ func (o *Balance) GetPreparingWithdrawal() string {
 // and a boolean to check if the value has been set.
 func (o *Balance) GetPreparingWithdrawalOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.PreparingWithdrawal, true
 }
@@ -113,7 +113,7 @@ func (o *Balance) GetSymbol() string {
 // and a boolean to check if the value has been set.
 func (o *Balance) GetSymbolOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Symbol, true
 }
@@ -137,7 +137,7 @@ func (o *Balance) GetTokenAddress() string {
 // and a boolean to check if the value has been set.
 func (o *Balance) GetTokenAddressOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TokenAddress, true
 }
@@ -161,7 +161,7 @@ func (o *Balance) GetWithdrawable() string {
 // and a boolean to check if the value has been set.
 func (o *Balance) GetWithdrawableOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Withdrawable, true
 }

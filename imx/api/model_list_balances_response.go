@@ -59,7 +59,7 @@ func (o *ListBalancesResponse) GetCursor() string {
 // and a boolean to check if the value has been set.
 func (o *ListBalancesResponse) GetCursorOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Cursor, true
 }
@@ -83,7 +83,7 @@ func (o *ListBalancesResponse) GetRemaining() int32 {
 // and a boolean to check if the value has been set.
 func (o *ListBalancesResponse) GetRemainingOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Remaining, true
 }
@@ -107,7 +107,7 @@ func (o *ListBalancesResponse) GetResult() []Balance {
 // and a boolean to check if the value has been set.
 func (o *ListBalancesResponse) GetResultOk() ([]Balance, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Result, true
 }

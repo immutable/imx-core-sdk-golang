@@ -59,7 +59,7 @@ func (o *GetSignableCancelOrderResponse) GetOrderId() int32 {
 // and a boolean to check if the value has been set.
 func (o *GetSignableCancelOrderResponse) GetOrderIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.OrderId, true
 }
@@ -83,7 +83,7 @@ func (o *GetSignableCancelOrderResponse) GetPayloadHash() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableCancelOrderResponse) GetPayloadHashOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.PayloadHash, true
 }
@@ -107,7 +107,7 @@ func (o *GetSignableCancelOrderResponse) GetSignableMessage() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableCancelOrderResponse) GetSignableMessageOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.SignableMessage, true
 }

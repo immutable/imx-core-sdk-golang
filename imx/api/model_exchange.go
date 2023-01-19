@@ -53,7 +53,7 @@ func NewExchangeWithDefaults() *Exchange {
 
 // GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
 func (o *Exchange) GetCreatedAt() string {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || isNil(o.CreatedAt) {
 		var ret string
 		return ret
 	}
@@ -63,15 +63,15 @@ func (o *Exchange) GetCreatedAt() string {
 // GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Exchange) GetCreatedAtOk() (*string, bool) {
-	if o == nil || o.CreatedAt == nil {
-		return nil, false
+	if o == nil || isNil(o.CreatedAt) {
+    return nil, false
 	}
 	return o.CreatedAt, true
 }
 
 // HasCreatedAt returns a boolean if a field has been set.
 func (o *Exchange) HasCreatedAt() bool {
-	if o != nil && o.CreatedAt != nil {
+	if o != nil && !isNil(o.CreatedAt) {
 		return true
 	}
 
@@ -85,7 +85,7 @@ func (o *Exchange) SetCreatedAt(v string) {
 
 // GetData returns the Data field value if set, zero value otherwise.
 func (o *Exchange) GetData() OptionalExchangeData {
-	if o == nil || o.Data == nil {
+	if o == nil || isNil(o.Data) {
 		var ret OptionalExchangeData
 		return ret
 	}
@@ -95,15 +95,15 @@ func (o *Exchange) GetData() OptionalExchangeData {
 // GetDataOk returns a tuple with the Data field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Exchange) GetDataOk() (*OptionalExchangeData, bool) {
-	if o == nil || o.Data == nil {
-		return nil, false
+	if o == nil || isNil(o.Data) {
+    return nil, false
 	}
 	return o.Data, true
 }
 
 // HasData returns a boolean if a field has been set.
 func (o *Exchange) HasData() bool {
-	if o != nil && o.Data != nil {
+	if o != nil && !isNil(o.Data) {
 		return true
 	}
 
@@ -117,7 +117,7 @@ func (o *Exchange) SetData(v OptionalExchangeData) {
 
 // GetId returns the Id field value if set, zero value otherwise.
 func (o *Exchange) GetId() int32 {
-	if o == nil || o.Id == nil {
+	if o == nil || isNil(o.Id) {
 		var ret int32
 		return ret
 	}
@@ -127,15 +127,15 @@ func (o *Exchange) GetId() int32 {
 // GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Exchange) GetIdOk() (*int32, bool) {
-	if o == nil || o.Id == nil {
-		return nil, false
+	if o == nil || isNil(o.Id) {
+    return nil, false
 	}
 	return o.Id, true
 }
 
 // HasId returns a boolean if a field has been set.
 func (o *Exchange) HasId() bool {
-	if o != nil && o.Id != nil {
+	if o != nil && !isNil(o.Id) {
 		return true
 	}
 
@@ -149,7 +149,7 @@ func (o *Exchange) SetId(v int32) {
 
 // GetProvider returns the Provider field value if set, zero value otherwise.
 func (o *Exchange) GetProvider() string {
-	if o == nil || o.Provider == nil {
+	if o == nil || isNil(o.Provider) {
 		var ret string
 		return ret
 	}
@@ -159,15 +159,15 @@ func (o *Exchange) GetProvider() string {
 // GetProviderOk returns a tuple with the Provider field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Exchange) GetProviderOk() (*string, bool) {
-	if o == nil || o.Provider == nil {
-		return nil, false
+	if o == nil || isNil(o.Provider) {
+    return nil, false
 	}
 	return o.Provider, true
 }
 
 // HasProvider returns a boolean if a field has been set.
 func (o *Exchange) HasProvider() bool {
-	if o != nil && o.Provider != nil {
+	if o != nil && !isNil(o.Provider) {
 		return true
 	}
 
@@ -181,7 +181,7 @@ func (o *Exchange) SetProvider(v string) {
 
 // GetStatus returns the Status field value if set, zero value otherwise.
 func (o *Exchange) GetStatus() string {
-	if o == nil || o.Status == nil {
+	if o == nil || isNil(o.Status) {
 		var ret string
 		return ret
 	}
@@ -191,15 +191,15 @@ func (o *Exchange) GetStatus() string {
 // GetStatusOk returns a tuple with the Status field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Exchange) GetStatusOk() (*string, bool) {
-	if o == nil || o.Status == nil {
-		return nil, false
+	if o == nil || isNil(o.Status) {
+    return nil, false
 	}
 	return o.Status, true
 }
 
 // HasStatus returns a boolean if a field has been set.
 func (o *Exchange) HasStatus() bool {
-	if o != nil && o.Status != nil {
+	if o != nil && !isNil(o.Status) {
 		return true
 	}
 
@@ -213,7 +213,7 @@ func (o *Exchange) SetStatus(v string) {
 
 // GetType returns the Type field value if set, zero value otherwise.
 func (o *Exchange) GetType() string {
-	if o == nil || o.Type == nil {
+	if o == nil || isNil(o.Type) {
 		var ret string
 		return ret
 	}
@@ -223,15 +223,15 @@ func (o *Exchange) GetType() string {
 // GetTypeOk returns a tuple with the Type field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Exchange) GetTypeOk() (*string, bool) {
-	if o == nil || o.Type == nil {
-		return nil, false
+	if o == nil || isNil(o.Type) {
+    return nil, false
 	}
 	return o.Type, true
 }
 
 // HasType returns a boolean if a field has been set.
 func (o *Exchange) HasType() bool {
-	if o != nil && o.Type != nil {
+	if o != nil && !isNil(o.Type) {
 		return true
 	}
 
@@ -245,7 +245,7 @@ func (o *Exchange) SetType(v string) {
 
 // GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise.
 func (o *Exchange) GetUpdatedAt() string {
-	if o == nil || o.UpdatedAt == nil {
+	if o == nil || isNil(o.UpdatedAt) {
 		var ret string
 		return ret
 	}
@@ -255,15 +255,15 @@ func (o *Exchange) GetUpdatedAt() string {
 // GetUpdatedAtOk returns a tuple with the UpdatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Exchange) GetUpdatedAtOk() (*string, bool) {
-	if o == nil || o.UpdatedAt == nil {
-		return nil, false
+	if o == nil || isNil(o.UpdatedAt) {
+    return nil, false
 	}
 	return o.UpdatedAt, true
 }
 
 // HasUpdatedAt returns a boolean if a field has been set.
 func (o *Exchange) HasUpdatedAt() bool {
-	if o != nil && o.UpdatedAt != nil {
+	if o != nil && !isNil(o.UpdatedAt) {
 		return true
 	}
 
@@ -277,7 +277,7 @@ func (o *Exchange) SetUpdatedAt(v string) {
 
 // GetWalletAddress returns the WalletAddress field value if set, zero value otherwise.
 func (o *Exchange) GetWalletAddress() string {
-	if o == nil || o.WalletAddress == nil {
+	if o == nil || isNil(o.WalletAddress) {
 		var ret string
 		return ret
 	}
@@ -287,15 +287,15 @@ func (o *Exchange) GetWalletAddress() string {
 // GetWalletAddressOk returns a tuple with the WalletAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Exchange) GetWalletAddressOk() (*string, bool) {
-	if o == nil || o.WalletAddress == nil {
-		return nil, false
+	if o == nil || isNil(o.WalletAddress) {
+    return nil, false
 	}
 	return o.WalletAddress, true
 }
 
 // HasWalletAddress returns a boolean if a field has been set.
 func (o *Exchange) HasWalletAddress() bool {
-	if o != nil && o.WalletAddress != nil {
+	if o != nil && !isNil(o.WalletAddress) {
 		return true
 	}
 
@@ -309,28 +309,28 @@ func (o *Exchange) SetWalletAddress(v string) {
 
 func (o Exchange) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.CreatedAt != nil {
+	if !isNil(o.CreatedAt) {
 		toSerialize["created_at"] = o.CreatedAt
 	}
-	if o.Data != nil {
+	if !isNil(o.Data) {
 		toSerialize["data"] = o.Data
 	}
-	if o.Id != nil {
+	if !isNil(o.Id) {
 		toSerialize["id"] = o.Id
 	}
-	if o.Provider != nil {
+	if !isNil(o.Provider) {
 		toSerialize["provider"] = o.Provider
 	}
-	if o.Status != nil {
+	if !isNil(o.Status) {
 		toSerialize["status"] = o.Status
 	}
-	if o.Type != nil {
+	if !isNil(o.Type) {
 		toSerialize["type"] = o.Type
 	}
-	if o.UpdatedAt != nil {
+	if !isNil(o.UpdatedAt) {
 		toSerialize["updated_at"] = o.UpdatedAt
 	}
-	if o.WalletAddress != nil {
+	if !isNil(o.WalletAddress) {
 		toSerialize["wallet_address"] = o.WalletAddress
 	}
 	return json.Marshal(toSerialize)

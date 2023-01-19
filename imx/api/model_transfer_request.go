@@ -74,7 +74,7 @@ func (o *TransferRequest) GetAmount() string {
 // and a boolean to check if the value has been set.
 func (o *TransferRequest) GetAmountOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Amount, true
 }
@@ -98,7 +98,7 @@ func (o *TransferRequest) GetAssetId() string {
 // and a boolean to check if the value has been set.
 func (o *TransferRequest) GetAssetIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AssetId, true
 }
@@ -122,7 +122,7 @@ func (o *TransferRequest) GetExpirationTimestamp() int32 {
 // and a boolean to check if the value has been set.
 func (o *TransferRequest) GetExpirationTimestampOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ExpirationTimestamp, true
 }
@@ -146,7 +146,7 @@ func (o *TransferRequest) GetNonce() int32 {
 // and a boolean to check if the value has been set.
 func (o *TransferRequest) GetNonceOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Nonce, true
 }
@@ -170,7 +170,7 @@ func (o *TransferRequest) GetReceiverStarkKey() string {
 // and a boolean to check if the value has been set.
 func (o *TransferRequest) GetReceiverStarkKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ReceiverStarkKey, true
 }
@@ -194,7 +194,7 @@ func (o *TransferRequest) GetReceiverVaultId() int32 {
 // and a boolean to check if the value has been set.
 func (o *TransferRequest) GetReceiverVaultIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ReceiverVaultId, true
 }
@@ -218,7 +218,7 @@ func (o *TransferRequest) GetSenderVaultId() int32 {
 // and a boolean to check if the value has been set.
 func (o *TransferRequest) GetSenderVaultIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.SenderVaultId, true
 }
@@ -242,7 +242,7 @@ func (o *TransferRequest) GetStarkSignature() string {
 // and a boolean to check if the value has been set.
 func (o *TransferRequest) GetStarkSignatureOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StarkSignature, true
 }

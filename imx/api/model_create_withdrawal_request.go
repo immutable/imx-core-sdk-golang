@@ -68,7 +68,7 @@ func (o *CreateWithdrawalRequest) GetAmount() string {
 // and a boolean to check if the value has been set.
 func (o *CreateWithdrawalRequest) GetAmountOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Amount, true
 }
@@ -92,7 +92,7 @@ func (o *CreateWithdrawalRequest) GetAssetId() string {
 // and a boolean to check if the value has been set.
 func (o *CreateWithdrawalRequest) GetAssetIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AssetId, true
 }
@@ -116,7 +116,7 @@ func (o *CreateWithdrawalRequest) GetNonce() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateWithdrawalRequest) GetNonceOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Nonce, true
 }
@@ -140,7 +140,7 @@ func (o *CreateWithdrawalRequest) GetStarkKey() string {
 // and a boolean to check if the value has been set.
 func (o *CreateWithdrawalRequest) GetStarkKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StarkKey, true
 }
@@ -164,7 +164,7 @@ func (o *CreateWithdrawalRequest) GetStarkSignature() string {
 // and a boolean to check if the value has been set.
 func (o *CreateWithdrawalRequest) GetStarkSignatureOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StarkSignature, true
 }
@@ -188,7 +188,7 @@ func (o *CreateWithdrawalRequest) GetVaultId() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateWithdrawalRequest) GetVaultIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.VaultId, true
 }

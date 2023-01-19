@@ -19,17 +19,17 @@ import (
 type NftprimarytransactionCreateResponse struct {
 	// Contract address of the asset to be created
 	ContractAddress *string `json:"contract_address,omitempty"`
-	// Temporary asset id
+	// Temporary asset id. Might be a token id if the token id is known or a generic description if it's not
 	OfferId *string `json:"offer_id,omitempty"`
 	// Provider name
 	Provider *string `json:"provider,omitempty"`
-	// Ethereum address of the seller
+	// Wallet address that will receive the payment (in crypto) from the checkout provider for the minted NFT
 	SellerWalletAddress *string `json:"seller_wallet_address,omitempty"`
-	// Asset id
+	// ID of the token that has been successfully minted - should be the same as `offer_id`
 	TokenId *string `json:"token_id,omitempty"`
 	// Transaction id
 	TransactionId *string `json:"transaction_id,omitempty"`
-	// Widget Url signed by provider
+	// NFT purchase URL given by the checkout provider that the user can use to complete payment
 	Url *string `json:"url,omitempty"`
 	// Ethereum address of the user who wants to create transaction
 	UserWalletAddress *string `json:"user_wallet_address,omitempty"`
@@ -54,7 +54,7 @@ func NewNftprimarytransactionCreateResponseWithDefaults() *Nftprimarytransaction
 
 // GetContractAddress returns the ContractAddress field value if set, zero value otherwise.
 func (o *NftprimarytransactionCreateResponse) GetContractAddress() string {
-	if o == nil || o.ContractAddress == nil {
+	if o == nil || isNil(o.ContractAddress) {
 		var ret string
 		return ret
 	}
@@ -64,15 +64,15 @@ func (o *NftprimarytransactionCreateResponse) GetContractAddress() string {
 // GetContractAddressOk returns a tuple with the ContractAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *NftprimarytransactionCreateResponse) GetContractAddressOk() (*string, bool) {
-	if o == nil || o.ContractAddress == nil {
-		return nil, false
+	if o == nil || isNil(o.ContractAddress) {
+    return nil, false
 	}
 	return o.ContractAddress, true
 }
 
 // HasContractAddress returns a boolean if a field has been set.
 func (o *NftprimarytransactionCreateResponse) HasContractAddress() bool {
-	if o != nil && o.ContractAddress != nil {
+	if o != nil && !isNil(o.ContractAddress) {
 		return true
 	}
 
@@ -86,7 +86,7 @@ func (o *NftprimarytransactionCreateResponse) SetContractAddress(v string) {
 
 // GetOfferId returns the OfferId field value if set, zero value otherwise.
 func (o *NftprimarytransactionCreateResponse) GetOfferId() string {
-	if o == nil || o.OfferId == nil {
+	if o == nil || isNil(o.OfferId) {
 		var ret string
 		return ret
 	}
@@ -96,15 +96,15 @@ func (o *NftprimarytransactionCreateResponse) GetOfferId() string {
 // GetOfferIdOk returns a tuple with the OfferId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *NftprimarytransactionCreateResponse) GetOfferIdOk() (*string, bool) {
-	if o == nil || o.OfferId == nil {
-		return nil, false
+	if o == nil || isNil(o.OfferId) {
+    return nil, false
 	}
 	return o.OfferId, true
 }
 
 // HasOfferId returns a boolean if a field has been set.
 func (o *NftprimarytransactionCreateResponse) HasOfferId() bool {
-	if o != nil && o.OfferId != nil {
+	if o != nil && !isNil(o.OfferId) {
 		return true
 	}
 
@@ -118,7 +118,7 @@ func (o *NftprimarytransactionCreateResponse) SetOfferId(v string) {
 
 // GetProvider returns the Provider field value if set, zero value otherwise.
 func (o *NftprimarytransactionCreateResponse) GetProvider() string {
-	if o == nil || o.Provider == nil {
+	if o == nil || isNil(o.Provider) {
 		var ret string
 		return ret
 	}
@@ -128,15 +128,15 @@ func (o *NftprimarytransactionCreateResponse) GetProvider() string {
 // GetProviderOk returns a tuple with the Provider field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *NftprimarytransactionCreateResponse) GetProviderOk() (*string, bool) {
-	if o == nil || o.Provider == nil {
-		return nil, false
+	if o == nil || isNil(o.Provider) {
+    return nil, false
 	}
 	return o.Provider, true
 }
 
 // HasProvider returns a boolean if a field has been set.
 func (o *NftprimarytransactionCreateResponse) HasProvider() bool {
-	if o != nil && o.Provider != nil {
+	if o != nil && !isNil(o.Provider) {
 		return true
 	}
 
@@ -150,7 +150,7 @@ func (o *NftprimarytransactionCreateResponse) SetProvider(v string) {
 
 // GetSellerWalletAddress returns the SellerWalletAddress field value if set, zero value otherwise.
 func (o *NftprimarytransactionCreateResponse) GetSellerWalletAddress() string {
-	if o == nil || o.SellerWalletAddress == nil {
+	if o == nil || isNil(o.SellerWalletAddress) {
 		var ret string
 		return ret
 	}
@@ -160,15 +160,15 @@ func (o *NftprimarytransactionCreateResponse) GetSellerWalletAddress() string {
 // GetSellerWalletAddressOk returns a tuple with the SellerWalletAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *NftprimarytransactionCreateResponse) GetSellerWalletAddressOk() (*string, bool) {
-	if o == nil || o.SellerWalletAddress == nil {
-		return nil, false
+	if o == nil || isNil(o.SellerWalletAddress) {
+    return nil, false
 	}
 	return o.SellerWalletAddress, true
 }
 
 // HasSellerWalletAddress returns a boolean if a field has been set.
 func (o *NftprimarytransactionCreateResponse) HasSellerWalletAddress() bool {
-	if o != nil && o.SellerWalletAddress != nil {
+	if o != nil && !isNil(o.SellerWalletAddress) {
 		return true
 	}
 
@@ -182,7 +182,7 @@ func (o *NftprimarytransactionCreateResponse) SetSellerWalletAddress(v string) {
 
 // GetTokenId returns the TokenId field value if set, zero value otherwise.
 func (o *NftprimarytransactionCreateResponse) GetTokenId() string {
-	if o == nil || o.TokenId == nil {
+	if o == nil || isNil(o.TokenId) {
 		var ret string
 		return ret
 	}
@@ -192,15 +192,15 @@ func (o *NftprimarytransactionCreateResponse) GetTokenId() string {
 // GetTokenIdOk returns a tuple with the TokenId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *NftprimarytransactionCreateResponse) GetTokenIdOk() (*string, bool) {
-	if o == nil || o.TokenId == nil {
-		return nil, false
+	if o == nil || isNil(o.TokenId) {
+    return nil, false
 	}
 	return o.TokenId, true
 }
 
 // HasTokenId returns a boolean if a field has been set.
 func (o *NftprimarytransactionCreateResponse) HasTokenId() bool {
-	if o != nil && o.TokenId != nil {
+	if o != nil && !isNil(o.TokenId) {
 		return true
 	}
 
@@ -214,7 +214,7 @@ func (o *NftprimarytransactionCreateResponse) SetTokenId(v string) {
 
 // GetTransactionId returns the TransactionId field value if set, zero value otherwise.
 func (o *NftprimarytransactionCreateResponse) GetTransactionId() string {
-	if o == nil || o.TransactionId == nil {
+	if o == nil || isNil(o.TransactionId) {
 		var ret string
 		return ret
 	}
@@ -224,15 +224,15 @@ func (o *NftprimarytransactionCreateResponse) GetTransactionId() string {
 // GetTransactionIdOk returns a tuple with the TransactionId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *NftprimarytransactionCreateResponse) GetTransactionIdOk() (*string, bool) {
-	if o == nil || o.TransactionId == nil {
-		return nil, false
+	if o == nil || isNil(o.TransactionId) {
+    return nil, false
 	}
 	return o.TransactionId, true
 }
 
 // HasTransactionId returns a boolean if a field has been set.
 func (o *NftprimarytransactionCreateResponse) HasTransactionId() bool {
-	if o != nil && o.TransactionId != nil {
+	if o != nil && !isNil(o.TransactionId) {
 		return true
 	}
 
@@ -246,7 +246,7 @@ func (o *NftprimarytransactionCreateResponse) SetTransactionId(v string) {
 
 // GetUrl returns the Url field value if set, zero value otherwise.
 func (o *NftprimarytransactionCreateResponse) GetUrl() string {
-	if o == nil || o.Url == nil {
+	if o == nil || isNil(o.Url) {
 		var ret string
 		return ret
 	}
@@ -256,15 +256,15 @@ func (o *NftprimarytransactionCreateResponse) GetUrl() string {
 // GetUrlOk returns a tuple with the Url field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *NftprimarytransactionCreateResponse) GetUrlOk() (*string, bool) {
-	if o == nil || o.Url == nil {
-		return nil, false
+	if o == nil || isNil(o.Url) {
+    return nil, false
 	}
 	return o.Url, true
 }
 
 // HasUrl returns a boolean if a field has been set.
 func (o *NftprimarytransactionCreateResponse) HasUrl() bool {
-	if o != nil && o.Url != nil {
+	if o != nil && !isNil(o.Url) {
 		return true
 	}
 
@@ -278,7 +278,7 @@ func (o *NftprimarytransactionCreateResponse) SetUrl(v string) {
 
 // GetUserWalletAddress returns the UserWalletAddress field value if set, zero value otherwise.
 func (o *NftprimarytransactionCreateResponse) GetUserWalletAddress() string {
-	if o == nil || o.UserWalletAddress == nil {
+	if o == nil || isNil(o.UserWalletAddress) {
 		var ret string
 		return ret
 	}
@@ -288,15 +288,15 @@ func (o *NftprimarytransactionCreateResponse) GetUserWalletAddress() string {
 // GetUserWalletAddressOk returns a tuple with the UserWalletAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *NftprimarytransactionCreateResponse) GetUserWalletAddressOk() (*string, bool) {
-	if o == nil || o.UserWalletAddress == nil {
-		return nil, false
+	if o == nil || isNil(o.UserWalletAddress) {
+    return nil, false
 	}
 	return o.UserWalletAddress, true
 }
 
 // HasUserWalletAddress returns a boolean if a field has been set.
 func (o *NftprimarytransactionCreateResponse) HasUserWalletAddress() bool {
-	if o != nil && o.UserWalletAddress != nil {
+	if o != nil && !isNil(o.UserWalletAddress) {
 		return true
 	}
 
@@ -310,28 +310,28 @@ func (o *NftprimarytransactionCreateResponse) SetUserWalletAddress(v string) {
 
 func (o NftprimarytransactionCreateResponse) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.ContractAddress != nil {
+	if !isNil(o.ContractAddress) {
 		toSerialize["contract_address"] = o.ContractAddress
 	}
-	if o.OfferId != nil {
+	if !isNil(o.OfferId) {
 		toSerialize["offer_id"] = o.OfferId
 	}
-	if o.Provider != nil {
+	if !isNil(o.Provider) {
 		toSerialize["provider"] = o.Provider
 	}
-	if o.SellerWalletAddress != nil {
+	if !isNil(o.SellerWalletAddress) {
 		toSerialize["seller_wallet_address"] = o.SellerWalletAddress
 	}
-	if o.TokenId != nil {
+	if !isNil(o.TokenId) {
 		toSerialize["token_id"] = o.TokenId
 	}
-	if o.TransactionId != nil {
+	if !isNil(o.TransactionId) {
 		toSerialize["transaction_id"] = o.TransactionId
 	}
-	if o.Url != nil {
+	if !isNil(o.Url) {
 		toSerialize["url"] = o.Url
 	}
-	if o.UserWalletAddress != nil {
+	if !isNil(o.UserWalletAddress) {
 		toSerialize["user_wallet_address"] = o.UserWalletAddress
 	}
 	return json.Marshal(toSerialize)

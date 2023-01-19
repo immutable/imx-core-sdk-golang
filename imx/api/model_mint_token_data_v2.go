@@ -58,7 +58,7 @@ func (o *MintTokenDataV2) GetBlueprint() string {
 // and a boolean to check if the value has been set.
 func (o *MintTokenDataV2) GetBlueprintOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Blueprint, true
 }
@@ -82,7 +82,7 @@ func (o *MintTokenDataV2) GetId() string {
 // and a boolean to check if the value has been set.
 func (o *MintTokenDataV2) GetIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Id, true
 }
@@ -94,7 +94,7 @@ func (o *MintTokenDataV2) SetId(v string) {
 
 // GetRoyalties returns the Royalties field value if set, zero value otherwise.
 func (o *MintTokenDataV2) GetRoyalties() []MintFee {
-	if o == nil || o.Royalties == nil {
+	if o == nil || isNil(o.Royalties) {
 		var ret []MintFee
 		return ret
 	}
@@ -104,15 +104,15 @@ func (o *MintTokenDataV2) GetRoyalties() []MintFee {
 // GetRoyaltiesOk returns a tuple with the Royalties field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MintTokenDataV2) GetRoyaltiesOk() ([]MintFee, bool) {
-	if o == nil || o.Royalties == nil {
-		return nil, false
+	if o == nil || isNil(o.Royalties) {
+    return nil, false
 	}
 	return o.Royalties, true
 }
 
 // HasRoyalties returns a boolean if a field has been set.
 func (o *MintTokenDataV2) HasRoyalties() bool {
-	if o != nil && o.Royalties != nil {
+	if o != nil && !isNil(o.Royalties) {
 		return true
 	}
 
@@ -132,7 +132,7 @@ func (o MintTokenDataV2) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["id"] = o.Id
 	}
-	if o.Royalties != nil {
+	if !isNil(o.Royalties) {
 		toSerialize["royalties"] = o.Royalties
 	}
 	return json.Marshal(toSerialize)

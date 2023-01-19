@@ -48,7 +48,7 @@ func NewUpdateCollectionRequestWithDefaults() *UpdateCollectionRequest {
 
 // GetCollectionImageUrl returns the CollectionImageUrl field value if set, zero value otherwise.
 func (o *UpdateCollectionRequest) GetCollectionImageUrl() string {
-	if o == nil || o.CollectionImageUrl == nil {
+	if o == nil || isNil(o.CollectionImageUrl) {
 		var ret string
 		return ret
 	}
@@ -58,15 +58,15 @@ func (o *UpdateCollectionRequest) GetCollectionImageUrl() string {
 // GetCollectionImageUrlOk returns a tuple with the CollectionImageUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UpdateCollectionRequest) GetCollectionImageUrlOk() (*string, bool) {
-	if o == nil || o.CollectionImageUrl == nil {
-		return nil, false
+	if o == nil || isNil(o.CollectionImageUrl) {
+    return nil, false
 	}
 	return o.CollectionImageUrl, true
 }
 
 // HasCollectionImageUrl returns a boolean if a field has been set.
 func (o *UpdateCollectionRequest) HasCollectionImageUrl() bool {
-	if o != nil && o.CollectionImageUrl != nil {
+	if o != nil && !isNil(o.CollectionImageUrl) {
 		return true
 	}
 
@@ -80,7 +80,7 @@ func (o *UpdateCollectionRequest) SetCollectionImageUrl(v string) {
 
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *UpdateCollectionRequest) GetDescription() string {
-	if o == nil || o.Description == nil {
+	if o == nil || isNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -90,15 +90,15 @@ func (o *UpdateCollectionRequest) GetDescription() string {
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UpdateCollectionRequest) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
-		return nil, false
+	if o == nil || isNil(o.Description) {
+    return nil, false
 	}
 	return o.Description, true
 }
 
 // HasDescription returns a boolean if a field has been set.
 func (o *UpdateCollectionRequest) HasDescription() bool {
-	if o != nil && o.Description != nil {
+	if o != nil && !isNil(o.Description) {
 		return true
 	}
 
@@ -112,7 +112,7 @@ func (o *UpdateCollectionRequest) SetDescription(v string) {
 
 // GetIconUrl returns the IconUrl field value if set, zero value otherwise.
 func (o *UpdateCollectionRequest) GetIconUrl() string {
-	if o == nil || o.IconUrl == nil {
+	if o == nil || isNil(o.IconUrl) {
 		var ret string
 		return ret
 	}
@@ -122,15 +122,15 @@ func (o *UpdateCollectionRequest) GetIconUrl() string {
 // GetIconUrlOk returns a tuple with the IconUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UpdateCollectionRequest) GetIconUrlOk() (*string, bool) {
-	if o == nil || o.IconUrl == nil {
-		return nil, false
+	if o == nil || isNil(o.IconUrl) {
+    return nil, false
 	}
 	return o.IconUrl, true
 }
 
 // HasIconUrl returns a boolean if a field has been set.
 func (o *UpdateCollectionRequest) HasIconUrl() bool {
-	if o != nil && o.IconUrl != nil {
+	if o != nil && !isNil(o.IconUrl) {
 		return true
 	}
 
@@ -144,7 +144,7 @@ func (o *UpdateCollectionRequest) SetIconUrl(v string) {
 
 // GetMetadataApiUrl returns the MetadataApiUrl field value if set, zero value otherwise.
 func (o *UpdateCollectionRequest) GetMetadataApiUrl() string {
-	if o == nil || o.MetadataApiUrl == nil {
+	if o == nil || isNil(o.MetadataApiUrl) {
 		var ret string
 		return ret
 	}
@@ -154,15 +154,15 @@ func (o *UpdateCollectionRequest) GetMetadataApiUrl() string {
 // GetMetadataApiUrlOk returns a tuple with the MetadataApiUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UpdateCollectionRequest) GetMetadataApiUrlOk() (*string, bool) {
-	if o == nil || o.MetadataApiUrl == nil {
-		return nil, false
+	if o == nil || isNil(o.MetadataApiUrl) {
+    return nil, false
 	}
 	return o.MetadataApiUrl, true
 }
 
 // HasMetadataApiUrl returns a boolean if a field has been set.
 func (o *UpdateCollectionRequest) HasMetadataApiUrl() bool {
-	if o != nil && o.MetadataApiUrl != nil {
+	if o != nil && !isNil(o.MetadataApiUrl) {
 		return true
 	}
 
@@ -176,7 +176,7 @@ func (o *UpdateCollectionRequest) SetMetadataApiUrl(v string) {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *UpdateCollectionRequest) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || isNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -186,15 +186,15 @@ func (o *UpdateCollectionRequest) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UpdateCollectionRequest) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
-		return nil, false
+	if o == nil || isNil(o.Name) {
+    return nil, false
 	}
 	return o.Name, true
 }
 
 // HasName returns a boolean if a field has been set.
 func (o *UpdateCollectionRequest) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !isNil(o.Name) {
 		return true
 	}
 
@@ -208,19 +208,19 @@ func (o *UpdateCollectionRequest) SetName(v string) {
 
 func (o UpdateCollectionRequest) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.CollectionImageUrl != nil {
+	if !isNil(o.CollectionImageUrl) {
 		toSerialize["collection_image_url"] = o.CollectionImageUrl
 	}
-	if o.Description != nil {
+	if !isNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
-	if o.IconUrl != nil {
+	if !isNil(o.IconUrl) {
 		toSerialize["icon_url"] = o.IconUrl
 	}
-	if o.MetadataApiUrl != nil {
+	if !isNil(o.MetadataApiUrl) {
 		toSerialize["metadata_api_url"] = o.MetadataApiUrl
 	}
-	if o.Name != nil {
+	if !isNil(o.Name) {
 		toSerialize["name"] = o.Name
 	}
 	return json.Marshal(toSerialize)

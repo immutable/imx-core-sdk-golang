@@ -56,7 +56,7 @@ func (o *GetSignableTransferRequest) GetSenderEtherKey() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferRequest) GetSenderEtherKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.SenderEtherKey, true
 }
@@ -80,7 +80,7 @@ func (o *GetSignableTransferRequest) GetSignableRequests() []SignableTransferDet
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferRequest) GetSignableRequestsOk() ([]SignableTransferDetails, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.SignableRequests, true
 }

@@ -62,7 +62,7 @@ func (o *CreateTransferResponseV1) GetSentSignature() string {
 // and a boolean to check if the value has been set.
 func (o *CreateTransferResponseV1) GetSentSignatureOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.SentSignature, true
 }
@@ -86,7 +86,7 @@ func (o *CreateTransferResponseV1) GetStatus() string {
 // and a boolean to check if the value has been set.
 func (o *CreateTransferResponseV1) GetStatusOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Status, true
 }
@@ -110,7 +110,7 @@ func (o *CreateTransferResponseV1) GetTime() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateTransferResponseV1) GetTimeOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Time, true
 }
@@ -134,7 +134,7 @@ func (o *CreateTransferResponseV1) GetTransferId() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateTransferResponseV1) GetTransferIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TransferId, true
 }

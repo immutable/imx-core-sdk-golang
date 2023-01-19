@@ -90,7 +90,7 @@ func (o *AssetWithOrders) GetCollection() CollectionDetails {
 // and a boolean to check if the value has been set.
 func (o *AssetWithOrders) GetCollectionOk() (*CollectionDetails, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Collection, true
 }
@@ -116,7 +116,7 @@ func (o *AssetWithOrders) GetCreatedAt() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *AssetWithOrders) GetCreatedAtOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.CreatedAt.Get(), o.CreatedAt.IsSet()
 }
@@ -142,7 +142,7 @@ func (o *AssetWithOrders) GetDescription() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *AssetWithOrders) GetDescriptionOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Description.Get(), o.Description.IsSet()
 }
@@ -154,7 +154,7 @@ func (o *AssetWithOrders) SetDescription(v string) {
 
 // GetFees returns the Fees field value if set, zero value otherwise.
 func (o *AssetWithOrders) GetFees() []Fee {
-	if o == nil || o.Fees == nil {
+	if o == nil || isNil(o.Fees) {
 		var ret []Fee
 		return ret
 	}
@@ -164,15 +164,15 @@ func (o *AssetWithOrders) GetFees() []Fee {
 // GetFeesOk returns a tuple with the Fees field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AssetWithOrders) GetFeesOk() ([]Fee, bool) {
-	if o == nil || o.Fees == nil {
-		return nil, false
+	if o == nil || isNil(o.Fees) {
+    return nil, false
 	}
 	return o.Fees, true
 }
 
 // HasFees returns a boolean if a field has been set.
 func (o *AssetWithOrders) HasFees() bool {
-	if o != nil && o.Fees != nil {
+	if o != nil && !isNil(o.Fees) {
 		return true
 	}
 
@@ -186,7 +186,7 @@ func (o *AssetWithOrders) SetFees(v []Fee) {
 
 // GetId returns the Id field value if set, zero value otherwise.
 func (o *AssetWithOrders) GetId() string {
-	if o == nil || o.Id == nil {
+	if o == nil || isNil(o.Id) {
 		var ret string
 		return ret
 	}
@@ -196,15 +196,15 @@ func (o *AssetWithOrders) GetId() string {
 // GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AssetWithOrders) GetIdOk() (*string, bool) {
-	if o == nil || o.Id == nil {
-		return nil, false
+	if o == nil || isNil(o.Id) {
+    return nil, false
 	}
 	return o.Id, true
 }
 
 // HasId returns a boolean if a field has been set.
 func (o *AssetWithOrders) HasId() bool {
-	if o != nil && o.Id != nil {
+	if o != nil && !isNil(o.Id) {
 		return true
 	}
 
@@ -232,7 +232,7 @@ func (o *AssetWithOrders) GetImageUrl() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *AssetWithOrders) GetImageUrlOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.ImageUrl.Get(), o.ImageUrl.IsSet()
 }
@@ -257,8 +257,8 @@ func (o *AssetWithOrders) GetMetadata() map[string]interface{} {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *AssetWithOrders) GetMetadataOk() (map[string]interface{}, bool) {
-	if o == nil || o.Metadata == nil {
-		return nil, false
+	if o == nil || isNil(o.Metadata) {
+    return map[string]interface{}{}, false
 	}
 	return o.Metadata, true
 }
@@ -284,7 +284,7 @@ func (o *AssetWithOrders) GetName() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *AssetWithOrders) GetNameOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Name.Get(), o.Name.IsSet()
 }
@@ -296,7 +296,7 @@ func (o *AssetWithOrders) SetName(v string) {
 
 // GetOrders returns the Orders field value if set, zero value otherwise.
 func (o *AssetWithOrders) GetOrders() OrderDetails {
-	if o == nil || o.Orders == nil {
+	if o == nil || isNil(o.Orders) {
 		var ret OrderDetails
 		return ret
 	}
@@ -306,15 +306,15 @@ func (o *AssetWithOrders) GetOrders() OrderDetails {
 // GetOrdersOk returns a tuple with the Orders field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AssetWithOrders) GetOrdersOk() (*OrderDetails, bool) {
-	if o == nil || o.Orders == nil {
-		return nil, false
+	if o == nil || isNil(o.Orders) {
+    return nil, false
 	}
 	return o.Orders, true
 }
 
 // HasOrders returns a boolean if a field has been set.
 func (o *AssetWithOrders) HasOrders() bool {
-	if o != nil && o.Orders != nil {
+	if o != nil && !isNil(o.Orders) {
 		return true
 	}
 
@@ -340,7 +340,7 @@ func (o *AssetWithOrders) GetStatus() string {
 // and a boolean to check if the value has been set.
 func (o *AssetWithOrders) GetStatusOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Status, true
 }
@@ -364,7 +364,7 @@ func (o *AssetWithOrders) GetTokenAddress() string {
 // and a boolean to check if the value has been set.
 func (o *AssetWithOrders) GetTokenAddressOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TokenAddress, true
 }
@@ -388,7 +388,7 @@ func (o *AssetWithOrders) GetTokenId() string {
 // and a boolean to check if the value has been set.
 func (o *AssetWithOrders) GetTokenIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TokenId, true
 }
@@ -414,7 +414,7 @@ func (o *AssetWithOrders) GetUpdatedAt() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *AssetWithOrders) GetUpdatedAtOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.UpdatedAt.Get(), o.UpdatedAt.IsSet()
 }
@@ -440,7 +440,7 @@ func (o *AssetWithOrders) GetUri() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *AssetWithOrders) GetUriOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Uri.Get(), o.Uri.IsSet()
 }
@@ -464,7 +464,7 @@ func (o *AssetWithOrders) GetUser() string {
 // and a boolean to check if the value has been set.
 func (o *AssetWithOrders) GetUserOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.User, true
 }
@@ -485,10 +485,10 @@ func (o AssetWithOrders) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["description"] = o.Description.Get()
 	}
-	if o.Fees != nil {
+	if !isNil(o.Fees) {
 		toSerialize["fees"] = o.Fees
 	}
-	if o.Id != nil {
+	if !isNil(o.Id) {
 		toSerialize["id"] = o.Id
 	}
 	if true {
@@ -500,7 +500,7 @@ func (o AssetWithOrders) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["name"] = o.Name.Get()
 	}
-	if o.Orders != nil {
+	if !isNil(o.Orders) {
 		toSerialize["orders"] = o.Orders
 	}
 	if true {

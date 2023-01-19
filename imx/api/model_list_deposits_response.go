@@ -59,7 +59,7 @@ func (o *ListDepositsResponse) GetCursor() string {
 // and a boolean to check if the value has been set.
 func (o *ListDepositsResponse) GetCursorOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Cursor, true
 }
@@ -83,7 +83,7 @@ func (o *ListDepositsResponse) GetRemaining() int32 {
 // and a boolean to check if the value has been set.
 func (o *ListDepositsResponse) GetRemainingOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Remaining, true
 }
@@ -107,7 +107,7 @@ func (o *ListDepositsResponse) GetResult() []Deposit {
 // and a boolean to check if the value has been set.
 func (o *ListDepositsResponse) GetResultOk() ([]Deposit, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Result, true
 }

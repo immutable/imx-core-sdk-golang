@@ -65,7 +65,7 @@ func (o *GetSignableDepositResponse) GetAmount() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableDepositResponse) GetAmountOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Amount, true
 }
@@ -89,7 +89,7 @@ func (o *GetSignableDepositResponse) GetAssetId() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableDepositResponse) GetAssetIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AssetId, true
 }
@@ -113,7 +113,7 @@ func (o *GetSignableDepositResponse) GetNonce() int32 {
 // and a boolean to check if the value has been set.
 func (o *GetSignableDepositResponse) GetNonceOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Nonce, true
 }
@@ -137,7 +137,7 @@ func (o *GetSignableDepositResponse) GetStarkKey() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableDepositResponse) GetStarkKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StarkKey, true
 }
@@ -161,7 +161,7 @@ func (o *GetSignableDepositResponse) GetVaultId() int32 {
 // and a boolean to check if the value has been set.
 func (o *GetSignableDepositResponse) GetVaultIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.VaultId, true
 }

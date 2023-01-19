@@ -56,7 +56,7 @@ func (o *CancelOrderRequest) GetOrderId() int32 {
 // and a boolean to check if the value has been set.
 func (o *CancelOrderRequest) GetOrderIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.OrderId, true
 }
@@ -80,7 +80,7 @@ func (o *CancelOrderRequest) GetStarkSignature() string {
 // and a boolean to check if the value has been set.
 func (o *CancelOrderRequest) GetStarkSignatureOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StarkSignature, true
 }

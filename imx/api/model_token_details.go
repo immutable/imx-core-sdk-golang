@@ -68,7 +68,7 @@ func (o *TokenDetails) GetDecimals() string {
 // and a boolean to check if the value has been set.
 func (o *TokenDetails) GetDecimalsOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Decimals, true
 }
@@ -92,7 +92,7 @@ func (o *TokenDetails) GetImageUrl() string {
 // and a boolean to check if the value has been set.
 func (o *TokenDetails) GetImageUrlOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ImageUrl, true
 }
@@ -116,7 +116,7 @@ func (o *TokenDetails) GetName() string {
 // and a boolean to check if the value has been set.
 func (o *TokenDetails) GetNameOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Name, true
 }
@@ -140,7 +140,7 @@ func (o *TokenDetails) GetQuantum() string {
 // and a boolean to check if the value has been set.
 func (o *TokenDetails) GetQuantumOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Quantum, true
 }
@@ -164,7 +164,7 @@ func (o *TokenDetails) GetSymbol() string {
 // and a boolean to check if the value has been set.
 func (o *TokenDetails) GetSymbolOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Symbol, true
 }
@@ -188,7 +188,7 @@ func (o *TokenDetails) GetTokenAddress() string {
 // and a boolean to check if the value has been set.
 func (o *TokenDetails) GetTokenAddressOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TokenAddress, true
 }

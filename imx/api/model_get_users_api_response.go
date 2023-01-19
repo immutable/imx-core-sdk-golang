@@ -53,7 +53,7 @@ func (o *GetUsersApiResponse) GetAccounts() []string {
 // and a boolean to check if the value has been set.
 func (o *GetUsersApiResponse) GetAccountsOk() ([]string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Accounts, true
 }

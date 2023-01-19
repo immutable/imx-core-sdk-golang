@@ -56,7 +56,7 @@ func (o *CancelOrderResponse) GetOrderId() int32 {
 // and a boolean to check if the value has been set.
 func (o *CancelOrderResponse) GetOrderIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.OrderId, true
 }
@@ -80,7 +80,7 @@ func (o *CancelOrderResponse) GetStatus() string {
 // and a boolean to check if the value has been set.
 func (o *CancelOrderResponse) GetStatusOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Status, true
 }

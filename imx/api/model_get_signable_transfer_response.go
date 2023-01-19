@@ -59,7 +59,7 @@ func (o *GetSignableTransferResponse) GetSenderStarkKey() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferResponse) GetSenderStarkKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.SenderStarkKey, true
 }
@@ -83,7 +83,7 @@ func (o *GetSignableTransferResponse) GetSignableMessage() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferResponse) GetSignableMessageOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.SignableMessage, true
 }
@@ -107,7 +107,7 @@ func (o *GetSignableTransferResponse) GetSignableResponses() []SignableTransferR
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferResponse) GetSignableResponsesOk() ([]SignableTransferResponseDetails, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.SignableResponses, true
 }

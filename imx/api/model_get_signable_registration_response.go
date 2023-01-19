@@ -56,7 +56,7 @@ func (o *GetSignableRegistrationResponse) GetOperatorSignature() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableRegistrationResponse) GetOperatorSignatureOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.OperatorSignature, true
 }
@@ -80,7 +80,7 @@ func (o *GetSignableRegistrationResponse) GetPayloadHash() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableRegistrationResponse) GetPayloadHashOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.PayloadHash, true
 }

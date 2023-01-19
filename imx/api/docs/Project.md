@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **CollectionMonthlyLimit** | **int32** | The total monthly collection limit | 
 **CollectionRemaining** | **int32** | The number of collection remaining in the current period | 
 **CompanyName** | **string** | The company name | 
-**ContactEmail** | **string** | The project contact email | 
+**ContactEmail** | **string** | The project contact email (must be registered as a developer account with Immutable at https://hub.immutable.com) | 
 **Id** | **int32** | The project ID | 
 **MintLimitExpiresAt** | **string** | The current period expiry date for mint operation limit | 
 **MintMonthlyLimit** | **int32** | The total monthly mint operation limit | 

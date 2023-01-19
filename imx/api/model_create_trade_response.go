@@ -46,7 +46,7 @@ func NewCreateTradeResponseWithDefaults() *CreateTradeResponse {
 
 // GetRequestId returns the RequestId field value if set, zero value otherwise.
 func (o *CreateTradeResponse) GetRequestId() string {
-	if o == nil || o.RequestId == nil {
+	if o == nil || isNil(o.RequestId) {
 		var ret string
 		return ret
 	}
@@ -56,15 +56,15 @@ func (o *CreateTradeResponse) GetRequestId() string {
 // GetRequestIdOk returns a tuple with the RequestId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateTradeResponse) GetRequestIdOk() (*string, bool) {
-	if o == nil || o.RequestId == nil {
-		return nil, false
+	if o == nil || isNil(o.RequestId) {
+    return nil, false
 	}
 	return o.RequestId, true
 }
 
 // HasRequestId returns a boolean if a field has been set.
 func (o *CreateTradeResponse) HasRequestId() bool {
-	if o != nil && o.RequestId != nil {
+	if o != nil && !isNil(o.RequestId) {
 		return true
 	}
 
@@ -90,7 +90,7 @@ func (o *CreateTradeResponse) GetStatus() string {
 // and a boolean to check if the value has been set.
 func (o *CreateTradeResponse) GetStatusOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Status, true
 }
@@ -114,7 +114,7 @@ func (o *CreateTradeResponse) GetTradeId() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateTradeResponse) GetTradeIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TradeId, true
 }
@@ -126,7 +126,7 @@ func (o *CreateTradeResponse) SetTradeId(v int32) {
 
 func (o CreateTradeResponse) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.RequestId != nil {
+	if !isNil(o.RequestId) {
 		toSerialize["request_id"] = o.RequestId
 	}
 	if true {

@@ -59,7 +59,7 @@ func (o *FeeInfo) GetAssetId() string {
 // and a boolean to check if the value has been set.
 func (o *FeeInfo) GetAssetIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AssetId, true
 }
@@ -83,7 +83,7 @@ func (o *FeeInfo) GetFeeLimit() string {
 // and a boolean to check if the value has been set.
 func (o *FeeInfo) GetFeeLimitOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.FeeLimit, true
 }
@@ -107,7 +107,7 @@ func (o *FeeInfo) GetSourceVaultId() int32 {
 // and a boolean to check if the value has been set.
 func (o *FeeInfo) GetSourceVaultIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.SourceVaultId, true
 }

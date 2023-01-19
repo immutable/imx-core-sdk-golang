@@ -79,7 +79,7 @@ func (o *Order) GetAmountSold() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Order) GetAmountSoldOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.AmountSold.Get(), o.AmountSold.IsSet()
 }
@@ -103,7 +103,7 @@ func (o *Order) GetBuy() Token {
 // and a boolean to check if the value has been set.
 func (o *Order) GetBuyOk() (*Token, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Buy, true
 }
@@ -129,7 +129,7 @@ func (o *Order) GetExpirationTimestamp() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Order) GetExpirationTimestampOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.ExpirationTimestamp.Get(), o.ExpirationTimestamp.IsSet()
 }
@@ -141,7 +141,7 @@ func (o *Order) SetExpirationTimestamp(v string) {
 
 // GetFees returns the Fees field value if set, zero value otherwise.
 func (o *Order) GetFees() []OrderFeeInfo {
-	if o == nil || o.Fees == nil {
+	if o == nil || isNil(o.Fees) {
 		var ret []OrderFeeInfo
 		return ret
 	}
@@ -151,15 +151,15 @@ func (o *Order) GetFees() []OrderFeeInfo {
 // GetFeesOk returns a tuple with the Fees field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Order) GetFeesOk() ([]OrderFeeInfo, bool) {
-	if o == nil || o.Fees == nil {
-		return nil, false
+	if o == nil || isNil(o.Fees) {
+    return nil, false
 	}
 	return o.Fees, true
 }
 
 // HasFees returns a boolean if a field has been set.
 func (o *Order) HasFees() bool {
-	if o != nil && o.Fees != nil {
+	if o != nil && !isNil(o.Fees) {
 		return true
 	}
 
@@ -185,7 +185,7 @@ func (o *Order) GetOrderId() int32 {
 // and a boolean to check if the value has been set.
 func (o *Order) GetOrderIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.OrderId, true
 }
@@ -209,7 +209,7 @@ func (o *Order) GetSell() Token {
 // and a boolean to check if the value has been set.
 func (o *Order) GetSellOk() (*Token, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Sell, true
 }
@@ -233,7 +233,7 @@ func (o *Order) GetStatus() string {
 // and a boolean to check if the value has been set.
 func (o *Order) GetStatusOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Status, true
 }
@@ -259,7 +259,7 @@ func (o *Order) GetTimestamp() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Order) GetTimestampOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Timestamp.Get(), o.Timestamp.IsSet()
 }
@@ -285,7 +285,7 @@ func (o *Order) GetUpdatedTimestamp() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Order) GetUpdatedTimestampOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.UpdatedTimestamp.Get(), o.UpdatedTimestamp.IsSet()
 }
@@ -309,7 +309,7 @@ func (o *Order) GetUser() string {
 // and a boolean to check if the value has been set.
 func (o *Order) GetUserOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.User, true
 }
@@ -330,7 +330,7 @@ func (o Order) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["expiration_timestamp"] = o.ExpirationTimestamp.Get()
 	}
-	if o.Fees != nil {
+	if !isNil(o.Fees) {
 		toSerialize["fees"] = o.Fees
 	}
 	if true {

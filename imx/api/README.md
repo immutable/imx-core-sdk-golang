@@ -107,11 +107,11 @@ Class | Method | HTTP request | Description
 *MintsApi* | [**GetMintableTokenDetailsByClientTokenId**](docs/MintsApi.md#getmintabletokendetailsbyclienttokenid) | **Get** /v1/mintable-token/{token_address}/{token_id} | Get details of a mintable token with the given token address and token ID
 *MintsApi* | [**ListMints**](docs/MintsApi.md#listmints) | **Get** /v1/mints | Get a list of mints
 *MintsApi* | [**MintTokens**](docs/MintsApi.md#minttokens) | **Post** /v2/mints | Mint Tokens V2
-*NftCheckoutPrimaryApi* | [**CreateNftPrimary**](docs/NftCheckoutPrimaryApi.md#createnftprimary) | **Post** /v2/nft/primary | Create nft primary transaction
+*NftCheckoutPrimaryApi* | [**CreateNftPrimary**](docs/NftCheckoutPrimaryApi.md#createnftprimary) | **Post** /v2/nft/primary | Create NFT primary sale transaction
 *NftCheckoutPrimaryApi* | [**GetCurrenciesNFTCheckoutPrimary**](docs/NftCheckoutPrimaryApi.md#getcurrenciesnftcheckoutprimary) | **Get** /v2/nft/primary/currencies | Get currencies with limits
-*NftCheckoutPrimaryApi* | [**GetMintStatusById**](docs/NftCheckoutPrimaryApi.md#getmintstatusbyid) | **Get** /v2/{provider}/transaction_status | Get mint status by transaction id
-*NftCheckoutPrimaryApi* | [**GetNftPrimaryTransaction**](docs/NftCheckoutPrimaryApi.md#getnftprimarytransaction) | **Get** /v2/nft/primary/{transaction_id} | Get nft primary transaction by id
-*NftCheckoutPrimaryApi* | [**GetNftPrimaryTransactions**](docs/NftCheckoutPrimaryApi.md#getnftprimarytransactions) | **Get** /v2/nft/primary | Get a list of NFT primary transactions
+*NftCheckoutPrimaryApi* | [**GetNftPrimaryTransaction**](docs/NftCheckoutPrimaryApi.md#getnftprimarytransaction) | **Get** /v2/nft/primary/{transaction_id} | Get NFT primary sale transaction by id
+*NftCheckoutPrimaryApi* | [**GetNftPrimaryTransactions**](docs/NftCheckoutPrimaryApi.md#getnftprimarytransactions) | **Get** /v2/nft/primary | Get a list of NFT primary sales transactions
+*NftCheckoutPrimaryApi* | [**RegisterNftPrimarySalesContract**](docs/NftCheckoutPrimaryApi.md#registernftprimarysalescontract) | **Post** /v2/nft/primary/register | Executes NFT primary sales contract registration
 *OrdersApi* | [**CancelOrder**](docs/OrdersApi.md#cancelorder) | **Delete** /v1/orders/{id} | Cancel an order
 *OrdersApi* | [**CreateOrder**](docs/OrdersApi.md#createorder) | **Post** /v1/orders | Create an order
 *OrdersApi* | [**GetOrder**](docs/OrdersApi.md#getorder) | **Get** /v1/orders/{id} | Get details of an order with the given ID
@@ -157,6 +157,8 @@ Class | Method | HTTP request | Description
  - [Collection](docs/Collection.md)
  - [CollectionDetails](docs/CollectionDetails.md)
  - [CollectionFilter](docs/CollectionFilter.md)
+ - [ContractCreateAPIRequest](docs/ContractCreateAPIRequest.md)
+ - [ContractCreateResponse](docs/ContractCreateResponse.md)
  - [CreateCollectionRequest](docs/CreateCollectionRequest.md)
  - [CreateExchangeAndURLAPIRequest](docs/CreateExchangeAndURLAPIRequest.md)
  - [CreateMetadataRefreshRequest](docs/CreateMetadataRefreshRequest.md)
@@ -244,8 +246,6 @@ Class | Method | HTTP request | Description
  - [OrderDetails](docs/OrderDetails.md)
  - [OrderFeeInfo](docs/OrderFeeInfo.md)
  - [Project](docs/Project.md)
- - [ProviderGetMintStatusResponse](docs/ProviderGetMintStatusResponse.md)
- - [ProviderMintStatus](docs/ProviderMintStatus.md)
  - [Range](docs/Range.md)
  - [RegisterUserRequest](docs/RegisterUserRequest.md)
  - [RegisterUserResponse](docs/RegisterUserResponse.md)

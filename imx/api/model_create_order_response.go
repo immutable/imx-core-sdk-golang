@@ -61,7 +61,7 @@ func (o *CreateOrderResponse) GetOrderId() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateOrderResponse) GetOrderIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.OrderId, true
 }
@@ -73,7 +73,7 @@ func (o *CreateOrderResponse) SetOrderId(v int32) {
 
 // GetRequestId returns the RequestId field value if set, zero value otherwise.
 func (o *CreateOrderResponse) GetRequestId() string {
-	if o == nil || o.RequestId == nil {
+	if o == nil || isNil(o.RequestId) {
 		var ret string
 		return ret
 	}
@@ -83,15 +83,15 @@ func (o *CreateOrderResponse) GetRequestId() string {
 // GetRequestIdOk returns a tuple with the RequestId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateOrderResponse) GetRequestIdOk() (*string, bool) {
-	if o == nil || o.RequestId == nil {
-		return nil, false
+	if o == nil || isNil(o.RequestId) {
+    return nil, false
 	}
 	return o.RequestId, true
 }
 
 // HasRequestId returns a boolean if a field has been set.
 func (o *CreateOrderResponse) HasRequestId() bool {
-	if o != nil && o.RequestId != nil {
+	if o != nil && !isNil(o.RequestId) {
 		return true
 	}
 
@@ -117,7 +117,7 @@ func (o *CreateOrderResponse) GetStatus() string {
 // and a boolean to check if the value has been set.
 func (o *CreateOrderResponse) GetStatusOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Status, true
 }
@@ -141,7 +141,7 @@ func (o *CreateOrderResponse) GetTime() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateOrderResponse) GetTimeOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Time, true
 }
@@ -156,7 +156,7 @@ func (o CreateOrderResponse) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["order_id"] = o.OrderId
 	}
-	if o.RequestId != nil {
+	if !isNil(o.RequestId) {
 		toSerialize["request_id"] = o.RequestId
 	}
 	if true {

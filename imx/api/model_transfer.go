@@ -67,7 +67,7 @@ func (o *Transfer) GetReceiver() string {
 // and a boolean to check if the value has been set.
 func (o *Transfer) GetReceiverOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Receiver, true
 }
@@ -91,7 +91,7 @@ func (o *Transfer) GetStatus() string {
 // and a boolean to check if the value has been set.
 func (o *Transfer) GetStatusOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Status, true
 }
@@ -117,7 +117,7 @@ func (o *Transfer) GetTimestamp() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Transfer) GetTimestampOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Timestamp.Get(), o.Timestamp.IsSet()
 }
@@ -141,7 +141,7 @@ func (o *Transfer) GetToken() Token {
 // and a boolean to check if the value has been set.
 func (o *Transfer) GetTokenOk() (*Token, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Token, true
 }
@@ -165,7 +165,7 @@ func (o *Transfer) GetTransactionId() int32 {
 // and a boolean to check if the value has been set.
 func (o *Transfer) GetTransactionIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TransactionId, true
 }
@@ -189,7 +189,7 @@ func (o *Transfer) GetUser() string {
 // and a boolean to check if the value has been set.
 func (o *Transfer) GetUserOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.User, true
 }

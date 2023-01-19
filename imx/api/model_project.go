@@ -25,7 +25,7 @@ type Project struct {
 	CollectionRemaining int32 `json:"collection_remaining"`
 	// The company name
 	CompanyName string `json:"company_name"`
-	// The project contact email
+	// The project contact email (must be registered as a developer account with Immutable at https://hub.immutable.com)
 	ContactEmail string `json:"contact_email"`
 	// The project ID
 	Id int32 `json:"id"`
@@ -80,7 +80,7 @@ func (o *Project) GetCollectionLimitExpiresAt() string {
 // and a boolean to check if the value has been set.
 func (o *Project) GetCollectionLimitExpiresAtOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.CollectionLimitExpiresAt, true
 }
@@ -104,7 +104,7 @@ func (o *Project) GetCollectionMonthlyLimit() int32 {
 // and a boolean to check if the value has been set.
 func (o *Project) GetCollectionMonthlyLimitOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.CollectionMonthlyLimit, true
 }
@@ -128,7 +128,7 @@ func (o *Project) GetCollectionRemaining() int32 {
 // and a boolean to check if the value has been set.
 func (o *Project) GetCollectionRemainingOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.CollectionRemaining, true
 }
@@ -152,7 +152,7 @@ func (o *Project) GetCompanyName() string {
 // and a boolean to check if the value has been set.
 func (o *Project) GetCompanyNameOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.CompanyName, true
 }
@@ -176,7 +176,7 @@ func (o *Project) GetContactEmail() string {
 // and a boolean to check if the value has been set.
 func (o *Project) GetContactEmailOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ContactEmail, true
 }
@@ -200,7 +200,7 @@ func (o *Project) GetId() int32 {
 // and a boolean to check if the value has been set.
 func (o *Project) GetIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Id, true
 }
@@ -224,7 +224,7 @@ func (o *Project) GetMintLimitExpiresAt() string {
 // and a boolean to check if the value has been set.
 func (o *Project) GetMintLimitExpiresAtOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.MintLimitExpiresAt, true
 }
@@ -248,7 +248,7 @@ func (o *Project) GetMintMonthlyLimit() int32 {
 // and a boolean to check if the value has been set.
 func (o *Project) GetMintMonthlyLimitOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.MintMonthlyLimit, true
 }
@@ -272,7 +272,7 @@ func (o *Project) GetMintRemaining() int32 {
 // and a boolean to check if the value has been set.
 func (o *Project) GetMintRemainingOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.MintRemaining, true
 }
@@ -296,7 +296,7 @@ func (o *Project) GetName() string {
 // and a boolean to check if the value has been set.
 func (o *Project) GetNameOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Name, true
 }

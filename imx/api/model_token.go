@@ -55,7 +55,7 @@ func (o *Token) GetData() TokenData {
 // and a boolean to check if the value has been set.
 func (o *Token) GetDataOk() (*TokenData, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Data, true
 }
@@ -79,7 +79,7 @@ func (o *Token) GetType() string {
 // and a boolean to check if the value has been set.
 func (o *Token) GetTypeOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Type, true
 }

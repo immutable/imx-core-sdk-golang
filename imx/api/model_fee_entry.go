@@ -40,7 +40,7 @@ func NewFeeEntryWithDefaults() *FeeEntry {
 
 // GetAddress returns the Address field value if set, zero value otherwise.
 func (o *FeeEntry) GetAddress() string {
-	if o == nil || o.Address == nil {
+	if o == nil || isNil(o.Address) {
 		var ret string
 		return ret
 	}
@@ -50,15 +50,15 @@ func (o *FeeEntry) GetAddress() string {
 // GetAddressOk returns a tuple with the Address field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *FeeEntry) GetAddressOk() (*string, bool) {
-	if o == nil || o.Address == nil {
-		return nil, false
+	if o == nil || isNil(o.Address) {
+    return nil, false
 	}
 	return o.Address, true
 }
 
 // HasAddress returns a boolean if a field has been set.
 func (o *FeeEntry) HasAddress() bool {
-	if o != nil && o.Address != nil {
+	if o != nil && !isNil(o.Address) {
 		return true
 	}
 
@@ -72,7 +72,7 @@ func (o *FeeEntry) SetAddress(v string) {
 
 // GetFeePercentage returns the FeePercentage field value if set, zero value otherwise.
 func (o *FeeEntry) GetFeePercentage() float32 {
-	if o == nil || o.FeePercentage == nil {
+	if o == nil || isNil(o.FeePercentage) {
 		var ret float32
 		return ret
 	}
@@ -82,15 +82,15 @@ func (o *FeeEntry) GetFeePercentage() float32 {
 // GetFeePercentageOk returns a tuple with the FeePercentage field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *FeeEntry) GetFeePercentageOk() (*float32, bool) {
-	if o == nil || o.FeePercentage == nil {
-		return nil, false
+	if o == nil || isNil(o.FeePercentage) {
+    return nil, false
 	}
 	return o.FeePercentage, true
 }
 
 // HasFeePercentage returns a boolean if a field has been set.
 func (o *FeeEntry) HasFeePercentage() bool {
-	if o != nil && o.FeePercentage != nil {
+	if o != nil && !isNil(o.FeePercentage) {
 		return true
 	}
 
@@ -104,10 +104,10 @@ func (o *FeeEntry) SetFeePercentage(v float32) {
 
 func (o FeeEntry) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Address != nil {
+	if !isNil(o.Address) {
 		toSerialize["address"] = o.Address
 	}
-	if o.FeePercentage != nil {
+	if !isNil(o.FeePercentage) {
 		toSerialize["fee_percentage"] = o.FeePercentage
 	}
 	return json.Marshal(toSerialize)

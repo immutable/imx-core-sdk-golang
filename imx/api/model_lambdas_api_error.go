@@ -46,7 +46,7 @@ func NewLambdasAPIErrorWithDefaults() *LambdasAPIError {
 
 // GetCode returns the Code field value if set, zero value otherwise.
 func (o *LambdasAPIError) GetCode() string {
-	if o == nil || o.Code == nil {
+	if o == nil || isNil(o.Code) {
 		var ret string
 		return ret
 	}
@@ -56,15 +56,15 @@ func (o *LambdasAPIError) GetCode() string {
 // GetCodeOk returns a tuple with the Code field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *LambdasAPIError) GetCodeOk() (*string, bool) {
-	if o == nil || o.Code == nil {
-		return nil, false
+	if o == nil || isNil(o.Code) {
+    return nil, false
 	}
 	return o.Code, true
 }
 
 // HasCode returns a boolean if a field has been set.
 func (o *LambdasAPIError) HasCode() bool {
-	if o != nil && o.Code != nil {
+	if o != nil && !isNil(o.Code) {
 		return true
 	}
 
@@ -78,7 +78,7 @@ func (o *LambdasAPIError) SetCode(v string) {
 
 // GetDetails returns the Details field value if set, zero value otherwise.
 func (o *LambdasAPIError) GetDetails() string {
-	if o == nil || o.Details == nil {
+	if o == nil || isNil(o.Details) {
 		var ret string
 		return ret
 	}
@@ -88,15 +88,15 @@ func (o *LambdasAPIError) GetDetails() string {
 // GetDetailsOk returns a tuple with the Details field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *LambdasAPIError) GetDetailsOk() (*string, bool) {
-	if o == nil || o.Details == nil {
-		return nil, false
+	if o == nil || isNil(o.Details) {
+    return nil, false
 	}
 	return o.Details, true
 }
 
 // HasDetails returns a boolean if a field has been set.
 func (o *LambdasAPIError) HasDetails() bool {
-	if o != nil && o.Details != nil {
+	if o != nil && !isNil(o.Details) {
 		return true
 	}
 
@@ -110,7 +110,7 @@ func (o *LambdasAPIError) SetDetails(v string) {
 
 // GetMessage returns the Message field value if set, zero value otherwise.
 func (o *LambdasAPIError) GetMessage() string {
-	if o == nil || o.Message == nil {
+	if o == nil || isNil(o.Message) {
 		var ret string
 		return ret
 	}
@@ -120,15 +120,15 @@ func (o *LambdasAPIError) GetMessage() string {
 // GetMessageOk returns a tuple with the Message field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *LambdasAPIError) GetMessageOk() (*string, bool) {
-	if o == nil || o.Message == nil {
-		return nil, false
+	if o == nil || isNil(o.Message) {
+    return nil, false
 	}
 	return o.Message, true
 }
 
 // HasMessage returns a boolean if a field has been set.
 func (o *LambdasAPIError) HasMessage() bool {
-	if o != nil && o.Message != nil {
+	if o != nil && !isNil(o.Message) {
 		return true
 	}
 
@@ -142,7 +142,7 @@ func (o *LambdasAPIError) SetMessage(v string) {
 
 // GetStatusCode returns the StatusCode field value if set, zero value otherwise.
 func (o *LambdasAPIError) GetStatusCode() int32 {
-	if o == nil || o.StatusCode == nil {
+	if o == nil || isNil(o.StatusCode) {
 		var ret int32
 		return ret
 	}
@@ -152,15 +152,15 @@ func (o *LambdasAPIError) GetStatusCode() int32 {
 // GetStatusCodeOk returns a tuple with the StatusCode field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *LambdasAPIError) GetStatusCodeOk() (*int32, bool) {
-	if o == nil || o.StatusCode == nil {
-		return nil, false
+	if o == nil || isNil(o.StatusCode) {
+    return nil, false
 	}
 	return o.StatusCode, true
 }
 
 // HasStatusCode returns a boolean if a field has been set.
 func (o *LambdasAPIError) HasStatusCode() bool {
-	if o != nil && o.StatusCode != nil {
+	if o != nil && !isNil(o.StatusCode) {
 		return true
 	}
 
@@ -174,16 +174,16 @@ func (o *LambdasAPIError) SetStatusCode(v int32) {
 
 func (o LambdasAPIError) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Code != nil {
+	if !isNil(o.Code) {
 		toSerialize["code"] = o.Code
 	}
-	if o.Details != nil {
+	if !isNil(o.Details) {
 		toSerialize["details"] = o.Details
 	}
-	if o.Message != nil {
+	if !isNil(o.Message) {
 		toSerialize["message"] = o.Message
 	}
-	if o.StatusCode != nil {
+	if !isNil(o.StatusCode) {
 		toSerialize["status_code"] = o.StatusCode
 	}
 	return json.Marshal(toSerialize)

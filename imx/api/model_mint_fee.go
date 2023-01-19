@@ -56,7 +56,7 @@ func (o *MintFee) GetPercentage() float32 {
 // and a boolean to check if the value has been set.
 func (o *MintFee) GetPercentageOk() (*float32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Percentage, true
 }
@@ -80,7 +80,7 @@ func (o *MintFee) GetRecipient() string {
 // and a boolean to check if the value has been set.
 func (o *MintFee) GetRecipientOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Recipient, true
 }

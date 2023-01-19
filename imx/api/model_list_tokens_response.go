@@ -56,7 +56,7 @@ func (o *ListTokensResponse) GetCursor() string {
 // and a boolean to check if the value has been set.
 func (o *ListTokensResponse) GetCursorOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Cursor, true
 }
@@ -80,7 +80,7 @@ func (o *ListTokensResponse) GetResult() []TokenDetails {
 // and a boolean to check if the value has been set.
 func (o *ListTokensResponse) GetResultOk() ([]TokenDetails, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Result, true
 }

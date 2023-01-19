@@ -73,7 +73,7 @@ func (o *MetadataRefreshErrors) GetClientResponseBody() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *MetadataRefreshErrors) GetClientResponseBodyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.ClientResponseBody.Get(), o.ClientResponseBody.IsSet()
 }
@@ -99,7 +99,7 @@ func (o *MetadataRefreshErrors) GetClientResponseStatusCode() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *MetadataRefreshErrors) GetClientResponseStatusCodeOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.ClientResponseStatusCode.Get(), o.ClientResponseStatusCode.IsSet()
 }
@@ -123,7 +123,7 @@ func (o *MetadataRefreshErrors) GetClientTokenMetadataUrl() string {
 // and a boolean to check if the value has been set.
 func (o *MetadataRefreshErrors) GetClientTokenMetadataUrlOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ClientTokenMetadataUrl, true
 }
@@ -147,7 +147,7 @@ func (o *MetadataRefreshErrors) GetCollectionAddress() string {
 // and a boolean to check if the value has been set.
 func (o *MetadataRefreshErrors) GetCollectionAddressOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.CollectionAddress, true
 }
@@ -171,7 +171,7 @@ func (o *MetadataRefreshErrors) GetCreatedAt() string {
 // and a boolean to check if the value has been set.
 func (o *MetadataRefreshErrors) GetCreatedAtOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.CreatedAt, true
 }
@@ -195,7 +195,7 @@ func (o *MetadataRefreshErrors) GetErrorCode() string {
 // and a boolean to check if the value has been set.
 func (o *MetadataRefreshErrors) GetErrorCodeOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ErrorCode, true
 }
@@ -219,7 +219,7 @@ func (o *MetadataRefreshErrors) GetTokenId() string {
 // and a boolean to check if the value has been set.
 func (o *MetadataRefreshErrors) GetTokenIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TokenId, true
 }

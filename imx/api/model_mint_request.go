@@ -61,7 +61,7 @@ func (o *MintRequest) GetAuthSignature() string {
 // and a boolean to check if the value has been set.
 func (o *MintRequest) GetAuthSignatureOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AuthSignature, true
 }
@@ -85,7 +85,7 @@ func (o *MintRequest) GetContractAddress() string {
 // and a boolean to check if the value has been set.
 func (o *MintRequest) GetContractAddressOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ContractAddress, true
 }
@@ -97,7 +97,7 @@ func (o *MintRequest) SetContractAddress(v string) {
 
 // GetRoyalties returns the Royalties field value if set, zero value otherwise.
 func (o *MintRequest) GetRoyalties() []MintFee {
-	if o == nil || o.Royalties == nil {
+	if o == nil || isNil(o.Royalties) {
 		var ret []MintFee
 		return ret
 	}
@@ -107,15 +107,15 @@ func (o *MintRequest) GetRoyalties() []MintFee {
 // GetRoyaltiesOk returns a tuple with the Royalties field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MintRequest) GetRoyaltiesOk() ([]MintFee, bool) {
-	if o == nil || o.Royalties == nil {
-		return nil, false
+	if o == nil || isNil(o.Royalties) {
+    return nil, false
 	}
 	return o.Royalties, true
 }
 
 // HasRoyalties returns a boolean if a field has been set.
 func (o *MintRequest) HasRoyalties() bool {
-	if o != nil && o.Royalties != nil {
+	if o != nil && !isNil(o.Royalties) {
 		return true
 	}
 
@@ -141,7 +141,7 @@ func (o *MintRequest) GetUsers() []MintUser {
 // and a boolean to check if the value has been set.
 func (o *MintRequest) GetUsersOk() ([]MintUser, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Users, true
 }
@@ -159,7 +159,7 @@ func (o MintRequest) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["contract_address"] = o.ContractAddress
 	}
-	if o.Royalties != nil {
+	if !isNil(o.Royalties) {
 		toSerialize["royalties"] = o.Royalties
 	}
 	if true {

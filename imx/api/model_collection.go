@@ -80,7 +80,7 @@ func (o *Collection) GetAddress() string {
 // and a boolean to check if the value has been set.
 func (o *Collection) GetAddressOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Address, true
 }
@@ -106,7 +106,7 @@ func (o *Collection) GetCollectionImageUrl() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Collection) GetCollectionImageUrlOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.CollectionImageUrl.Get(), o.CollectionImageUrl.IsSet()
 }
@@ -132,7 +132,7 @@ func (o *Collection) GetCreatedAt() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Collection) GetCreatedAtOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.CreatedAt.Get(), o.CreatedAt.IsSet()
 }
@@ -158,7 +158,7 @@ func (o *Collection) GetDescription() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Collection) GetDescriptionOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Description.Get(), o.Description.IsSet()
 }
@@ -184,7 +184,7 @@ func (o *Collection) GetIconUrl() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Collection) GetIconUrlOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.IconUrl.Get(), o.IconUrl.IsSet()
 }
@@ -210,7 +210,7 @@ func (o *Collection) GetMetadataApiUrl() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Collection) GetMetadataApiUrlOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.MetadataApiUrl.Get(), o.MetadataApiUrl.IsSet()
 }
@@ -234,7 +234,7 @@ func (o *Collection) GetName() string {
 // and a boolean to check if the value has been set.
 func (o *Collection) GetNameOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Name, true
 }
@@ -258,7 +258,7 @@ func (o *Collection) GetProjectId() int32 {
 // and a boolean to check if the value has been set.
 func (o *Collection) GetProjectIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ProjectId, true
 }
@@ -282,7 +282,7 @@ func (o *Collection) GetProjectOwnerAddress() string {
 // and a boolean to check if the value has been set.
 func (o *Collection) GetProjectOwnerAddressOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ProjectOwnerAddress, true
 }
@@ -308,7 +308,7 @@ func (o *Collection) GetUpdatedAt() string {
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Collection) GetUpdatedAtOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.UpdatedAt.Get(), o.UpdatedAt.IsSet()
 }

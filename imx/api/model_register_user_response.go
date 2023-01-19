@@ -53,7 +53,7 @@ func (o *RegisterUserResponse) GetTxHash() string {
 // and a boolean to check if the value has been set.
 func (o *RegisterUserResponse) GetTxHashOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TxHash, true
 }

@@ -58,7 +58,7 @@ func (o *GetSignableWithdrawalRequest) GetAmount() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableWithdrawalRequest) GetAmountOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Amount, true
 }
@@ -82,7 +82,7 @@ func (o *GetSignableWithdrawalRequest) GetToken() SignableToken {
 // and a boolean to check if the value has been set.
 func (o *GetSignableWithdrawalRequest) GetTokenOk() (*SignableToken, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Token, true
 }
@@ -106,7 +106,7 @@ func (o *GetSignableWithdrawalRequest) GetUser() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableWithdrawalRequest) GetUserOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.User, true
 }

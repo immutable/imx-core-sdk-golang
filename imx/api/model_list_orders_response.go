@@ -59,7 +59,7 @@ func (o *ListOrdersResponse) GetCursor() string {
 // and a boolean to check if the value has been set.
 func (o *ListOrdersResponse) GetCursorOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Cursor, true
 }
@@ -83,7 +83,7 @@ func (o *ListOrdersResponse) GetRemaining() int32 {
 // and a boolean to check if the value has been set.
 func (o *ListOrdersResponse) GetRemainingOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Remaining, true
 }
@@ -107,7 +107,7 @@ func (o *ListOrdersResponse) GetResult() []Order {
 // and a boolean to check if the value has been set.
 func (o *ListOrdersResponse) GetResultOk() ([]Order, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Result, true
 }

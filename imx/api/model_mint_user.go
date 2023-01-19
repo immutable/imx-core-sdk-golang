@@ -56,7 +56,7 @@ func (o *MintUser) GetTokens() []MintTokenDataV2 {
 // and a boolean to check if the value has been set.
 func (o *MintUser) GetTokensOk() ([]MintTokenDataV2, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Tokens, true
 }
@@ -80,7 +80,7 @@ func (o *MintUser) GetUser() string {
 // and a boolean to check if the value has been set.
 func (o *MintUser) GetUserOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.User, true
 }

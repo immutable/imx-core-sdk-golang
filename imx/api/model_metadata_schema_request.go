@@ -45,7 +45,7 @@ func NewMetadataSchemaRequestWithDefaults() *MetadataSchemaRequest {
 
 // GetFilterable returns the Filterable field value if set, zero value otherwise.
 func (o *MetadataSchemaRequest) GetFilterable() bool {
-	if o == nil || o.Filterable == nil {
+	if o == nil || isNil(o.Filterable) {
 		var ret bool
 		return ret
 	}
@@ -55,15 +55,15 @@ func (o *MetadataSchemaRequest) GetFilterable() bool {
 // GetFilterableOk returns a tuple with the Filterable field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MetadataSchemaRequest) GetFilterableOk() (*bool, bool) {
-	if o == nil || o.Filterable == nil {
-		return nil, false
+	if o == nil || isNil(o.Filterable) {
+    return nil, false
 	}
 	return o.Filterable, true
 }
 
 // HasFilterable returns a boolean if a field has been set.
 func (o *MetadataSchemaRequest) HasFilterable() bool {
-	if o != nil && o.Filterable != nil {
+	if o != nil && !isNil(o.Filterable) {
 		return true
 	}
 
@@ -89,7 +89,7 @@ func (o *MetadataSchemaRequest) GetName() string {
 // and a boolean to check if the value has been set.
 func (o *MetadataSchemaRequest) GetNameOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Name, true
 }
@@ -101,7 +101,7 @@ func (o *MetadataSchemaRequest) SetName(v string) {
 
 // GetType returns the Type field value if set, zero value otherwise.
 func (o *MetadataSchemaRequest) GetType() string {
-	if o == nil || o.Type == nil {
+	if o == nil || isNil(o.Type) {
 		var ret string
 		return ret
 	}
@@ -111,15 +111,15 @@ func (o *MetadataSchemaRequest) GetType() string {
 // GetTypeOk returns a tuple with the Type field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MetadataSchemaRequest) GetTypeOk() (*string, bool) {
-	if o == nil || o.Type == nil {
-		return nil, false
+	if o == nil || isNil(o.Type) {
+    return nil, false
 	}
 	return o.Type, true
 }
 
 // HasType returns a boolean if a field has been set.
 func (o *MetadataSchemaRequest) HasType() bool {
-	if o != nil && o.Type != nil {
+	if o != nil && !isNil(o.Type) {
 		return true
 	}
 
@@ -133,13 +133,13 @@ func (o *MetadataSchemaRequest) SetType(v string) {
 
 func (o MetadataSchemaRequest) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Filterable != nil {
+	if !isNil(o.Filterable) {
 		toSerialize["filterable"] = o.Filterable
 	}
 	if true {
 		toSerialize["name"] = o.Name
 	}
-	if o.Type != nil {
+	if !isNil(o.Type) {
 		toSerialize["type"] = o.Type
 	}
 	return json.Marshal(toSerialize)

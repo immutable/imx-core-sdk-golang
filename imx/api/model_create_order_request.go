@@ -84,7 +84,7 @@ func (o *CreateOrderRequest) GetAmountBuy() string {
 // and a boolean to check if the value has been set.
 func (o *CreateOrderRequest) GetAmountBuyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AmountBuy, true
 }
@@ -108,7 +108,7 @@ func (o *CreateOrderRequest) GetAmountSell() string {
 // and a boolean to check if the value has been set.
 func (o *CreateOrderRequest) GetAmountSellOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AmountSell, true
 }
@@ -132,7 +132,7 @@ func (o *CreateOrderRequest) GetAssetIdBuy() string {
 // and a boolean to check if the value has been set.
 func (o *CreateOrderRequest) GetAssetIdBuyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AssetIdBuy, true
 }
@@ -156,7 +156,7 @@ func (o *CreateOrderRequest) GetAssetIdSell() string {
 // and a boolean to check if the value has been set.
 func (o *CreateOrderRequest) GetAssetIdSellOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AssetIdSell, true
 }
@@ -180,7 +180,7 @@ func (o *CreateOrderRequest) GetExpirationTimestamp() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateOrderRequest) GetExpirationTimestampOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ExpirationTimestamp, true
 }
@@ -192,7 +192,7 @@ func (o *CreateOrderRequest) SetExpirationTimestamp(v int32) {
 
 // GetFees returns the Fees field value if set, zero value otherwise.
 func (o *CreateOrderRequest) GetFees() []FeeEntry {
-	if o == nil || o.Fees == nil {
+	if o == nil || isNil(o.Fees) {
 		var ret []FeeEntry
 		return ret
 	}
@@ -202,15 +202,15 @@ func (o *CreateOrderRequest) GetFees() []FeeEntry {
 // GetFeesOk returns a tuple with the Fees field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateOrderRequest) GetFeesOk() ([]FeeEntry, bool) {
-	if o == nil || o.Fees == nil {
-		return nil, false
+	if o == nil || isNil(o.Fees) {
+    return nil, false
 	}
 	return o.Fees, true
 }
 
 // HasFees returns a boolean if a field has been set.
 func (o *CreateOrderRequest) HasFees() bool {
-	if o != nil && o.Fees != nil {
+	if o != nil && !isNil(o.Fees) {
 		return true
 	}
 
@@ -224,7 +224,7 @@ func (o *CreateOrderRequest) SetFees(v []FeeEntry) {
 
 // GetIncludeFees returns the IncludeFees field value if set, zero value otherwise.
 func (o *CreateOrderRequest) GetIncludeFees() bool {
-	if o == nil || o.IncludeFees == nil {
+	if o == nil || isNil(o.IncludeFees) {
 		var ret bool
 		return ret
 	}
@@ -234,15 +234,15 @@ func (o *CreateOrderRequest) GetIncludeFees() bool {
 // GetIncludeFeesOk returns a tuple with the IncludeFees field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateOrderRequest) GetIncludeFeesOk() (*bool, bool) {
-	if o == nil || o.IncludeFees == nil {
-		return nil, false
+	if o == nil || isNil(o.IncludeFees) {
+    return nil, false
 	}
 	return o.IncludeFees, true
 }
 
 // HasIncludeFees returns a boolean if a field has been set.
 func (o *CreateOrderRequest) HasIncludeFees() bool {
-	if o != nil && o.IncludeFees != nil {
+	if o != nil && !isNil(o.IncludeFees) {
 		return true
 	}
 
@@ -268,7 +268,7 @@ func (o *CreateOrderRequest) GetNonce() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateOrderRequest) GetNonceOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Nonce, true
 }
@@ -292,7 +292,7 @@ func (o *CreateOrderRequest) GetStarkKey() string {
 // and a boolean to check if the value has been set.
 func (o *CreateOrderRequest) GetStarkKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StarkKey, true
 }
@@ -316,7 +316,7 @@ func (o *CreateOrderRequest) GetStarkSignature() string {
 // and a boolean to check if the value has been set.
 func (o *CreateOrderRequest) GetStarkSignatureOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StarkSignature, true
 }
@@ -340,7 +340,7 @@ func (o *CreateOrderRequest) GetVaultIdBuy() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateOrderRequest) GetVaultIdBuyOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.VaultIdBuy, true
 }
@@ -364,7 +364,7 @@ func (o *CreateOrderRequest) GetVaultIdSell() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateOrderRequest) GetVaultIdSellOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.VaultIdSell, true
 }
@@ -391,10 +391,10 @@ func (o CreateOrderRequest) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["expiration_timestamp"] = o.ExpirationTimestamp
 	}
-	if o.Fees != nil {
+	if !isNil(o.Fees) {
 		toSerialize["fees"] = o.Fees
 	}
-	if o.IncludeFees != nil {
+	if !isNil(o.IncludeFees) {
 		toSerialize["include_fees"] = o.IncludeFees
 	}
 	if true {

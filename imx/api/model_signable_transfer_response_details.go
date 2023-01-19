@@ -76,7 +76,7 @@ func (o *SignableTransferResponseDetails) GetAmount() string {
 // and a boolean to check if the value has been set.
 func (o *SignableTransferResponseDetails) GetAmountOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Amount, true
 }
@@ -100,7 +100,7 @@ func (o *SignableTransferResponseDetails) GetAssetId() string {
 // and a boolean to check if the value has been set.
 func (o *SignableTransferResponseDetails) GetAssetIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AssetId, true
 }
@@ -124,7 +124,7 @@ func (o *SignableTransferResponseDetails) GetExpirationTimestamp() int32 {
 // and a boolean to check if the value has been set.
 func (o *SignableTransferResponseDetails) GetExpirationTimestampOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ExpirationTimestamp, true
 }
@@ -148,7 +148,7 @@ func (o *SignableTransferResponseDetails) GetNonce() int32 {
 // and a boolean to check if the value has been set.
 func (o *SignableTransferResponseDetails) GetNonceOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Nonce, true
 }
@@ -172,7 +172,7 @@ func (o *SignableTransferResponseDetails) GetPayloadHash() string {
 // and a boolean to check if the value has been set.
 func (o *SignableTransferResponseDetails) GetPayloadHashOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.PayloadHash, true
 }
@@ -196,7 +196,7 @@ func (o *SignableTransferResponseDetails) GetReceiverStarkKey() string {
 // and a boolean to check if the value has been set.
 func (o *SignableTransferResponseDetails) GetReceiverStarkKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ReceiverStarkKey, true
 }
@@ -220,7 +220,7 @@ func (o *SignableTransferResponseDetails) GetReceiverVaultId() int32 {
 // and a boolean to check if the value has been set.
 func (o *SignableTransferResponseDetails) GetReceiverVaultIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ReceiverVaultId, true
 }
@@ -244,7 +244,7 @@ func (o *SignableTransferResponseDetails) GetSenderVaultId() int32 {
 // and a boolean to check if the value has been set.
 func (o *SignableTransferResponseDetails) GetSenderVaultIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.SenderVaultId, true
 }
@@ -268,7 +268,7 @@ func (o *SignableTransferResponseDetails) GetToken() SignableToken {
 // and a boolean to check if the value has been set.
 func (o *SignableTransferResponseDetails) GetTokenOk() (*SignableToken, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Token, true
 }

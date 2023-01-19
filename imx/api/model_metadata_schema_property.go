@@ -59,7 +59,7 @@ func (o *MetadataSchemaProperty) GetFilterable() bool {
 // and a boolean to check if the value has been set.
 func (o *MetadataSchemaProperty) GetFilterableOk() (*bool, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Filterable, true
 }
@@ -83,7 +83,7 @@ func (o *MetadataSchemaProperty) GetName() string {
 // and a boolean to check if the value has been set.
 func (o *MetadataSchemaProperty) GetNameOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Name, true
 }
@@ -107,7 +107,7 @@ func (o *MetadataSchemaProperty) GetType() string {
 // and a boolean to check if the value has been set.
 func (o *MetadataSchemaProperty) GetTypeOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Type, true
 }

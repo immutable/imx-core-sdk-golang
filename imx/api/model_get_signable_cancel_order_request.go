@@ -53,7 +53,7 @@ func (o *GetSignableCancelOrderRequest) GetOrderId() int32 {
 // and a boolean to check if the value has been set.
 func (o *GetSignableCancelOrderRequest) GetOrderIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.OrderId, true
 }

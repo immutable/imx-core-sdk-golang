@@ -59,7 +59,7 @@ func (o *CreateWithdrawalResponse) GetStatus() string {
 // and a boolean to check if the value has been set.
 func (o *CreateWithdrawalResponse) GetStatusOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Status, true
 }
@@ -83,7 +83,7 @@ func (o *CreateWithdrawalResponse) GetTime() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateWithdrawalResponse) GetTimeOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Time, true
 }
@@ -107,7 +107,7 @@ func (o *CreateWithdrawalResponse) GetWithdrawalId() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateWithdrawalResponse) GetWithdrawalIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.WithdrawalId, true
 }

@@ -61,7 +61,7 @@ func (o *GetSignableTransferRequestV1) GetAmount() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferRequestV1) GetAmountOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Amount, true
 }
@@ -85,7 +85,7 @@ func (o *GetSignableTransferRequestV1) GetReceiver() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferRequestV1) GetReceiverOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Receiver, true
 }
@@ -109,7 +109,7 @@ func (o *GetSignableTransferRequestV1) GetSender() string {
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferRequestV1) GetSenderOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Sender, true
 }
@@ -133,7 +133,7 @@ func (o *GetSignableTransferRequestV1) GetToken() SignableToken {
 // and a boolean to check if the value has been set.
 func (o *GetSignableTransferRequestV1) GetTokenOk() (*SignableToken, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Token, true
 }

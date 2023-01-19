@@ -59,7 +59,7 @@ func (o *ListTransfersResponse) GetCursor() string {
 // and a boolean to check if the value has been set.
 func (o *ListTransfersResponse) GetCursorOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Cursor, true
 }
@@ -83,7 +83,7 @@ func (o *ListTransfersResponse) GetRemaining() int32 {
 // and a boolean to check if the value has been set.
 func (o *ListTransfersResponse) GetRemainingOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Remaining, true
 }
@@ -107,7 +107,7 @@ func (o *ListTransfersResponse) GetResult() []Transfer {
 // and a boolean to check if the value has been set.
 func (o *ListTransfersResponse) GetResultOk() ([]Transfer, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Result, true
 }

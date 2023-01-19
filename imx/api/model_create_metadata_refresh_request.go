@@ -56,7 +56,7 @@ func (o *CreateMetadataRefreshRequest) GetCollectionAddress() string {
 // and a boolean to check if the value has been set.
 func (o *CreateMetadataRefreshRequest) GetCollectionAddressOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.CollectionAddress, true
 }
@@ -80,7 +80,7 @@ func (o *CreateMetadataRefreshRequest) GetTokenIds() []string {
 // and a boolean to check if the value has been set.
 func (o *CreateMetadataRefreshRequest) GetTokenIdsOk() ([]string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.TokenIds, true
 }

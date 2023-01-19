@@ -45,7 +45,7 @@ func NewCreateExchangeAndURLAPIRequestWithDefaults() *CreateExchangeAndURLAPIReq
 
 // GetProvider returns the Provider field value if set, zero value otherwise.
 func (o *CreateExchangeAndURLAPIRequest) GetProvider() string {
-	if o == nil || o.Provider == nil {
+	if o == nil || isNil(o.Provider) {
 		var ret string
 		return ret
 	}
@@ -55,15 +55,15 @@ func (o *CreateExchangeAndURLAPIRequest) GetProvider() string {
 // GetProviderOk returns a tuple with the Provider field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateExchangeAndURLAPIRequest) GetProviderOk() (*string, bool) {
-	if o == nil || o.Provider == nil {
-		return nil, false
+	if o == nil || isNil(o.Provider) {
+    return nil, false
 	}
 	return o.Provider, true
 }
 
 // HasProvider returns a boolean if a field has been set.
 func (o *CreateExchangeAndURLAPIRequest) HasProvider() bool {
-	if o != nil && o.Provider != nil {
+	if o != nil && !isNil(o.Provider) {
 		return true
 	}
 
@@ -77,7 +77,7 @@ func (o *CreateExchangeAndURLAPIRequest) SetProvider(v string) {
 
 // GetType returns the Type field value if set, zero value otherwise.
 func (o *CreateExchangeAndURLAPIRequest) GetType() string {
-	if o == nil || o.Type == nil {
+	if o == nil || isNil(o.Type) {
 		var ret string
 		return ret
 	}
@@ -87,15 +87,15 @@ func (o *CreateExchangeAndURLAPIRequest) GetType() string {
 // GetTypeOk returns a tuple with the Type field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateExchangeAndURLAPIRequest) GetTypeOk() (*string, bool) {
-	if o == nil || o.Type == nil {
-		return nil, false
+	if o == nil || isNil(o.Type) {
+    return nil, false
 	}
 	return o.Type, true
 }
 
 // HasType returns a boolean if a field has been set.
 func (o *CreateExchangeAndURLAPIRequest) HasType() bool {
-	if o != nil && o.Type != nil {
+	if o != nil && !isNil(o.Type) {
 		return true
 	}
 
@@ -109,7 +109,7 @@ func (o *CreateExchangeAndURLAPIRequest) SetType(v string) {
 
 // GetWalletAddress returns the WalletAddress field value if set, zero value otherwise.
 func (o *CreateExchangeAndURLAPIRequest) GetWalletAddress() string {
-	if o == nil || o.WalletAddress == nil {
+	if o == nil || isNil(o.WalletAddress) {
 		var ret string
 		return ret
 	}
@@ -119,15 +119,15 @@ func (o *CreateExchangeAndURLAPIRequest) GetWalletAddress() string {
 // GetWalletAddressOk returns a tuple with the WalletAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateExchangeAndURLAPIRequest) GetWalletAddressOk() (*string, bool) {
-	if o == nil || o.WalletAddress == nil {
-		return nil, false
+	if o == nil || isNil(o.WalletAddress) {
+    return nil, false
 	}
 	return o.WalletAddress, true
 }
 
 // HasWalletAddress returns a boolean if a field has been set.
 func (o *CreateExchangeAndURLAPIRequest) HasWalletAddress() bool {
-	if o != nil && o.WalletAddress != nil {
+	if o != nil && !isNil(o.WalletAddress) {
 		return true
 	}
 
@@ -141,7 +141,7 @@ func (o *CreateExchangeAndURLAPIRequest) SetWalletAddress(v string) {
 
 // GetWidget returns the Widget field value if set, zero value otherwise.
 func (o *CreateExchangeAndURLAPIRequest) GetWidget() WidgetParams {
-	if o == nil || o.Widget == nil {
+	if o == nil || isNil(o.Widget) {
 		var ret WidgetParams
 		return ret
 	}
@@ -151,15 +151,15 @@ func (o *CreateExchangeAndURLAPIRequest) GetWidget() WidgetParams {
 // GetWidgetOk returns a tuple with the Widget field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateExchangeAndURLAPIRequest) GetWidgetOk() (*WidgetParams, bool) {
-	if o == nil || o.Widget == nil {
-		return nil, false
+	if o == nil || isNil(o.Widget) {
+    return nil, false
 	}
 	return o.Widget, true
 }
 
 // HasWidget returns a boolean if a field has been set.
 func (o *CreateExchangeAndURLAPIRequest) HasWidget() bool {
-	if o != nil && o.Widget != nil {
+	if o != nil && !isNil(o.Widget) {
 		return true
 	}
 
@@ -173,16 +173,16 @@ func (o *CreateExchangeAndURLAPIRequest) SetWidget(v WidgetParams) {
 
 func (o CreateExchangeAndURLAPIRequest) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Provider != nil {
+	if !isNil(o.Provider) {
 		toSerialize["provider"] = o.Provider
 	}
-	if o.Type != nil {
+	if !isNil(o.Type) {
 		toSerialize["type"] = o.Type
 	}
-	if o.WalletAddress != nil {
+	if !isNil(o.WalletAddress) {
 		toSerialize["wallet_address"] = o.WalletAddress
 	}
-	if o.Widget != nil {
+	if !isNil(o.Widget) {
 		toSerialize["widget"] = o.Widget
 	}
 	return json.Marshal(toSerialize)

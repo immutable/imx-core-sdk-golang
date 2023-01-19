@@ -88,7 +88,7 @@ func (o *CreateTradeRequestV1) GetAmountBuy() string {
 // and a boolean to check if the value has been set.
 func (o *CreateTradeRequestV1) GetAmountBuyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AmountBuy, true
 }
@@ -112,7 +112,7 @@ func (o *CreateTradeRequestV1) GetAmountSell() string {
 // and a boolean to check if the value has been set.
 func (o *CreateTradeRequestV1) GetAmountSellOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AmountSell, true
 }
@@ -136,7 +136,7 @@ func (o *CreateTradeRequestV1) GetAssetIdBuy() string {
 // and a boolean to check if the value has been set.
 func (o *CreateTradeRequestV1) GetAssetIdBuyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AssetIdBuy, true
 }
@@ -160,7 +160,7 @@ func (o *CreateTradeRequestV1) GetAssetIdSell() string {
 // and a boolean to check if the value has been set.
 func (o *CreateTradeRequestV1) GetAssetIdSellOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AssetIdSell, true
 }
@@ -184,7 +184,7 @@ func (o *CreateTradeRequestV1) GetExpirationTimestamp() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateTradeRequestV1) GetExpirationTimestampOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ExpirationTimestamp, true
 }
@@ -196,7 +196,7 @@ func (o *CreateTradeRequestV1) SetExpirationTimestamp(v int32) {
 
 // GetFeeInfo returns the FeeInfo field value if set, zero value otherwise.
 func (o *CreateTradeRequestV1) GetFeeInfo() FeeInfo {
-	if o == nil || o.FeeInfo == nil {
+	if o == nil || isNil(o.FeeInfo) {
 		var ret FeeInfo
 		return ret
 	}
@@ -206,15 +206,15 @@ func (o *CreateTradeRequestV1) GetFeeInfo() FeeInfo {
 // GetFeeInfoOk returns a tuple with the FeeInfo field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateTradeRequestV1) GetFeeInfoOk() (*FeeInfo, bool) {
-	if o == nil || o.FeeInfo == nil {
-		return nil, false
+	if o == nil || isNil(o.FeeInfo) {
+    return nil, false
 	}
 	return o.FeeInfo, true
 }
 
 // HasFeeInfo returns a boolean if a field has been set.
 func (o *CreateTradeRequestV1) HasFeeInfo() bool {
-	if o != nil && o.FeeInfo != nil {
+	if o != nil && !isNil(o.FeeInfo) {
 		return true
 	}
 
@@ -228,7 +228,7 @@ func (o *CreateTradeRequestV1) SetFeeInfo(v FeeInfo) {
 
 // GetFees returns the Fees field value if set, zero value otherwise.
 func (o *CreateTradeRequestV1) GetFees() []FeeEntry {
-	if o == nil || o.Fees == nil {
+	if o == nil || isNil(o.Fees) {
 		var ret []FeeEntry
 		return ret
 	}
@@ -238,15 +238,15 @@ func (o *CreateTradeRequestV1) GetFees() []FeeEntry {
 // GetFeesOk returns a tuple with the Fees field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateTradeRequestV1) GetFeesOk() ([]FeeEntry, bool) {
-	if o == nil || o.Fees == nil {
-		return nil, false
+	if o == nil || isNil(o.Fees) {
+    return nil, false
 	}
 	return o.Fees, true
 }
 
 // HasFees returns a boolean if a field has been set.
 func (o *CreateTradeRequestV1) HasFees() bool {
-	if o != nil && o.Fees != nil {
+	if o != nil && !isNil(o.Fees) {
 		return true
 	}
 
@@ -260,7 +260,7 @@ func (o *CreateTradeRequestV1) SetFees(v []FeeEntry) {
 
 // GetIncludeFees returns the IncludeFees field value if set, zero value otherwise.
 func (o *CreateTradeRequestV1) GetIncludeFees() bool {
-	if o == nil || o.IncludeFees == nil {
+	if o == nil || isNil(o.IncludeFees) {
 		var ret bool
 		return ret
 	}
@@ -270,15 +270,15 @@ func (o *CreateTradeRequestV1) GetIncludeFees() bool {
 // GetIncludeFeesOk returns a tuple with the IncludeFees field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateTradeRequestV1) GetIncludeFeesOk() (*bool, bool) {
-	if o == nil || o.IncludeFees == nil {
-		return nil, false
+	if o == nil || isNil(o.IncludeFees) {
+    return nil, false
 	}
 	return o.IncludeFees, true
 }
 
 // HasIncludeFees returns a boolean if a field has been set.
 func (o *CreateTradeRequestV1) HasIncludeFees() bool {
-	if o != nil && o.IncludeFees != nil {
+	if o != nil && !isNil(o.IncludeFees) {
 		return true
 	}
 
@@ -304,7 +304,7 @@ func (o *CreateTradeRequestV1) GetNonce() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateTradeRequestV1) GetNonceOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Nonce, true
 }
@@ -328,7 +328,7 @@ func (o *CreateTradeRequestV1) GetOrderId() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateTradeRequestV1) GetOrderIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.OrderId, true
 }
@@ -352,7 +352,7 @@ func (o *CreateTradeRequestV1) GetStarkKey() string {
 // and a boolean to check if the value has been set.
 func (o *CreateTradeRequestV1) GetStarkKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StarkKey, true
 }
@@ -376,7 +376,7 @@ func (o *CreateTradeRequestV1) GetStarkSignature() string {
 // and a boolean to check if the value has been set.
 func (o *CreateTradeRequestV1) GetStarkSignatureOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StarkSignature, true
 }
@@ -400,7 +400,7 @@ func (o *CreateTradeRequestV1) GetVaultIdBuy() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateTradeRequestV1) GetVaultIdBuyOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.VaultIdBuy, true
 }
@@ -424,7 +424,7 @@ func (o *CreateTradeRequestV1) GetVaultIdSell() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateTradeRequestV1) GetVaultIdSellOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.VaultIdSell, true
 }
@@ -451,13 +451,13 @@ func (o CreateTradeRequestV1) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["expiration_timestamp"] = o.ExpirationTimestamp
 	}
-	if o.FeeInfo != nil {
+	if !isNil(o.FeeInfo) {
 		toSerialize["fee_info"] = o.FeeInfo
 	}
-	if o.Fees != nil {
+	if !isNil(o.Fees) {
 		toSerialize["fees"] = o.Fees
 	}
-	if o.IncludeFees != nil {
+	if !isNil(o.IncludeFees) {
 		toSerialize["include_fees"] = o.IncludeFees
 	}
 	if true {

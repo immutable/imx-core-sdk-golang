@@ -37,6 +37,8 @@ docs/Collection.md
 docs/CollectionDetails.md
 docs/CollectionFilter.md
 docs/CollectionsApi.md
+docs/ContractCreateAPIRequest.md
+docs/ContractCreateResponse.md
 docs/CreateCollectionRequest.md
 docs/CreateExchangeAndURLAPIRequest.md
 docs/CreateMetadataRefreshRequest.md
@@ -133,8 +135,6 @@ docs/OrderFeeInfo.md
 docs/OrdersApi.md
 docs/Project.md
 docs/ProjectsApi.md
-docs/ProviderGetMintStatusResponse.md
-docs/ProviderMintStatus.md
 docs/Range.md
 docs/RegisterUserRequest.md
 docs/RegisterUserResponse.md
@@ -172,6 +172,8 @@ model_cancel_order_response.go
 model_collection.go
 model_collection_details.go
 model_collection_filter.go
+model_contract_create_api_request.go
+model_contract_create_response.go
 model_create_collection_request.go
 model_create_exchange_and_urlapi_request.go
 model_create_metadata_refresh_request.go
@@ -259,8 +261,6 @@ model_order.go
 model_order_details.go
 model_order_fee_info.go
 model_project.go
-model_provider_get_mint_status_response.go
-model_provider_mint_status.go
 model_range.go
 model_register_user_request.go
 model_register_user_response.go
@@ -279,4 +279,21 @@ model_update_collection_request.go
 model_widget_params.go
 model_withdrawal.go
 response.go
+test/api_assets_test.go
+test/api_balances_test.go
+test/api_collections_test.go
+test/api_deposits_test.go
+test/api_encoding_test.go
+test/api_exchanges_test.go
+test/api_metadata_refreshes_test.go
+test/api_metadata_test.go
+test/api_mints_test.go
+test/api_nft_checkout_primary_test.go
+test/api_orders_test.go
+test/api_projects_test.go
+test/api_tokens_test.go
+test/api_trades_test.go
+test/api_transfers_test.go
+test/api_users_test.go
+test/api_withdrawals_test.go
 utils.go

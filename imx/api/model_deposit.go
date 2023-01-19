@@ -64,7 +64,7 @@ func (o *Deposit) GetStatus() string {
 // and a boolean to check if the value has been set.
 func (o *Deposit) GetStatusOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Status, true
 }
@@ -88,7 +88,7 @@ func (o *Deposit) GetTimestamp() string {
 // and a boolean to check if the value has been set.
 func (o *Deposit) GetTimestampOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Timestamp, true
 }
@@ -112,7 +112,7 @@ func (o *Deposit) GetToken() Token {
 // and a boolean to check if the value has been set.
 func (o *Deposit) GetTokenOk() (*Token, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Token, true
 }
@@ -136,7 +136,7 @@ func (o *Deposit) GetTransactionId() int32 {
 // and a boolean to check if the value has been set.
 func (o *Deposit) GetTransactionIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TransactionId, true
 }
@@ -160,7 +160,7 @@ func (o *Deposit) GetUser() string {
 // and a boolean to check if the value has been set.
 func (o *Deposit) GetUserOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.User, true
 }

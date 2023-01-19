@@ -19,7 +19,7 @@ import (
 type CreateProjectRequest struct {
 	// The company name
 	CompanyName string `json:"company_name"`
-	// The project contact email
+	// The project contact email (must be registered as a developer account with Immutable at https://hub.immutable.com)
 	ContactEmail string `json:"contact_email"`
 	// The project name
 	Name string `json:"name"`
@@ -59,7 +59,7 @@ func (o *CreateProjectRequest) GetCompanyName() string {
 // and a boolean to check if the value has been set.
 func (o *CreateProjectRequest) GetCompanyNameOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.CompanyName, true
 }
@@ -83,7 +83,7 @@ func (o *CreateProjectRequest) GetContactEmail() string {
 // and a boolean to check if the value has been set.
 func (o *CreateProjectRequest) GetContactEmailOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ContactEmail, true
 }
@@ -107,7 +107,7 @@ func (o *CreateProjectRequest) GetName() string {
 // and a boolean to check if the value has been set.
 func (o *CreateProjectRequest) GetNameOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Name, true
 }

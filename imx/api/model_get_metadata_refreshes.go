@@ -59,7 +59,7 @@ func (o *GetMetadataRefreshes) GetCursor() string {
 // and a boolean to check if the value has been set.
 func (o *GetMetadataRefreshes) GetCursorOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Cursor, true
 }
@@ -83,7 +83,7 @@ func (o *GetMetadataRefreshes) GetRemaining() int32 {
 // and a boolean to check if the value has been set.
 func (o *GetMetadataRefreshes) GetRemainingOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Remaining, true
 }
@@ -107,7 +107,7 @@ func (o *GetMetadataRefreshes) GetResult() []MetadataRefreshExcludingSummary {
 // and a boolean to check if the value has been set.
 func (o *GetMetadataRefreshes) GetResultOk() ([]MetadataRefreshExcludingSummary, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Result, true
 }

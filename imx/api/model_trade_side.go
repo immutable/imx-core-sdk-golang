@@ -63,7 +63,7 @@ func (o *TradeSide) GetOrderId() int32 {
 // and a boolean to check if the value has been set.
 func (o *TradeSide) GetOrderIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.OrderId, true
 }
@@ -87,7 +87,7 @@ func (o *TradeSide) GetSold() string {
 // and a boolean to check if the value has been set.
 func (o *TradeSide) GetSoldOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Sold, true
 }
@@ -99,7 +99,7 @@ func (o *TradeSide) SetSold(v string) {
 
 // GetTokenAddress returns the TokenAddress field value if set, zero value otherwise.
 func (o *TradeSide) GetTokenAddress() string {
-	if o == nil || o.TokenAddress == nil {
+	if o == nil || isNil(o.TokenAddress) {
 		var ret string
 		return ret
 	}
@@ -109,15 +109,15 @@ func (o *TradeSide) GetTokenAddress() string {
 // GetTokenAddressOk returns a tuple with the TokenAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TradeSide) GetTokenAddressOk() (*string, bool) {
-	if o == nil || o.TokenAddress == nil {
-		return nil, false
+	if o == nil || isNil(o.TokenAddress) {
+    return nil, false
 	}
 	return o.TokenAddress, true
 }
 
 // HasTokenAddress returns a boolean if a field has been set.
 func (o *TradeSide) HasTokenAddress() bool {
-	if o != nil && o.TokenAddress != nil {
+	if o != nil && !isNil(o.TokenAddress) {
 		return true
 	}
 
@@ -131,7 +131,7 @@ func (o *TradeSide) SetTokenAddress(v string) {
 
 // GetTokenId returns the TokenId field value if set, zero value otherwise.
 func (o *TradeSide) GetTokenId() string {
-	if o == nil || o.TokenId == nil {
+	if o == nil || isNil(o.TokenId) {
 		var ret string
 		return ret
 	}
@@ -141,15 +141,15 @@ func (o *TradeSide) GetTokenId() string {
 // GetTokenIdOk returns a tuple with the TokenId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TradeSide) GetTokenIdOk() (*string, bool) {
-	if o == nil || o.TokenId == nil {
-		return nil, false
+	if o == nil || isNil(o.TokenId) {
+    return nil, false
 	}
 	return o.TokenId, true
 }
 
 // HasTokenId returns a boolean if a field has been set.
 func (o *TradeSide) HasTokenId() bool {
-	if o != nil && o.TokenId != nil {
+	if o != nil && !isNil(o.TokenId) {
 		return true
 	}
 
@@ -175,7 +175,7 @@ func (o *TradeSide) GetTokenType() string {
 // and a boolean to check if the value has been set.
 func (o *TradeSide) GetTokenTypeOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.TokenType, true
 }
@@ -193,10 +193,10 @@ func (o TradeSide) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["sold"] = o.Sold
 	}
-	if o.TokenAddress != nil {
+	if !isNil(o.TokenAddress) {
 		toSerialize["token_address"] = o.TokenAddress
 	}
-	if o.TokenId != nil {
+	if !isNil(o.TokenId) {
 		toSerialize["token_id"] = o.TokenId
 	}
 	if true {

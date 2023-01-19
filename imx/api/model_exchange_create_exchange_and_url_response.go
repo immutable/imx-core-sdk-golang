@@ -48,7 +48,7 @@ func NewExchangeCreateExchangeAndURLResponseWithDefaults() *ExchangeCreateExchan
 
 // GetId returns the Id field value if set, zero value otherwise.
 func (o *ExchangeCreateExchangeAndURLResponse) GetId() int32 {
-	if o == nil || o.Id == nil {
+	if o == nil || isNil(o.Id) {
 		var ret int32
 		return ret
 	}
@@ -58,15 +58,15 @@ func (o *ExchangeCreateExchangeAndURLResponse) GetId() int32 {
 // GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ExchangeCreateExchangeAndURLResponse) GetIdOk() (*int32, bool) {
-	if o == nil || o.Id == nil {
-		return nil, false
+	if o == nil || isNil(o.Id) {
+    return nil, false
 	}
 	return o.Id, true
 }
 
 // HasId returns a boolean if a field has been set.
 func (o *ExchangeCreateExchangeAndURLResponse) HasId() bool {
-	if o != nil && o.Id != nil {
+	if o != nil && !isNil(o.Id) {
 		return true
 	}
 
@@ -80,7 +80,7 @@ func (o *ExchangeCreateExchangeAndURLResponse) SetId(v int32) {
 
 // GetProvider returns the Provider field value if set, zero value otherwise.
 func (o *ExchangeCreateExchangeAndURLResponse) GetProvider() string {
-	if o == nil || o.Provider == nil {
+	if o == nil || isNil(o.Provider) {
 		var ret string
 		return ret
 	}
@@ -90,15 +90,15 @@ func (o *ExchangeCreateExchangeAndURLResponse) GetProvider() string {
 // GetProviderOk returns a tuple with the Provider field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ExchangeCreateExchangeAndURLResponse) GetProviderOk() (*string, bool) {
-	if o == nil || o.Provider == nil {
-		return nil, false
+	if o == nil || isNil(o.Provider) {
+    return nil, false
 	}
 	return o.Provider, true
 }
 
 // HasProvider returns a boolean if a field has been set.
 func (o *ExchangeCreateExchangeAndURLResponse) HasProvider() bool {
-	if o != nil && o.Provider != nil {
+	if o != nil && !isNil(o.Provider) {
 		return true
 	}
 
@@ -112,7 +112,7 @@ func (o *ExchangeCreateExchangeAndURLResponse) SetProvider(v string) {
 
 // GetType returns the Type field value if set, zero value otherwise.
 func (o *ExchangeCreateExchangeAndURLResponse) GetType() string {
-	if o == nil || o.Type == nil {
+	if o == nil || isNil(o.Type) {
 		var ret string
 		return ret
 	}
@@ -122,15 +122,15 @@ func (o *ExchangeCreateExchangeAndURLResponse) GetType() string {
 // GetTypeOk returns a tuple with the Type field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ExchangeCreateExchangeAndURLResponse) GetTypeOk() (*string, bool) {
-	if o == nil || o.Type == nil {
-		return nil, false
+	if o == nil || isNil(o.Type) {
+    return nil, false
 	}
 	return o.Type, true
 }
 
 // HasType returns a boolean if a field has been set.
 func (o *ExchangeCreateExchangeAndURLResponse) HasType() bool {
-	if o != nil && o.Type != nil {
+	if o != nil && !isNil(o.Type) {
 		return true
 	}
 
@@ -144,7 +144,7 @@ func (o *ExchangeCreateExchangeAndURLResponse) SetType(v string) {
 
 // GetUrl returns the Url field value if set, zero value otherwise.
 func (o *ExchangeCreateExchangeAndURLResponse) GetUrl() string {
-	if o == nil || o.Url == nil {
+	if o == nil || isNil(o.Url) {
 		var ret string
 		return ret
 	}
@@ -154,15 +154,15 @@ func (o *ExchangeCreateExchangeAndURLResponse) GetUrl() string {
 // GetUrlOk returns a tuple with the Url field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ExchangeCreateExchangeAndURLResponse) GetUrlOk() (*string, bool) {
-	if o == nil || o.Url == nil {
-		return nil, false
+	if o == nil || isNil(o.Url) {
+    return nil, false
 	}
 	return o.Url, true
 }
 
 // HasUrl returns a boolean if a field has been set.
 func (o *ExchangeCreateExchangeAndURLResponse) HasUrl() bool {
-	if o != nil && o.Url != nil {
+	if o != nil && !isNil(o.Url) {
 		return true
 	}
 
@@ -176,7 +176,7 @@ func (o *ExchangeCreateExchangeAndURLResponse) SetUrl(v string) {
 
 // GetWalletAddress returns the WalletAddress field value if set, zero value otherwise.
 func (o *ExchangeCreateExchangeAndURLResponse) GetWalletAddress() string {
-	if o == nil || o.WalletAddress == nil {
+	if o == nil || isNil(o.WalletAddress) {
 		var ret string
 		return ret
 	}
@@ -186,15 +186,15 @@ func (o *ExchangeCreateExchangeAndURLResponse) GetWalletAddress() string {
 // GetWalletAddressOk returns a tuple with the WalletAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ExchangeCreateExchangeAndURLResponse) GetWalletAddressOk() (*string, bool) {
-	if o == nil || o.WalletAddress == nil {
-		return nil, false
+	if o == nil || isNil(o.WalletAddress) {
+    return nil, false
 	}
 	return o.WalletAddress, true
 }
 
 // HasWalletAddress returns a boolean if a field has been set.
 func (o *ExchangeCreateExchangeAndURLResponse) HasWalletAddress() bool {
-	if o != nil && o.WalletAddress != nil {
+	if o != nil && !isNil(o.WalletAddress) {
 		return true
 	}
 
@@ -208,19 +208,19 @@ func (o *ExchangeCreateExchangeAndURLResponse) SetWalletAddress(v string) {
 
 func (o ExchangeCreateExchangeAndURLResponse) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Id != nil {
+	if !isNil(o.Id) {
 		toSerialize["id"] = o.Id
 	}
-	if o.Provider != nil {
+	if !isNil(o.Provider) {
 		toSerialize["provider"] = o.Provider
 	}
-	if o.Type != nil {
+	if !isNil(o.Type) {
 		toSerialize["type"] = o.Type
 	}
-	if o.Url != nil {
+	if !isNil(o.Url) {
 		toSerialize["url"] = o.Url
 	}
-	if o.WalletAddress != nil {
+	if !isNil(o.WalletAddress) {
 		toSerialize["wallet_address"] = o.WalletAddress
 	}
 	return json.Marshal(toSerialize)

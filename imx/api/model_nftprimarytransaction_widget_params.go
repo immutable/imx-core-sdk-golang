@@ -17,6 +17,7 @@ import (
 
 // NftprimarytransactionWidgetParams struct for NftprimarytransactionWidgetParams
 type NftprimarytransactionWidgetParams struct {
+	// enums(light, dark)
 	Theme *string `json:"theme,omitempty"`
 }
 
@@ -39,7 +40,7 @@ func NewNftprimarytransactionWidgetParamsWithDefaults() *NftprimarytransactionWi
 
 // GetTheme returns the Theme field value if set, zero value otherwise.
 func (o *NftprimarytransactionWidgetParams) GetTheme() string {
-	if o == nil || o.Theme == nil {
+	if o == nil || isNil(o.Theme) {
 		var ret string
 		return ret
 	}
@@ -49,15 +50,15 @@ func (o *NftprimarytransactionWidgetParams) GetTheme() string {
 // GetThemeOk returns a tuple with the Theme field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *NftprimarytransactionWidgetParams) GetThemeOk() (*string, bool) {
-	if o == nil || o.Theme == nil {
-		return nil, false
+	if o == nil || isNil(o.Theme) {
+    return nil, false
 	}
 	return o.Theme, true
 }
 
 // HasTheme returns a boolean if a field has been set.
 func (o *NftprimarytransactionWidgetParams) HasTheme() bool {
-	if o != nil && o.Theme != nil {
+	if o != nil && !isNil(o.Theme) {
 		return true
 	}
 
@@ -71,7 +72,7 @@ func (o *NftprimarytransactionWidgetParams) SetTheme(v string) {
 
 func (o NftprimarytransactionWidgetParams) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Theme != nil {
+	if !isNil(o.Theme) {
 		toSerialize["theme"] = o.Theme
 	}
 	return json.Marshal(toSerialize)

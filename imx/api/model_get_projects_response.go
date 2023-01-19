@@ -59,7 +59,7 @@ func (o *GetProjectsResponse) GetCursor() string {
 // and a boolean to check if the value has been set.
 func (o *GetProjectsResponse) GetCursorOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Cursor, true
 }
@@ -83,7 +83,7 @@ func (o *GetProjectsResponse) GetRemaining() int32 {
 // and a boolean to check if the value has been set.
 func (o *GetProjectsResponse) GetRemainingOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Remaining, true
 }
@@ -107,7 +107,7 @@ func (o *GetProjectsResponse) GetResult() []Project {
 // and a boolean to check if the value has been set.
 func (o *GetProjectsResponse) GetResultOk() ([]Project, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return o.Result, true
 }

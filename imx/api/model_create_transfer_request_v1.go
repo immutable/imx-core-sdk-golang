@@ -77,7 +77,7 @@ func (o *CreateTransferRequestV1) GetAmount() string {
 // and a boolean to check if the value has been set.
 func (o *CreateTransferRequestV1) GetAmountOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Amount, true
 }
@@ -101,7 +101,7 @@ func (o *CreateTransferRequestV1) GetAssetId() string {
 // and a boolean to check if the value has been set.
 func (o *CreateTransferRequestV1) GetAssetIdOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.AssetId, true
 }
@@ -125,7 +125,7 @@ func (o *CreateTransferRequestV1) GetExpirationTimestamp() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateTransferRequestV1) GetExpirationTimestampOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ExpirationTimestamp, true
 }
@@ -149,7 +149,7 @@ func (o *CreateTransferRequestV1) GetNonce() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateTransferRequestV1) GetNonceOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.Nonce, true
 }
@@ -173,7 +173,7 @@ func (o *CreateTransferRequestV1) GetReceiverStarkKey() string {
 // and a boolean to check if the value has been set.
 func (o *CreateTransferRequestV1) GetReceiverStarkKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ReceiverStarkKey, true
 }
@@ -197,7 +197,7 @@ func (o *CreateTransferRequestV1) GetReceiverVaultId() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateTransferRequestV1) GetReceiverVaultIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.ReceiverVaultId, true
 }
@@ -221,7 +221,7 @@ func (o *CreateTransferRequestV1) GetSenderStarkKey() string {
 // and a boolean to check if the value has been set.
 func (o *CreateTransferRequestV1) GetSenderStarkKeyOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.SenderStarkKey, true
 }
@@ -245,7 +245,7 @@ func (o *CreateTransferRequestV1) GetSenderVaultId() int32 {
 // and a boolean to check if the value has been set.
 func (o *CreateTransferRequestV1) GetSenderVaultIdOk() (*int32, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.SenderVaultId, true
 }
@@ -269,7 +269,7 @@ func (o *CreateTransferRequestV1) GetStarkSignature() string {
 // and a boolean to check if the value has been set.
 func (o *CreateTransferRequestV1) GetStarkSignatureOk() (*string, bool) {
 	if o == nil {
-		return nil, false
+    return nil, false
 	}
 	return &o.StarkSignature, true
 }

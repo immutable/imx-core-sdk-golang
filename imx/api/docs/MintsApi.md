@@ -158,7 +158,7 @@ No authorization required
 
 ## ListMints
 
-> ListMintsResponse ListMints(ctx).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).User(user).Status(status).MinTimestamp(minTimestamp).MaxTimestamp(maxTimestamp).TokenType(tokenType).TokenId(tokenId).AssetId(assetId).TokenName(tokenName).TokenAddress(tokenAddress).MinQuantity(minQuantity).MaxQuantity(maxQuantity).Metadata(metadata).Execute()
+> ListMintsResponse ListMints(ctx).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).User(user).Status(status).MinTimestamp(minTimestamp).MaxTimestamp(maxTimestamp).TokenType(tokenType).TokenId(tokenId).TokenName(tokenName).TokenAddress(tokenAddress).MinQuantity(minQuantity).MaxQuantity(maxQuantity).Metadata(metadata).Execute()
 
 Get a list of mints
 
@@ -188,7 +188,6 @@ func main() {
     maxTimestamp := "maxTimestamp_example" // string | Maximum timestamp for this mint, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z' (optional)
     tokenType := "tokenType_example" // string | Token type of the minted asset (optional)
     tokenId := "tokenId_example" // string | ERC721 Token ID of the minted asset (optional)
-    assetId := "assetId_example" // string | [DEPRECATED] Internal IMX ID of the minted asset (optional)
     tokenName := "tokenName_example" // string | Token Name of the minted asset (optional)
     tokenAddress := "tokenAddress_example" // string | Token address of the minted asset (optional)
     minQuantity := "minQuantity_example" // string | Min quantity for the minted asset (optional)
@@ -197,7 +196,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.MintsApi.ListMints(context.Background()).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).User(user).Status(status).MinTimestamp(minTimestamp).MaxTimestamp(maxTimestamp).TokenType(tokenType).TokenId(tokenId).AssetId(assetId).TokenName(tokenName).TokenAddress(tokenAddress).MinQuantity(minQuantity).MaxQuantity(maxQuantity).Metadata(metadata).Execute()
+    resp, r, err := apiClient.MintsApi.ListMints(context.Background()).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).User(user).Status(status).MinTimestamp(minTimestamp).MaxTimestamp(maxTimestamp).TokenType(tokenType).TokenId(tokenId).TokenName(tokenName).TokenAddress(tokenAddress).MinQuantity(minQuantity).MaxQuantity(maxQuantity).Metadata(metadata).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `MintsApi.ListMints``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -228,7 +227,6 @@ Name | Type | Description  | Notes
  **maxTimestamp** | **string** | Maximum timestamp for this mint, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39; | 
  **tokenType** | **string** | Token type of the minted asset | 
  **tokenId** | **string** | ERC721 Token ID of the minted asset | 
- **assetId** | **string** | [DEPRECATED] Internal IMX ID of the minted asset | 
  **tokenName** | **string** | Token Name of the minted asset | 
  **tokenAddress** | **string** | Token address of the minted asset | 
  **minQuantity** | **string** | Min quantity for the minted asset | 
