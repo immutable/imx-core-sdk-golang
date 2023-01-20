@@ -42,5 +42,5 @@ func NewIMXError(httpResponse *http.Response, err error) error {
 }
 
 func (e *IMXError) Error() string {
-	return fmt.Sprintf("Request URL: %v Status: %v, Message: %v", e.RequestURL, e.HTTPStatusCode, e.Message)
+	return fmt.Sprintf("Request URL: %v Status: %v, Message: %v", e.RequestURL, e.HTTPStatusCode, e.APIError.Message)
 }
