@@ -29,7 +29,7 @@ jobs:
     strategy:
       matrix:
         workdir:
-          - imx/examples
+          - imx
     steps:
       - uses: actions/setup-go@v3
         with:
