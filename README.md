@@ -28,7 +28,7 @@ The following code snippets talk about how to get setup and use the various sect
 The supported go versions are 1.18 or above.
 
 ```sh
-go get github.com/immutable/imx-core-sdk-golang 
+go get github.com/immutable/imx-core-sdk-golang
 ```
 
 ## Initialization
@@ -58,7 +58,7 @@ func main() {
     if err != nil {
         log.Panicf("error in NewClient: %v\n", err)
     }
-    defer c.EthClient.Close()
+    defer client.EthClient.Close()
 }
 ```
 
@@ -78,21 +78,21 @@ Examples of the types of data that are typically retrieved include:
 #### Get all collections and get assets from a particular collection:
 
 ```go
-listCollectionsRequest := c.NewListCollectionsRequest(context.TODO())
+listCollectionsRequest := client.NewListCollectionsRequest(context.TODO())
 listCollectionsRequest.PageSize(2)
 
-listCollectionsResponse, err := c.ListCollections(&listCollectionsRequest)
+listCollectionsResponse, err := client.ListCollections(&listCollectionsRequest)
 if err != nil {
     log.Panicf("error in ListCollections: %v\n", err)
 }
 
 collection := listCollectionsResponse.Result[0]
 
-listAssetsRequest := c.NewListAssetsRequest(context.TODO())
+listAssetsRequest := client.NewListAssetsRequest(context.TODO())
 listAssetsRequest.Collection(collection.Address)
 listAssetsRequest.PageSize(10)
 
-listAssetsResponse, err := c.ListAssets(&listAssetsRequest)
+listAssetsResponse, err := client.ListAssets(&listAssetsRequest)
 if err != nil {
     log.Panicf("error in ListAssets: %v\n", err)
 }
@@ -215,14 +215,14 @@ See [this guide](https://docs.x.immutable.com/sdk-docs/wallet-sdk-web/quickstart
 
 ```go
 // Create a new project demo.
-createProjectResponse, err := c.CreateProject(ctx, l1signer, "My Company", "Project name", "project@company.com")
+createProjectResponse, err := client.CreateProject(ctx, l1signer, "My Company", "Project name", "project@company.com")
 if err != nil {
     log.Panicf("error in CreateProject: %v\n", err)
 }
 
 // Get the project details we just created.
 projectId := strconv.FormatInt(int64(createProjectResponse.Id), 10)
-getProjectResponse, err := c.GetProject(ctx, l1signer, projectId)
+getProjectResponse, err := client.GetProject(ctx, l1signer, projectId)
 if err != nil {
     log.Panicf("error in GetProject: %v", err)
 }
@@ -256,7 +256,7 @@ createOrderRequest := &api.GetSignableOrderRequest{
 createOrderRequest.SetExpirationTimestamp(0)
 
 // Create order will list the given asset for sale.
-createOrderResponse, err := c.CreateOrder(ctx, l1signer, l2signer, createOrderRequest)
+createOrderResponse, err := client.CreateOrder(ctx, l1signer, l2signer, createOrderRequest)
 if err != nil {
     log.Panicf("error in CreateOrder: %v", err)
 }
@@ -285,9 +285,9 @@ func DepositNft(l1signer immutable.L1Signer, starkPublicKey, assetType, vaultID,
     if err != nil {
         log.Panicf("error in NewClient: %v\n", err)
     }
-    defer c.EthClient.Close()
+    defer client.EthClient.Close()
 
-    opts := c.buildTransactOpts(ctx, l1signer, overrides)
+    opts := client.buildTransactOpts(ctx, l1signer, overrides)
     transaction, err := client.CoreContract.DepositNft(opts, starkPublicKey, assetType, vaultID, tokenID)
     if err != nil {
         return nil, err
