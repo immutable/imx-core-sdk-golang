@@ -25,7 +25,7 @@ type Withdrawal struct {
 	Status string `json:"status"`
 	// Time when this withdrawal was initiated
 	Timestamp string `json:"timestamp"`
-	Token Token `json:"token"`
+	Token WithdrawalToken `json:"token"`
 	// Sequential ID of this transaction
 	TransactionId int32 `json:"transaction_id"`
 	// Withdrawal has been transferred to user's Layer 1 wallet
@@ -36,7 +36,7 @@ type Withdrawal struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWithdrawal(rollupStatus string, sender string, status string, timestamp string, token Token, transactionId int32, withdrawnToWallet bool) *Withdrawal {
+func NewWithdrawal(rollupStatus string, sender string, status string, timestamp string, token WithdrawalToken, transactionId int32, withdrawnToWallet bool) *Withdrawal {
 	this := Withdrawal{}
 	this.RollupStatus = rollupStatus
 	this.Sender = sender
@@ -153,9 +153,9 @@ func (o *Withdrawal) SetTimestamp(v string) {
 }
 
 // GetToken returns the Token field value
-func (o *Withdrawal) GetToken() Token {
+func (o *Withdrawal) GetToken() WithdrawalToken {
 	if o == nil {
-		var ret Token
+		var ret WithdrawalToken
 		return ret
 	}
 
@@ -164,7 +164,7 @@ func (o *Withdrawal) GetToken() Token {
 
 // GetTokenOk returns a tuple with the Token field value
 // and a boolean to check if the value has been set.
-func (o *Withdrawal) GetTokenOk() (*Token, bool) {
+func (o *Withdrawal) GetTokenOk() (*WithdrawalToken, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -172,7 +172,7 @@ func (o *Withdrawal) GetTokenOk() (*Token, bool) {
 }
 
 // SetToken sets field value
-func (o *Withdrawal) SetToken(v Token) {
+func (o *Withdrawal) SetToken(v WithdrawalToken) {
 	o.Token = v
 }
 

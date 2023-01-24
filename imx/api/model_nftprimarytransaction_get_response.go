@@ -19,19 +19,19 @@ import (
 type NftprimarytransactionGetResponse struct {
 	// Contract address of the asset
 	ContractAddress *string `json:"contract_address,omitempty"`
-	// Temporary asset id
+	// Temporary asset id. Might be a token id if the token id is known or a generic description if it's not
 	OfferId *string `json:"offer_id,omitempty"`
 	// Provider name
 	Provider *string `json:"provider,omitempty"`
 	// Ethereum address of the seller
 	SellerWalletAddress *string `json:"seller_wallet_address,omitempty"`
-	// Transaction status
+	// Transaction status enums(created, waitingPayment, pending, completed, failed)
 	Status *string `json:"status,omitempty"`
-	// Asset id
+	// ID of the token that has been successfully minted - might or not be the same as `offer_id`
 	TokenId *string `json:"token_id,omitempty"`
 	// Transaction id
 	TransactionId *string `json:"transaction_id,omitempty"`
-	// Ethereum address of the user who wants to create transaction
+	// Wallet address that receives the minted NFT
 	UserWalletAddress *string `json:"user_wallet_address,omitempty"`
 }
 

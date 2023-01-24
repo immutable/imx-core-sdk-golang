@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **Sender** | **string** | Ethereum address of the user who requested this withdrawal | 
 **Status** | **string** | Status of this withdrawal | 
 **Timestamp** | **string** | Time when this withdrawal was initiated | 
-**Token** | [**Token**](Token.md) |  | 
+**Token** | [**WithdrawalToken**](WithdrawalToken.md) |  | 
 **TransactionId** | **int32** | Sequential ID of this transaction | 
 **WithdrawnToWallet** | **bool** | Withdrawal has been transferred to user&#39;s Layer 1 wallet | 
 
@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 
 ### NewWithdrawal
 
-`func NewWithdrawal(rollupStatus string, sender string, status string, timestamp string, token Token, transactionId int32, withdrawnToWallet bool, ) *Withdrawal`
+`func NewWithdrawal(rollupStatus string, sender string, status string, timestamp string, token WithdrawalToken, transactionId int32, withdrawnToWallet bool, ) *Withdrawal`
 
 NewWithdrawal instantiates a new Withdrawal object
 This constructor will assign default values to properties that have it defined,
@@ -113,20 +113,20 @@ SetTimestamp sets Timestamp field to given value.
 
 ### GetToken
 
-`func (o *Withdrawal) GetToken() Token`
+`func (o *Withdrawal) GetToken() WithdrawalToken`
 
 GetToken returns the Token field if non-nil, zero value otherwise.
 
 ### GetTokenOk
 
-`func (o *Withdrawal) GetTokenOk() (*Token, bool)`
+`func (o *Withdrawal) GetTokenOk() (*WithdrawalToken, bool)`
 
 GetTokenOk returns a tuple with the Token field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetToken
 
-`func (o *Withdrawal) SetToken(v Token)`
+`func (o *Withdrawal) SetToken(v WithdrawalToken)`
 
 SetToken sets Token field to given value.
 

@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Data** | [**TokenData**](TokenData.md) |  | 
+**Data** | [**TokenDataOAIGen**](TokenDataOAIGen.md) |  | 
 **Type** | **string** | Type of this asset (ETH/ERC20/ERC721) | 
 
 ## Methods
 
 ### NewToken
 
-`func NewToken(data TokenData, type_ string, ) *Token`
+`func NewToken(data TokenDataOAIGen, type_ string, ) *Token`
 
 NewToken instantiates a new Token object
 This constructor will assign default values to properties that have it defined,
@@ -28,20 +28,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetData
 
-`func (o *Token) GetData() TokenData`
+`func (o *Token) GetData() TokenDataOAIGen`
 
 GetData returns the Data field if non-nil, zero value otherwise.
 
 ### GetDataOk
 
-`func (o *Token) GetDataOk() (*TokenData, bool)`
+`func (o *Token) GetDataOk() (*TokenDataOAIGen, bool)`
 
 GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetData
 
-`func (o *Token) SetData(v TokenData)`
+`func (o *Token) SetData(v TokenDataOAIGen)`
 
 SetData sets Data field to given value.
 

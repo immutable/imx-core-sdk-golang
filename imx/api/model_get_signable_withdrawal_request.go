@@ -19,7 +19,7 @@ import (
 type GetSignableWithdrawalRequest struct {
 	// Amount of the token to withdraw
 	Amount string `json:"amount"`
-	Token SignableToken `json:"token"`
+	Token GetSignableWithdrawalRequestToken `json:"token"`
 	// Ethereum address of the user who is making this withdrawal
 	User string `json:"user"`
 }
@@ -28,7 +28,7 @@ type GetSignableWithdrawalRequest struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetSignableWithdrawalRequest(amount string, token SignableToken, user string) *GetSignableWithdrawalRequest {
+func NewGetSignableWithdrawalRequest(amount string, token GetSignableWithdrawalRequestToken, user string) *GetSignableWithdrawalRequest {
 	this := GetSignableWithdrawalRequest{}
 	this.Amount = amount
 	this.Token = token
@@ -69,9 +69,9 @@ func (o *GetSignableWithdrawalRequest) SetAmount(v string) {
 }
 
 // GetToken returns the Token field value
-func (o *GetSignableWithdrawalRequest) GetToken() SignableToken {
+func (o *GetSignableWithdrawalRequest) GetToken() GetSignableWithdrawalRequestToken {
 	if o == nil {
-		var ret SignableToken
+		var ret GetSignableWithdrawalRequestToken
 		return ret
 	}
 
@@ -80,7 +80,7 @@ func (o *GetSignableWithdrawalRequest) GetToken() SignableToken {
 
 // GetTokenOk returns a tuple with the Token field value
 // and a boolean to check if the value has been set.
-func (o *GetSignableWithdrawalRequest) GetTokenOk() (*SignableToken, bool) {
+func (o *GetSignableWithdrawalRequest) GetTokenOk() (*GetSignableWithdrawalRequestToken, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -88,7 +88,7 @@ func (o *GetSignableWithdrawalRequest) GetTokenOk() (*SignableToken, bool) {
 }
 
 // SetToken sets field value
-func (o *GetSignableWithdrawalRequest) SetToken(v SignableToken) {
+func (o *GetSignableWithdrawalRequest) SetToken(v GetSignableWithdrawalRequestToken) {
 	o.Token = v
 }
 

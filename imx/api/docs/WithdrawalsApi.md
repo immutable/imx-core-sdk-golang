@@ -104,7 +104,7 @@ import (
 )
 
 func main() {
-    getSignableWithdrawalRequest := *openapiclient.NewGetSignableWithdrawalRequest("Amount_example", *openapiclient.NewSignableToken(), "User_example") // GetSignableWithdrawalRequest | get details of signable withdrawal
+    getSignableWithdrawalRequest := *openapiclient.NewGetSignableWithdrawalRequest("Amount_example", *openapiclient.NewGetSignableWithdrawalRequestToken(), "User_example") // GetSignableWithdrawalRequest | get details of signable withdrawal
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)

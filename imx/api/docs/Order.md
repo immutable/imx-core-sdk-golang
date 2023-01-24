@@ -5,11 +5,11 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **AmountSold** | **NullableString** | Amount of the asset already sold by this order | 
-**Buy** | [**Token**](Token.md) |  | 
+**Buy** | [**OrderBuy**](OrderBuy.md) |  | 
 **ExpirationTimestamp** | **NullableString** | Expiration timestamp of this order | 
 **Fees** | Pointer to [**[]OrderFeeInfo**](OrderFeeInfo.md) | Fee information for the order | [optional] 
 **OrderId** | **int32** | ID of the order | 
-**Sell** | [**Token**](Token.md) |  | 
+**Sell** | [**OrderSell**](OrderSell.md) |  | 
 **Status** | **string** | Status of the order | 
 **Timestamp** | **NullableString** | Timestamp this order was created | 
 **UpdatedTimestamp** | **NullableString** | Updated timestamp of this order | 
@@ -19,7 +19,7 @@ Name | Type | Description | Notes
 
 ### NewOrder
 
-`func NewOrder(amountSold NullableString, buy Token, expirationTimestamp NullableString, orderId int32, sell Token, status string, timestamp NullableString, updatedTimestamp NullableString, user string, ) *Order`
+`func NewOrder(amountSold NullableString, buy OrderBuy, expirationTimestamp NullableString, orderId int32, sell OrderSell, status string, timestamp NullableString, updatedTimestamp NullableString, user string, ) *Order`
 
 NewOrder instantiates a new Order object
 This constructor will assign default values to properties that have it defined,
@@ -66,20 +66,20 @@ SetAmountSold sets AmountSold field to given value.
 UnsetAmountSold ensures that no value is present for AmountSold, not even an explicit nil
 ### GetBuy
 
-`func (o *Order) GetBuy() Token`
+`func (o *Order) GetBuy() OrderBuy`
 
 GetBuy returns the Buy field if non-nil, zero value otherwise.
 
 ### GetBuyOk
 
-`func (o *Order) GetBuyOk() (*Token, bool)`
+`func (o *Order) GetBuyOk() (*OrderBuy, bool)`
 
 GetBuyOk returns a tuple with the Buy field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetBuy
 
-`func (o *Order) SetBuy(v Token)`
+`func (o *Order) SetBuy(v OrderBuy)`
 
 SetBuy sets Buy field to given value.
 
@@ -161,20 +161,20 @@ SetOrderId sets OrderId field to given value.
 
 ### GetSell
 
-`func (o *Order) GetSell() Token`
+`func (o *Order) GetSell() OrderSell`
 
 GetSell returns the Sell field if non-nil, zero value otherwise.
 
 ### GetSellOk
 
-`func (o *Order) GetSellOk() (*Token, bool)`
+`func (o *Order) GetSellOk() (*OrderSell, bool)`
 
 GetSellOk returns a tuple with the Sell field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetSell
 
-`func (o *Order) SetSell(v Token)`
+`func (o *Order) SetSell(v OrderSell)`
 
 SetSell sets Sell field to given value.
 

@@ -19,7 +19,7 @@ import (
 type CreateProjectRequest struct {
 	// The company name
 	CompanyName string `json:"company_name"`
-	// The project contact email
+	// The project contact email (must be registered as a developer account with Immutable at https://hub.immutable.com)
 	ContactEmail string `json:"contact_email"`
 	// The project name
 	Name string `json:"name"`

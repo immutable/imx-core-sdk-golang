@@ -19,14 +19,14 @@ import (
 type Order struct {
 	// Amount of the asset already sold by this order
 	AmountSold NullableString `json:"amount_sold"`
-	Buy Token `json:"buy"`
+	Buy OrderBuy `json:"buy"`
 	// Expiration timestamp of this order
 	ExpirationTimestamp NullableString `json:"expiration_timestamp"`
 	// Fee information for the order
 	Fees []OrderFeeInfo `json:"fees,omitempty"`
 	// ID of the order
 	OrderId int32 `json:"order_id"`
-	Sell Token `json:"sell"`
+	Sell OrderSell `json:"sell"`
 	// Status of the order
 	Status string `json:"status"`
 	// Timestamp this order was created
@@ -41,7 +41,7 @@ type Order struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOrder(amountSold NullableString, buy Token, expirationTimestamp NullableString, orderId int32, sell Token, status string, timestamp NullableString, updatedTimestamp NullableString, user string) *Order {
+func NewOrder(amountSold NullableString, buy OrderBuy, expirationTimestamp NullableString, orderId int32, sell OrderSell, status string, timestamp NullableString, updatedTimestamp NullableString, user string) *Order {
 	this := Order{}
 	this.AmountSold = amountSold
 	this.Buy = buy
@@ -90,9 +90,9 @@ func (o *Order) SetAmountSold(v string) {
 }
 
 // GetBuy returns the Buy field value
-func (o *Order) GetBuy() Token {
+func (o *Order) GetBuy() OrderBuy {
 	if o == nil {
-		var ret Token
+		var ret OrderBuy
 		return ret
 	}
 
@@ -101,7 +101,7 @@ func (o *Order) GetBuy() Token {
 
 // GetBuyOk returns a tuple with the Buy field value
 // and a boolean to check if the value has been set.
-func (o *Order) GetBuyOk() (*Token, bool) {
+func (o *Order) GetBuyOk() (*OrderBuy, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -109,7 +109,7 @@ func (o *Order) GetBuyOk() (*Token, bool) {
 }
 
 // SetBuy sets field value
-func (o *Order) SetBuy(v Token) {
+func (o *Order) SetBuy(v OrderBuy) {
 	o.Buy = v
 }
 
@@ -196,9 +196,9 @@ func (o *Order) SetOrderId(v int32) {
 }
 
 // GetSell returns the Sell field value
-func (o *Order) GetSell() Token {
+func (o *Order) GetSell() OrderSell {
 	if o == nil {
-		var ret Token
+		var ret OrderSell
 		return ret
 	}
 
@@ -207,7 +207,7 @@ func (o *Order) GetSell() Token {
 
 // GetSellOk returns a tuple with the Sell field value
 // and a boolean to check if the value has been set.
-func (o *Order) GetSellOk() (*Token, bool) {
+func (o *Order) GetSellOk() (*OrderSell, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -215,7 +215,7 @@ func (o *Order) GetSellOk() (*Token, bool) {
 }
 
 // SetSell sets field value
-func (o *Order) SetSell(v Token) {
+func (o *Order) SetSell(v OrderSell) {
 	o.Sell = v
 }
 

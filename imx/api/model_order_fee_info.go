@@ -21,7 +21,7 @@ type OrderFeeInfo struct {
 	Address *string `json:"address,omitempty"`
 	// Fee amount
 	Amount *string `json:"amount,omitempty"`
-	Token *FeeToken `json:"token,omitempty"`
+	Token *OrderFeeInfoToken `json:"token,omitempty"`
 	// Fee type
 	Type *string `json:"type,omitempty"`
 }
@@ -108,9 +108,9 @@ func (o *OrderFeeInfo) SetAmount(v string) {
 }
 
 // GetToken returns the Token field value if set, zero value otherwise.
-func (o *OrderFeeInfo) GetToken() FeeToken {
+func (o *OrderFeeInfo) GetToken() OrderFeeInfoToken {
 	if o == nil || o.Token == nil {
-		var ret FeeToken
+		var ret OrderFeeInfoToken
 		return ret
 	}
 	return *o.Token
@@ -118,7 +118,7 @@ func (o *OrderFeeInfo) GetToken() FeeToken {
 
 // GetTokenOk returns a tuple with the Token field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *OrderFeeInfo) GetTokenOk() (*FeeToken, bool) {
+func (o *OrderFeeInfo) GetTokenOk() (*OrderFeeInfoToken, bool) {
 	if o == nil || o.Token == nil {
 		return nil, false
 	}
@@ -134,8 +134,8 @@ func (o *OrderFeeInfo) HasToken() bool {
 	return false
 }
 
-// SetToken gets a reference to the given FeeToken and assigns it to the Token field.
-func (o *OrderFeeInfo) SetToken(v FeeToken) {
+// SetToken gets a reference to the given OrderFeeInfoToken and assigns it to the Token field.
+func (o *OrderFeeInfo) SetToken(v OrderFeeInfoToken) {
 	o.Token = &v
 }
 

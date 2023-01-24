@@ -17,7 +17,7 @@ import (
 
 // AssetWithOrders struct for AssetWithOrders
 type AssetWithOrders struct {
-	Collection CollectionDetails `json:"collection"`
+	Collection AssetWithOrdersCollection `json:"collection"`
 	// Timestamp of when the asset was created
 	CreatedAt NullableString `json:"created_at"`
 	// Description of this asset
@@ -32,7 +32,7 @@ type AssetWithOrders struct {
 	Metadata map[string]interface{} `json:"metadata"`
 	// Name of this asset
 	Name NullableString `json:"name"`
-	Orders *OrderDetails `json:"orders,omitempty"`
+	Orders *AssetWithOrdersOrders `json:"orders,omitempty"`
 	// Status of this asset (where it is in the system)
 	Status string `json:"status"`
 	// Address of the ERC721 contract
@@ -51,7 +51,7 @@ type AssetWithOrders struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAssetWithOrders(collection CollectionDetails, createdAt NullableString, description NullableString, imageUrl NullableString, metadata map[string]interface{}, name NullableString, status string, tokenAddress string, tokenId string, updatedAt NullableString, uri NullableString, user string) *AssetWithOrders {
+func NewAssetWithOrders(collection AssetWithOrdersCollection, createdAt NullableString, description NullableString, imageUrl NullableString, metadata map[string]interface{}, name NullableString, status string, tokenAddress string, tokenId string, updatedAt NullableString, uri NullableString, user string) *AssetWithOrders {
 	this := AssetWithOrders{}
 	this.Collection = collection
 	this.CreatedAt = createdAt
@@ -77,9 +77,9 @@ func NewAssetWithOrdersWithDefaults() *AssetWithOrders {
 }
 
 // GetCollection returns the Collection field value
-func (o *AssetWithOrders) GetCollection() CollectionDetails {
+func (o *AssetWithOrders) GetCollection() AssetWithOrdersCollection {
 	if o == nil {
-		var ret CollectionDetails
+		var ret AssetWithOrdersCollection
 		return ret
 	}
 
@@ -88,7 +88,7 @@ func (o *AssetWithOrders) GetCollection() CollectionDetails {
 
 // GetCollectionOk returns a tuple with the Collection field value
 // and a boolean to check if the value has been set.
-func (o *AssetWithOrders) GetCollectionOk() (*CollectionDetails, bool) {
+func (o *AssetWithOrders) GetCollectionOk() (*AssetWithOrdersCollection, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -96,7 +96,7 @@ func (o *AssetWithOrders) GetCollectionOk() (*CollectionDetails, bool) {
 }
 
 // SetCollection sets field value
-func (o *AssetWithOrders) SetCollection(v CollectionDetails) {
+func (o *AssetWithOrders) SetCollection(v AssetWithOrdersCollection) {
 	o.Collection = v
 }
 
@@ -295,9 +295,9 @@ func (o *AssetWithOrders) SetName(v string) {
 }
 
 // GetOrders returns the Orders field value if set, zero value otherwise.
-func (o *AssetWithOrders) GetOrders() OrderDetails {
+func (o *AssetWithOrders) GetOrders() AssetWithOrdersOrders {
 	if o == nil || o.Orders == nil {
-		var ret OrderDetails
+		var ret AssetWithOrdersOrders
 		return ret
 	}
 	return *o.Orders
@@ -305,7 +305,7 @@ func (o *AssetWithOrders) GetOrders() OrderDetails {
 
 // GetOrdersOk returns a tuple with the Orders field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *AssetWithOrders) GetOrdersOk() (*OrderDetails, bool) {
+func (o *AssetWithOrders) GetOrdersOk() (*AssetWithOrdersOrders, bool) {
 	if o == nil || o.Orders == nil {
 		return nil, false
 	}
@@ -321,8 +321,8 @@ func (o *AssetWithOrders) HasOrders() bool {
 	return false
 }
 
-// SetOrders gets a reference to the given OrderDetails and assigns it to the Orders field.
-func (o *AssetWithOrders) SetOrders(v OrderDetails) {
+// SetOrders gets a reference to the given AssetWithOrdersOrders and assigns it to the Orders field.
+func (o *AssetWithOrders) SetOrders(v AssetWithOrdersOrders) {
 	o.Orders = &v
 }
 

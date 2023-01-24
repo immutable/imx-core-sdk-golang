@@ -21,7 +21,7 @@ type TokenData struct {
 	Decimals *int32 `json:"decimals,omitempty"`
 	// [DEPRECATED] Internal Immutable X Token ID
 	Id *string `json:"id,omitempty"`
-	Properties *AssetProperties `json:"properties,omitempty"`
+	Properties *TokenDataProperties `json:"properties,omitempty"`
 	// Quantity of this asset - inclusive of fees for buy order in v1 API and exclusive of fees in v3 API
 	Quantity string `json:"quantity"`
 	// Quantity of this asset with the sum of all fees applied to the asset
@@ -118,9 +118,9 @@ func (o *TokenData) SetId(v string) {
 }
 
 // GetProperties returns the Properties field value if set, zero value otherwise.
-func (o *TokenData) GetProperties() AssetProperties {
+func (o *TokenData) GetProperties() TokenDataProperties {
 	if o == nil || o.Properties == nil {
-		var ret AssetProperties
+		var ret TokenDataProperties
 		return ret
 	}
 	return *o.Properties
@@ -128,7 +128,7 @@ func (o *TokenData) GetProperties() AssetProperties {
 
 // GetPropertiesOk returns a tuple with the Properties field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *TokenData) GetPropertiesOk() (*AssetProperties, bool) {
+func (o *TokenData) GetPropertiesOk() (*TokenDataProperties, bool) {
 	if o == nil || o.Properties == nil {
 		return nil, false
 	}
@@ -144,8 +144,8 @@ func (o *TokenData) HasProperties() bool {
 	return false
 }
 
-// SetProperties gets a reference to the given AssetProperties and assigns it to the Properties field.
-func (o *TokenData) SetProperties(v AssetProperties) {
+// SetProperties gets a reference to the given TokenDataProperties and assigns it to the Properties field.
+func (o *TokenData) SetProperties(v TokenDataProperties) {
 	o.Properties = &v
 }
 

@@ -19,7 +19,7 @@ import (
 type GetSignableDepositRequest struct {
 	// Amount of the token the user is depositing
 	Amount string `json:"amount"`
-	Token SignableToken `json:"token"`
+	Token GetSignableDepositRequestToken `json:"token"`
 	// User who is depositing
 	User string `json:"user"`
 }
@@ -28,7 +28,7 @@ type GetSignableDepositRequest struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetSignableDepositRequest(amount string, token SignableToken, user string) *GetSignableDepositRequest {
+func NewGetSignableDepositRequest(amount string, token GetSignableDepositRequestToken, user string) *GetSignableDepositRequest {
 	this := GetSignableDepositRequest{}
 	this.Amount = amount
 	this.Token = token
@@ -69,9 +69,9 @@ func (o *GetSignableDepositRequest) SetAmount(v string) {
 }
 
 // GetToken returns the Token field value
-func (o *GetSignableDepositRequest) GetToken() SignableToken {
+func (o *GetSignableDepositRequest) GetToken() GetSignableDepositRequestToken {
 	if o == nil {
-		var ret SignableToken
+		var ret GetSignableDepositRequestToken
 		return ret
 	}
 
@@ -80,7 +80,7 @@ func (o *GetSignableDepositRequest) GetToken() SignableToken {
 
 // GetTokenOk returns a tuple with the Token field value
 // and a boolean to check if the value has been set.
-func (o *GetSignableDepositRequest) GetTokenOk() (*SignableToken, bool) {
+func (o *GetSignableDepositRequest) GetTokenOk() (*GetSignableDepositRequestToken, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -88,7 +88,7 @@ func (o *GetSignableDepositRequest) GetTokenOk() (*SignableToken, bool) {
 }
 
 // SetToken sets field value
-func (o *GetSignableDepositRequest) SetToken(v SignableToken) {
+func (o *GetSignableDepositRequest) SetToken(v GetSignableDepositRequestToken) {
 	o.Token = v
 }
 

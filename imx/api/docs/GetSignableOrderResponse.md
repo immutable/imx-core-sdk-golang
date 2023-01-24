@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **AssetIdBuy** | **string** | ID of the asset to buy | 
 **AssetIdSell** | **string** | ID of the asset to sell | 
 **ExpirationTimestamp** | **int32** | Expiration timestamp for this order | 
-**FeeInfo** | Pointer to [**FeeInfo**](FeeInfo.md) |  | [optional] 
+**FeeInfo** | Pointer to [**GetSignableOrderResponseFeeInfo**](GetSignableOrderResponseFeeInfo.md) |  | [optional] 
 **Nonce** | **int32** | Nonce of the order | 
 **PayloadHash** | **string** | Hash of the payload to be signed for signable order | 
 **SignableMessage** | **string** | Message to sign with L1 wallet to confirm order request | 
@@ -138,20 +138,20 @@ SetExpirationTimestamp sets ExpirationTimestamp field to given value.
 
 ### GetFeeInfo
 
-`func (o *GetSignableOrderResponse) GetFeeInfo() FeeInfo`
+`func (o *GetSignableOrderResponse) GetFeeInfo() GetSignableOrderResponseFeeInfo`
 
 GetFeeInfo returns the FeeInfo field if non-nil, zero value otherwise.
 
 ### GetFeeInfoOk
 
-`func (o *GetSignableOrderResponse) GetFeeInfoOk() (*FeeInfo, bool)`
+`func (o *GetSignableOrderResponse) GetFeeInfoOk() (*GetSignableOrderResponseFeeInfo, bool)`
 
 GetFeeInfoOk returns a tuple with the FeeInfo field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetFeeInfo
 
-`func (o *GetSignableOrderResponse) SetFeeInfo(v FeeInfo)`
+`func (o *GetSignableOrderResponse) SetFeeInfo(v GetSignableOrderResponseFeeInfo)`
 
 SetFeeInfo sets FeeInfo field to given value.
 

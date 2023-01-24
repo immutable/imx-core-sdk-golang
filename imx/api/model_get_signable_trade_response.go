@@ -17,48 +17,19 @@ import (
 
 // GetSignableTradeResponse struct for GetSignableTradeResponse
 type GetSignableTradeResponse struct {
-	// Amount to buy
-	AmountBuy string `json:"amount_buy"`
-	// Amount to sell
-	AmountSell string `json:"amount_sell"`
-	// ID of the asset to buy
-	AssetIdBuy string `json:"asset_id_buy"`
-	// ID of the asset to sell
-	AssetIdSell string `json:"asset_id_sell"`
-	// Expiration timestamp for this order
-	ExpirationTimestamp int32 `json:"expiration_timestamp"`
-	FeeInfo *FeeInfo `json:"fee_info,omitempty"`
-	// Nonce of the order
-	Nonce int32 `json:"nonce"`
-	// Payload Hash
-	PayloadHash string `json:"payload_hash"`
-	// Message to sign with L1 wallet to confirm trade request
-	SignableMessage string `json:"signable_message"`
-	// Public stark key of the created user
-	StarkKey string `json:"stark_key"`
-	// ID of the vault into which the bought asset will be placed
-	VaultIdBuy int32 `json:"vault_id_buy"`
-	// ID of the vault to sell from
-	VaultIdSell int32 `json:"vault_id_sell"`
+	// TODO: Remove unused fields Code and Message [deprecated] Response code
+	Code *int32 `json:"code,omitempty"`
+	// [deprecated] Response message
+	Message *string `json:"message,omitempty"`
+	Result *GetSignableTradeResponseResult `json:"result,omitempty"`
 }
 
 // NewGetSignableTradeResponse instantiates a new GetSignableTradeResponse object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetSignableTradeResponse(amountBuy string, amountSell string, assetIdBuy string, assetIdSell string, expirationTimestamp int32, nonce int32, payloadHash string, signableMessage string, starkKey string, vaultIdBuy int32, vaultIdSell int32) *GetSignableTradeResponse {
+func NewGetSignableTradeResponse() *GetSignableTradeResponse {
 	this := GetSignableTradeResponse{}
-	this.AmountBuy = amountBuy
-	this.AmountSell = amountSell
-	this.AssetIdBuy = assetIdBuy
-	this.AssetIdSell = assetIdSell
-	this.ExpirationTimestamp = expirationTimestamp
-	this.Nonce = nonce
-	this.PayloadHash = payloadHash
-	this.SignableMessage = signableMessage
-	this.StarkKey = starkKey
-	this.VaultIdBuy = vaultIdBuy
-	this.VaultIdSell = vaultIdSell
 	return &this
 }
 
@@ -70,339 +41,112 @@ func NewGetSignableTradeResponseWithDefaults() *GetSignableTradeResponse {
 	return &this
 }
 
-// GetAmountBuy returns the AmountBuy field value
-func (o *GetSignableTradeResponse) GetAmountBuy() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.AmountBuy
-}
-
-// GetAmountBuyOk returns a tuple with the AmountBuy field value
-// and a boolean to check if the value has been set.
-func (o *GetSignableTradeResponse) GetAmountBuyOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.AmountBuy, true
-}
-
-// SetAmountBuy sets field value
-func (o *GetSignableTradeResponse) SetAmountBuy(v string) {
-	o.AmountBuy = v
-}
-
-// GetAmountSell returns the AmountSell field value
-func (o *GetSignableTradeResponse) GetAmountSell() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.AmountSell
-}
-
-// GetAmountSellOk returns a tuple with the AmountSell field value
-// and a boolean to check if the value has been set.
-func (o *GetSignableTradeResponse) GetAmountSellOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.AmountSell, true
-}
-
-// SetAmountSell sets field value
-func (o *GetSignableTradeResponse) SetAmountSell(v string) {
-	o.AmountSell = v
-}
-
-// GetAssetIdBuy returns the AssetIdBuy field value
-func (o *GetSignableTradeResponse) GetAssetIdBuy() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.AssetIdBuy
-}
-
-// GetAssetIdBuyOk returns a tuple with the AssetIdBuy field value
-// and a boolean to check if the value has been set.
-func (o *GetSignableTradeResponse) GetAssetIdBuyOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.AssetIdBuy, true
-}
-
-// SetAssetIdBuy sets field value
-func (o *GetSignableTradeResponse) SetAssetIdBuy(v string) {
-	o.AssetIdBuy = v
-}
-
-// GetAssetIdSell returns the AssetIdSell field value
-func (o *GetSignableTradeResponse) GetAssetIdSell() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.AssetIdSell
-}
-
-// GetAssetIdSellOk returns a tuple with the AssetIdSell field value
-// and a boolean to check if the value has been set.
-func (o *GetSignableTradeResponse) GetAssetIdSellOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.AssetIdSell, true
-}
-
-// SetAssetIdSell sets field value
-func (o *GetSignableTradeResponse) SetAssetIdSell(v string) {
-	o.AssetIdSell = v
-}
-
-// GetExpirationTimestamp returns the ExpirationTimestamp field value
-func (o *GetSignableTradeResponse) GetExpirationTimestamp() int32 {
-	if o == nil {
+// GetCode returns the Code field value if set, zero value otherwise.
+func (o *GetSignableTradeResponse) GetCode() int32 {
+	if o == nil || o.Code == nil {
 		var ret int32
 		return ret
 	}
-
-	return o.ExpirationTimestamp
+	return *o.Code
 }
 
-// GetExpirationTimestampOk returns a tuple with the ExpirationTimestamp field value
+// GetCodeOk returns a tuple with the Code field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *GetSignableTradeResponse) GetExpirationTimestampOk() (*int32, bool) {
-	if o == nil {
+func (o *GetSignableTradeResponse) GetCodeOk() (*int32, bool) {
+	if o == nil || o.Code == nil {
 		return nil, false
 	}
-	return &o.ExpirationTimestamp, true
+	return o.Code, true
 }
 
-// SetExpirationTimestamp sets field value
-func (o *GetSignableTradeResponse) SetExpirationTimestamp(v int32) {
-	o.ExpirationTimestamp = v
-}
-
-// GetFeeInfo returns the FeeInfo field value if set, zero value otherwise.
-func (o *GetSignableTradeResponse) GetFeeInfo() FeeInfo {
-	if o == nil || o.FeeInfo == nil {
-		var ret FeeInfo
-		return ret
-	}
-	return *o.FeeInfo
-}
-
-// GetFeeInfoOk returns a tuple with the FeeInfo field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *GetSignableTradeResponse) GetFeeInfoOk() (*FeeInfo, bool) {
-	if o == nil || o.FeeInfo == nil {
-		return nil, false
-	}
-	return o.FeeInfo, true
-}
-
-// HasFeeInfo returns a boolean if a field has been set.
-func (o *GetSignableTradeResponse) HasFeeInfo() bool {
-	if o != nil && o.FeeInfo != nil {
+// HasCode returns a boolean if a field has been set.
+func (o *GetSignableTradeResponse) HasCode() bool {
+	if o != nil && o.Code != nil {
 		return true
 	}
 
 	return false
 }
 
-// SetFeeInfo gets a reference to the given FeeInfo and assigns it to the FeeInfo field.
-func (o *GetSignableTradeResponse) SetFeeInfo(v FeeInfo) {
-	o.FeeInfo = &v
+// SetCode gets a reference to the given int32 and assigns it to the Code field.
+func (o *GetSignableTradeResponse) SetCode(v int32) {
+	o.Code = &v
 }
 
-// GetNonce returns the Nonce field value
-func (o *GetSignableTradeResponse) GetNonce() int32 {
-	if o == nil {
-		var ret int32
-		return ret
-	}
-
-	return o.Nonce
-}
-
-// GetNonceOk returns a tuple with the Nonce field value
-// and a boolean to check if the value has been set.
-func (o *GetSignableTradeResponse) GetNonceOk() (*int32, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Nonce, true
-}
-
-// SetNonce sets field value
-func (o *GetSignableTradeResponse) SetNonce(v int32) {
-	o.Nonce = v
-}
-
-// GetPayloadHash returns the PayloadHash field value
-func (o *GetSignableTradeResponse) GetPayloadHash() string {
-	if o == nil {
+// GetMessage returns the Message field value if set, zero value otherwise.
+func (o *GetSignableTradeResponse) GetMessage() string {
+	if o == nil || o.Message == nil {
 		var ret string
 		return ret
 	}
-
-	return o.PayloadHash
+	return *o.Message
 }
 
-// GetPayloadHashOk returns a tuple with the PayloadHash field value
+// GetMessageOk returns a tuple with the Message field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *GetSignableTradeResponse) GetPayloadHashOk() (*string, bool) {
-	if o == nil {
+func (o *GetSignableTradeResponse) GetMessageOk() (*string, bool) {
+	if o == nil || o.Message == nil {
 		return nil, false
 	}
-	return &o.PayloadHash, true
+	return o.Message, true
 }
 
-// SetPayloadHash sets field value
-func (o *GetSignableTradeResponse) SetPayloadHash(v string) {
-	o.PayloadHash = v
+// HasMessage returns a boolean if a field has been set.
+func (o *GetSignableTradeResponse) HasMessage() bool {
+	if o != nil && o.Message != nil {
+		return true
+	}
+
+	return false
 }
 
-// GetSignableMessage returns the SignableMessage field value
-func (o *GetSignableTradeResponse) GetSignableMessage() string {
-	if o == nil {
-		var ret string
+// SetMessage gets a reference to the given string and assigns it to the Message field.
+func (o *GetSignableTradeResponse) SetMessage(v string) {
+	o.Message = &v
+}
+
+// GetResult returns the Result field value if set, zero value otherwise.
+func (o *GetSignableTradeResponse) GetResult() GetSignableTradeResponseResult {
+	if o == nil || o.Result == nil {
+		var ret GetSignableTradeResponseResult
 		return ret
 	}
-
-	return o.SignableMessage
+	return *o.Result
 }
 
-// GetSignableMessageOk returns a tuple with the SignableMessage field value
+// GetResultOk returns a tuple with the Result field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *GetSignableTradeResponse) GetSignableMessageOk() (*string, bool) {
-	if o == nil {
+func (o *GetSignableTradeResponse) GetResultOk() (*GetSignableTradeResponseResult, bool) {
+	if o == nil || o.Result == nil {
 		return nil, false
 	}
-	return &o.SignableMessage, true
+	return o.Result, true
 }
 
-// SetSignableMessage sets field value
-func (o *GetSignableTradeResponse) SetSignableMessage(v string) {
-	o.SignableMessage = v
-}
-
-// GetStarkKey returns the StarkKey field value
-func (o *GetSignableTradeResponse) GetStarkKey() string {
-	if o == nil {
-		var ret string
-		return ret
+// HasResult returns a boolean if a field has been set.
+func (o *GetSignableTradeResponse) HasResult() bool {
+	if o != nil && o.Result != nil {
+		return true
 	}
 
-	return o.StarkKey
+	return false
 }
 
-// GetStarkKeyOk returns a tuple with the StarkKey field value
-// and a boolean to check if the value has been set.
-func (o *GetSignableTradeResponse) GetStarkKeyOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.StarkKey, true
-}
-
-// SetStarkKey sets field value
-func (o *GetSignableTradeResponse) SetStarkKey(v string) {
-	o.StarkKey = v
-}
-
-// GetVaultIdBuy returns the VaultIdBuy field value
-func (o *GetSignableTradeResponse) GetVaultIdBuy() int32 {
-	if o == nil {
-		var ret int32
-		return ret
-	}
-
-	return o.VaultIdBuy
-}
-
-// GetVaultIdBuyOk returns a tuple with the VaultIdBuy field value
-// and a boolean to check if the value has been set.
-func (o *GetSignableTradeResponse) GetVaultIdBuyOk() (*int32, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.VaultIdBuy, true
-}
-
-// SetVaultIdBuy sets field value
-func (o *GetSignableTradeResponse) SetVaultIdBuy(v int32) {
-	o.VaultIdBuy = v
-}
-
-// GetVaultIdSell returns the VaultIdSell field value
-func (o *GetSignableTradeResponse) GetVaultIdSell() int32 {
-	if o == nil {
-		var ret int32
-		return ret
-	}
-
-	return o.VaultIdSell
-}
-
-// GetVaultIdSellOk returns a tuple with the VaultIdSell field value
-// and a boolean to check if the value has been set.
-func (o *GetSignableTradeResponse) GetVaultIdSellOk() (*int32, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.VaultIdSell, true
-}
-
-// SetVaultIdSell sets field value
-func (o *GetSignableTradeResponse) SetVaultIdSell(v int32) {
-	o.VaultIdSell = v
+// SetResult gets a reference to the given GetSignableTradeResponseResult and assigns it to the Result field.
+func (o *GetSignableTradeResponse) SetResult(v GetSignableTradeResponseResult) {
+	o.Result = &v
 }
 
 func (o GetSignableTradeResponse) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["amount_buy"] = o.AmountBuy
+	if o.Code != nil {
+		toSerialize["code"] = o.Code
 	}
-	if true {
-		toSerialize["amount_sell"] = o.AmountSell
+	if o.Message != nil {
+		toSerialize["message"] = o.Message
 	}
-	if true {
-		toSerialize["asset_id_buy"] = o.AssetIdBuy
-	}
-	if true {
-		toSerialize["asset_id_sell"] = o.AssetIdSell
-	}
-	if true {
-		toSerialize["expiration_timestamp"] = o.ExpirationTimestamp
-	}
-	if o.FeeInfo != nil {
-		toSerialize["fee_info"] = o.FeeInfo
-	}
-	if true {
-		toSerialize["nonce"] = o.Nonce
-	}
-	if true {
-		toSerialize["payload_hash"] = o.PayloadHash
-	}
-	if true {
-		toSerialize["signable_message"] = o.SignableMessage
-	}
-	if true {
-		toSerialize["stark_key"] = o.StarkKey
-	}
-	if true {
-		toSerialize["vault_id_buy"] = o.VaultIdBuy
-	}
-	if true {
-		toSerialize["vault_id_sell"] = o.VaultIdSell
+	if o.Result != nil {
+		toSerialize["result"] = o.Result
 	}
 	return json.Marshal(toSerialize)
 }

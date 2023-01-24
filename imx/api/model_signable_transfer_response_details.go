@@ -33,14 +33,14 @@ type SignableTransferResponseDetails struct {
 	ReceiverVaultId int32 `json:"receiver_vault_id"`
 	// ID of the vault being transferred from
 	SenderVaultId int32 `json:"sender_vault_id"`
-	Token SignableToken `json:"token"`
+	Token SignableTransferResponseDetailsToken `json:"token"`
 }
 
 // NewSignableTransferResponseDetails instantiates a new SignableTransferResponseDetails object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSignableTransferResponseDetails(amount string, assetId string, expirationTimestamp int32, nonce int32, payloadHash string, receiverStarkKey string, receiverVaultId int32, senderVaultId int32, token SignableToken) *SignableTransferResponseDetails {
+func NewSignableTransferResponseDetails(amount string, assetId string, expirationTimestamp int32, nonce int32, payloadHash string, receiverStarkKey string, receiverVaultId int32, senderVaultId int32, token SignableTransferResponseDetailsToken) *SignableTransferResponseDetails {
 	this := SignableTransferResponseDetails{}
 	this.Amount = amount
 	this.AssetId = assetId
@@ -255,9 +255,9 @@ func (o *SignableTransferResponseDetails) SetSenderVaultId(v int32) {
 }
 
 // GetToken returns the Token field value
-func (o *SignableTransferResponseDetails) GetToken() SignableToken {
+func (o *SignableTransferResponseDetails) GetToken() SignableTransferResponseDetailsToken {
 	if o == nil {
-		var ret SignableToken
+		var ret SignableTransferResponseDetailsToken
 		return ret
 	}
 
@@ -266,7 +266,7 @@ func (o *SignableTransferResponseDetails) GetToken() SignableToken {
 
 // GetTokenOk returns a tuple with the Token field value
 // and a boolean to check if the value has been set.
-func (o *SignableTransferResponseDetails) GetTokenOk() (*SignableToken, bool) {
+func (o *SignableTransferResponseDetails) GetTokenOk() (*SignableTransferResponseDetailsToken, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -274,7 +274,7 @@ func (o *SignableTransferResponseDetails) GetTokenOk() (*SignableToken, bool) {
 }
 
 // SetToken sets field value
-func (o *SignableTransferResponseDetails) SetToken(v SignableToken) {
+func (o *SignableTransferResponseDetails) SetToken(v SignableTransferResponseDetailsToken) {
 	o.Token = v
 }
 

@@ -8,12 +8,13 @@ Name | Type | Description | Notes
 **CollectionMonthlyLimit** | **int32** | The total monthly collection limit | 
 **CollectionRemaining** | **int32** | The number of collection remaining in the current period | 
 **CompanyName** | **string** | The company name | 
-**ContactEmail** | **string** | The project contact email | 
+**ContactEmail** | **string** | The project contact email (must be registered as a developer account with Immutable at https://hub.immutable.com) | 
 **Id** | **int32** | The project ID | 
 **MintLimitExpiresAt** | **string** | The current period expiry date for mint operation limit | 
 **MintMonthlyLimit** | **int32** | The total monthly mint operation limit | 
 **MintRemaining** | **int32** | The number of mint operation remaining in the current period | 
 **Name** | **string** | The project name | 
+**OrgId** | Pointer to **string** | The organisation ID that the project belongs to | [optional] 
 
 ## Methods
 
@@ -233,6 +234,31 @@ and a boolean to check if the value has been set.
 
 SetName sets Name field to given value.
 
+
+### GetOrgId
+
+`func (o *Project) GetOrgId() string`
+
+GetOrgId returns the OrgId field if non-nil, zero value otherwise.
+
+### GetOrgIdOk
+
+`func (o *Project) GetOrgIdOk() (*string, bool)`
+
+GetOrgIdOk returns a tuple with the OrgId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetOrgId
+
+`func (o *Project) SetOrgId(v string)`
+
+SetOrgId sets OrgId field to given value.
+
+### HasOrgId
+
+`func (o *Project) HasOrgId() bool`
+
+HasOrgId returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

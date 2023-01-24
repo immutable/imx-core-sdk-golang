@@ -21,14 +21,14 @@ type SignableTransferDetails struct {
 	Amount string `json:"amount"`
 	// Ethereum address of the receiving user
 	Receiver string `json:"receiver"`
-	Token SignableToken `json:"token"`
+	Token SignableTransferDetailsToken `json:"token"`
 }
 
 // NewSignableTransferDetails instantiates a new SignableTransferDetails object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSignableTransferDetails(amount string, receiver string, token SignableToken) *SignableTransferDetails {
+func NewSignableTransferDetails(amount string, receiver string, token SignableTransferDetailsToken) *SignableTransferDetails {
 	this := SignableTransferDetails{}
 	this.Amount = amount
 	this.Receiver = receiver
@@ -93,9 +93,9 @@ func (o *SignableTransferDetails) SetReceiver(v string) {
 }
 
 // GetToken returns the Token field value
-func (o *SignableTransferDetails) GetToken() SignableToken {
+func (o *SignableTransferDetails) GetToken() SignableTransferDetailsToken {
 	if o == nil {
-		var ret SignableToken
+		var ret SignableTransferDetailsToken
 		return ret
 	}
 
@@ -104,7 +104,7 @@ func (o *SignableTransferDetails) GetToken() SignableToken {
 
 // GetTokenOk returns a tuple with the Token field value
 // and a boolean to check if the value has been set.
-func (o *SignableTransferDetails) GetTokenOk() (*SignableToken, bool) {
+func (o *SignableTransferDetails) GetTokenOk() (*SignableTransferDetailsToken, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -112,7 +112,7 @@ func (o *SignableTransferDetails) GetTokenOk() (*SignableToken, bool) {
 }
 
 // SetToken sets field value
-func (o *SignableTransferDetails) SetToken(v SignableToken) {
+func (o *SignableTransferDetails) SetToken(v SignableTransferDetailsToken) {
 	o.Token = v
 }
 

@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Address** | Pointer to **string** | Address of the fee recipient | [optional] 
 **Amount** | Pointer to **string** | Fee amount | [optional] 
-**Token** | Pointer to [**FeeToken**](FeeToken.md) |  | [optional] 
+**Token** | Pointer to [**OrderFeeInfoToken**](OrderFeeInfoToken.md) |  | [optional] 
 **Type** | Pointer to **string** | Fee type | [optional] 
 
 ## Methods
@@ -80,20 +80,20 @@ HasAmount returns a boolean if a field has been set.
 
 ### GetToken
 
-`func (o *OrderFeeInfo) GetToken() FeeToken`
+`func (o *OrderFeeInfo) GetToken() OrderFeeInfoToken`
 
 GetToken returns the Token field if non-nil, zero value otherwise.
 
 ### GetTokenOk
 
-`func (o *OrderFeeInfo) GetTokenOk() (*FeeToken, bool)`
+`func (o *OrderFeeInfo) GetTokenOk() (*OrderFeeInfoToken, bool)`
 
 GetTokenOk returns a tuple with the Token field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetToken
 
-`func (o *OrderFeeInfo) SetToken(v FeeToken)`
+`func (o *OrderFeeInfo) SetToken(v OrderFeeInfoToken)`
 
 SetToken sets Token field to given value.
 

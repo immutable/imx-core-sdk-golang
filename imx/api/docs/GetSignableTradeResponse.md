@@ -4,24 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**AmountBuy** | **string** | Amount to buy | 
-**AmountSell** | **string** | Amount to sell | 
-**AssetIdBuy** | **string** | ID of the asset to buy | 
-**AssetIdSell** | **string** | ID of the asset to sell | 
-**ExpirationTimestamp** | **int32** | Expiration timestamp for this order | 
-**FeeInfo** | Pointer to [**FeeInfo**](FeeInfo.md) |  | [optional] 
-**Nonce** | **int32** | Nonce of the order | 
-**PayloadHash** | **string** | Payload Hash | 
-**SignableMessage** | **string** | Message to sign with L1 wallet to confirm trade request | 
-**StarkKey** | **string** | Public stark key of the created user | 
-**VaultIdBuy** | **int32** | ID of the vault into which the bought asset will be placed | 
-**VaultIdSell** | **int32** | ID of the vault to sell from | 
+**Code** | Pointer to **int32** | TODO: Remove unused fields Code and Message [deprecated] Response code | [optional] 
+**Message** | Pointer to **string** | [deprecated] Response message | [optional] 
+**Result** | Pointer to [**GetSignableTradeResponseResult**](GetSignableTradeResponseResult.md) |  | [optional] 
 
 ## Methods
 
 ### NewGetSignableTradeResponse
 
-`func NewGetSignableTradeResponse(amountBuy string, amountSell string, assetIdBuy string, assetIdSell string, expirationTimestamp int32, nonce int32, payloadHash string, signableMessage string, starkKey string, vaultIdBuy int32, vaultIdSell int32, ) *GetSignableTradeResponse`
+`func NewGetSignableTradeResponse() *GetSignableTradeResponse`
 
 NewGetSignableTradeResponse instantiates a new GetSignableTradeResponse object
 This constructor will assign default values to properties that have it defined,
@@ -36,250 +27,80 @@ NewGetSignableTradeResponseWithDefaults instantiates a new GetSignableTradeRespo
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetAmountBuy
+### GetCode
 
-`func (o *GetSignableTradeResponse) GetAmountBuy() string`
+`func (o *GetSignableTradeResponse) GetCode() int32`
 
-GetAmountBuy returns the AmountBuy field if non-nil, zero value otherwise.
+GetCode returns the Code field if non-nil, zero value otherwise.
 
-### GetAmountBuyOk
+### GetCodeOk
 
-`func (o *GetSignableTradeResponse) GetAmountBuyOk() (*string, bool)`
+`func (o *GetSignableTradeResponse) GetCodeOk() (*int32, bool)`
 
-GetAmountBuyOk returns a tuple with the AmountBuy field if it's non-nil, zero value otherwise
+GetCodeOk returns a tuple with the Code field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetAmountBuy
+### SetCode
 
-`func (o *GetSignableTradeResponse) SetAmountBuy(v string)`
+`func (o *GetSignableTradeResponse) SetCode(v int32)`
 
-SetAmountBuy sets AmountBuy field to given value.
+SetCode sets Code field to given value.
 
+### HasCode
 
-### GetAmountSell
+`func (o *GetSignableTradeResponse) HasCode() bool`
 
-`func (o *GetSignableTradeResponse) GetAmountSell() string`
+HasCode returns a boolean if a field has been set.
 
-GetAmountSell returns the AmountSell field if non-nil, zero value otherwise.
+### GetMessage
 
-### GetAmountSellOk
+`func (o *GetSignableTradeResponse) GetMessage() string`
 
-`func (o *GetSignableTradeResponse) GetAmountSellOk() (*string, bool)`
+GetMessage returns the Message field if non-nil, zero value otherwise.
 
-GetAmountSellOk returns a tuple with the AmountSell field if it's non-nil, zero value otherwise
+### GetMessageOk
+
+`func (o *GetSignableTradeResponse) GetMessageOk() (*string, bool)`
+
+GetMessageOk returns a tuple with the Message field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetAmountSell
+### SetMessage
 
-`func (o *GetSignableTradeResponse) SetAmountSell(v string)`
+`func (o *GetSignableTradeResponse) SetMessage(v string)`
 
-SetAmountSell sets AmountSell field to given value.
+SetMessage sets Message field to given value.
 
+### HasMessage
 
-### GetAssetIdBuy
+`func (o *GetSignableTradeResponse) HasMessage() bool`
 
-`func (o *GetSignableTradeResponse) GetAssetIdBuy() string`
+HasMessage returns a boolean if a field has been set.
 
-GetAssetIdBuy returns the AssetIdBuy field if non-nil, zero value otherwise.
+### GetResult
 
-### GetAssetIdBuyOk
+`func (o *GetSignableTradeResponse) GetResult() GetSignableTradeResponseResult`
 
-`func (o *GetSignableTradeResponse) GetAssetIdBuyOk() (*string, bool)`
+GetResult returns the Result field if non-nil, zero value otherwise.
 
-GetAssetIdBuyOk returns a tuple with the AssetIdBuy field if it's non-nil, zero value otherwise
+### GetResultOk
+
+`func (o *GetSignableTradeResponse) GetResultOk() (*GetSignableTradeResponseResult, bool)`
+
+GetResultOk returns a tuple with the Result field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetAssetIdBuy
+### SetResult
 
-`func (o *GetSignableTradeResponse) SetAssetIdBuy(v string)`
+`func (o *GetSignableTradeResponse) SetResult(v GetSignableTradeResponseResult)`
 
-SetAssetIdBuy sets AssetIdBuy field to given value.
+SetResult sets Result field to given value.
 
+### HasResult
 
-### GetAssetIdSell
+`func (o *GetSignableTradeResponse) HasResult() bool`
 
-`func (o *GetSignableTradeResponse) GetAssetIdSell() string`
-
-GetAssetIdSell returns the AssetIdSell field if non-nil, zero value otherwise.
-
-### GetAssetIdSellOk
-
-`func (o *GetSignableTradeResponse) GetAssetIdSellOk() (*string, bool)`
-
-GetAssetIdSellOk returns a tuple with the AssetIdSell field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetAssetIdSell
-
-`func (o *GetSignableTradeResponse) SetAssetIdSell(v string)`
-
-SetAssetIdSell sets AssetIdSell field to given value.
-
-
-### GetExpirationTimestamp
-
-`func (o *GetSignableTradeResponse) GetExpirationTimestamp() int32`
-
-GetExpirationTimestamp returns the ExpirationTimestamp field if non-nil, zero value otherwise.
-
-### GetExpirationTimestampOk
-
-`func (o *GetSignableTradeResponse) GetExpirationTimestampOk() (*int32, bool)`
-
-GetExpirationTimestampOk returns a tuple with the ExpirationTimestamp field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetExpirationTimestamp
-
-`func (o *GetSignableTradeResponse) SetExpirationTimestamp(v int32)`
-
-SetExpirationTimestamp sets ExpirationTimestamp field to given value.
-
-
-### GetFeeInfo
-
-`func (o *GetSignableTradeResponse) GetFeeInfo() FeeInfo`
-
-GetFeeInfo returns the FeeInfo field if non-nil, zero value otherwise.
-
-### GetFeeInfoOk
-
-`func (o *GetSignableTradeResponse) GetFeeInfoOk() (*FeeInfo, bool)`
-
-GetFeeInfoOk returns a tuple with the FeeInfo field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetFeeInfo
-
-`func (o *GetSignableTradeResponse) SetFeeInfo(v FeeInfo)`
-
-SetFeeInfo sets FeeInfo field to given value.
-
-### HasFeeInfo
-
-`func (o *GetSignableTradeResponse) HasFeeInfo() bool`
-
-HasFeeInfo returns a boolean if a field has been set.
-
-### GetNonce
-
-`func (o *GetSignableTradeResponse) GetNonce() int32`
-
-GetNonce returns the Nonce field if non-nil, zero value otherwise.
-
-### GetNonceOk
-
-`func (o *GetSignableTradeResponse) GetNonceOk() (*int32, bool)`
-
-GetNonceOk returns a tuple with the Nonce field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetNonce
-
-`func (o *GetSignableTradeResponse) SetNonce(v int32)`
-
-SetNonce sets Nonce field to given value.
-
-
-### GetPayloadHash
-
-`func (o *GetSignableTradeResponse) GetPayloadHash() string`
-
-GetPayloadHash returns the PayloadHash field if non-nil, zero value otherwise.
-
-### GetPayloadHashOk
-
-`func (o *GetSignableTradeResponse) GetPayloadHashOk() (*string, bool)`
-
-GetPayloadHashOk returns a tuple with the PayloadHash field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetPayloadHash
-
-`func (o *GetSignableTradeResponse) SetPayloadHash(v string)`
-
-SetPayloadHash sets PayloadHash field to given value.
-
-
-### GetSignableMessage
-
-`func (o *GetSignableTradeResponse) GetSignableMessage() string`
-
-GetSignableMessage returns the SignableMessage field if non-nil, zero value otherwise.
-
-### GetSignableMessageOk
-
-`func (o *GetSignableTradeResponse) GetSignableMessageOk() (*string, bool)`
-
-GetSignableMessageOk returns a tuple with the SignableMessage field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSignableMessage
-
-`func (o *GetSignableTradeResponse) SetSignableMessage(v string)`
-
-SetSignableMessage sets SignableMessage field to given value.
-
-
-### GetStarkKey
-
-`func (o *GetSignableTradeResponse) GetStarkKey() string`
-
-GetStarkKey returns the StarkKey field if non-nil, zero value otherwise.
-
-### GetStarkKeyOk
-
-`func (o *GetSignableTradeResponse) GetStarkKeyOk() (*string, bool)`
-
-GetStarkKeyOk returns a tuple with the StarkKey field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetStarkKey
-
-`func (o *GetSignableTradeResponse) SetStarkKey(v string)`
-
-SetStarkKey sets StarkKey field to given value.
-
-
-### GetVaultIdBuy
-
-`func (o *GetSignableTradeResponse) GetVaultIdBuy() int32`
-
-GetVaultIdBuy returns the VaultIdBuy field if non-nil, zero value otherwise.
-
-### GetVaultIdBuyOk
-
-`func (o *GetSignableTradeResponse) GetVaultIdBuyOk() (*int32, bool)`
-
-GetVaultIdBuyOk returns a tuple with the VaultIdBuy field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetVaultIdBuy
-
-`func (o *GetSignableTradeResponse) SetVaultIdBuy(v int32)`
-
-SetVaultIdBuy sets VaultIdBuy field to given value.
-
-
-### GetVaultIdSell
-
-`func (o *GetSignableTradeResponse) GetVaultIdSell() int32`
-
-GetVaultIdSell returns the VaultIdSell field if non-nil, zero value otherwise.
-
-### GetVaultIdSellOk
-
-`func (o *GetSignableTradeResponse) GetVaultIdSellOk() (*int32, bool)`
-
-GetVaultIdSellOk returns a tuple with the VaultIdSell field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetVaultIdSell
-
-`func (o *GetSignableTradeResponse) SetVaultIdSell(v int32)`
-
-SetVaultIdSell sets VaultIdSell field to given value.
-
+HasResult returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

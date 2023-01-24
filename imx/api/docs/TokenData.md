@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Decimals** | Pointer to **int32** | Number of decimals supported by this asset | [optional] 
 **Id** | Pointer to **string** | [DEPRECATED] Internal Immutable X Token ID | [optional] 
-**Properties** | Pointer to [**AssetProperties**](AssetProperties.md) |  | [optional] 
+**Properties** | Pointer to [**TokenDataProperties**](TokenDataProperties.md) |  | [optional] 
 **Quantity** | **string** | Quantity of this asset - inclusive of fees for buy order in v1 API and exclusive of fees in v3 API | 
 **QuantityWithFees** | **string** | Quantity of this asset with the sum of all fees applied to the asset | 
 **Symbol** | Pointer to **string** | Symbol of a token | [optional] 
@@ -84,20 +84,20 @@ HasId returns a boolean if a field has been set.
 
 ### GetProperties
 
-`func (o *TokenData) GetProperties() AssetProperties`
+`func (o *TokenData) GetProperties() TokenDataProperties`
 
 GetProperties returns the Properties field if non-nil, zero value otherwise.
 
 ### GetPropertiesOk
 
-`func (o *TokenData) GetPropertiesOk() (*AssetProperties, bool)`
+`func (o *TokenData) GetPropertiesOk() (*TokenDataProperties, bool)`
 
 GetPropertiesOk returns a tuple with the Properties field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetProperties
 
-`func (o *TokenData) SetProperties(v AssetProperties)`
+`func (o *TokenData) SetProperties(v TokenDataProperties)`
 
 SetProperties sets Properties field to given value.
 

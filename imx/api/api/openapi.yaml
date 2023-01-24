@@ -271,7 +271,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Collection'
+                $ref: '#/components/schemas/collection.Collection'
           description: Created
           headers:
             Collection_Limit_Reset:
@@ -332,7 +332,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Collection'
+                $ref: '#/components/schemas/collection.Collection'
           description: OK
         "404":
           content:
@@ -377,7 +377,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Collection'
+                $ref: '#/components/schemas/collection.Collection'
           description: OK
         "400":
           content:
@@ -658,13 +658,13 @@ paths:
       - description: "Minimum timestamp for this deposit, in ISO 8601 UTC format.\
           \ Example: '2022-05-27T00:10:22Z'"
         in: query
-        name: updated_min_timestamp
+        name: min_timestamp
         schema:
           type: string
       - description: "Maximum timestamp for this deposit, in ISO 8601 UTC format.\
           \ Example: '2022-05-27T00:10:22Z'"
         in: query
-        name: updated_max_timestamp
+        name: max_timestamp
         schema:
           type: string
       - description: Token type of the deposited asset
@@ -1188,11 +1188,6 @@ paths:
         name: token_id
         schema:
           type: string
-      - description: "[DEPRECATED] Internal IMX ID of the minted asset"
-        in: query
-        name: asset_id
-        schema:
-          type: string
       - description: Token Name of the minted asset
         in: query
         name: token_name
@@ -1327,26 +1322,26 @@ paths:
           - expired
           - inactive
           type: string
-      - description: "Minimum created at timestamp for this order, in ISO 8601 UTC\
-          \ format. Example: '2022-05-27T00:10:22Z'"
+      - description: "Filter orders to include those with created_at timestamps after\
+          \ this time, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z'"
         in: query
         name: min_timestamp
         schema:
           type: string
-      - description: "Maximum created at timestamp for this order, in ISO 8601 UTC\
-          \ format. Example: '2022-05-27T00:10:22Z'"
+      - description: "Filter orders to include those with created_at timestamps before\
+          \ this time, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z'"
         in: query
         name: max_timestamp
         schema:
           type: string
-      - description: "Minimum updated at timestamp for this order, in ISO 8601 UTC\
-          \ format. Example: '2022-05-27T00:10:22Z'"
+      - description: "Filter orders to include those with updated_at timestamps after\
+          \ this time, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z'"
         in: query
         name: updated_min_timestamp
         schema:
           type: string
-      - description: "Maximum updated at timestamp for this order, in ISO 8601 UTC\
-          \ format. Example: '2022-05-27T00:10:22Z'"
+      - description: "Filter orders to include those with updated_at timestamps before\
+          \ this time, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z'"
         in: query
         name: updated_max_timestamp
         schema:
@@ -1918,7 +1913,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GetSignableTransferRequestV1'
+              $ref: '#/components/schemas/GetSignableTransferRequest'
         description: get details of signable transfer
         required: true
       responses:
@@ -1926,7 +1921,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetSignableTransferResponseV1'
+                $ref: '#/components/schemas/GetSignableTransferResponse'
           description: OK
       summary: Gets details of a signable transfer
       tags:
@@ -2302,7 +2297,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateTransferResponseV1'
+                $ref: '#/components/schemas/CreateTransferResponse'
           description: OK
         "400":
           content:
@@ -2828,7 +2823,7 @@ paths:
       x-codegen-request-body-name: MintTokensRequestV2
   /v2/nft/primary:
     get:
-      description: Returns a list of NFT primary transactions
+      description: Returns a list of NFT primary sales transactions
       operationId: getNftPrimaryTransactions
       parameters:
       - description: Page size of the result
@@ -2873,22 +2868,28 @@ paths:
           type: string
       - description: Ethereum address of the user who wants to create transaction
         in: query
-        name: wallet_address
+        name: user_wallet_address
         schema:
           type: string
       - description: Transaction status
         in: query
         name: status
         schema:
+          enum:
+          - created
+          - waitingPayment
+          - pending
+          - completed
+          - failed
           type: string
-      - description: Provider name
+      - description: Checkout provider name
         in: query
         name: provider
         schema:
           enum:
           - moonpay
           type: string
-      - description: Mint id
+      - description: Minting transaction ID - see mintTokens response
         in: query
         name: mint_id
         schema:
@@ -2906,11 +2907,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/lambdas.APIError'
           description: Bad Request
-      summary: Get a list of NFT primary transactions
+      summary: Get a list of NFT primary sales transactions
       tags:
       - nft-checkout-primary
     post:
-      description: creates nft primary transaction
+      description: Creates a transaction representing minting an NFT with a card payment.
       operationId: createNftPrimary
       requestBody:
         content:
@@ -2932,7 +2933,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/lambdas.APIError'
           description: Bad Request
-      summary: Create nft primary transaction
+      summary: Create NFT primary sale transaction
       tags:
       - nft-checkout-primary
       x-codegen-request-body-name: CreateAPIRequest
@@ -2969,9 +2970,39 @@ paths:
       summary: Get currencies with limits
       tags:
       - nft-checkout-primary
+  /v2/nft/primary/register:
+    post:
+      description: Registers a new contract for use in the minting with fiat card
+        flow
+      operationId: registerNftPrimarySalesContract
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract.CreateAPIRequest'
+        description: req
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/contract.CreateResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/lambdas.APIError'
+          description: Bad Request
+      summary: Executes NFT primary sales contract registration
+      tags:
+      - nft-checkout-primary
+      x-codegen-request-body-name: CreateAPIRequest
   /v2/nft/primary/{transaction_id}:
     get:
-      description: gets nft primary transaction by transaction id
+      description: "given a transaction id, returns the corresponding transaction\
+        \ representing a mint executed from a card payment"
       operationId: getNftPrimaryTransaction
       parameters:
       - description: Transaction id
@@ -2993,7 +3024,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/lambdas.APIError'
           description: Bad Request
-      summary: Get nft primary transaction by id
+      summary: Get NFT primary sale transaction by id
       tags:
       - nft-checkout-primary
   /v2/signable-transfer-details:
@@ -3101,41 +3132,6 @@ paths:
       tags:
       - transfers
       x-codegen-request-body-name: CreateTransferRequestV2
-  /v2/{provider}/transaction_status:
-    get:
-      description: gets mint status by transaction ids
-      operationId: getMintStatusById
-      parameters:
-      - description: Provider name
-        in: path
-        name: provider
-        required: true
-        schema:
-          enum:
-          - moonpay
-          type: string
-      - description: transaction id
-        in: query
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/provider.GetMintStatusResponse'
-          description: OK
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/lambdas.APIError'
-          description: Bad Request
-      summary: Get mint status by transaction id
-      tags:
-      - nft-checkout-primary
   /v3/exchanges:
     get:
       description: Returns a list of exchanges based on the request
@@ -3392,26 +3388,18 @@ components:
         created_at: created_at
         description: description
         token_address: token_address
-        collection:
-          icon_url: icon_url
-          name: name
+        collection: null
         uri: uri
         token_id: token_id
         updated_at: updated_at
         name: name
-        orders:
-          sell_orders:
-          - "{}"
-          - "{}"
-          buy_orders:
-          - "{}"
-          - "{}"
+        orders: null
         id: id
         user: user
         status: status
       properties:
         collection:
-          $ref: '#/components/schemas/CollectionDetails'
+          $ref: '#/components/schemas/assetCollection'
         created_at:
           description: Timestamp of when the asset was created
           nullable: true
@@ -3442,7 +3430,7 @@ components:
           nullable: true
           type: string
         orders:
-          $ref: '#/components/schemas/OrderDetails'
+          $ref: '#/components/schemas/assetOrders'
         status:
           description: Status of this asset (where it is in the system)
           type: string
@@ -3478,15 +3466,9 @@ components:
       - user
       type: object
     AssetProperties:
-      example:
-        image_url: image_url
-        name: name
-        collection:
-          icon_url: icon_url
-          name: name
       properties:
         collection:
-          $ref: '#/components/schemas/CollectionDetails'
+          $ref: '#/components/schemas/assetPropertiesCollection'
         image_url:
           description: Image URL of this asset
           type: string
@@ -3508,26 +3490,18 @@ components:
         created_at: created_at
         description: description
         token_address: token_address
-        collection:
-          icon_url: icon_url
-          name: name
+        collection: null
         uri: uri
         token_id: token_id
         updated_at: updated_at
         name: name
-        orders:
-          sell_orders:
-          - "{}"
-          - "{}"
-          buy_orders:
-          - "{}"
-          - "{}"
+        orders: null
         id: id
         user: user
         status: status
       properties:
         collection:
-          $ref: '#/components/schemas/CollectionDetails'
+          $ref: '#/components/schemas/assetWithOrdersCollection'
         created_at:
           description: Timestamp of when the asset was created
           nullable: true
@@ -3558,7 +3532,7 @@ components:
           nullable: true
           type: string
         orders:
-          $ref: '#/components/schemas/OrderDetails'
+          $ref: '#/components/schemas/assetWithOrdersOrders'
         status:
           description: Status of this asset (where it is in the system)
           type: string
@@ -3654,71 +3628,7 @@ components:
       - order_id
       - status
       type: object
-    Collection:
-      example:
-        icon_url: icon_url
-        collection_image_url: collection_image_url
-        address: address
-        updated_at: updated_at
-        project_id: 6
-        metadata_api_url: metadata_api_url
-        name: name
-        created_at: created_at
-        description: description
-        project_owner_address: project_owner_address
-      properties:
-        address:
-          description: Ethereum address of the ERC721 contract
-          type: string
-        collection_image_url:
-          description: URL of the tile image for this collection
-          nullable: true
-          type: string
-        created_at:
-          description: Timestamp of when the collection was created
-          nullable: true
-          type: string
-        description:
-          description: Description of the collection
-          nullable: true
-          type: string
-        icon_url:
-          description: URL of the icon for this collection
-          nullable: true
-          type: string
-        metadata_api_url:
-          description: URL of the metadata for this collection
-          nullable: true
-          type: string
-        name:
-          description: Name of the collection
-          type: string
-        project_id:
-          description: The collection's project ID
-          type: integer
-        project_owner_address:
-          description: Project owner address
-          type: string
-        updated_at:
-          description: Timestamp of when the collection was updated
-          nullable: true
-          type: string
-      required:
-      - address
-      - collection_image_url
-      - created_at
-      - description
-      - icon_url
-      - metadata_api_url
-      - name
-      - project_id
-      - project_owner_address
-      - updated_at
-      type: object
     CollectionDetails:
-      example:
-        icon_url: icon_url
-        name: name
       properties:
         icon_url:
           description: URL of the icon of the collection
@@ -3733,9 +3643,7 @@ components:
       type: object
     CollectionFilter:
       example:
-        range:
-          min: 6
-          max: 0
+        range: null
         type: type
         value:
         - value
@@ -3746,7 +3654,7 @@ components:
           description: Key of this property
           type: string
         range:
-          $ref: '#/components/schemas/Range'
+          $ref: '#/components/schemas/collectionFilterRange'
         type:
           description: Type of this filter
           type: string
@@ -3961,7 +3869,8 @@ components:
           description: The company name
           type: string
         contact_email:
-          description: The project contact email
+          description: The project contact email (must be registered as a developer
+            account with Immutable at https://hub.immutable.com)
           type: string
         name:
           description: The project name
@@ -3989,21 +3898,18 @@ components:
         - fee_percentage: 6.027456183070403
           address: address
         stark_key: stark_key
-        vault_id_sell: 2
+        vault_id_sell: 5
         vault_id_buy: 5
         expiration_timestamp: 0
         include_fees: true
         amount_buy: amount_buy
         amount_sell: amount_sell
         asset_id_buy: asset_id_buy
-        nonce: 1
+        nonce: 6
         stark_signature: stark_signature
-        fee_info:
-          source_vault_id: 6
-          asset_id: asset_id
-          fee_limit: fee_limit
+        fee_info: null
         asset_id_sell: asset_id_sell
-        order_id: 5
+        order_id: 1
       properties:
         amount_buy:
           description: Amount to buy
@@ -4021,7 +3927,7 @@ components:
           description: Expiration timestamp for this trade
           type: integer
         fee_info:
-          $ref: '#/components/schemas/FeeInfo'
+          $ref: '#/components/schemas/createTradeRequestV1FeeInfo'
         fees:
           description: Fee information
           items:
@@ -4285,26 +4191,11 @@ components:
       type: object
     Deposit:
       example:
-        transaction_id: 1
+        transaction_id: 6
         user: user
         status: status
         timestamp: timestamp
-        token:
-          data:
-            symbol: symbol
-            quantity: quantity
-            token_id: token_id
-            decimals: 6
-            token_address: token_address
-            id: id
-            quantity_with_fees: quantity_with_fees
-            properties:
-              image_url: image_url
-              name: name
-              collection:
-                icon_url: icon_url
-                name: name
-          type: type
+        token: null
       properties:
         status:
           description: Status of this deposit in Immutable X
@@ -4313,7 +4204,7 @@ components:
           description: Timestamp of the deposit
           type: string
         token:
-          $ref: '#/components/schemas/Token'
+          $ref: '#/components/schemas/depositToken'
         transaction_id:
           description: Sequential ID of this transaction within Immutable X
           type: integer
@@ -4330,11 +4221,7 @@ components:
     EncodeAssetRequest:
       example:
         token:
-          data:
-            blueprint: blueprint
-            token_id: token_id
-            token_address: token_address
-            id: id
+          data: null
           type: ETH
       properties:
         token:
@@ -4358,11 +4245,6 @@ components:
       - asset_type
       type: object
     EncodeAssetTokenData:
-      example:
-        blueprint: blueprint
-        token_id: token_id
-        token_address: token_address
-        id: id
       properties:
         blueprint:
           description: Blueprint information of the token to be encoded. Used if token
@@ -4391,7 +4273,7 @@ components:
           transfer_id: transfer_id
           to_currency: to_currency
         updated_at: updated_at
-        provider: "moonpay, layerswap"
+        provider: moonpay
         created_at: created_at
         id: 5
         type: onramp
@@ -4407,7 +4289,7 @@ components:
           type: integer
         provider:
           description: Provider name
-          example: "moonpay, layerswap"
+          example: moonpay
           type: string
         status:
           description: Transaction status
@@ -4446,9 +4328,6 @@ components:
       - type
       type: object
     FeeData:
-      example:
-        decimals: 6
-        contract_address: contract_address
       properties:
         contract_address:
           description: Address of ERC721/ERC20 contract
@@ -4468,10 +4347,6 @@ components:
           type: number
       type: object
     FeeInfo:
-      example:
-        source_vault_id: 6
-        asset_id: asset_id
-        fee_limit: fee_limit
       properties:
         asset_id:
           description: ID of the asset these fees relate to
@@ -4488,14 +4363,9 @@ components:
       - source_vault_id
       type: object
     FeeToken:
-      example:
-        data:
-          decimals: 6
-          contract_address: contract_address
-        type: ETH
       properties:
         data:
-          $ref: '#/components/schemas/FeeData'
+          $ref: '#/components/schemas/feeTokenData'
         type:
           description: Fee token type. One of ETH/ERC20
           enum:
@@ -4629,6 +4499,7 @@ components:
           mint_limit_expires_at: mint_limit_expires_at
           mint_remaining: 2
           mint_monthly_limit: 5
+          org_id: org_id
           company_name: company_name
           collection_monthly_limit: 6
           name: name
@@ -4639,6 +4510,7 @@ components:
           mint_limit_expires_at: mint_limit_expires_at
           mint_remaining: 2
           mint_monthly_limit: 5
+          org_id: org_id
           company_name: company_name
           collection_monthly_limit: 6
           name: name
@@ -4698,15 +4570,13 @@ components:
       example:
         amount: amount
         user: user
-        token:
-          data: "{}"
-          type: ETH/ERC20/ERC721
+        token: null
       properties:
         amount:
           description: Amount of the token the user is depositing
           type: string
         token:
-          $ref: '#/components/schemas/SignableToken'
+          $ref: '#/components/schemas/getSignableDepositRequestToken'
         user:
           description: User who is depositing
           type: string
@@ -4752,12 +4622,8 @@ components:
           address: address
         - fee_percentage: 6.027456183070403
           address: address
-        token_buy:
-          data: "{}"
-          type: ETH/ERC20/ERC721
-        token_sell:
-          data: "{}"
-          type: ETH/ERC20/ERC721
+        token_buy: null
+        token_sell: null
         expiration_timestamp: 0
         amount_buy: amount_buy
         amount_sell: amount_sell
@@ -4779,9 +4645,9 @@ components:
             $ref: '#/components/schemas/FeeEntry'
           type: array
         token_buy:
-          $ref: '#/components/schemas/SignableToken'
+          $ref: '#/components/schemas/getSignableOrderRequestTokenBuy'
         token_sell:
-          $ref: '#/components/schemas/SignableToken'
+          $ref: '#/components/schemas/getSignableOrderRequestTokenSell'
         user:
           description: Ethereum address of the submitting user
           type: string
@@ -4797,10 +4663,7 @@ components:
         stark_key: stark_key
         vault_id_sell: 5
         vault_id_buy: 1
-        fee_info:
-          source_vault_id: 6
-          asset_id: asset_id
-          fee_limit: fee_limit
+        fee_info: null
         expiration_timestamp: 0
         amount_buy: amount_buy
         asset_id_sell: asset_id_sell
@@ -4826,7 +4689,7 @@ components:
           description: Expiration timestamp for this order
           type: integer
         fee_info:
-          $ref: '#/components/schemas/FeeInfo'
+          $ref: '#/components/schemas/getSignableOrderResponseFeeInfo'
         nonce:
           description: Nonce of the order
           type: integer
@@ -4935,21 +4798,21 @@ components:
       type: object
     GetSignableTradeResponse:
       example:
-        stark_key: stark_key
-        vault_id_sell: 5
-        vault_id_buy: 1
-        fee_info:
-          source_vault_id: 6
-          asset_id: asset_id
-          fee_limit: fee_limit
-        expiration_timestamp: 0
-        amount_buy: amount_buy
-        asset_id_sell: asset_id_sell
-        amount_sell: amount_sell
-        payload_hash: payload_hash
-        asset_id_buy: asset_id_buy
-        nonce: 6
-        signable_message: signable_message
+        result: null
+        code: 0
+        message: message
+      properties:
+        code:
+          description: "TODO: Remove unused fields Code and Message\n[deprecated]\
+            \ Response code"
+          type: integer
+        message:
+          description: "[deprecated] Response message"
+          type: string
+        result:
+          $ref: '#/components/schemas/getSignableTradeResponseResult'
+      type: object
+    GetSignableTradeResult:
       properties:
         amount_buy:
           description: Amount to buy
@@ -4964,12 +4827,12 @@ components:
           description: ID of the asset to sell
           type: string
         expiration_timestamp:
-          description: Expiration timestamp for this order
+          description: Expiration timestamp of this trade
           type: integer
         fee_info:
-          $ref: '#/components/schemas/FeeInfo'
+          $ref: '#/components/schemas/getSignableTradeResultFeeInfo'
         nonce:
-          description: Nonce of the order
+          description: Nonce of the trade
           type: integer
         payload_hash:
           description: Payload Hash
@@ -4978,26 +4841,14 @@ components:
           description: Message to sign with L1 wallet to confirm trade request
           type: string
         stark_key:
-          description: Public stark key of the created user
+          description: Public stark key of the trading user
           type: string
         vault_id_buy:
-          description: ID of the vault into which the bought asset will be placed
+          description: ID of the vault into which the traded asset will be placed
           type: integer
         vault_id_sell:
           description: ID of the vault to sell from
           type: integer
-      required:
-      - amount_buy
-      - amount_sell
-      - asset_id_buy
-      - asset_id_sell
-      - expiration_timestamp
-      - nonce
-      - payload_hash
-      - signable_message
-      - stark_key
-      - vault_id_buy
-      - vault_id_sell
       type: object
     GetSignableTransferRequest:
       example:
@@ -5005,14 +4856,10 @@ components:
         signable_requests:
         - amount: amount
           receiver: receiver
-          token:
-            data: "{}"
-            type: ETH/ERC20/ERC721
+          token: null
         - amount: amount
           receiver: receiver
-          token:
-            data: "{}"
-            type: ETH/ERC20/ERC721
+          token: null
       properties:
         sender_ether_key:
           description: Ethereum address of the transferring user
@@ -5064,9 +4911,7 @@ components:
           nonce: 6
           receiver_vault_id: 1
           sender_vault_id: 5
-          token:
-            data: "{}"
-            type: ETH/ERC20/ERC721
+          token: null
         - amount: amount
           receiver_stark_key: receiver_stark_key
           expiration_timestamp: 0
@@ -5075,9 +4920,7 @@ components:
           nonce: 6
           receiver_vault_id: 1
           sender_vault_id: 5
-          token:
-            data: "{}"
-            type: ETH/ERC20/ERC721
+          token: null
         signable_message: signable_message
       properties:
         sender_stark_key:
@@ -5154,15 +4997,13 @@ components:
       example:
         amount: amount
         user: user
-        token:
-          data: "{}"
-          type: ETH/ERC20/ERC721
+        token: null
       properties:
         amount:
           description: Amount of the token to withdraw
           type: string
         token:
-          $ref: '#/components/schemas/SignableToken'
+          $ref: '#/components/schemas/getSignableWithdrawalRequestToken'
         user:
           description: Ethereum address of the user who is making this withdrawal
           type: string
@@ -5226,7 +5067,7 @@ components:
             transfer_id: transfer_id
             to_currency: to_currency
           updated_at: updated_at
-          provider: "moonpay, layerswap"
+          provider: moonpay
           created_at: created_at
           id: 5
           type: onramp
@@ -5242,7 +5083,7 @@ components:
             transfer_id: transfer_id
             to_currency: to_currency
           updated_at: updated_at
-          provider: "moonpay, layerswap"
+          provider: moonpay
           created_at: created_at
           id: 5
           type: onramp
@@ -5292,20 +5133,12 @@ components:
           created_at: created_at
           description: description
           token_address: token_address
-          collection:
-            icon_url: icon_url
-            name: name
+          collection: null
           uri: uri
           token_id: token_id
           updated_at: updated_at
           name: name
-          orders:
-            sell_orders:
-            - "{}"
-            - "{}"
-            buy_orders:
-            - "{}"
-            - "{}"
+          orders: null
           id: id
           user: user
           status: status
@@ -5321,20 +5154,12 @@ components:
           created_at: created_at
           description: description
           token_address: token_address
-          collection:
-            icon_url: icon_url
-            name: name
+          collection: null
           uri: uri
           token_id: token_id
           updated_at: updated_at
           name: name
-          orders:
-            sell_orders:
-            - "{}"
-            - "{}"
-            buy_orders:
-            - "{}"
-            - "{}"
+          orders: null
           id: id
           user: user
           status: status
@@ -5394,26 +5219,28 @@ components:
       example:
         cursor: cursor
         result:
-        - icon_url: icon_url
-          collection_image_url: collection_image_url
+        - createdAt: createdAt
+          lastCollectionEventID: lastCollectionEventID
           address: address
-          updated_at: updated_at
-          project_id: 6
-          metadata_api_url: metadata_api_url
+          collectionImageURL: collectionImageURL
+          projectOwnerAddress: projectOwnerAddress
           name: name
-          created_at: created_at
           description: description
-          project_owner_address: project_owner_address
-        - icon_url: icon_url
-          collection_image_url: collection_image_url
+          metadataAPIURL: metadataAPIURL
+          iconURL: iconURL
+          projectID: 6
+          updatedAt: updatedAt
+        - createdAt: createdAt
+          lastCollectionEventID: lastCollectionEventID
           address: address
-          updated_at: updated_at
-          project_id: 6
-          metadata_api_url: metadata_api_url
+          collectionImageURL: collectionImageURL
+          projectOwnerAddress: projectOwnerAddress
           name: name
-          created_at: created_at
           description: description
-          project_owner_address: project_owner_address
+          metadataAPIURL: metadataAPIURL
+          iconURL: iconURL
+          projectID: 6
+          updatedAt: updatedAt
         remaining: 0
       properties:
         cursor:
@@ -5426,7 +5253,7 @@ components:
         result:
           description: Collections matching query parameters
           items:
-            $ref: '#/components/schemas/Collection'
+            $ref: '#/components/schemas/collection.Collection'
           type: array
       required:
       - cursor
@@ -5437,46 +5264,16 @@ components:
       example:
         cursor: cursor
         result:
-        - transaction_id: 1
+        - transaction_id: 6
           user: user
           status: status
           timestamp: timestamp
-          token:
-            data:
-              symbol: symbol
-              quantity: quantity
-              token_id: token_id
-              decimals: 6
-              token_address: token_address
-              id: id
-              quantity_with_fees: quantity_with_fees
-              properties:
-                image_url: image_url
-                name: name
-                collection:
-                  icon_url: icon_url
-                  name: name
-            type: type
-        - transaction_id: 1
+          token: null
+        - transaction_id: 6
           user: user
           status: status
           timestamp: timestamp
-          token:
-            data:
-              symbol: symbol
-              quantity: quantity
-              token_id: token_id
-              decimals: 6
-              token_address: token_address
-              id: id
-              quantity_with_fees: quantity_with_fees
-              properties:
-                image_url: image_url
-                name: name
-                collection:
-                  icon_url: icon_url
-                  name: name
-            type: type
+          token: null
         remaining: 0
       properties:
         cursor:
@@ -5511,22 +5308,7 @@ components:
           user: user
           status: status
           timestamp: timestamp
-          token:
-            data:
-              symbol: symbol
-              quantity: quantity
-              token_id: token_id
-              decimals: 6
-              token_address: token_address
-              id: id
-              quantity_with_fees: quantity_with_fees
-              properties:
-                image_url: image_url
-                name: name
-                collection:
-                  icon_url: icon_url
-                  name: name
-            type: type
+          token: null
         - transaction_id: 6
           fees:
           - address: address
@@ -5538,22 +5320,7 @@ components:
           user: user
           status: status
           timestamp: timestamp
-          token:
-            data:
-              symbol: symbol
-              quantity: quantity
-              token_id: token_id
-              decimals: 6
-              token_address: token_address
-              id: id
-              quantity_with_fees: quantity_with_fees
-              properties:
-                image_url: image_url
-                name: name
-                collection:
-                  icon_url: icon_url
-                  name: name
-            type: type
+          token: null
         remaining: 0
       properties:
         cursor:
@@ -5581,55 +5348,17 @@ components:
           - amount: amount
             address: address
             type: type
-            token:
-              data:
-                decimals: 6
-                contract_address: contract_address
-              type: ETH
+            token: null
           - amount: amount
             address: address
             type: type
-            token:
-              data:
-                decimals: 6
-                contract_address: contract_address
-              type: ETH
+            token: null
           updated_timestamp: updated_timestamp
-          buy:
-            data:
-              symbol: symbol
-              quantity: quantity
-              token_id: token_id
-              decimals: 6
-              token_address: token_address
-              id: id
-              quantity_with_fees: quantity_with_fees
-              properties:
-                image_url: image_url
-                name: name
-                collection:
-                  icon_url: icon_url
-                  name: name
-            type: type
+          buy: null
           expiration_timestamp: expiration_timestamp
-          sell:
-            data:
-              symbol: symbol
-              quantity: quantity
-              token_id: token_id
-              decimals: 6
-              token_address: token_address
-              id: id
-              quantity_with_fees: quantity_with_fees
-              properties:
-                image_url: image_url
-                name: name
-                collection:
-                  icon_url: icon_url
-                  name: name
-            type: type
+          sell: null
           amount_sold: amount_sold
-          order_id: 1
+          order_id: 6
           user: user
           status: status
           timestamp: timestamp
@@ -5637,55 +5366,17 @@ components:
           - amount: amount
             address: address
             type: type
-            token:
-              data:
-                decimals: 6
-                contract_address: contract_address
-              type: ETH
+            token: null
           - amount: amount
             address: address
             type: type
-            token:
-              data:
-                decimals: 6
-                contract_address: contract_address
-              type: ETH
+            token: null
           updated_timestamp: updated_timestamp
-          buy:
-            data:
-              symbol: symbol
-              quantity: quantity
-              token_id: token_id
-              decimals: 6
-              token_address: token_address
-              id: id
-              quantity_with_fees: quantity_with_fees
-              properties:
-                image_url: image_url
-                name: name
-                collection:
-                  icon_url: icon_url
-                  name: name
-            type: type
+          buy: null
           expiration_timestamp: expiration_timestamp
-          sell:
-            data:
-              symbol: symbol
-              quantity: quantity
-              token_id: token_id
-              decimals: 6
-              token_address: token_address
-              id: id
-              quantity_with_fees: quantity_with_fees
-              properties:
-                image_url: image_url
-                name: name
-                collection:
-                  icon_url: icon_url
-                  name: name
-            type: type
+          sell: null
           amount_sold: amount_sold
-          order_id: 1
+          order_id: 6
           user: user
           status: status
           timestamp: timestamp
@@ -5741,34 +5432,14 @@ components:
       example:
         cursor: cursor
         result:
-        - transaction_id: 1
-          a:
-            sold: sold
-            token_id: token_id
-            token_address: token_address
-            token_type: token_type
-            order_id: 6
-          b:
-            sold: sold
-            token_id: token_id
-            token_address: token_address
-            token_type: token_type
-            order_id: 6
+        - transaction_id: 6
+          a: null
+          b: null
           status: status
           timestamp: timestamp
-        - transaction_id: 1
-          a:
-            sold: sold
-            token_id: token_id
-            token_address: token_address
-            token_type: token_type
-            order_id: 6
-          b:
-            sold: sold
-            token_id: token_id
-            token_address: token_address
-            token_type: token_type
-            order_id: 6
+        - transaction_id: 6
+          a: null
+          b: null
           status: status
           timestamp: timestamp
         remaining: 0
@@ -5799,43 +5470,13 @@ components:
           user: user
           status: status
           timestamp: timestamp
-          token:
-            data:
-              symbol: symbol
-              quantity: quantity
-              token_id: token_id
-              decimals: 6
-              token_address: token_address
-              id: id
-              quantity_with_fees: quantity_with_fees
-              properties:
-                image_url: image_url
-                name: name
-                collection:
-                  icon_url: icon_url
-                  name: name
-            type: type
+          token: null
         - transaction_id: 6
           receiver: receiver
           user: user
           status: status
           timestamp: timestamp
-          token:
-            data:
-              symbol: symbol
-              quantity: quantity
-              token_id: token_id
-              decimals: 6
-              token_address: token_address
-              id: id
-              quantity_with_fees: quantity_with_fees
-              properties:
-                image_url: image_url
-                name: name
-                collection:
-                  icon_url: icon_url
-                  name: name
-            type: type
+          token: null
         remaining: 0
       properties:
         cursor:
@@ -5865,44 +5506,14 @@ components:
           withdrawn_to_wallet: true
           status: status
           timestamp: timestamp
-          token:
-            data:
-              symbol: symbol
-              quantity: quantity
-              token_id: token_id
-              decimals: 6
-              token_address: token_address
-              id: id
-              quantity_with_fees: quantity_with_fees
-              properties:
-                image_url: image_url
-                name: name
-                collection:
-                  icon_url: icon_url
-                  name: name
-            type: type
+          token: null
         - transaction_id: 6
           sender: sender
           rollup_status: rollup_status
           withdrawn_to_wallet: true
           status: status
           timestamp: timestamp
-          token:
-            data:
-              symbol: symbol
-              quantity: quantity
-              token_id: token_id
-              decimals: 6
-              token_address: token_address
-              id: id
-              quantity_with_fees: quantity_with_fees
-              properties:
-                image_url: image_url
-                name: name
-                collection:
-                  icon_url: icon_url
-                  name: name
-            type: type
+          token: null
         remaining: 0
       properties:
         cursor:
@@ -6073,22 +5684,7 @@ components:
         user: user
         status: status
         timestamp: timestamp
-        token:
-          data:
-            symbol: symbol
-            quantity: quantity
-            token_id: token_id
-            decimals: 6
-            token_address: token_address
-            id: id
-            quantity_with_fees: quantity_with_fees
-            properties:
-              image_url: image_url
-              name: name
-              collection:
-                icon_url: icon_url
-                name: name
-          type: type
+        token: null
       properties:
         fees:
           description: Fee details
@@ -6102,7 +5698,7 @@ components:
           description: Timestamp this mint was initiated
           type: string
         token:
-          $ref: '#/components/schemas/Token'
+          $ref: '#/components/schemas/mintToken'
         transaction_id:
           description: Sequential ID of transaction in Immutable X
           type: integer
@@ -6190,6 +5786,7 @@ components:
           description: Users to mint to
           items:
             $ref: '#/components/schemas/MintUser'
+          minItems: 1
           type: array
       required:
       - auth_signature
@@ -6353,55 +5950,17 @@ components:
         - amount: amount
           address: address
           type: type
-          token:
-            data:
-              decimals: 6
-              contract_address: contract_address
-            type: ETH
+          token: null
         - amount: amount
           address: address
           type: type
-          token:
-            data:
-              decimals: 6
-              contract_address: contract_address
-            type: ETH
+          token: null
         updated_timestamp: updated_timestamp
-        buy:
-          data:
-            symbol: symbol
-            quantity: quantity
-            token_id: token_id
-            decimals: 6
-            token_address: token_address
-            id: id
-            quantity_with_fees: quantity_with_fees
-            properties:
-              image_url: image_url
-              name: name
-              collection:
-                icon_url: icon_url
-                name: name
-          type: type
+        buy: null
         expiration_timestamp: expiration_timestamp
-        sell:
-          data:
-            symbol: symbol
-            quantity: quantity
-            token_id: token_id
-            decimals: 6
-            token_address: token_address
-            id: id
-            quantity_with_fees: quantity_with_fees
-            properties:
-              image_url: image_url
-              name: name
-              collection:
-                icon_url: icon_url
-                name: name
-          type: type
+        sell: null
         amount_sold: amount_sold
-        order_id: 1
+        order_id: 6
         user: user
         status: status
         timestamp: timestamp
@@ -6411,7 +5970,7 @@ components:
           nullable: true
           type: string
         buy:
-          $ref: '#/components/schemas/Token'
+          $ref: '#/components/schemas/orderBuy'
         expiration_timestamp:
           description: Expiration timestamp of this order
           nullable: true
@@ -6425,7 +5984,7 @@ components:
           description: ID of the order
           type: integer
         sell:
-          $ref: '#/components/schemas/Token'
+          $ref: '#/components/schemas/orderSell'
         status:
           description: Status of the order
           type: string
@@ -6452,13 +6011,6 @@ components:
       - user
       type: object
     OrderDetails:
-      example:
-        sell_orders:
-        - "{}"
-        - "{}"
-        buy_orders:
-        - "{}"
-        - "{}"
       properties:
         buy_orders:
           description: Buy orders for this asset
@@ -6478,11 +6030,7 @@ components:
         amount: amount
         address: address
         type: type
-        token:
-          data:
-            decimals: 6
-            contract_address: contract_address
-          type: ETH
+        token: null
       properties:
         address:
           description: Address of the fee recipient
@@ -6491,7 +6039,7 @@ components:
           description: Fee amount
           type: string
         token:
-          $ref: '#/components/schemas/FeeToken'
+          $ref: '#/components/schemas/orderFeeInfoToken'
         type:
           description: Fee type
           type: string
@@ -6502,6 +6050,7 @@ components:
         mint_limit_expires_at: mint_limit_expires_at
         mint_remaining: 2
         mint_monthly_limit: 5
+        org_id: org_id
         company_name: company_name
         collection_monthly_limit: 6
         name: name
@@ -6522,7 +6071,8 @@ components:
           description: The company name
           type: string
         contact_email:
-          description: The project contact email
+          description: The project contact email (must be registered as a developer
+            account with Immutable at https://hub.immutable.com)
           type: string
         id:
           description: The project ID
@@ -6539,6 +6089,9 @@ components:
         name:
           description: The project name
           type: string
+        org_id:
+          description: The organisation ID that the project belongs to
+          type: string
       required:
       - collection_limit_expires_at
       - collection_monthly_limit
@@ -6552,9 +6105,6 @@ components:
       - name
       type: object
     Range:
-      example:
-        min: 6
-        max: 0
       properties:
         max:
           description: Maximum value
@@ -6619,9 +6169,7 @@ components:
       example:
         amount: amount
         receiver: receiver
-        token:
-          data: "{}"
-          type: ETH/ERC20/ERC721
+        token: null
       properties:
         amount:
           description: Amount of the token to transfer
@@ -6630,7 +6178,7 @@ components:
           description: Ethereum address of the receiving user
           type: string
         token:
-          $ref: '#/components/schemas/SignableToken'
+          $ref: '#/components/schemas/signableTransferDetailsToken'
       required:
       - amount
       - receiver
@@ -6646,9 +6194,7 @@ components:
         nonce: 6
         receiver_vault_id: 1
         sender_vault_id: 5
-        token:
-          data: "{}"
-          type: ETH/ERC20/ERC721
+        token: null
       properties:
         amount:
           description: Amount of the asset being transferred
@@ -6675,7 +6221,7 @@ components:
           description: ID of the vault being transferred from
           type: integer
         token:
-          $ref: '#/components/schemas/SignableToken'
+          $ref: '#/components/schemas/signableTransferResponseDetailsToken'
       required:
       - amount
       - asset_id
@@ -6697,25 +6243,9 @@ components:
       - result
       type: object
     Token:
-      example:
-        data:
-          symbol: symbol
-          quantity: quantity
-          token_id: token_id
-          decimals: 6
-          token_address: token_address
-          id: id
-          quantity_with_fees: quantity_with_fees
-          properties:
-            image_url: image_url
-            name: name
-            collection:
-              icon_url: icon_url
-              name: name
-        type: type
       properties:
         data:
-          $ref: '#/components/schemas/TokenData'
+          $ref: '#/components/schemas/tokenDataOAIGen'
         type:
           description: Type of this asset (ETH/ERC20/ERC721)
           type: string
@@ -6724,20 +6254,6 @@ components:
       - type
       type: object
     TokenData:
-      example:
-        symbol: symbol
-        quantity: quantity
-        token_id: token_id
-        decimals: 6
-        token_address: token_address
-        id: id
-        quantity_with_fees: quantity_with_fees
-        properties:
-          image_url: image_url
-          name: name
-          collection:
-            icon_url: icon_url
-            name: name
       properties:
         decimals:
           description: Number of decimals supported by this asset
@@ -6746,7 +6262,7 @@ components:
           description: "[DEPRECATED] Internal Immutable X Token ID"
           type: string
         properties:
-          $ref: '#/components/schemas/AssetProperties'
+          $ref: '#/components/schemas/tokenDataProperties'
         quantity:
           description: Quantity of this asset - inclusive of fees for buy order in
             v1 API and exclusive of fees in v3 API
@@ -6805,26 +6321,16 @@ components:
       type: object
     Trade:
       example:
-        transaction_id: 1
-        a:
-          sold: sold
-          token_id: token_id
-          token_address: token_address
-          token_type: token_type
-          order_id: 6
-        b:
-          sold: sold
-          token_id: token_id
-          token_address: token_address
-          token_type: token_type
-          order_id: 6
+        transaction_id: 6
+        a: null
+        b: null
         status: status
         timestamp: timestamp
       properties:
         a:
-          $ref: '#/components/schemas/TradeSide'
+          $ref: '#/components/schemas/tradeA'
         b:
-          $ref: '#/components/schemas/TradeSide'
+          $ref: '#/components/schemas/tradeB'
         status:
           description: Status of this trade
           type: string
@@ -6843,12 +6349,6 @@ components:
       - transaction_id
       type: object
     TradeSide:
-      example:
-        sold: sold
-        token_id: token_id
-        token_address: token_address
-        token_type: token_type
-        order_id: 6
       properties:
         order_id:
           description: The ID of the order involved in the trade
@@ -6877,22 +6377,7 @@ components:
         user: user
         status: status
         timestamp: timestamp
-        token:
-          data:
-            symbol: symbol
-            quantity: quantity
-            token_id: token_id
-            decimals: 6
-            token_address: token_address
-            id: id
-            quantity_with_fees: quantity_with_fees
-            properties:
-              image_url: image_url
-              name: name
-              collection:
-                icon_url: icon_url
-                name: name
-          type: type
+        token: null
       properties:
         receiver:
           description: Ethereum address of the user who received this transfer
@@ -6905,7 +6390,7 @@ components:
           nullable: true
           type: string
         token:
-          $ref: '#/components/schemas/Token'
+          $ref: '#/components/schemas/transferToken'
         transaction_id:
           description: Sequential transaction ID
           type: integer
@@ -7022,22 +6507,7 @@ components:
         withdrawn_to_wallet: true
         status: status
         timestamp: timestamp
-        token:
-          data:
-            symbol: symbol
-            quantity: quantity
-            token_id: token_id
-            decimals: 6
-            token_address: token_address
-            id: id
-            quantity_with_fees: quantity_with_fees
-            properties:
-              image_url: image_url
-              name: name
-              collection:
-                icon_url: icon_url
-                name: name
-          type: type
+        token: null
       properties:
         rollup_status:
           description: Status of the on-chain batch confirmation for this withdrawal
@@ -7052,7 +6522,7 @@ components:
           description: Time when this withdrawal was initiated
           type: string
         token:
-          $ref: '#/components/schemas/Token'
+          $ref: '#/components/schemas/withdrawalToken'
         transaction_id:
           description: Sequential ID of this transaction
           type: integer
@@ -7080,17 +6550,107 @@ components:
           description: Min transaction amount
           type: number
       type: object
+    assetCollection:
+      allOf:
+      - $ref: '#/components/schemas/CollectionDetails'
+      description: Information about the collection to which this asset belongs
+      x-go-gen-location: models
+    assetOrders:
+      allOf:
+      - $ref: '#/components/schemas/OrderDetails'
+      description: "[DEPRECATED] Open orders for this asset will always return empty.\
+        \ Use GET /orders"
+      x-go-gen-location: models
+    assetPropertiesCollection:
+      allOf:
+      - $ref: '#/components/schemas/CollectionDetails'
+      description: Details of this asset's collection
+      x-go-gen-location: models
+    assetWithOrdersCollection:
+      allOf:
+      - $ref: '#/components/schemas/CollectionDetails'
+      description: Information about the collection to which this asset belongs
+      x-go-gen-location: models
+    assetWithOrdersOrders:
+      allOf:
+      - $ref: '#/components/schemas/OrderDetails'
+      description: Open orders for this asset
+      x-go-gen-location: models
+    collection.Collection:
+      example:
+        createdAt: createdAt
+        lastCollectionEventID: lastCollectionEventID
+        address: address
+        collectionImageURL: collectionImageURL
+        projectOwnerAddress: projectOwnerAddress
+        name: name
+        description: description
+        metadataAPIURL: metadataAPIURL
+        iconURL: iconURL
+        projectID: 6
+        updatedAt: updatedAt
+      properties:
+        address:
+          type: string
+        collectionImageURL:
+          type: string
+        createdAt:
+          type: string
+        description:
+          type: string
+        iconURL:
+          type: string
+        lastCollectionEventID:
+          type: string
+        metadataAPIURL:
+          type: string
+        name:
+          type: string
+        projectID:
+          type: integer
+        projectOwnerAddress:
+          type: string
+        updatedAt:
+          type: string
+      type: object
+    collectionFilterRange:
+      allOf:
+      - $ref: '#/components/schemas/Range'
+      description: Range of values for this property
+      x-go-gen-location: models
+    contract.CreateAPIRequest:
+      properties:
+        contract_address:
+          type: string
+        data_url:
+          type: string
+        mint_url:
+          type: string
+      type: object
+    contract.CreateResponse:
+      example:
+        webhook_hash: webhook_hash
+      properties:
+        webhook_hash:
+          type: string
+      type: object
+    createTradeRequestV1FeeInfo:
+      allOf:
+      - $ref: '#/components/schemas/FeeInfo'
+      description: Fee details
+      x-go-gen-location: models
+    depositToken:
+      allOf:
+      - $ref: '#/components/schemas/Token'
+      description: Details of the asset being deposited
+      x-go-gen-location: models
     encodeAssetRequestToken:
       example:
-        data:
-          blueprint: blueprint
-          token_id: token_id
-          token_address: token_address
-          id: id
+        data: null
         type: ETH
       properties:
         data:
-          $ref: '#/components/schemas/EncodeAssetTokenData'
+          $ref: '#/components/schemas/encodeAssetRequestTokenData'
         type:
           description: The type of the token to be encoded
           enum:
@@ -7099,6 +6659,11 @@ components:
           - ERC721
           type: string
       type: object
+      x-go-gen-location: models
+    encodeAssetRequestTokenData:
+      allOf:
+      - $ref: '#/components/schemas/EncodeAssetTokenData'
+      description: Extra token information to be encoded
       x-go-gen-location: models
     exchange.CreateExchangeAndURLResponse:
       example:
@@ -7126,6 +6691,46 @@ components:
           description: Ethereum address of the user who created transaction
           type: string
       type: object
+    feeTokenData:
+      allOf:
+      - $ref: '#/components/schemas/FeeData'
+      description: Fee token data details
+      x-go-gen-location: models
+    getSignableDepositRequestToken:
+      allOf:
+      - $ref: '#/components/schemas/SignableToken'
+      description: Details of the token the user is depositing
+      x-go-gen-location: models
+    getSignableOrderRequestTokenBuy:
+      allOf:
+      - $ref: '#/components/schemas/SignableToken'
+      description: Token to buy
+      x-go-gen-location: models
+    getSignableOrderRequestTokenSell:
+      allOf:
+      - $ref: '#/components/schemas/SignableToken'
+      description: Token to sell
+      x-go-gen-location: models
+    getSignableOrderResponseFeeInfo:
+      allOf:
+      - $ref: '#/components/schemas/FeeInfo'
+      description: Fee information
+      x-go-gen-location: models
+    getSignableTradeResponseResult:
+      allOf:
+      - $ref: '#/components/schemas/GetSignableTradeResult'
+      description: Signable trade result
+      x-go-gen-location: models
+    getSignableTradeResultFeeInfo:
+      allOf:
+      - $ref: '#/components/schemas/FeeInfo'
+      description: Fee details
+      x-go-gen-location: models
+    getSignableWithdrawalRequestToken:
+      allOf:
+      - $ref: '#/components/schemas/SignableToken'
+      description: Token to withdraw
+      x-go-gen-location: models
     lambdas.APIError:
       properties:
         code:
@@ -7141,6 +6746,11 @@ components:
           description: The error status code
           type: integer
       type: object
+    mintToken:
+      allOf:
+      - $ref: '#/components/schemas/Token'
+      description: Details of the asset which has been minted
+      x-go-gen-location: models
     nftprimarytransaction.CreateAPIRequest:
       properties:
         contract_address:
@@ -7174,22 +6784,26 @@ components:
           description: Contract address of the asset to be created
           type: string
         offer_id:
-          description: Temporary asset id
+          description: Temporary asset id. Might be a token id if the token id is
+            known or a generic description if it's not
           type: string
         provider:
           description: Provider name
           type: string
         seller_wallet_address:
-          description: Ethereum address of the seller
+          description: Wallet address that will receive the payment (in crypto) from
+            the checkout provider for the minted NFT
           type: string
         token_id:
-          description: Asset id
+          description: ID of the token that has been successfully minted - should
+            be the same as `offer_id`
           type: string
         transaction_id:
           description: Transaction id
           type: string
         url:
-          description: Widget Url signed by provider
+          description: NFT purchase URL given by the checkout provider that the user
+            can use to complete payment
           type: string
         user_wallet_address:
           description: Ethereum address of the user who wants to create transaction
@@ -7210,7 +6824,8 @@ components:
           description: Contract address of the asset
           type: string
         offer_id:
-          description: Temporary asset id
+          description: Temporary asset id. Might be a token id if the token id is
+            known or a generic description if it's not
           type: string
         provider:
           description: Provider name
@@ -7219,16 +6834,18 @@ components:
           description: Ethereum address of the seller
           type: string
         status:
-          description: Transaction status
+          description: "Transaction status enums(created, waitingPayment, pending,\
+            \ completed, failed)"
           type: string
         token_id:
-          description: Asset id
+          description: ID of the token that has been successfully minted - might or
+            not be the same as `offer_id`
           type: string
         transaction_id:
           description: Transaction id
           type: string
         user_wallet_address:
-          description: Ethereum address of the user who wants to create transaction
+          description: Wallet address that receives the minted NFT
           type: string
       type: object
     nftprimarytransaction.ListTransactionsResponse:
@@ -7320,19 +6937,21 @@ components:
           description: Fees to pay on this transaction
           type: number
         from_amount:
-          description: Amount of currency (from_currency) used for transaction
+          description: Amount of the currency specified in `from_currency` that the
+            buyer paid for the transaction
           type: number
         from_currency:
-          description: Currency used for transaction
+          description: Currency that the buyer used for the transaction
           type: string
         mint_id:
-          description: Mint id
+          description: Minting transaction ID - see mintTokens response
           type: string
         mint_status:
           description: Mint status
           type: string
         offer_id:
-          description: Temporary asset id
+          description: Temporary asset id. Might be a token id if the token id is
+            known or a generic description if it's not
           type: string
         provider:
           description: Provider name
@@ -7341,16 +6960,20 @@ components:
           description: Ethereum address of the seller
           type: string
         status:
-          description: Transaction status
+          description: "Transaction status enums(created, waitingPayment, pending,\
+            \ completed, failed)"
           type: string
         to_amount:
-          description: Amount of target currency (to_currency) bought
+          description: Amount of the currency specified in `to_currency` that the
+            seller received from the checkout provider for the transaction
           type: number
         to_currency:
-          description: Target currency
+          description: Currency (crypto) that the checkout provider sent to the seller
+            for the transaction
           type: string
         token_id:
-          description: Asset id
+          description: ID of the token that has been successfully minted - should
+            be the same as `offer_id`
           type: string
         transaction_id:
           description: Transaction id
@@ -7359,71 +6982,69 @@ components:
           description: Timestamp when the transaction was updated
           type: string
         user_wallet_address:
-          description: Ethereum address of the user who wants to create transaction
+          description: Wallet address that receives the minted NFT
           type: string
       type: object
     nftprimarytransaction.WidgetParams:
       properties:
         theme:
+          description: "enums(light, dark)"
           example: light
           type: string
       type: object
-    provider.GetMintStatusResponse:
-      example:
-        data:
-        - statusChangedAt: statusChangedAt
-          tokenId: tokenId
-          failureReason: failureReason
-          id: id
-          transactionHash:
-          - transactionHash
-          - transactionHash
-          status: status
-        - statusChangedAt: statusChangedAt
-          tokenId: tokenId
-          failureReason: failureReason
-          id: id
-          transactionHash:
-          - transactionHash
-          - transactionHash
-          status: status
-      properties:
-        data:
-          description: Mint status for requested transactions
-          items:
-            $ref: '#/components/schemas/provider.MintStatus'
-          type: array
-      type: object
-    provider.MintStatus:
-      example:
-        statusChangedAt: statusChangedAt
-        tokenId: tokenId
-        failureReason: failureReason
-        id: id
-        transactionHash:
-        - transactionHash
-        - transactionHash
-        status: status
-      properties:
-        failureReason:
-          description: reason for mint failure
-          type: string
-        id:
-          description: External transaction id
-          type: string
-        status:
-          description: Mint status
-          type: string
-        statusChangedAt:
-          description: status updated-at timestamp
-          type: string
-        tokenId:
-          description: Asset id
-          type: string
-        transactionHash:
-          description: Transaction hash
-          items:
-            type: string
-          type: array
-      type: object
+    orderBuy:
+      allOf:
+      - $ref: '#/components/schemas/Token'
+      description: Details of the asset being bought
+      x-go-gen-location: models
+    orderFeeInfoToken:
+      allOf:
+      - $ref: '#/components/schemas/FeeToken'
+      description: Details of the fee currency
+      x-go-gen-location: models
+    orderSell:
+      allOf:
+      - $ref: '#/components/schemas/Token'
+      description: Details of the asset being sold
+      x-go-gen-location: models
+    signableTransferDetailsToken:
+      allOf:
+      - $ref: '#/components/schemas/SignableToken'
+      description: Token to transfer
+      x-go-gen-location: models
+    signableTransferResponseDetailsToken:
+      allOf:
+      - $ref: '#/components/schemas/SignableToken'
+      description: Token in request to match in SDK implementation
+      x-go-gen-location: models
+    tokenDataOAIGen:
+      allOf:
+      - $ref: '#/components/schemas/TokenData'
+      description: Token details of this asset
+      x-go-gen-location: models
+    tokenDataProperties:
+      allOf:
+      - $ref: '#/components/schemas/AssetProperties'
+      description: Properties of this asset
+      x-go-gen-location: models
+    tradeA:
+      allOf:
+      - $ref: '#/components/schemas/TradeSide'
+      description: Side A of this trade (the buy order)
+      x-go-gen-location: models
+    tradeB:
+      allOf:
+      - $ref: '#/components/schemas/TradeSide'
+      description: Side B of this trade (the sell order)
+      x-go-gen-location: models
+    transferToken:
+      allOf:
+      - $ref: '#/components/schemas/Token'
+      description: Token transferred by the user
+      x-go-gen-location: models
+    withdrawalToken:
+      allOf:
+      - $ref: '#/components/schemas/Token'
+      description: Details of the asset this user is withdrawing
+      x-go-gen-location: models
 x-original-swagger-version: "2.0"

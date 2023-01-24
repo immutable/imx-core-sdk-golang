@@ -23,7 +23,7 @@ type Transfer struct {
 	Status string `json:"status"`
 	// Timestamp of the transfer
 	Timestamp NullableString `json:"timestamp"`
-	Token Token `json:"token"`
+	Token TransferToken `json:"token"`
 	// Sequential transaction ID
 	TransactionId int32 `json:"transaction_id"`
 	// Ethereum address of the user  who submitted this transfer
@@ -34,7 +34,7 @@ type Transfer struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTransfer(receiver string, status string, timestamp NullableString, token Token, transactionId int32, user string) *Transfer {
+func NewTransfer(receiver string, status string, timestamp NullableString, token TransferToken, transactionId int32, user string) *Transfer {
 	this := Transfer{}
 	this.Receiver = receiver
 	this.Status = status
@@ -128,9 +128,9 @@ func (o *Transfer) SetTimestamp(v string) {
 }
 
 // GetToken returns the Token field value
-func (o *Transfer) GetToken() Token {
+func (o *Transfer) GetToken() TransferToken {
 	if o == nil {
-		var ret Token
+		var ret TransferToken
 		return ret
 	}
 
@@ -139,7 +139,7 @@ func (o *Transfer) GetToken() Token {
 
 // GetTokenOk returns a tuple with the Token field value
 // and a boolean to check if the value has been set.
-func (o *Transfer) GetTokenOk() (*Token, bool) {
+func (o *Transfer) GetTokenOk() (*TransferToken, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -147,7 +147,7 @@ func (o *Transfer) GetTokenOk() (*Token, bool) {
 }
 
 // SetToken sets field value
-func (o *Transfer) SetToken(v Token) {
+func (o *Transfer) SetToken(v TransferToken) {
 	o.Token = v
 }
 

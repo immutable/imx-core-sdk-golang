@@ -86,7 +86,7 @@ No authorization required
 
 ## CreateTransferV1
 
-> CreateTransferResponseV1 CreateTransferV1(ctx).XImxEthAddress(xImxEthAddress).XImxEthSignature(xImxEthSignature).CreateTransferRequest(createTransferRequest).Execute()
+> CreateTransferResponse CreateTransferV1(ctx).XImxEthAddress(xImxEthAddress).XImxEthSignature(xImxEthSignature).CreateTransferRequest(createTransferRequest).Execute()
 
 Creates a transfer of tokens between two parties
 
@@ -117,7 +117,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `TransfersApi.CreateTransferV1``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `CreateTransferV1`: CreateTransferResponseV1
+    // response from `CreateTransferV1`: CreateTransferResponse
     fmt.Fprintf(os.Stdout, "Response from `TransfersApi.CreateTransferV1`: %v\n", resp)
 }
 ```
@@ -139,7 +139,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CreateTransferResponseV1**](CreateTransferResponseV1.md)
+[**CreateTransferResponse**](CreateTransferResponse.md)
 
 ### Authorization
 
@@ -177,7 +177,7 @@ import (
 )
 
 func main() {
-    getSignableTransferRequestV2 := *openapiclient.NewGetSignableTransferRequest("SenderEtherKey_example", []openapiclient.SignableTransferDetails{*openapiclient.NewSignableTransferDetails("Amount_example", "Receiver_example", *openapiclient.NewSignableToken())}) // GetSignableTransferRequest | get details of signable transfer
+    getSignableTransferRequestV2 := *openapiclient.NewGetSignableTransferRequest("SenderEtherKey_example", []openapiclient.SignableTransferDetails{*openapiclient.NewSignableTransferDetails("Amount_example", "Receiver_example", *openapiclient.NewSignableTransferDetailsToken())}) // GetSignableTransferRequest | get details of signable transfer
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
@@ -224,7 +224,7 @@ No authorization required
 
 ## GetSignableTransferV1
 
-> GetSignableTransferResponseV1 GetSignableTransferV1(ctx).GetSignableTransferRequest(getSignableTransferRequest).Execute()
+> GetSignableTransferResponse GetSignableTransferV1(ctx).GetSignableTransferRequest(getSignableTransferRequest).Execute()
 
 Gets details of a signable transfer
 
@@ -244,7 +244,7 @@ import (
 )
 
 func main() {
-    getSignableTransferRequest := *openapiclient.NewGetSignableTransferRequestV1("Amount_example", "Receiver_example", "Sender_example", *openapiclient.NewSignableToken()) // GetSignableTransferRequestV1 | get details of signable transfer
+    getSignableTransferRequest := *openapiclient.NewGetSignableTransferRequest("SenderEtherKey_example", []openapiclient.SignableTransferDetails{*openapiclient.NewSignableTransferDetails("Amount_example", "Receiver_example", *openapiclient.NewSignableTransferDetailsToken())}) // GetSignableTransferRequest | get details of signable transfer
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
@@ -253,7 +253,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `TransfersApi.GetSignableTransferV1``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `GetSignableTransferV1`: GetSignableTransferResponseV1
+    // response from `GetSignableTransferV1`: GetSignableTransferResponse
     fmt.Fprintf(os.Stdout, "Response from `TransfersApi.GetSignableTransferV1`: %v\n", resp)
 }
 ```
@@ -269,11 +269,11 @@ Other parameters are passed through a pointer to a apiGetSignableTransferV1Reque
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **getSignableTransferRequest** | [**GetSignableTransferRequestV1**](GetSignableTransferRequestV1.md) | get details of signable transfer | 
+ **getSignableTransferRequest** | [**GetSignableTransferRequest**](GetSignableTransferRequest.md) | get details of signable transfer | 
 
 ### Return type
 
-[**GetSignableTransferResponseV1**](GetSignableTransferResponseV1.md)
+[**GetSignableTransferResponse**](GetSignableTransferResponse.md)
 
 ### Authorization
 

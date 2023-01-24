@@ -4,11 +4,11 @@ All URIs are relative to *https://api.sandbox.x.immutable.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateNftPrimary**](NftCheckoutPrimaryApi.md#CreateNftPrimary) | **Post** /v2/nft/primary | Create nft primary transaction
+[**CreateNftPrimary**](NftCheckoutPrimaryApi.md#CreateNftPrimary) | **Post** /v2/nft/primary | Create NFT primary sale transaction
 [**GetCurrenciesNFTCheckoutPrimary**](NftCheckoutPrimaryApi.md#GetCurrenciesNFTCheckoutPrimary) | **Get** /v2/nft/primary/currencies | Get currencies with limits
-[**GetMintStatusById**](NftCheckoutPrimaryApi.md#GetMintStatusById) | **Get** /v2/{provider}/transaction_status | Get mint status by transaction id
-[**GetNftPrimaryTransaction**](NftCheckoutPrimaryApi.md#GetNftPrimaryTransaction) | **Get** /v2/nft/primary/{transaction_id} | Get nft primary transaction by id
-[**GetNftPrimaryTransactions**](NftCheckoutPrimaryApi.md#GetNftPrimaryTransactions) | **Get** /v2/nft/primary | Get a list of NFT primary transactions
+[**GetNftPrimaryTransaction**](NftCheckoutPrimaryApi.md#GetNftPrimaryTransaction) | **Get** /v2/nft/primary/{transaction_id} | Get NFT primary sale transaction by id
+[**GetNftPrimaryTransactions**](NftCheckoutPrimaryApi.md#GetNftPrimaryTransactions) | **Get** /v2/nft/primary | Get a list of NFT primary sales transactions
+[**RegisterNftPrimarySalesContract**](NftCheckoutPrimaryApi.md#RegisterNftPrimarySalesContract) | **Post** /v2/nft/primary/register | Executes NFT primary sales contract registration
 
 
 
@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 > NftprimarytransactionCreateResponse CreateNftPrimary(ctx).CreateAPIRequest(createAPIRequest).Execute()
 
-Create nft primary transaction
+Create NFT primary sale transaction
 
 
 
@@ -148,84 +148,11 @@ No authorization required
 [[Back to README]](../README.md)
 
 
-## GetMintStatusById
-
-> ProviderGetMintStatusResponse GetMintStatusById(ctx, provider).Id(id).Execute()
-
-Get mint status by transaction id
-
-
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "github.com/immutable/imx-core-sdk-golang/imx/api"
-    
-)
-
-func main() {
-    provider := "provider_example" // string | Provider name
-    id := "id_example" // string | transaction id
-
-    configuration := openapiclient.NewConfiguration()
-    apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.NftCheckoutPrimaryApi.GetMintStatusById(context.Background(), provider).Id(id).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `NftCheckoutPrimaryApi.GetMintStatusById``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetMintStatusById`: ProviderGetMintStatusResponse
-    fmt.Fprintf(os.Stdout, "Response from `NftCheckoutPrimaryApi.GetMintStatusById`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**provider** | **string** | Provider name | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetMintStatusByIdRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **id** | **string** | transaction id | 
-
-### Return type
-
-[**ProviderGetMintStatusResponse**](ProviderGetMintStatusResponse.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
 ## GetNftPrimaryTransaction
 
 > NftprimarytransactionGetResponse GetNftPrimaryTransaction(ctx, transactionId).Execute()
 
-Get nft primary transaction by id
+Get NFT primary sale transaction by id
 
 
 
@@ -294,9 +221,9 @@ No authorization required
 
 ## GetNftPrimaryTransactions
 
-> NftprimarytransactionListTransactionsResponse GetNftPrimaryTransactions(ctx).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).TransactionId(transactionId).ContractAddress(contractAddress).SellerWalletAddress(sellerWalletAddress).WalletAddress(walletAddress).Status(status).Provider(provider).MintId(mintId).Execute()
+> NftprimarytransactionListTransactionsResponse GetNftPrimaryTransactions(ctx).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).TransactionId(transactionId).ContractAddress(contractAddress).SellerWalletAddress(sellerWalletAddress).UserWalletAddress(userWalletAddress).Status(status).Provider(provider).MintId(mintId).Execute()
 
-Get a list of NFT primary transactions
+Get a list of NFT primary sales transactions
 
 
 
@@ -321,14 +248,14 @@ func main() {
     transactionId := "transactionId_example" // string | Transaction id (optional)
     contractAddress := "contractAddress_example" // string | Contract address of the asset (optional)
     sellerWalletAddress := "sellerWalletAddress_example" // string | Ethereum address of the seller (optional)
-    walletAddress := "walletAddress_example" // string | Ethereum address of the user who wants to create transaction (optional)
+    userWalletAddress := "userWalletAddress_example" // string | Ethereum address of the user who wants to create transaction (optional)
     status := "status_example" // string | Transaction status (optional)
-    provider := "provider_example" // string | Provider name (optional)
-    mintId := "mintId_example" // string | Mint id (optional)
+    provider := "provider_example" // string | Checkout provider name (optional)
+    mintId := "mintId_example" // string | Minting transaction ID - see mintTokens response (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.NftCheckoutPrimaryApi.GetNftPrimaryTransactions(context.Background()).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).TransactionId(transactionId).ContractAddress(contractAddress).SellerWalletAddress(sellerWalletAddress).WalletAddress(walletAddress).Status(status).Provider(provider).MintId(mintId).Execute()
+    resp, r, err := apiClient.NftCheckoutPrimaryApi.GetNftPrimaryTransactions(context.Background()).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).TransactionId(transactionId).ContractAddress(contractAddress).SellerWalletAddress(sellerWalletAddress).UserWalletAddress(userWalletAddress).Status(status).Provider(provider).MintId(mintId).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `NftCheckoutPrimaryApi.GetNftPrimaryTransactions``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -356,10 +283,10 @@ Name | Type | Description  | Notes
  **transactionId** | **string** | Transaction id | 
  **contractAddress** | **string** | Contract address of the asset | 
  **sellerWalletAddress** | **string** | Ethereum address of the seller | 
- **walletAddress** | **string** | Ethereum address of the user who wants to create transaction | 
+ **userWalletAddress** | **string** | Ethereum address of the user who wants to create transaction | 
  **status** | **string** | Transaction status | 
- **provider** | **string** | Provider name | 
- **mintId** | **string** | Mint id | 
+ **provider** | **string** | Checkout provider name | 
+ **mintId** | **string** | Minting transaction ID - see mintTokens response | 
 
 ### Return type
 
@@ -372,6 +299,73 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## RegisterNftPrimarySalesContract
+
+> ContractCreateResponse RegisterNftPrimarySalesContract(ctx).CreateAPIRequest(createAPIRequest).Execute()
+
+Executes NFT primary sales contract registration
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/immutable/imx-core-sdk-golang/imx/api"
+    
+)
+
+func main() {
+    createAPIRequest := *openapiclient.NewContractCreateAPIRequest() // ContractCreateAPIRequest | req
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.NftCheckoutPrimaryApi.RegisterNftPrimarySalesContract(context.Background()).CreateAPIRequest(createAPIRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `NftCheckoutPrimaryApi.RegisterNftPrimarySalesContract``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `RegisterNftPrimarySalesContract`: ContractCreateResponse
+    fmt.Fprintf(os.Stdout, "Response from `NftCheckoutPrimaryApi.RegisterNftPrimarySalesContract`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRegisterNftPrimarySalesContractRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **createAPIRequest** | [**ContractCreateAPIRequest**](ContractCreateAPIRequest.md) | req | 
+
+### Return type
+
+[**ContractCreateResponse**](ContractCreateResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

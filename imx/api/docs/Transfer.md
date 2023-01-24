@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Receiver** | **string** | Ethereum address of the user who received this transfer | 
 **Status** | **string** | Status of the transaction | 
 **Timestamp** | **NullableString** | Timestamp of the transfer | 
-**Token** | [**Token**](Token.md) |  | 
+**Token** | [**TransferToken**](TransferToken.md) |  | 
 **TransactionId** | **int32** | Sequential transaction ID | 
 **User** | **string** | Ethereum address of the user  who submitted this transfer | 
 
@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 
 ### NewTransfer
 
-`func NewTransfer(receiver string, status string, timestamp NullableString, token Token, transactionId int32, user string, ) *Transfer`
+`func NewTransfer(receiver string, status string, timestamp NullableString, token TransferToken, transactionId int32, user string, ) *Transfer`
 
 NewTransfer instantiates a new Transfer object
 This constructor will assign default values to properties that have it defined,
@@ -102,20 +102,20 @@ SetTimestamp sets Timestamp field to given value.
 UnsetTimestamp ensures that no value is present for Timestamp, not even an explicit nil
 ### GetToken
 
-`func (o *Transfer) GetToken() Token`
+`func (o *Transfer) GetToken() TransferToken`
 
 GetToken returns the Token field if non-nil, zero value otherwise.
 
 ### GetTokenOk
 
-`func (o *Transfer) GetTokenOk() (*Token, bool)`
+`func (o *Transfer) GetTokenOk() (*TransferToken, bool)`
 
 GetTokenOk returns a tuple with the Token field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetToken
 
-`func (o *Transfer) SetToken(v Token)`
+`func (o *Transfer) SetToken(v TransferToken)`
 
 SetToken sets Token field to given value.
 

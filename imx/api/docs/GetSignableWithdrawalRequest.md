@@ -5,14 +5,14 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Amount** | **string** | Amount of the token to withdraw | 
-**Token** | [**SignableToken**](SignableToken.md) |  | 
+**Token** | [**GetSignableWithdrawalRequestToken**](GetSignableWithdrawalRequestToken.md) |  | 
 **User** | **string** | Ethereum address of the user who is making this withdrawal | 
 
 ## Methods
 
 ### NewGetSignableWithdrawalRequest
 
-`func NewGetSignableWithdrawalRequest(amount string, token SignableToken, user string, ) *GetSignableWithdrawalRequest`
+`func NewGetSignableWithdrawalRequest(amount string, token GetSignableWithdrawalRequestToken, user string, ) *GetSignableWithdrawalRequest`
 
 NewGetSignableWithdrawalRequest instantiates a new GetSignableWithdrawalRequest object
 This constructor will assign default values to properties that have it defined,
@@ -49,20 +49,20 @@ SetAmount sets Amount field to given value.
 
 ### GetToken
 
-`func (o *GetSignableWithdrawalRequest) GetToken() SignableToken`
+`func (o *GetSignableWithdrawalRequest) GetToken() GetSignableWithdrawalRequestToken`
 
 GetToken returns the Token field if non-nil, zero value otherwise.
 
 ### GetTokenOk
 
-`func (o *GetSignableWithdrawalRequest) GetTokenOk() (*SignableToken, bool)`
+`func (o *GetSignableWithdrawalRequest) GetTokenOk() (*GetSignableWithdrawalRequestToken, bool)`
 
 GetTokenOk returns a tuple with the Token field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetToken
 
-`func (o *GetSignableWithdrawalRequest) SetToken(v SignableToken)`
+`func (o *GetSignableWithdrawalRequest) SetToken(v GetSignableWithdrawalRequestToken)`
 
 SetToken sets Token field to given value.
 

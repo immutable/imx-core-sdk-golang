@@ -17,7 +17,7 @@ import (
 
 // Token struct for Token
 type Token struct {
-	Data TokenData `json:"data"`
+	Data TokenDataOAIGen `json:"data"`
 	// Type of this asset (ETH/ERC20/ERC721)
 	Type string `json:"type"`
 }
@@ -26,7 +26,7 @@ type Token struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewToken(data TokenData, type_ string) *Token {
+func NewToken(data TokenDataOAIGen, type_ string) *Token {
 	this := Token{}
 	this.Data = data
 	this.Type = type_
@@ -42,9 +42,9 @@ func NewTokenWithDefaults() *Token {
 }
 
 // GetData returns the Data field value
-func (o *Token) GetData() TokenData {
+func (o *Token) GetData() TokenDataOAIGen {
 	if o == nil {
-		var ret TokenData
+		var ret TokenDataOAIGen
 		return ret
 	}
 
@@ -53,7 +53,7 @@ func (o *Token) GetData() TokenData {
 
 // GetDataOk returns a tuple with the Data field value
 // and a boolean to check if the value has been set.
-func (o *Token) GetDataOk() (*TokenData, bool) {
+func (o *Token) GetDataOk() (*TokenDataOAIGen, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -61,7 +61,7 @@ func (o *Token) GetDataOk() (*TokenData, bool) {
 }
 
 // SetData sets field value
-func (o *Token) SetData(v TokenData) {
+func (o *Token) SetData(v TokenDataOAIGen) {
 	o.Data = v
 }
 

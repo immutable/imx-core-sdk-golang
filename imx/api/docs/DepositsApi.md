@@ -103,7 +103,7 @@ import (
 )
 
 func main() {
-    getSignableDepositRequest := *openapiclient.NewGetSignableDepositRequest("Amount_example", *openapiclient.NewSignableToken(), "User_example") // GetSignableDepositRequest | Get details of signable deposit
+    getSignableDepositRequest := *openapiclient.NewGetSignableDepositRequest("Amount_example", *openapiclient.NewGetSignableDepositRequestToken(), "User_example") // GetSignableDepositRequest | Get details of signable deposit
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
@@ -150,7 +150,7 @@ No authorization required
 
 ## ListDeposits
 
-> ListDepositsResponse ListDeposits(ctx).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).User(user).Status(status).UpdatedMinTimestamp(updatedMinTimestamp).UpdatedMaxTimestamp(updatedMaxTimestamp).TokenType(tokenType).TokenId(tokenId).AssetId(assetId).TokenAddress(tokenAddress).TokenName(tokenName).MinQuantity(minQuantity).MaxQuantity(maxQuantity).Metadata(metadata).Execute()
+> ListDepositsResponse ListDeposits(ctx).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).User(user).Status(status).MinTimestamp(minTimestamp).MaxTimestamp(maxTimestamp).TokenType(tokenType).TokenId(tokenId).AssetId(assetId).TokenAddress(tokenAddress).TokenName(tokenName).MinQuantity(minQuantity).MaxQuantity(maxQuantity).Metadata(metadata).Execute()
 
 Get a list of deposits
 
@@ -176,8 +176,8 @@ func main() {
     direction := "direction_example" // string | Direction to sort (asc/desc) (optional)
     user := "user_example" // string | Ethereum address of the user who submitted this deposit (optional)
     status := "status_example" // string | Status of this deposit (optional)
-    updatedMinTimestamp := "updatedMinTimestamp_example" // string | Minimum timestamp for this deposit, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z' (optional)
-    updatedMaxTimestamp := "updatedMaxTimestamp_example" // string | Maximum timestamp for this deposit, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z' (optional)
+    minTimestamp := "minTimestamp_example" // string | Minimum timestamp for this deposit, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z' (optional)
+    maxTimestamp := "maxTimestamp_example" // string | Maximum timestamp for this deposit, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z' (optional)
     tokenType := "tokenType_example" // string | Token type of the deposited asset (optional)
     tokenId := "tokenId_example" // string | ERC721 Token ID of the minted asset (optional)
     assetId := "assetId_example" // string | Internal IMX ID of the minted asset (optional)
@@ -189,7 +189,7 @@ func main() {
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.DepositsApi.ListDeposits(context.Background()).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).User(user).Status(status).UpdatedMinTimestamp(updatedMinTimestamp).UpdatedMaxTimestamp(updatedMaxTimestamp).TokenType(tokenType).TokenId(tokenId).AssetId(assetId).TokenAddress(tokenAddress).TokenName(tokenName).MinQuantity(minQuantity).MaxQuantity(maxQuantity).Metadata(metadata).Execute()
+    resp, r, err := apiClient.DepositsApi.ListDeposits(context.Background()).PageSize(pageSize).Cursor(cursor).OrderBy(orderBy).Direction(direction).User(user).Status(status).MinTimestamp(minTimestamp).MaxTimestamp(maxTimestamp).TokenType(tokenType).TokenId(tokenId).AssetId(assetId).TokenAddress(tokenAddress).TokenName(tokenName).MinQuantity(minQuantity).MaxQuantity(maxQuantity).Metadata(metadata).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `DepositsApi.ListDeposits``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -216,8 +216,8 @@ Name | Type | Description  | Notes
  **direction** | **string** | Direction to sort (asc/desc) | 
  **user** | **string** | Ethereum address of the user who submitted this deposit | 
  **status** | **string** | Status of this deposit | 
- **updatedMinTimestamp** | **string** | Minimum timestamp for this deposit, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39; | 
- **updatedMaxTimestamp** | **string** | Maximum timestamp for this deposit, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39; | 
+ **minTimestamp** | **string** | Minimum timestamp for this deposit, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39; | 
+ **maxTimestamp** | **string** | Maximum timestamp for this deposit, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39; | 
  **tokenType** | **string** | Token type of the deposited asset | 
  **tokenId** | **string** | ERC721 Token ID of the minted asset | 
  **assetId** | **string** | Internal IMX ID of the minted asset | 

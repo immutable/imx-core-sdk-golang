@@ -25,33 +25,33 @@ type NftprimarytransactionTransactionData struct {
 	ExternalId *string `json:"external_id,omitempty"`
 	// Fees to pay on this transaction
 	FeesAmount *float32 `json:"fees_amount,omitempty"`
-	// Amount of currency (from_currency) used for transaction
+	// Amount of the currency specified in `from_currency` that the buyer paid for the transaction
 	FromAmount *float32 `json:"from_amount,omitempty"`
-	// Currency used for transaction
+	// Currency that the buyer used for the transaction
 	FromCurrency *string `json:"from_currency,omitempty"`
-	// Mint id
+	// Minting transaction ID - see mintTokens response
 	MintId *string `json:"mint_id,omitempty"`
 	// Mint status
 	MintStatus *string `json:"mint_status,omitempty"`
-	// Temporary asset id
+	// Temporary asset id. Might be a token id if the token id is known or a generic description if it's not
 	OfferId *string `json:"offer_id,omitempty"`
 	// Provider name
 	Provider *string `json:"provider,omitempty"`
 	// Ethereum address of the seller
 	SellerWalletAddress *string `json:"seller_wallet_address,omitempty"`
-	// Transaction status
+	// Transaction status enums(created, waitingPayment, pending, completed, failed)
 	Status *string `json:"status,omitempty"`
-	// Amount of target currency (to_currency) bought
+	// Amount of the currency specified in `to_currency` that the seller received from the checkout provider for the transaction
 	ToAmount *float32 `json:"to_amount,omitempty"`
-	// Target currency
+	// Currency (crypto) that the checkout provider sent to the seller for the transaction
 	ToCurrency *string `json:"to_currency,omitempty"`
-	// Asset id
+	// ID of the token that has been successfully minted - should be the same as `offer_id`
 	TokenId *string `json:"token_id,omitempty"`
 	// Transaction id
 	TransactionId *string `json:"transaction_id,omitempty"`
 	// Timestamp when the transaction was updated
 	UpdatedAt *string `json:"updated_at,omitempty"`
-	// Ethereum address of the user who wants to create transaction
+	// Wallet address that receives the minted NFT
 	UserWalletAddress *string `json:"user_wallet_address,omitempty"`
 }
 
