@@ -4798,21 +4798,18 @@ components:
       type: object
     GetSignableTradeResponse:
       example:
-        result: null
-        code: 0
-        message: message
-      properties:
-        code:
-          description: "TODO: Remove unused fields Code and Message\n[deprecated]\
-            \ Response code"
-          type: integer
-        message:
-          description: "[deprecated] Response message"
-          type: string
-        result:
-          $ref: '#/components/schemas/getSignableTradeResponseResult'
-      type: object
-    GetSignableTradeResult:
+        stark_key: stark_key
+        vault_id_sell: 5
+        vault_id_buy: 1
+        fee_info: null
+        expiration_timestamp: 0
+        amount_buy: amount_buy
+        asset_id_sell: asset_id_sell
+        amount_sell: amount_sell
+        payload_hash: payload_hash
+        asset_id_buy: asset_id_buy
+        nonce: 6
+        signable_message: signable_message
       properties:
         amount_buy:
           description: Amount to buy
@@ -4827,12 +4824,12 @@ components:
           description: ID of the asset to sell
           type: string
         expiration_timestamp:
-          description: Expiration timestamp of this trade
+          description: Expiration timestamp for this order
           type: integer
         fee_info:
-          $ref: '#/components/schemas/getSignableTradeResultFeeInfo'
+          $ref: '#/components/schemas/getSignableTradeResponseFeeInfo'
         nonce:
-          description: Nonce of the trade
+          description: Nonce of the order
           type: integer
         payload_hash:
           description: Payload Hash
@@ -4841,14 +4838,26 @@ components:
           description: Message to sign with L1 wallet to confirm trade request
           type: string
         stark_key:
-          description: Public stark key of the trading user
+          description: Public stark key of the created user
           type: string
         vault_id_buy:
-          description: ID of the vault into which the traded asset will be placed
+          description: ID of the vault into which the bought asset will be placed
           type: integer
         vault_id_sell:
           description: ID of the vault to sell from
           type: integer
+      required:
+      - amount_buy
+      - amount_sell
+      - asset_id_buy
+      - asset_id_sell
+      - expiration_timestamp
+      - nonce
+      - payload_hash
+      - signable_message
+      - stark_key
+      - vault_id_buy
+      - vault_id_sell
       type: object
     GetSignableTransferRequest:
       example:
@@ -6716,15 +6725,10 @@ components:
       - $ref: '#/components/schemas/FeeInfo'
       description: Fee information
       x-go-gen-location: models
-    getSignableTradeResponseResult:
-      allOf:
-      - $ref: '#/components/schemas/GetSignableTradeResult'
-      description: Signable trade result
-      x-go-gen-location: models
-    getSignableTradeResultFeeInfo:
+    getSignableTradeResponseFeeInfo:
       allOf:
       - $ref: '#/components/schemas/FeeInfo'
-      description: Fee details
+      description: Fee information
       x-go-gen-location: models
     getSignableWithdrawalRequestToken:
       allOf:

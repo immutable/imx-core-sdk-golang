@@ -1,4 +1,4 @@
-# GetSignableTradeResultFeeInfo
+# GetSignableTradeResponseFeeInfo
 
 ## Properties
 
@@ -10,79 +10,79 @@ Name | Type | Description | Notes
 
 ## Methods
 
-### NewGetSignableTradeResultFeeInfo
+### NewGetSignableTradeResponseFeeInfo
 
-`func NewGetSignableTradeResultFeeInfo(assetId string, feeLimit string, sourceVaultId int32, ) *GetSignableTradeResultFeeInfo`
+`func NewGetSignableTradeResponseFeeInfo(assetId string, feeLimit string, sourceVaultId int32, ) *GetSignableTradeResponseFeeInfo`
 
-NewGetSignableTradeResultFeeInfo instantiates a new GetSignableTradeResultFeeInfo object
+NewGetSignableTradeResponseFeeInfo instantiates a new GetSignableTradeResponseFeeInfo object
 This constructor will assign default values to properties that have it defined,
 and makes sure properties required by API are set, but the set of arguments
 will change when the set of required properties is changed
 
-### NewGetSignableTradeResultFeeInfoWithDefaults
+### NewGetSignableTradeResponseFeeInfoWithDefaults
 
-`func NewGetSignableTradeResultFeeInfoWithDefaults() *GetSignableTradeResultFeeInfo`
+`func NewGetSignableTradeResponseFeeInfoWithDefaults() *GetSignableTradeResponseFeeInfo`
 
-NewGetSignableTradeResultFeeInfoWithDefaults instantiates a new GetSignableTradeResultFeeInfo object
+NewGetSignableTradeResponseFeeInfoWithDefaults instantiates a new GetSignableTradeResponseFeeInfo object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
 ### GetAssetId
 
-`func (o *GetSignableTradeResultFeeInfo) GetAssetId() string`
+`func (o *GetSignableTradeResponseFeeInfo) GetAssetId() string`
 
 GetAssetId returns the AssetId field if non-nil, zero value otherwise.
 
 ### GetAssetIdOk
 
-`func (o *GetSignableTradeResultFeeInfo) GetAssetIdOk() (*string, bool)`
+`func (o *GetSignableTradeResponseFeeInfo) GetAssetIdOk() (*string, bool)`
 
 GetAssetIdOk returns a tuple with the AssetId field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAssetId
 
-`func (o *GetSignableTradeResultFeeInfo) SetAssetId(v string)`
+`func (o *GetSignableTradeResponseFeeInfo) SetAssetId(v string)`
 
 SetAssetId sets AssetId field to given value.
 
 
 ### GetFeeLimit
 
-`func (o *GetSignableTradeResultFeeInfo) GetFeeLimit() string`
+`func (o *GetSignableTradeResponseFeeInfo) GetFeeLimit() string`
 
 GetFeeLimit returns the FeeLimit field if non-nil, zero value otherwise.
 
 ### GetFeeLimitOk
 
-`func (o *GetSignableTradeResultFeeInfo) GetFeeLimitOk() (*string, bool)`
+`func (o *GetSignableTradeResponseFeeInfo) GetFeeLimitOk() (*string, bool)`
 
 GetFeeLimitOk returns a tuple with the FeeLimit field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetFeeLimit
 
-`func (o *GetSignableTradeResultFeeInfo) SetFeeLimit(v string)`
+`func (o *GetSignableTradeResponseFeeInfo) SetFeeLimit(v string)`
 
 SetFeeLimit sets FeeLimit field to given value.
 
 
 ### GetSourceVaultId
 
-`func (o *GetSignableTradeResultFeeInfo) GetSourceVaultId() int32`
+`func (o *GetSignableTradeResponseFeeInfo) GetSourceVaultId() int32`
 
 GetSourceVaultId returns the SourceVaultId field if non-nil, zero value otherwise.
 
 ### GetSourceVaultIdOk
 
-`func (o *GetSignableTradeResultFeeInfo) GetSourceVaultIdOk() (*int32, bool)`
+`func (o *GetSignableTradeResponseFeeInfo) GetSourceVaultIdOk() (*int32, bool)`
 
 GetSourceVaultIdOk returns a tuple with the SourceVaultId field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetSourceVaultId
 
-`func (o *GetSignableTradeResultFeeInfo) SetSourceVaultId(v int32)`
+`func (o *GetSignableTradeResponseFeeInfo) SetSourceVaultId(v int32)`
 
 SetSourceVaultId sets SourceVaultId field to given value.
 

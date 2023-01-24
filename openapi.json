@@ -5686,22 +5686,19 @@
     },
     "GetSignableTradeResponse": {
       "type": "object",
-      "properties": {
-        "code": {
-          "description": "TODO: Remove unused fields Code and Message\n[deprecated] Response code",
-          "type": "integer"
-        },
-        "message": {
-          "description": "[deprecated] Response message",
-          "type": "string"
-        },
-        "result": {
-          "$ref": "#/definitions/getSignableTradeResponseResult"
-        }
-      }
-    },
-    "GetSignableTradeResult": {
-      "type": "object",
+      "required": [
+        "amount_buy",
+        "amount_sell",
+        "asset_id_buy",
+        "asset_id_sell",
+        "expiration_timestamp",
+        "nonce",
+        "payload_hash",
+        "signable_message",
+        "stark_key",
+        "vault_id_buy",
+        "vault_id_sell"
+      ],
       "properties": {
         "amount_buy": {
           "description": "Amount to buy",
@@ -5720,14 +5717,14 @@
           "type": "string"
         },
         "expiration_timestamp": {
-          "description": "Expiration timestamp of this trade",
+          "description": "Expiration timestamp for this order",
           "type": "integer"
         },
         "fee_info": {
-          "$ref": "#/definitions/getSignableTradeResultFeeInfo"
+          "$ref": "#/definitions/getSignableTradeResponseFeeInfo"
         },
         "nonce": {
-          "description": "Nonce of the trade",
+          "description": "Nonce of the order",
           "type": "integer"
         },
         "payload_hash": {
@@ -5739,11 +5736,11 @@
           "type": "string"
         },
         "stark_key": {
-          "description": "Public stark key of the trading user",
+          "description": "Public stark key of the created user",
           "type": "string"
         },
         "vault_id_buy": {
-          "description": "ID of the vault into which the traded asset will be placed",
+          "description": "ID of the vault into which the bought asset will be placed",
           "type": "integer"
         },
         "vault_id_sell": {
@@ -7483,17 +7480,8 @@
       ],
       "x-go-gen-location": "models"
     },
-    "getSignableTradeResponseResult": {
-      "description": "Signable trade result",
-      "allOf": [
-        {
-          "$ref": "#/definitions/GetSignableTradeResult"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "getSignableTradeResultFeeInfo": {
-      "description": "Fee details",
+    "getSignableTradeResponseFeeInfo": {
+      "description": "Fee information",
       "allOf": [
         {
           "$ref": "#/definitions/FeeInfo"

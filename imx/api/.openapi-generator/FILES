@@ -100,9 +100,7 @@ docs/GetSignableRegistrationRequest.md
 docs/GetSignableRegistrationResponse.md
 docs/GetSignableTradeRequest.md
 docs/GetSignableTradeResponse.md
-docs/GetSignableTradeResponseResult.md
-docs/GetSignableTradeResult.md
-docs/GetSignableTradeResultFeeInfo.md
+docs/GetSignableTradeResponseFeeInfo.md
 docs/GetSignableTransferRequest.md
 docs/GetSignableTransferRequestV1.md
 docs/GetSignableTransferResponse.md
@@ -262,9 +260,7 @@ model_get_signable_registration_request.go
 model_get_signable_registration_response.go
 model_get_signable_trade_request.go
 model_get_signable_trade_response.go
-model_get_signable_trade_response_result.go
-model_get_signable_trade_result.go
-model_get_signable_trade_result_fee_info.go
+model_get_signable_trade_response_fee_info.go
 model_get_signable_transfer_request.go
 model_get_signable_transfer_request_v1.go
 model_get_signable_transfer_response.go

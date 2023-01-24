@@ -15,8 +15,8 @@ import (
 	"encoding/json"
 )
 
-// GetSignableTradeResultFeeInfo Fee details
-type GetSignableTradeResultFeeInfo struct {
+// GetSignableTradeResponseFeeInfo Fee information
+type GetSignableTradeResponseFeeInfo struct {
 	// ID of the asset these fees relate to
 	AssetId string `json:"asset_id"`
 	// Fee limit
@@ -25,28 +25,28 @@ type GetSignableTradeResultFeeInfo struct {
 	SourceVaultId int32 `json:"source_vault_id"`
 }
 
-// NewGetSignableTradeResultFeeInfo instantiates a new GetSignableTradeResultFeeInfo object
+// NewGetSignableTradeResponseFeeInfo instantiates a new GetSignableTradeResponseFeeInfo object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetSignableTradeResultFeeInfo(assetId string, feeLimit string, sourceVaultId int32) *GetSignableTradeResultFeeInfo {
-	this := GetSignableTradeResultFeeInfo{}
+func NewGetSignableTradeResponseFeeInfo(assetId string, feeLimit string, sourceVaultId int32) *GetSignableTradeResponseFeeInfo {
+	this := GetSignableTradeResponseFeeInfo{}
 	this.AssetId = assetId
 	this.FeeLimit = feeLimit
 	this.SourceVaultId = sourceVaultId
 	return &this
 }
 
-// NewGetSignableTradeResultFeeInfoWithDefaults instantiates a new GetSignableTradeResultFeeInfo object
+// NewGetSignableTradeResponseFeeInfoWithDefaults instantiates a new GetSignableTradeResponseFeeInfo object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewGetSignableTradeResultFeeInfoWithDefaults() *GetSignableTradeResultFeeInfo {
-	this := GetSignableTradeResultFeeInfo{}
+func NewGetSignableTradeResponseFeeInfoWithDefaults() *GetSignableTradeResponseFeeInfo {
+	this := GetSignableTradeResponseFeeInfo{}
 	return &this
 }
 
 // GetAssetId returns the AssetId field value
-func (o *GetSignableTradeResultFeeInfo) GetAssetId() string {
+func (o *GetSignableTradeResponseFeeInfo) GetAssetId() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -57,7 +57,7 @@ func (o *GetSignableTradeResultFeeInfo) GetAssetId() string {
 
 // GetAssetIdOk returns a tuple with the AssetId field value
 // and a boolean to check if the value has been set.
-func (o *GetSignableTradeResultFeeInfo) GetAssetIdOk() (*string, bool) {
+func (o *GetSignableTradeResponseFeeInfo) GetAssetIdOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -65,12 +65,12 @@ func (o *GetSignableTradeResultFeeInfo) GetAssetIdOk() (*string, bool) {
 }
 
 // SetAssetId sets field value
-func (o *GetSignableTradeResultFeeInfo) SetAssetId(v string) {
+func (o *GetSignableTradeResponseFeeInfo) SetAssetId(v string) {
 	o.AssetId = v
 }
 
 // GetFeeLimit returns the FeeLimit field value
-func (o *GetSignableTradeResultFeeInfo) GetFeeLimit() string {
+func (o *GetSignableTradeResponseFeeInfo) GetFeeLimit() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -81,7 +81,7 @@ func (o *GetSignableTradeResultFeeInfo) GetFeeLimit() string {
 
 // GetFeeLimitOk returns a tuple with the FeeLimit field value
 // and a boolean to check if the value has been set.
-func (o *GetSignableTradeResultFeeInfo) GetFeeLimitOk() (*string, bool) {
+func (o *GetSignableTradeResponseFeeInfo) GetFeeLimitOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -89,12 +89,12 @@ func (o *GetSignableTradeResultFeeInfo) GetFeeLimitOk() (*string, bool) {
 }
 
 // SetFeeLimit sets field value
-func (o *GetSignableTradeResultFeeInfo) SetFeeLimit(v string) {
+func (o *GetSignableTradeResponseFeeInfo) SetFeeLimit(v string) {
 	o.FeeLimit = v
 }
 
 // GetSourceVaultId returns the SourceVaultId field value
-func (o *GetSignableTradeResultFeeInfo) GetSourceVaultId() int32 {
+func (o *GetSignableTradeResponseFeeInfo) GetSourceVaultId() int32 {
 	if o == nil {
 		var ret int32
 		return ret
@@ -105,7 +105,7 @@ func (o *GetSignableTradeResultFeeInfo) GetSourceVaultId() int32 {
 
 // GetSourceVaultIdOk returns a tuple with the SourceVaultId field value
 // and a boolean to check if the value has been set.
-func (o *GetSignableTradeResultFeeInfo) GetSourceVaultIdOk() (*int32, bool) {
+func (o *GetSignableTradeResponseFeeInfo) GetSourceVaultIdOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -113,11 +113,11 @@ func (o *GetSignableTradeResultFeeInfo) GetSourceVaultIdOk() (*int32, bool) {
 }
 
 // SetSourceVaultId sets field value
-func (o *GetSignableTradeResultFeeInfo) SetSourceVaultId(v int32) {
+func (o *GetSignableTradeResponseFeeInfo) SetSourceVaultId(v int32) {
 	o.SourceVaultId = v
 }
 
-func (o GetSignableTradeResultFeeInfo) MarshalJSON() ([]byte, error) {
+func (o GetSignableTradeResponseFeeInfo) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if true {
 		toSerialize["asset_id"] = o.AssetId
@@ -131,38 +131,38 @@ func (o GetSignableTradeResultFeeInfo) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-type NullableGetSignableTradeResultFeeInfo struct {
-	value *GetSignableTradeResultFeeInfo
+type NullableGetSignableTradeResponseFeeInfo struct {
+	value *GetSignableTradeResponseFeeInfo
 	isSet bool
 }
 
-func (v NullableGetSignableTradeResultFeeInfo) Get() *GetSignableTradeResultFeeInfo {
+func (v NullableGetSignableTradeResponseFeeInfo) Get() *GetSignableTradeResponseFeeInfo {
 	return v.value
 }
 
-func (v *NullableGetSignableTradeResultFeeInfo) Set(val *GetSignableTradeResultFeeInfo) {
+func (v *NullableGetSignableTradeResponseFeeInfo) Set(val *GetSignableTradeResponseFeeInfo) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableGetSignableTradeResultFeeInfo) IsSet() bool {
+func (v NullableGetSignableTradeResponseFeeInfo) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableGetSignableTradeResultFeeInfo) Unset() {
+func (v *NullableGetSignableTradeResponseFeeInfo) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableGetSignableTradeResultFeeInfo(val *GetSignableTradeResultFeeInfo) *NullableGetSignableTradeResultFeeInfo {
-	return &NullableGetSignableTradeResultFeeInfo{value: val, isSet: true}
+func NewNullableGetSignableTradeResponseFeeInfo(val *GetSignableTradeResponseFeeInfo) *NullableGetSignableTradeResponseFeeInfo {
+	return &NullableGetSignableTradeResponseFeeInfo{value: val, isSet: true}
 }
 
-func (v NullableGetSignableTradeResultFeeInfo) MarshalJSON() ([]byte, error) {
+func (v NullableGetSignableTradeResponseFeeInfo) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableGetSignableTradeResultFeeInfo) UnmarshalJSON(src []byte) error {
+func (v *NullableGetSignableTradeResponseFeeInfo) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
