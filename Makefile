@@ -26,7 +26,7 @@ get-openapi-sandbox:
 generate-api:
 	rm -rf $(GENERATED_CODE_DIR) && \
     mkdir -p $(GENERATED_CODE_DIR) && \
-	docker run --rm -v $(shell pwd):/app openapitools/openapi-generator-cli generate \
+	docker run --rm -v $(shell pwd):/app openapitools/openapi-generator-cli:v6.1.0 generate \
 		-i ./app/openapi.json \
 		-c ./app/go-client-config.yaml \
 		-t ./app/generator-templates/templates \
