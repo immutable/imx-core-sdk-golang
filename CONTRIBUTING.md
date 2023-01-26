@@ -45,7 +45,7 @@ suggestion: Description # if you want to suggest a better way to implement a fea
 
 ## Send a pull request with changes
 
-For those unfamiliar with git, please follow the instructions [here](http://localhost:3000/docs/contributing#send-a-pull-request-pr-with-changes) on how to create a new pull request for this repository (replace `imx-docs` with `imx-core-sdk-golang`).
+For those unfamiliar with git, please follow the instructions [here](https://docs.x.immutable.com/docs/contributing/#send-a-pull-request-pr-with-changes) on how to create a new pull request for this repository (replace `imx-docs` with `imx-core-sdk-golang`).
 
 To ensure high quality contributions, please follow the guidelines below:
 * **Size:** Please keep pull requests small where possible (aim for 200-400 lines of code). Immutable prefers small pull requests to effectively review them.
