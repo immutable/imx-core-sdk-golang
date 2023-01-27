@@ -20,7 +20,10 @@ See the [Developer Home](https://docs.x.immutable.com/) for general information 
 * See the [API reference documentation](https://docs.x.immutable.com/reference) for more information on our API's.
 * Reference docs related to this (Golang imx core) SDK can be found [here](https://docs.x.immutable.com/sdk-docs/core-sdk-golang/overview)
 
-The following code snippets talk about how to get setup and use the various sections of the Golang SDK for most common use cases. Any questions that are not covered here please reach out to team. See [Getting Help](#getting-help)
+### Sample repositories
+* [imx-golang-example](https://github.com/immutable/imx-golang-example) - Example usage of the Golang Core SDK 
+
+The following code snippets talk about how to get setup and use the various sections of the Golang SDK for most common use cases. Any questions that are not covered here please reach out to the team (see [Getting Help](#getting-help)).
 
 
 ## Installation
