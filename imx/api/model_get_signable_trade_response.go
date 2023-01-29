@@ -27,7 +27,7 @@ type GetSignableTradeResponse struct {
 	AssetIdSell string `json:"asset_id_sell"`
 	// Expiration timestamp for this order
 	ExpirationTimestamp int32 `json:"expiration_timestamp"`
-	FeeInfo *GetSignableTradeResponseFeeInfo `json:"fee_info,omitempty"`
+	FeeInfo *FeeInfo `json:"fee_info,omitempty"`
 	// Nonce of the order
 	Nonce int32 `json:"nonce"`
 	// Payload Hash
@@ -191,9 +191,9 @@ func (o *GetSignableTradeResponse) SetExpirationTimestamp(v int32) {
 }
 
 // GetFeeInfo returns the FeeInfo field value if set, zero value otherwise.
-func (o *GetSignableTradeResponse) GetFeeInfo() GetSignableTradeResponseFeeInfo {
+func (o *GetSignableTradeResponse) GetFeeInfo() FeeInfo {
 	if o == nil || o.FeeInfo == nil {
-		var ret GetSignableTradeResponseFeeInfo
+		var ret FeeInfo
 		return ret
 	}
 	return *o.FeeInfo
@@ -201,7 +201,7 @@ func (o *GetSignableTradeResponse) GetFeeInfo() GetSignableTradeResponseFeeInfo 
 
 // GetFeeInfoOk returns a tuple with the FeeInfo field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *GetSignableTradeResponse) GetFeeInfoOk() (*GetSignableTradeResponseFeeInfo, bool) {
+func (o *GetSignableTradeResponse) GetFeeInfoOk() (*FeeInfo, bool) {
 	if o == nil || o.FeeInfo == nil {
 		return nil, false
 	}
@@ -217,8 +217,8 @@ func (o *GetSignableTradeResponse) HasFeeInfo() bool {
 	return false
 }
 
-// SetFeeInfo gets a reference to the given GetSignableTradeResponseFeeInfo and assigns it to the FeeInfo field.
-func (o *GetSignableTradeResponse) SetFeeInfo(v GetSignableTradeResponseFeeInfo) {
+// SetFeeInfo gets a reference to the given FeeInfo and assigns it to the FeeInfo field.
+func (o *GetSignableTradeResponse) SetFeeInfo(v FeeInfo) {
 	o.FeeInfo = &v
 }
 

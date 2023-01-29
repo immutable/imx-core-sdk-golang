@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**A** | [**TradeA**](TradeA.md) |  | 
-**B** | [**TradeB**](TradeB.md) |  | 
+**A** | [**TradeSide**](TradeSide.md) |  | 
+**B** | [**TradeSide**](TradeSide.md) |  | 
 **Status** | **string** | Status of this trade | 
 **Timestamp** | **NullableString** | Time this trade occurred | 
 **TransactionId** | **int32** | Sequential ID of this trade within Immutable X | 
@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 
 ### NewTrade
 
-`func NewTrade(a TradeA, b TradeB, status string, timestamp NullableString, transactionId int32, ) *Trade`
+`func NewTrade(a TradeSide, b TradeSide, status string, timestamp NullableString, transactionId int32, ) *Trade`
 
 NewTrade instantiates a new Trade object
 This constructor will assign default values to properties that have it defined,
@@ -31,40 +31,40 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetA
 
-`func (o *Trade) GetA() TradeA`
+`func (o *Trade) GetA() TradeSide`
 
 GetA returns the A field if non-nil, zero value otherwise.
 
 ### GetAOk
 
-`func (o *Trade) GetAOk() (*TradeA, bool)`
+`func (o *Trade) GetAOk() (*TradeSide, bool)`
 
 GetAOk returns a tuple with the A field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetA
 
-`func (o *Trade) SetA(v TradeA)`
+`func (o *Trade) SetA(v TradeSide)`
 
 SetA sets A field to given value.
 
 
 ### GetB
 
-`func (o *Trade) GetB() TradeB`
+`func (o *Trade) GetB() TradeSide`
 
 GetB returns the B field if non-nil, zero value otherwise.
 
 ### GetBOk
 
-`func (o *Trade) GetBOk() (*TradeB, bool)`
+`func (o *Trade) GetBOk() (*TradeSide, bool)`
 
 GetBOk returns a tuple with the B field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetB
 
-`func (o *Trade) SetB(v TradeB)`
+`func (o *Trade) SetB(v TradeSide)`
 
 SetB sets B field to given value.
 

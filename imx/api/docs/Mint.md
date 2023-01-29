@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Fees** | Pointer to [**[]Fee**](Fee.md) | Fee details | [optional] 
 **Status** | **string** | Status of this mint | 
 **Timestamp** | **string** | Timestamp this mint was initiated | 
-**Token** | [**MintToken**](MintToken.md) |  | 
+**Token** | [**Token**](Token.md) |  | 
 **TransactionId** | **int32** | Sequential ID of transaction in Immutable X | 
 **User** | **string** | Ethereum address of the user to whom the asset has been minted | 
 
@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 
 ### NewMint
 
-`func NewMint(status string, timestamp string, token MintToken, transactionId int32, user string, ) *Mint`
+`func NewMint(status string, timestamp string, token Token, transactionId int32, user string, ) *Mint`
 
 NewMint instantiates a new Mint object
 This constructor will assign default values to properties that have it defined,
@@ -97,20 +97,20 @@ SetTimestamp sets Timestamp field to given value.
 
 ### GetToken
 
-`func (o *Mint) GetToken() MintToken`
+`func (o *Mint) GetToken() Token`
 
 GetToken returns the Token field if non-nil, zero value otherwise.
 
 ### GetTokenOk
 
-`func (o *Mint) GetTokenOk() (*MintToken, bool)`
+`func (o *Mint) GetTokenOk() (*Token, bool)`
 
 GetTokenOk returns a tuple with the Token field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetToken
 
-`func (o *Mint) SetToken(v MintToken)`
+`func (o *Mint) SetToken(v Token)`
 
 SetToken sets Token field to given value.
 

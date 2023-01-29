@@ -5,14 +5,14 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Amount** | **string** | Amount of the token the user is depositing | 
-**Token** | [**GetSignableDepositRequestToken**](GetSignableDepositRequestToken.md) |  | 
+**Token** | [**SignableToken**](SignableToken.md) |  | 
 **User** | **string** | User who is depositing | 
 
 ## Methods
 
 ### NewGetSignableDepositRequest
 
-`func NewGetSignableDepositRequest(amount string, token GetSignableDepositRequestToken, user string, ) *GetSignableDepositRequest`
+`func NewGetSignableDepositRequest(amount string, token SignableToken, user string, ) *GetSignableDepositRequest`
 
 NewGetSignableDepositRequest instantiates a new GetSignableDepositRequest object
 This constructor will assign default values to properties that have it defined,
@@ -49,20 +49,20 @@ SetAmount sets Amount field to given value.
 
 ### GetToken
 
-`func (o *GetSignableDepositRequest) GetToken() GetSignableDepositRequestToken`
+`func (o *GetSignableDepositRequest) GetToken() SignableToken`
 
 GetToken returns the Token field if non-nil, zero value otherwise.
 
 ### GetTokenOk
 
-`func (o *GetSignableDepositRequest) GetTokenOk() (*GetSignableDepositRequestToken, bool)`
+`func (o *GetSignableDepositRequest) GetTokenOk() (*SignableToken, bool)`
 
 GetTokenOk returns a tuple with the Token field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetToken
 
-`func (o *GetSignableDepositRequest) SetToken(v GetSignableDepositRequestToken)`
+`func (o *GetSignableDepositRequest) SetToken(v SignableToken)`
 
 SetToken sets Token field to given value.
 

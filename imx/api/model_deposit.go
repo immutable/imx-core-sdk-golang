@@ -21,7 +21,7 @@ type Deposit struct {
 	Status string `json:"status"`
 	// Timestamp of the deposit
 	Timestamp string `json:"timestamp"`
-	Token DepositToken `json:"token"`
+	Token Token `json:"token"`
 	// Sequential ID of this transaction within Immutable X
 	TransactionId int32 `json:"transaction_id"`
 	// Ethereum address of the user making this deposit
@@ -32,7 +32,7 @@ type Deposit struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDeposit(status string, timestamp string, token DepositToken, transactionId int32, user string) *Deposit {
+func NewDeposit(status string, timestamp string, token Token, transactionId int32, user string) *Deposit {
 	this := Deposit{}
 	this.Status = status
 	this.Timestamp = timestamp
@@ -99,9 +99,9 @@ func (o *Deposit) SetTimestamp(v string) {
 }
 
 // GetToken returns the Token field value
-func (o *Deposit) GetToken() DepositToken {
+func (o *Deposit) GetToken() Token {
 	if o == nil {
-		var ret DepositToken
+		var ret Token
 		return ret
 	}
 
@@ -110,7 +110,7 @@ func (o *Deposit) GetToken() DepositToken {
 
 // GetTokenOk returns a tuple with the Token field value
 // and a boolean to check if the value has been set.
-func (o *Deposit) GetTokenOk() (*DepositToken, bool) {
+func (o *Deposit) GetTokenOk() (*Token, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -118,7 +118,7 @@ func (o *Deposit) GetTokenOk() (*DepositToken, bool) {
 }
 
 // SetToken sets field value
-func (o *Deposit) SetToken(v DepositToken) {
+func (o *Deposit) SetToken(v Token) {
 	o.Token = v
 }
 

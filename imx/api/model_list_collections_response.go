@@ -22,14 +22,14 @@ type ListCollectionsResponse struct {
 	// Remaining results flag. 1: there are remaining results matching this query, 0: no remaining results
 	Remaining int32 `json:"remaining"`
 	// Collections matching query parameters
-	Result []CollectionCollection `json:"result"`
+	Result []Collection `json:"result"`
 }
 
 // NewListCollectionsResponse instantiates a new ListCollectionsResponse object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewListCollectionsResponse(cursor string, remaining int32, result []CollectionCollection) *ListCollectionsResponse {
+func NewListCollectionsResponse(cursor string, remaining int32, result []Collection) *ListCollectionsResponse {
 	this := ListCollectionsResponse{}
 	this.Cursor = cursor
 	this.Remaining = remaining
@@ -94,9 +94,9 @@ func (o *ListCollectionsResponse) SetRemaining(v int32) {
 }
 
 // GetResult returns the Result field value
-func (o *ListCollectionsResponse) GetResult() []CollectionCollection {
+func (o *ListCollectionsResponse) GetResult() []Collection {
 	if o == nil {
-		var ret []CollectionCollection
+		var ret []Collection
 		return ret
 	}
 
@@ -105,7 +105,7 @@ func (o *ListCollectionsResponse) GetResult() []CollectionCollection {
 
 // GetResultOk returns a tuple with the Result field value
 // and a boolean to check if the value has been set.
-func (o *ListCollectionsResponse) GetResultOk() ([]CollectionCollection, bool) {
+func (o *ListCollectionsResponse) GetResultOk() ([]Collection, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -113,7 +113,7 @@ func (o *ListCollectionsResponse) GetResultOk() ([]CollectionCollection, bool) {
 }
 
 // SetResult sets field value
-func (o *ListCollectionsResponse) SetResult(v []CollectionCollection) {
+func (o *ListCollectionsResponse) SetResult(v []Collection) {
 	o.Result = v
 }
 

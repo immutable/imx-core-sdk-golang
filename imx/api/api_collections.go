@@ -34,8 +34,8 @@ type CollectionsApi interface {
 	CreateCollection(ctx context.Context) ApiCreateCollectionRequest
 
 	// CreateCollectionExecute executes the request
-	//  @return CollectionCollection
-	CreateCollectionExecute(r ApiCreateCollectionRequest) (*CollectionCollection, *http.Response, error)
+	//  @return Collection
+	CreateCollectionExecute(r ApiCreateCollectionRequest) (*Collection, *http.Response, error)
 
 	/*
 	GetCollection Get details of a collection at the given address
@@ -49,8 +49,8 @@ type CollectionsApi interface {
 	GetCollection(ctx context.Context, address string) ApiGetCollectionRequest
 
 	// GetCollectionExecute executes the request
-	//  @return CollectionCollection
-	GetCollectionExecute(r ApiGetCollectionRequest) (*CollectionCollection, *http.Response, error)
+	//  @return Collection
+	GetCollectionExecute(r ApiGetCollectionRequest) (*Collection, *http.Response, error)
 
 	/*
 	ListCollectionFilters Get a list of collection filters
@@ -93,8 +93,8 @@ type CollectionsApi interface {
 	UpdateCollection(ctx context.Context, address string) ApiUpdateCollectionRequest
 
 	// UpdateCollectionExecute executes the request
-	//  @return CollectionCollection
-	UpdateCollectionExecute(r ApiUpdateCollectionRequest) (*CollectionCollection, *http.Response, error)
+	//  @return Collection
+	UpdateCollectionExecute(r ApiUpdateCollectionRequest) (*Collection, *http.Response, error)
 }
 
 // CollectionsApiService CollectionsApi service
@@ -126,7 +126,7 @@ func (r ApiCreateCollectionRequest) CreateCollectionRequest(createCollectionRequ
 	return r
 }
 
-func (r ApiCreateCollectionRequest) Execute() (*CollectionCollection, *http.Response, error) {
+func (r ApiCreateCollectionRequest) Execute() (*Collection, *http.Response, error) {
 	return r.ApiService.CreateCollectionExecute(r)
 }
 
@@ -146,13 +146,13 @@ func (a *CollectionsApiService) CreateCollection(ctx context.Context) ApiCreateC
 }
 
 // Execute executes the request
-//  @return CollectionCollection
-func (a *CollectionsApiService) CreateCollectionExecute(r ApiCreateCollectionRequest) (*CollectionCollection, *http.Response, error) {
+//  @return Collection
+func (a *CollectionsApiService) CreateCollectionExecute(r ApiCreateCollectionRequest) (*Collection, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CollectionCollection
+		localVarReturnValue  *Collection
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CollectionsApiService.CreateCollection")
@@ -278,7 +278,7 @@ type ApiGetCollectionRequest struct {
 	address string
 }
 
-func (r ApiGetCollectionRequest) Execute() (*CollectionCollection, *http.Response, error) {
+func (r ApiGetCollectionRequest) Execute() (*Collection, *http.Response, error) {
 	return r.ApiService.GetCollectionExecute(r)
 }
 
@@ -300,13 +300,13 @@ func (a *CollectionsApiService) GetCollection(ctx context.Context, address strin
 }
 
 // Execute executes the request
-//  @return CollectionCollection
-func (a *CollectionsApiService) GetCollectionExecute(r ApiGetCollectionRequest) (*CollectionCollection, *http.Response, error) {
+//  @return Collection
+func (a *CollectionsApiService) GetCollectionExecute(r ApiGetCollectionRequest) (*Collection, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CollectionCollection
+		localVarReturnValue  *Collection
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CollectionsApiService.GetCollection")
@@ -722,7 +722,7 @@ func (r ApiUpdateCollectionRequest) UpdateCollectionRequest(updateCollectionRequ
 	return r
 }
 
-func (r ApiUpdateCollectionRequest) Execute() (*CollectionCollection, *http.Response, error) {
+func (r ApiUpdateCollectionRequest) Execute() (*Collection, *http.Response, error) {
 	return r.ApiService.UpdateCollectionExecute(r)
 }
 
@@ -744,13 +744,13 @@ func (a *CollectionsApiService) UpdateCollection(ctx context.Context, address st
 }
 
 // Execute executes the request
-//  @return CollectionCollection
-func (a *CollectionsApiService) UpdateCollectionExecute(r ApiUpdateCollectionRequest) (*CollectionCollection, *http.Response, error) {
+//  @return Collection
+func (a *CollectionsApiService) UpdateCollectionExecute(r ApiUpdateCollectionRequest) (*Collection, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CollectionCollection
+		localVarReturnValue  *Collection
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CollectionsApiService.UpdateCollection")

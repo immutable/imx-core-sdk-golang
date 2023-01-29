@@ -12,13 +12,13 @@ Name | Type | Description | Notes
 **ReceiverStarkKey** | **string** | Receiver of the transfer | 
 **ReceiverVaultId** | **int32** | ID of the vault being transferred to | 
 **SenderVaultId** | **int32** | ID of the vault being transferred from | 
-**Token** | [**SignableTransferResponseDetailsToken**](SignableTransferResponseDetailsToken.md) |  | 
+**Token** | [**SignableToken**](SignableToken.md) |  | 
 
 ## Methods
 
 ### NewSignableTransferResponseDetails
 
-`func NewSignableTransferResponseDetails(amount string, assetId string, expirationTimestamp int32, nonce int32, payloadHash string, receiverStarkKey string, receiverVaultId int32, senderVaultId int32, token SignableTransferResponseDetailsToken, ) *SignableTransferResponseDetails`
+`func NewSignableTransferResponseDetails(amount string, assetId string, expirationTimestamp int32, nonce int32, payloadHash string, receiverStarkKey string, receiverVaultId int32, senderVaultId int32, token SignableToken, ) *SignableTransferResponseDetails`
 
 NewSignableTransferResponseDetails instantiates a new SignableTransferResponseDetails object
 This constructor will assign default values to properties that have it defined,
@@ -195,20 +195,20 @@ SetSenderVaultId sets SenderVaultId field to given value.
 
 ### GetToken
 
-`func (o *SignableTransferResponseDetails) GetToken() SignableTransferResponseDetailsToken`
+`func (o *SignableTransferResponseDetails) GetToken() SignableToken`
 
 GetToken returns the Token field if non-nil, zero value otherwise.
 
 ### GetTokenOk
 
-`func (o *SignableTransferResponseDetails) GetTokenOk() (*SignableTransferResponseDetailsToken, bool)`
+`func (o *SignableTransferResponseDetails) GetTokenOk() (*SignableToken, bool)`
 
 GetTokenOk returns a tuple with the Token field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetToken
 
-`func (o *SignableTransferResponseDetails) SetToken(v SignableTransferResponseDetailsToken)`
+`func (o *SignableTransferResponseDetails) SetToken(v SignableToken)`
 
 SetToken sets Token field to given value.
 

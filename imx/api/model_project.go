@@ -37,8 +37,6 @@ type Project struct {
 	MintRemaining int32 `json:"mint_remaining"`
 	// The project name
 	Name string `json:"name"`
-	// The organisation ID that the project belongs to
-	OrgId *string `json:"org_id,omitempty"`
 }
 
 // NewProject instantiates a new Project object
@@ -308,38 +306,6 @@ func (o *Project) SetName(v string) {
 	o.Name = v
 }
 
-// GetOrgId returns the OrgId field value if set, zero value otherwise.
-func (o *Project) GetOrgId() string {
-	if o == nil || o.OrgId == nil {
-		var ret string
-		return ret
-	}
-	return *o.OrgId
-}
-
-// GetOrgIdOk returns a tuple with the OrgId field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Project) GetOrgIdOk() (*string, bool) {
-	if o == nil || o.OrgId == nil {
-		return nil, false
-	}
-	return o.OrgId, true
-}
-
-// HasOrgId returns a boolean if a field has been set.
-func (o *Project) HasOrgId() bool {
-	if o != nil && o.OrgId != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetOrgId gets a reference to the given string and assigns it to the OrgId field.
-func (o *Project) SetOrgId(v string) {
-	o.OrgId = &v
-}
-
 func (o Project) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if true {
@@ -371,9 +337,6 @@ func (o Project) MarshalJSON() ([]byte, error) {
 	}
 	if true {
 		toSerialize["name"] = o.Name
-	}
-	if o.OrgId != nil {
-		toSerialize["org_id"] = o.OrgId
 	}
 	return json.Marshal(toSerialize)
 }

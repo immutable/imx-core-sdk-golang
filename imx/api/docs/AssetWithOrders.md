@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Collection** | [**AssetWithOrdersCollection**](AssetWithOrdersCollection.md) |  | 
+**Collection** | [**CollectionDetails**](CollectionDetails.md) |  | 
 **CreatedAt** | **NullableString** | Timestamp of when the asset was created | 
 **Description** | **NullableString** | Description of this asset | 
 **Fees** | Pointer to [**[]Fee**](Fee.md) | Royalties to pay on this asset operations | [optional] 
@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **ImageUrl** | **NullableString** | URL of the image which should be used for this asset | 
 **Metadata** | **map[string]interface{}** | Metadata of this asset | 
 **Name** | **NullableString** | Name of this asset | 
-**Orders** | Pointer to [**AssetWithOrdersOrders**](AssetWithOrdersOrders.md) |  | [optional] 
+**Orders** | Pointer to [**OrderDetails**](OrderDetails.md) |  | [optional] 
 **Status** | **string** | Status of this asset (where it is in the system) | 
 **TokenAddress** | **string** | Address of the ERC721 contract | 
 **TokenId** | **string** | ERC721 Token ID of this asset | 
@@ -24,7 +24,7 @@ Name | Type | Description | Notes
 
 ### NewAssetWithOrders
 
-`func NewAssetWithOrders(collection AssetWithOrdersCollection, createdAt NullableString, description NullableString, imageUrl NullableString, metadata map[string]interface{}, name NullableString, status string, tokenAddress string, tokenId string, updatedAt NullableString, uri NullableString, user string, ) *AssetWithOrders`
+`func NewAssetWithOrders(collection CollectionDetails, createdAt NullableString, description NullableString, imageUrl NullableString, metadata map[string]interface{}, name NullableString, status string, tokenAddress string, tokenId string, updatedAt NullableString, uri NullableString, user string, ) *AssetWithOrders`
 
 NewAssetWithOrders instantiates a new AssetWithOrders object
 This constructor will assign default values to properties that have it defined,
@@ -41,20 +41,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetCollection
 
-`func (o *AssetWithOrders) GetCollection() AssetWithOrdersCollection`
+`func (o *AssetWithOrders) GetCollection() CollectionDetails`
 
 GetCollection returns the Collection field if non-nil, zero value otherwise.
 
 ### GetCollectionOk
 
-`func (o *AssetWithOrders) GetCollectionOk() (*AssetWithOrdersCollection, bool)`
+`func (o *AssetWithOrders) GetCollectionOk() (*CollectionDetails, bool)`
 
 GetCollectionOk returns a tuple with the Collection field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetCollection
 
-`func (o *AssetWithOrders) SetCollection(v AssetWithOrdersCollection)`
+`func (o *AssetWithOrders) SetCollection(v CollectionDetails)`
 
 SetCollection sets Collection field to given value.
 
@@ -261,20 +261,20 @@ SetName sets Name field to given value.
 UnsetName ensures that no value is present for Name, not even an explicit nil
 ### GetOrders
 
-`func (o *AssetWithOrders) GetOrders() AssetWithOrdersOrders`
+`func (o *AssetWithOrders) GetOrders() OrderDetails`
 
 GetOrders returns the Orders field if non-nil, zero value otherwise.
 
 ### GetOrdersOk
 
-`func (o *AssetWithOrders) GetOrdersOk() (*AssetWithOrdersOrders, bool)`
+`func (o *AssetWithOrders) GetOrdersOk() (*OrderDetails, bool)`
 
 GetOrdersOk returns a tuple with the Orders field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOrders
 
-`func (o *AssetWithOrders) SetOrders(v AssetWithOrdersOrders)`
+`func (o *AssetWithOrders) SetOrders(v OrderDetails)`
 
 SetOrders sets Orders field to given value.
 

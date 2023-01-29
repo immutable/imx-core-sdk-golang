@@ -8,15 +8,15 @@ Name | Type | Description | Notes
 **AmountSell** | **string** | Amount to sell (quantity) | 
 **ExpirationTimestamp** | Pointer to **int32** | ExpirationTimestamp in Unix time. Note: will be rounded down to the nearest hour | [optional] 
 **Fees** | Pointer to [**[]FeeEntry**](FeeEntry.md) | Inclusion of either maker or taker fees | [optional] 
-**TokenBuy** | [**GetSignableOrderRequestTokenBuy**](GetSignableOrderRequestTokenBuy.md) |  | 
-**TokenSell** | [**GetSignableOrderRequestTokenSell**](GetSignableOrderRequestTokenSell.md) |  | 
+**TokenBuy** | [**SignableToken**](SignableToken.md) |  | 
+**TokenSell** | [**SignableToken**](SignableToken.md) |  | 
 **User** | **string** | Ethereum address of the submitting user | 
 
 ## Methods
 
 ### NewGetSignableOrderRequest
 
-`func NewGetSignableOrderRequest(amountBuy string, amountSell string, tokenBuy GetSignableOrderRequestTokenBuy, tokenSell GetSignableOrderRequestTokenSell, user string, ) *GetSignableOrderRequest`
+`func NewGetSignableOrderRequest(amountBuy string, amountSell string, tokenBuy SignableToken, tokenSell SignableToken, user string, ) *GetSignableOrderRequest`
 
 NewGetSignableOrderRequest instantiates a new GetSignableOrderRequest object
 This constructor will assign default values to properties that have it defined,
@@ -123,40 +123,40 @@ HasFees returns a boolean if a field has been set.
 
 ### GetTokenBuy
 
-`func (o *GetSignableOrderRequest) GetTokenBuy() GetSignableOrderRequestTokenBuy`
+`func (o *GetSignableOrderRequest) GetTokenBuy() SignableToken`
 
 GetTokenBuy returns the TokenBuy field if non-nil, zero value otherwise.
 
 ### GetTokenBuyOk
 
-`func (o *GetSignableOrderRequest) GetTokenBuyOk() (*GetSignableOrderRequestTokenBuy, bool)`
+`func (o *GetSignableOrderRequest) GetTokenBuyOk() (*SignableToken, bool)`
 
 GetTokenBuyOk returns a tuple with the TokenBuy field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetTokenBuy
 
-`func (o *GetSignableOrderRequest) SetTokenBuy(v GetSignableOrderRequestTokenBuy)`
+`func (o *GetSignableOrderRequest) SetTokenBuy(v SignableToken)`
 
 SetTokenBuy sets TokenBuy field to given value.
 
 
 ### GetTokenSell
 
-`func (o *GetSignableOrderRequest) GetTokenSell() GetSignableOrderRequestTokenSell`
+`func (o *GetSignableOrderRequest) GetTokenSell() SignableToken`
 
 GetTokenSell returns the TokenSell field if non-nil, zero value otherwise.
 
 ### GetTokenSellOk
 
-`func (o *GetSignableOrderRequest) GetTokenSellOk() (*GetSignableOrderRequestTokenSell, bool)`
+`func (o *GetSignableOrderRequest) GetTokenSellOk() (*SignableToken, bool)`
 
 GetTokenSellOk returns a tuple with the TokenSell field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetTokenSell
 
-`func (o *GetSignableOrderRequest) SetTokenSell(v GetSignableOrderRequestTokenSell)`
+`func (o *GetSignableOrderRequest) SetTokenSell(v SignableToken)`
 
 SetTokenSell sets TokenSell field to given value.
 

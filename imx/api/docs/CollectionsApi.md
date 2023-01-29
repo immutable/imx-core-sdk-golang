@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## CreateCollection
 
-> CollectionCollection CreateCollection(ctx).IMXSignature(iMXSignature).IMXTimestamp(iMXTimestamp).CreateCollectionRequest(createCollectionRequest).Execute()
+> Collection CreateCollection(ctx).IMXSignature(iMXSignature).IMXTimestamp(iMXTimestamp).CreateCollectionRequest(createCollectionRequest).Execute()
 
 Create collection
 
@@ -45,7 +45,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `CollectionsApi.CreateCollection``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `CreateCollection`: CollectionCollection
+    // response from `CreateCollection`: Collection
     fmt.Fprintf(os.Stdout, "Response from `CollectionsApi.CreateCollection`: %v\n", resp)
 }
 ```
@@ -67,7 +67,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CollectionCollection**](CollectionCollection.md)
+[**Collection**](Collection.md)
 
 ### Authorization
 
@@ -85,7 +85,7 @@ No authorization required
 
 ## GetCollection
 
-> CollectionCollection GetCollection(ctx, address).Execute()
+> Collection GetCollection(ctx, address).Execute()
 
 Get details of a collection at the given address
 
@@ -114,7 +114,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `CollectionsApi.GetCollection``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `GetCollection`: CollectionCollection
+    // response from `GetCollection`: Collection
     fmt.Fprintf(os.Stdout, "Response from `CollectionsApi.GetCollection`: %v\n", resp)
 }
 ```
@@ -138,7 +138,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CollectionCollection**](CollectionCollection.md)
+[**Collection**](Collection.md)
 
 ### Authorization
 
@@ -310,7 +310,7 @@ No authorization required
 
 ## UpdateCollection
 
-> CollectionCollection UpdateCollection(ctx, address).IMXSignature(iMXSignature).IMXTimestamp(iMXTimestamp).UpdateCollectionRequest(updateCollectionRequest).Execute()
+> Collection UpdateCollection(ctx, address).IMXSignature(iMXSignature).IMXTimestamp(iMXTimestamp).UpdateCollectionRequest(updateCollectionRequest).Execute()
 
 Update collection
 
@@ -342,7 +342,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `CollectionsApi.UpdateCollection``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `UpdateCollection`: CollectionCollection
+    // response from `UpdateCollection`: Collection
     fmt.Fprintf(os.Stdout, "Response from `CollectionsApi.UpdateCollection`: %v\n", resp)
 }
 ```
@@ -369,7 +369,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CollectionCollection**](CollectionCollection.md)
+[**Collection**](Collection.md)
 
 ### Authorization
 

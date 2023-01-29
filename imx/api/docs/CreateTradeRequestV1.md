@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **AssetIdBuy** | **string** | ID of the asset to buy | 
 **AssetIdSell** | **string** | ID of the asset to sell | 
 **ExpirationTimestamp** | **int32** | Expiration timestamp for this trade | 
-**FeeInfo** | Pointer to [**CreateTradeRequestV1FeeInfo**](CreateTradeRequestV1FeeInfo.md) |  | [optional] 
+**FeeInfo** | Pointer to [**FeeInfo**](FeeInfo.md) |  | [optional] 
 **Fees** | Pointer to [**[]FeeEntry**](FeeEntry.md) | Fee information | [optional] 
 **IncludeFees** | Pointer to **bool** | [deprecated] All orders include fees since the introduction of protocol fees | [optional] 
 **Nonce** | **int32** | Nonce of the trade | 
@@ -140,20 +140,20 @@ SetExpirationTimestamp sets ExpirationTimestamp field to given value.
 
 ### GetFeeInfo
 
-`func (o *CreateTradeRequestV1) GetFeeInfo() CreateTradeRequestV1FeeInfo`
+`func (o *CreateTradeRequestV1) GetFeeInfo() FeeInfo`
 
 GetFeeInfo returns the FeeInfo field if non-nil, zero value otherwise.
 
 ### GetFeeInfoOk
 
-`func (o *CreateTradeRequestV1) GetFeeInfoOk() (*CreateTradeRequestV1FeeInfo, bool)`
+`func (o *CreateTradeRequestV1) GetFeeInfoOk() (*FeeInfo, bool)`
 
 GetFeeInfoOk returns a tuple with the FeeInfo field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetFeeInfo
 
-`func (o *CreateTradeRequestV1) SetFeeInfo(v CreateTradeRequestV1FeeInfo)`
+`func (o *CreateTradeRequestV1) SetFeeInfo(v FeeInfo)`
 
 SetFeeInfo sets FeeInfo field to given value.
 

@@ -339,7 +339,7 @@
           "201": {
             "description": "Created",
             "schema": {
-              "$ref": "#/definitions/collection.Collection"
+              "$ref": "#/definitions/Collection"
             },
             "headers": {
               "Collection_Limit": {
@@ -407,7 +407,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/collection.Collection"
+              "$ref": "#/definitions/Collection"
             }
           },
           "404": {
@@ -467,7 +467,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/collection.Collection"
+              "$ref": "#/definitions/Collection"
             }
           },
           "400": {
@@ -1613,25 +1613,25 @@
           },
           {
             "type": "string",
-            "description": "Filter orders to include those with created_at timestamps after this time, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z'",
+            "description": "Minimum created at timestamp for this order, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z'",
             "name": "min_timestamp",
             "in": "query"
           },
           {
             "type": "string",
-            "description": "Filter orders to include those with created_at timestamps before this time, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z'",
+            "description": "Maximum created at timestamp for this order, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z'",
             "name": "max_timestamp",
             "in": "query"
           },
           {
             "type": "string",
-            "description": "Filter orders to include those with updated_at timestamps after this time, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z'",
+            "description": "Minimum updated at timestamp for this order, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z'",
             "name": "updated_min_timestamp",
             "in": "query"
           },
           {
             "type": "string",
-            "description": "Filter orders to include those with updated_at timestamps before this time, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z'",
+            "description": "Maximum updated at timestamp for this order, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z'",
             "name": "updated_max_timestamp",
             "in": "query"
           },
@@ -2369,7 +2369,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/GetSignableTransferRequest"
+              "$ref": "#/definitions/GetSignableTransferRequestV1"
             }
           }
         ],
@@ -2377,7 +2377,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/GetSignableTransferResponse"
+              "$ref": "#/definitions/GetSignableTransferResponseV1"
             }
           }
         }
@@ -2867,7 +2867,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/CreateTransferResponse"
+              "$ref": "#/definitions/CreateTransferResponseV1"
             }
           },
           "400": {
@@ -4282,7 +4282,8 @@
       ],
       "properties": {
         "collection": {
-          "$ref": "#/definitions/assetCollection"
+          "description": "Information about the collection to which this asset belongs",
+          "$ref": "#/definitions/CollectionDetails"
         },
         "created_at": {
           "description": "Timestamp of when the asset was created",
@@ -4321,7 +4322,8 @@
           "x-nullable": true
         },
         "orders": {
-          "$ref": "#/definitions/assetOrders"
+          "description": "[DEPRECATED] Open orders for this asset will always return empty. Use GET /orders",
+          "$ref": "#/definitions/OrderDetails"
         },
         "status": {
           "description": "Status of this asset (where it is in the system)",
@@ -4355,7 +4357,8 @@
       "type": "object",
       "properties": {
         "collection": {
-          "$ref": "#/definitions/assetPropertiesCollection"
+          "description": "Details of this asset's collection",
+          "$ref": "#/definitions/CollectionDetails"
         },
         "image_url": {
           "description": "Image URL of this asset",
@@ -4385,7 +4388,8 @@
       ],
       "properties": {
         "collection": {
-          "$ref": "#/definitions/assetWithOrdersCollection"
+          "description": "Information about the collection to which this asset belongs",
+          "$ref": "#/definitions/CollectionDetails"
         },
         "created_at": {
           "description": "Timestamp of when the asset was created",
@@ -4424,7 +4428,8 @@
           "x-nullable": true
         },
         "orders": {
-          "$ref": "#/definitions/assetWithOrdersOrders"
+          "description": "Open orders for this asset",
+          "$ref": "#/definitions/OrderDetails"
         },
         "status": {
           "description": "Status of this asset (where it is in the system)",
@@ -4520,6 +4525,69 @@
         }
       }
     },
+    "Collection": {
+      "type": "object",
+      "required": [
+        "address",
+        "collection_image_url",
+        "created_at",
+        "description",
+        "icon_url",
+        "metadata_api_url",
+        "name",
+        "project_id",
+        "project_owner_address",
+        "updated_at"
+      ],
+      "properties": {
+        "address": {
+          "description": "Ethereum address of the ERC721 contract",
+          "type": "string"
+        },
+        "collection_image_url": {
+          "description": "URL of the tile image for this collection",
+          "type": "string",
+          "x-nullable": true
+        },
+        "created_at": {
+          "description": "Timestamp of when the collection was created",
+          "type": "string",
+          "x-nullable": true
+        },
+        "description": {
+          "description": "Description of the collection",
+          "type": "string",
+          "x-nullable": true
+        },
+        "icon_url": {
+          "description": "URL of the icon for this collection",
+          "type": "string",
+          "x-nullable": true
+        },
+        "metadata_api_url": {
+          "description": "URL of the metadata for this collection",
+          "type": "string",
+          "x-nullable": true
+        },
+        "name": {
+          "description": "Name of the collection",
+          "type": "string"
+        },
+        "project_id": {
+          "description": "The collection's project ID",
+          "type": "integer"
+        },
+        "project_owner_address": {
+          "description": "Project owner address",
+          "type": "string"
+        },
+        "updated_at": {
+          "description": "Timestamp of when the collection was updated",
+          "type": "string",
+          "x-nullable": true
+        }
+      }
+    },
     "CollectionDetails": {
       "type": "object",
       "required": [
@@ -4546,7 +4614,8 @@
           "type": "string"
         },
         "range": {
-          "$ref": "#/definitions/collectionFilterRange"
+          "description": "Range of values for this property",
+          "$ref": "#/definitions/Range"
         },
         "type": {
           "description": "Type of this filter",
@@ -4830,7 +4899,8 @@
           "type": "integer"
         },
         "fee_info": {
-          "$ref": "#/definitions/createTradeRequestV1FeeInfo"
+          "description": "Fee details",
+          "$ref": "#/definitions/FeeInfo"
         },
         "fees": {
           "description": "Fee information",
@@ -5106,7 +5176,8 @@
           "type": "string"
         },
         "token": {
-          "$ref": "#/definitions/depositToken"
+          "description": "Details of the asset being deposited",
+          "$ref": "#/definitions/Token"
         },
         "transaction_id": {
           "description": "Sequential ID of this transaction within Immutable X",
@@ -5280,7 +5351,8 @@
       "type": "object",
       "properties": {
         "data": {
-          "$ref": "#/definitions/feeTokenData"
+          "description": "Fee token data details",
+          "$ref": "#/definitions/FeeData"
         },
         "type": {
           "description": "Fee token type. One of ETH/ERC20",
@@ -5459,7 +5531,8 @@
           "type": "string"
         },
         "token": {
-          "$ref": "#/definitions/getSignableDepositRequestToken"
+          "description": "Details of the token the user is depositing",
+          "$ref": "#/definitions/SignableToken"
         },
         "user": {
           "description": "User who is depositing",
@@ -5529,10 +5602,12 @@
           }
         },
         "token_buy": {
-          "$ref": "#/definitions/getSignableOrderRequestTokenBuy"
+          "description": "Token to buy",
+          "$ref": "#/definitions/SignableToken"
         },
         "token_sell": {
-          "$ref": "#/definitions/getSignableOrderRequestTokenSell"
+          "description": "Token to sell",
+          "$ref": "#/definitions/SignableToken"
         },
         "user": {
           "description": "Ethereum address of the submitting user",
@@ -5577,7 +5652,8 @@
           "type": "integer"
         },
         "fee_info": {
-          "$ref": "#/definitions/getSignableOrderResponseFeeInfo"
+          "description": "Fee information",
+          "$ref": "#/definitions/FeeInfo"
         },
         "nonce": {
           "description": "Nonce of the order",
@@ -5721,7 +5797,8 @@
           "type": "integer"
         },
         "fee_info": {
-          "$ref": "#/definitions/getSignableTradeResponseFeeInfo"
+          "description": "Fee information",
+          "$ref": "#/definitions/FeeInfo"
         },
         "nonce": {
           "description": "Nonce of the order",
@@ -5890,7 +5967,8 @@
           "type": "string"
         },
         "token": {
-          "$ref": "#/definitions/getSignableWithdrawalRequestToken"
+          "description": "Token to withdraw",
+          "$ref": "#/definitions/SignableToken"
         },
         "user": {
           "description": "Ethereum address of the user who is making this withdrawal",
@@ -6045,7 +6123,7 @@
           "description": "Collections matching query parameters",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/collection.Collection"
+            "$ref": "#/definitions/Collection"
           }
         }
       }
@@ -6391,7 +6469,8 @@
           "type": "string"
         },
         "token": {
-          "$ref": "#/definitions/mintToken"
+          "description": "Details of the asset which has been minted",
+          "$ref": "#/definitions/Token"
         },
         "transaction_id": {
           "description": "Sequential ID of transaction in Immutable X",
@@ -6614,7 +6693,8 @@
           "x-nullable": true
         },
         "buy": {
-          "$ref": "#/definitions/orderBuy"
+          "description": "Details of the asset being bought",
+          "$ref": "#/definitions/Token"
         },
         "expiration_timestamp": {
           "description": "Expiration timestamp of this order",
@@ -6633,7 +6713,8 @@
           "type": "integer"
         },
         "sell": {
-          "$ref": "#/definitions/orderSell"
+          "description": "Details of the asset being sold",
+          "$ref": "#/definitions/Token"
         },
         "status": {
           "description": "Status of the order",
@@ -6686,7 +6767,8 @@
           "type": "string"
         },
         "token": {
-          "$ref": "#/definitions/orderFeeInfoToken"
+          "description": "Details of the fee currency",
+          "$ref": "#/definitions/FeeToken"
         },
         "type": {
           "description": "Fee type",
@@ -6747,10 +6829,6 @@
         },
         "name": {
           "description": "The project name",
-          "type": "string"
-        },
-        "org_id": {
-          "description": "The organisation ID that the project belongs to",
           "type": "string"
         }
       }
@@ -6841,7 +6919,8 @@
           "type": "string"
         },
         "token": {
-          "$ref": "#/definitions/signableTransferDetailsToken"
+          "description": "Token to transfer",
+          "$ref": "#/definitions/SignableToken"
         }
       }
     },
@@ -6892,7 +6971,8 @@
           "type": "integer"
         },
         "token": {
-          "$ref": "#/definitions/signableTransferResponseDetailsToken"
+          "description": "Token in request to match in SDK implementation",
+          "$ref": "#/definitions/SignableToken"
         }
       }
     },
@@ -6915,7 +6995,8 @@
       ],
       "properties": {
         "data": {
-          "$ref": "#/definitions/tokenDataOAIGen"
+          "description": "Token details of this asset",
+          "$ref": "#/definitions/TokenData"
         },
         "type": {
           "description": "Type of this asset (ETH/ERC20/ERC721)",
@@ -6939,7 +7020,8 @@
           "type": "string"
         },
         "properties": {
-          "$ref": "#/definitions/tokenDataProperties"
+          "description": "Properties of this asset",
+          "$ref": "#/definitions/AssetProperties"
         },
         "quantity": {
           "description": "Quantity of this asset - inclusive of fees for buy order in v1 API and exclusive of fees in v3 API",
@@ -7011,10 +7093,12 @@
       ],
       "properties": {
         "a": {
-          "$ref": "#/definitions/tradeA"
+          "description": "Side A of this trade (the buy order)",
+          "$ref": "#/definitions/TradeSide"
         },
         "b": {
-          "$ref": "#/definitions/tradeB"
+          "description": "Side B of this trade (the sell order)",
+          "$ref": "#/definitions/TradeSide"
         },
         "status": {
           "description": "Status of this trade",
@@ -7086,7 +7170,8 @@
           "x-nullable": true
         },
         "token": {
-          "$ref": "#/definitions/transferToken"
+          "description": "Token transferred by the user",
+          "$ref": "#/definitions/Token"
         },
         "transaction_id": {
           "description": "Sequential transaction ID",
@@ -7224,7 +7309,8 @@
           "type": "string"
         },
         "token": {
-          "$ref": "#/definitions/withdrawalToken"
+          "description": "Details of the asset this user is withdrawing",
+          "$ref": "#/definitions/Token"
         },
         "transaction_id": {
           "description": "Sequential ID of this transaction",
@@ -7249,98 +7335,6 @@
         }
       }
     },
-    "assetCollection": {
-      "description": "Information about the collection to which this asset belongs",
-      "allOf": [
-        {
-          "$ref": "#/definitions/CollectionDetails"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "assetOrders": {
-      "description": "[DEPRECATED] Open orders for this asset will always return empty. Use GET /orders",
-      "allOf": [
-        {
-          "$ref": "#/definitions/OrderDetails"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "assetPropertiesCollection": {
-      "description": "Details of this asset's collection",
-      "allOf": [
-        {
-          "$ref": "#/definitions/CollectionDetails"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "assetWithOrdersCollection": {
-      "description": "Information about the collection to which this asset belongs",
-      "allOf": [
-        {
-          "$ref": "#/definitions/CollectionDetails"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "assetWithOrdersOrders": {
-      "description": "Open orders for this asset",
-      "allOf": [
-        {
-          "$ref": "#/definitions/OrderDetails"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "collection.Collection": {
-      "type": "object",
-      "properties": {
-        "address": {
-          "type": "string"
-        },
-        "collectionImageURL": {
-          "type": "string"
-        },
-        "createdAt": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "iconURL": {
-          "type": "string"
-        },
-        "lastCollectionEventID": {
-          "type": "string"
-        },
-        "metadataAPIURL": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "projectID": {
-          "type": "integer"
-        },
-        "projectOwnerAddress": {
-          "type": "string"
-        },
-        "updatedAt": {
-          "type": "string"
-        }
-      }
-    },
-    "collectionFilterRange": {
-      "description": "Range of values for this property",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Range"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
     "contract.CreateAPIRequest": {
       "type": "object",
       "properties": {
@@ -7363,29 +7357,12 @@
         }
       }
     },
-    "createTradeRequestV1FeeInfo": {
-      "description": "Fee details",
-      "allOf": [
-        {
-          "$ref": "#/definitions/FeeInfo"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "depositToken": {
-      "description": "Details of the asset being deposited",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Token"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
     "encodeAssetRequestToken": {
       "type": "object",
       "properties": {
         "data": {
-          "$ref": "#/definitions/encodeAssetRequestTokenData"
+          "description": "Extra token information to be encoded",
+          "$ref": "#/definitions/EncodeAssetTokenData"
         },
         "type": {
           "description": "The type of the token to be encoded",
@@ -7397,15 +7374,6 @@
           ]
         }
       },
-      "x-go-gen-location": "models"
-    },
-    "encodeAssetRequestTokenData": {
-      "description": "Extra token information to be encoded",
-      "allOf": [
-        {
-          "$ref": "#/definitions/EncodeAssetTokenData"
-        }
-      ],
       "x-go-gen-location": "models"
     },
     "exchange.CreateExchangeAndURLResponse": {
@@ -7435,69 +7403,6 @@
         }
       }
     },
-    "feeTokenData": {
-      "description": "Fee token data details",
-      "allOf": [
-        {
-          "$ref": "#/definitions/FeeData"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "getSignableDepositRequestToken": {
-      "description": "Details of the token the user is depositing",
-      "allOf": [
-        {
-          "$ref": "#/definitions/SignableToken"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "getSignableOrderRequestTokenBuy": {
-      "description": "Token to buy",
-      "allOf": [
-        {
-          "$ref": "#/definitions/SignableToken"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "getSignableOrderRequestTokenSell": {
-      "description": "Token to sell",
-      "allOf": [
-        {
-          "$ref": "#/definitions/SignableToken"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "getSignableOrderResponseFeeInfo": {
-      "description": "Fee information",
-      "allOf": [
-        {
-          "$ref": "#/definitions/FeeInfo"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "getSignableTradeResponseFeeInfo": {
-      "description": "Fee information",
-      "allOf": [
-        {
-          "$ref": "#/definitions/FeeInfo"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "getSignableWithdrawalRequestToken": {
-      "description": "Token to withdraw",
-      "allOf": [
-        {
-          "$ref": "#/definitions/SignableToken"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
     "lambdas.APIError": {
       "type": "object",
       "properties": {
@@ -7518,15 +7423,6 @@
           "type": "integer"
         }
       }
-    },
-    "mintToken": {
-      "description": "Details of the asset which has been minted",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Token"
-        }
-      ],
-      "x-go-gen-location": "models"
     },
     "nftprimarytransaction.CreateAPIRequest": {
       "type": "object",
@@ -7734,105 +7630,6 @@
           "example": "light"
         }
       }
-    },
-    "orderBuy": {
-      "description": "Details of the asset being bought",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Token"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "orderFeeInfoToken": {
-      "description": "Details of the fee currency",
-      "allOf": [
-        {
-          "$ref": "#/definitions/FeeToken"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "orderSell": {
-      "description": "Details of the asset being sold",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Token"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "signableTransferDetailsToken": {
-      "description": "Token to transfer",
-      "allOf": [
-        {
-          "$ref": "#/definitions/SignableToken"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "signableTransferResponseDetailsToken": {
-      "description": "Token in request to match in SDK implementation",
-      "allOf": [
-        {
-          "$ref": "#/definitions/SignableToken"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "tokenDataOAIGen": {
-      "description": "Token details of this asset",
-      "allOf": [
-        {
-          "$ref": "#/definitions/TokenData"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "tokenDataProperties": {
-      "description": "Properties of this asset",
-      "allOf": [
-        {
-          "$ref": "#/definitions/AssetProperties"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "tradeA": {
-      "description": "Side A of this trade (the buy order)",
-      "allOf": [
-        {
-          "$ref": "#/definitions/TradeSide"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "tradeB": {
-      "description": "Side B of this trade (the sell order)",
-      "allOf": [
-        {
-          "$ref": "#/definitions/TradeSide"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "transferToken": {
-      "description": "Token transferred by the user",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Token"
-        }
-      ],
-      "x-go-gen-location": "models"
-    },
-    "withdrawalToken": {
-      "description": "Details of the asset this user is withdrawing",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Token"
-        }
-      ],
-      "x-go-gen-location": "models"
     }
   }
 }

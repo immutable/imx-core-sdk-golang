@@ -6,13 +6,13 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Cursor** | **string** | Generated cursor returned by previous query | 
 **Remaining** | **int32** | Remaining results flag. 1: there are remaining results matching this query, 0: no remaining results | 
-**Result** | [**[]CollectionCollection**](CollectionCollection.md) | Collections matching query parameters | 
+**Result** | [**[]Collection**](Collection.md) | Collections matching query parameters | 
 
 ## Methods
 
 ### NewListCollectionsResponse
 
-`func NewListCollectionsResponse(cursor string, remaining int32, result []CollectionCollection, ) *ListCollectionsResponse`
+`func NewListCollectionsResponse(cursor string, remaining int32, result []Collection, ) *ListCollectionsResponse`
 
 NewListCollectionsResponse instantiates a new ListCollectionsResponse object
 This constructor will assign default values to properties that have it defined,
@@ -69,20 +69,20 @@ SetRemaining sets Remaining field to given value.
 
 ### GetResult
 
-`func (o *ListCollectionsResponse) GetResult() []CollectionCollection`
+`func (o *ListCollectionsResponse) GetResult() []Collection`
 
 GetResult returns the Result field if non-nil, zero value otherwise.
 
 ### GetResultOk
 
-`func (o *ListCollectionsResponse) GetResultOk() (*[]CollectionCollection, bool)`
+`func (o *ListCollectionsResponse) GetResultOk() (*[]Collection, bool)`
 
 GetResultOk returns a tuple with the Result field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetResult
 
-`func (o *ListCollectionsResponse) SetResult(v []CollectionCollection)`
+`func (o *ListCollectionsResponse) SetResult(v []Collection)`
 
 SetResult sets Result field to given value.
 

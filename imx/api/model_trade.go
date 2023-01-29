@@ -17,8 +17,8 @@ import (
 
 // Trade struct for Trade
 type Trade struct {
-	A TradeA `json:"a"`
-	B TradeB `json:"b"`
+	A TradeSide `json:"a"`
+	B TradeSide `json:"b"`
 	// Status of this trade
 	Status string `json:"status"`
 	// Time this trade occurred
@@ -31,7 +31,7 @@ type Trade struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTrade(a TradeA, b TradeB, status string, timestamp NullableString, transactionId int32) *Trade {
+func NewTrade(a TradeSide, b TradeSide, status string, timestamp NullableString, transactionId int32) *Trade {
 	this := Trade{}
 	this.A = a
 	this.B = b
@@ -50,9 +50,9 @@ func NewTradeWithDefaults() *Trade {
 }
 
 // GetA returns the A field value
-func (o *Trade) GetA() TradeA {
+func (o *Trade) GetA() TradeSide {
 	if o == nil {
-		var ret TradeA
+		var ret TradeSide
 		return ret
 	}
 
@@ -61,7 +61,7 @@ func (o *Trade) GetA() TradeA {
 
 // GetAOk returns a tuple with the A field value
 // and a boolean to check if the value has been set.
-func (o *Trade) GetAOk() (*TradeA, bool) {
+func (o *Trade) GetAOk() (*TradeSide, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -69,14 +69,14 @@ func (o *Trade) GetAOk() (*TradeA, bool) {
 }
 
 // SetA sets field value
-func (o *Trade) SetA(v TradeA) {
+func (o *Trade) SetA(v TradeSide) {
 	o.A = v
 }
 
 // GetB returns the B field value
-func (o *Trade) GetB() TradeB {
+func (o *Trade) GetB() TradeSide {
 	if o == nil {
-		var ret TradeB
+		var ret TradeSide
 		return ret
 	}
 
@@ -85,7 +85,7 @@ func (o *Trade) GetB() TradeB {
 
 // GetBOk returns a tuple with the B field value
 // and a boolean to check if the value has been set.
-func (o *Trade) GetBOk() (*TradeB, bool) {
+func (o *Trade) GetBOk() (*TradeSide, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -93,7 +93,7 @@ func (o *Trade) GetBOk() (*TradeB, bool) {
 }
 
 // SetB sets field value
-func (o *Trade) SetB(v TradeB) {
+func (o *Trade) SetB(v TradeSide) {
 	o.B = v
 }
 

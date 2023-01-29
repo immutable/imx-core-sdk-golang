@@ -17,7 +17,7 @@ import (
 
 // FeeToken struct for FeeToken
 type FeeToken struct {
-	Data *FeeTokenData `json:"data,omitempty"`
+	Data *FeeData `json:"data,omitempty"`
 	// Fee token type. One of ETH/ERC20
 	Type *string `json:"type,omitempty"`
 }
@@ -40,9 +40,9 @@ func NewFeeTokenWithDefaults() *FeeToken {
 }
 
 // GetData returns the Data field value if set, zero value otherwise.
-func (o *FeeToken) GetData() FeeTokenData {
+func (o *FeeToken) GetData() FeeData {
 	if o == nil || o.Data == nil {
-		var ret FeeTokenData
+		var ret FeeData
 		return ret
 	}
 	return *o.Data
@@ -50,7 +50,7 @@ func (o *FeeToken) GetData() FeeTokenData {
 
 // GetDataOk returns a tuple with the Data field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *FeeToken) GetDataOk() (*FeeTokenData, bool) {
+func (o *FeeToken) GetDataOk() (*FeeData, bool) {
 	if o == nil || o.Data == nil {
 		return nil, false
 	}
@@ -66,8 +66,8 @@ func (o *FeeToken) HasData() bool {
 	return false
 }
 
-// SetData gets a reference to the given FeeTokenData and assigns it to the Data field.
-func (o *FeeToken) SetData(v FeeTokenData) {
+// SetData gets a reference to the given FeeData and assigns it to the Data field.
+func (o *FeeToken) SetData(v FeeData) {
 	o.Data = &v
 }
 

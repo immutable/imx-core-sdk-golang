@@ -48,8 +48,8 @@ type TransfersApi interface {
 	CreateTransferV1(ctx context.Context) ApiCreateTransferV1Request
 
 	// CreateTransferV1Execute executes the request
-	//  @return CreateTransferResponse
-	CreateTransferV1Execute(r ApiCreateTransferV1Request) (*CreateTransferResponse, *http.Response, error)
+	//  @return CreateTransferResponseV1
+	CreateTransferV1Execute(r ApiCreateTransferV1Request) (*CreateTransferResponseV1, *http.Response, error)
 
 	/*
 	GetSignableTransfer Gets bulk details of a signable transfer
@@ -76,8 +76,8 @@ type TransfersApi interface {
 	GetSignableTransferV1(ctx context.Context) ApiGetSignableTransferV1Request
 
 	// GetSignableTransferV1Execute executes the request
-	//  @return GetSignableTransferResponse
-	GetSignableTransferV1Execute(r ApiGetSignableTransferV1Request) (*GetSignableTransferResponse, *http.Response, error)
+	//  @return GetSignableTransferResponseV1
+	GetSignableTransferV1Execute(r ApiGetSignableTransferV1Request) (*GetSignableTransferResponseV1, *http.Response, error)
 
 	/*
 	GetTransfer Get details of a transfer with the given ID
@@ -310,7 +310,7 @@ func (r ApiCreateTransferV1Request) CreateTransferRequest(createTransferRequest 
 	return r
 }
 
-func (r ApiCreateTransferV1Request) Execute() (*CreateTransferResponse, *http.Response, error) {
+func (r ApiCreateTransferV1Request) Execute() (*CreateTransferResponseV1, *http.Response, error) {
 	return r.ApiService.CreateTransferV1Execute(r)
 }
 
@@ -330,13 +330,13 @@ func (a *TransfersApiService) CreateTransferV1(ctx context.Context) ApiCreateTra
 }
 
 // Execute executes the request
-//  @return CreateTransferResponse
-func (a *TransfersApiService) CreateTransferV1Execute(r ApiCreateTransferV1Request) (*CreateTransferResponse, *http.Response, error) {
+//  @return CreateTransferResponseV1
+func (a *TransfersApiService) CreateTransferV1Execute(r ApiCreateTransferV1Request) (*CreateTransferResponseV1, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CreateTransferResponse
+		localVarReturnValue  *CreateTransferResponseV1
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TransfersApiService.CreateTransferV1")
@@ -609,16 +609,16 @@ func (a *TransfersApiService) GetSignableTransferExecute(r ApiGetSignableTransfe
 type ApiGetSignableTransferV1Request struct {
 	ctx context.Context
 	ApiService TransfersApi
-	getSignableTransferRequest *GetSignableTransferRequest
+	getSignableTransferRequest *GetSignableTransferRequestV1
 }
 
 // get details of signable transfer
-func (r ApiGetSignableTransferV1Request) GetSignableTransferRequest(getSignableTransferRequest GetSignableTransferRequest) ApiGetSignableTransferV1Request {
+func (r ApiGetSignableTransferV1Request) GetSignableTransferRequest(getSignableTransferRequest GetSignableTransferRequestV1) ApiGetSignableTransferV1Request {
 	r.getSignableTransferRequest = &getSignableTransferRequest
 	return r
 }
 
-func (r ApiGetSignableTransferV1Request) Execute() (*GetSignableTransferResponse, *http.Response, error) {
+func (r ApiGetSignableTransferV1Request) Execute() (*GetSignableTransferResponseV1, *http.Response, error) {
 	return r.ApiService.GetSignableTransferV1Execute(r)
 }
 
@@ -638,13 +638,13 @@ func (a *TransfersApiService) GetSignableTransferV1(ctx context.Context) ApiGetS
 }
 
 // Execute executes the request
-//  @return GetSignableTransferResponse
-func (a *TransfersApiService) GetSignableTransferV1Execute(r ApiGetSignableTransferV1Request) (*GetSignableTransferResponse, *http.Response, error) {
+//  @return GetSignableTransferResponseV1
+func (a *TransfersApiService) GetSignableTransferV1Execute(r ApiGetSignableTransferV1Request) (*GetSignableTransferResponseV1, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *GetSignableTransferResponse
+		localVarReturnValue  *GetSignableTransferResponseV1
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TransfersApiService.GetSignableTransferV1")

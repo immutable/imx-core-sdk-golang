@@ -23,7 +23,7 @@ type Mint struct {
 	Status string `json:"status"`
 	// Timestamp this mint was initiated
 	Timestamp string `json:"timestamp"`
-	Token MintToken `json:"token"`
+	Token Token `json:"token"`
 	// Sequential ID of transaction in Immutable X
 	TransactionId int32 `json:"transaction_id"`
 	// Ethereum address of the user to whom the asset has been minted
@@ -34,7 +34,7 @@ type Mint struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMint(status string, timestamp string, token MintToken, transactionId int32, user string) *Mint {
+func NewMint(status string, timestamp string, token Token, transactionId int32, user string) *Mint {
 	this := Mint{}
 	this.Status = status
 	this.Timestamp = timestamp
@@ -133,9 +133,9 @@ func (o *Mint) SetTimestamp(v string) {
 }
 
 // GetToken returns the Token field value
-func (o *Mint) GetToken() MintToken {
+func (o *Mint) GetToken() Token {
 	if o == nil {
-		var ret MintToken
+		var ret Token
 		return ret
 	}
 
@@ -144,7 +144,7 @@ func (o *Mint) GetToken() MintToken {
 
 // GetTokenOk returns a tuple with the Token field value
 // and a boolean to check if the value has been set.
-func (o *Mint) GetTokenOk() (*MintToken, bool) {
+func (o *Mint) GetTokenOk() (*Token, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -152,7 +152,7 @@ func (o *Mint) GetTokenOk() (*MintToken, bool) {
 }
 
 // SetToken sets field value
-func (o *Mint) SetToken(v MintToken) {
+func (o *Mint) SetToken(v Token) {
 	o.Token = v
 }
 

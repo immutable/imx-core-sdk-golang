@@ -17,7 +17,7 @@ import (
 
 // EncodeAssetRequestToken struct for EncodeAssetRequestToken
 type EncodeAssetRequestToken struct {
-	Data *EncodeAssetRequestTokenData `json:"data,omitempty"`
+	Data *EncodeAssetTokenData `json:"data,omitempty"`
 	// The type of the token to be encoded
 	Type *string `json:"type,omitempty"`
 }
@@ -40,9 +40,9 @@ func NewEncodeAssetRequestTokenWithDefaults() *EncodeAssetRequestToken {
 }
 
 // GetData returns the Data field value if set, zero value otherwise.
-func (o *EncodeAssetRequestToken) GetData() EncodeAssetRequestTokenData {
+func (o *EncodeAssetRequestToken) GetData() EncodeAssetTokenData {
 	if o == nil || o.Data == nil {
-		var ret EncodeAssetRequestTokenData
+		var ret EncodeAssetTokenData
 		return ret
 	}
 	return *o.Data
@@ -50,7 +50,7 @@ func (o *EncodeAssetRequestToken) GetData() EncodeAssetRequestTokenData {
 
 // GetDataOk returns a tuple with the Data field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *EncodeAssetRequestToken) GetDataOk() (*EncodeAssetRequestTokenData, bool) {
+func (o *EncodeAssetRequestToken) GetDataOk() (*EncodeAssetTokenData, bool) {
 	if o == nil || o.Data == nil {
 		return nil, false
 	}
@@ -66,8 +66,8 @@ func (o *EncodeAssetRequestToken) HasData() bool {
 	return false
 }
 
-// SetData gets a reference to the given EncodeAssetRequestTokenData and assigns it to the Data field.
-func (o *EncodeAssetRequestToken) SetData(v EncodeAssetRequestTokenData) {
+// SetData gets a reference to the given EncodeAssetTokenData and assigns it to the Data field.
+func (o *EncodeAssetRequestToken) SetData(v EncodeAssetTokenData) {
 	o.Data = &v
 }
 

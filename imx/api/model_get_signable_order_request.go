@@ -25,8 +25,8 @@ type GetSignableOrderRequest struct {
 	ExpirationTimestamp *int32 `json:"expiration_timestamp,omitempty"`
 	// Inclusion of either maker or taker fees
 	Fees []FeeEntry `json:"fees,omitempty"`
-	TokenBuy GetSignableOrderRequestTokenBuy `json:"token_buy"`
-	TokenSell GetSignableOrderRequestTokenSell `json:"token_sell"`
+	TokenBuy SignableToken `json:"token_buy"`
+	TokenSell SignableToken `json:"token_sell"`
 	// Ethereum address of the submitting user
 	User string `json:"user"`
 }
@@ -35,7 +35,7 @@ type GetSignableOrderRequest struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetSignableOrderRequest(amountBuy string, amountSell string, tokenBuy GetSignableOrderRequestTokenBuy, tokenSell GetSignableOrderRequestTokenSell, user string) *GetSignableOrderRequest {
+func NewGetSignableOrderRequest(amountBuy string, amountSell string, tokenBuy SignableToken, tokenSell SignableToken, user string) *GetSignableOrderRequest {
 	this := GetSignableOrderRequest{}
 	this.AmountBuy = amountBuy
 	this.AmountSell = amountSell
@@ -166,9 +166,9 @@ func (o *GetSignableOrderRequest) SetFees(v []FeeEntry) {
 }
 
 // GetTokenBuy returns the TokenBuy field value
-func (o *GetSignableOrderRequest) GetTokenBuy() GetSignableOrderRequestTokenBuy {
+func (o *GetSignableOrderRequest) GetTokenBuy() SignableToken {
 	if o == nil {
-		var ret GetSignableOrderRequestTokenBuy
+		var ret SignableToken
 		return ret
 	}
 
@@ -177,7 +177,7 @@ func (o *GetSignableOrderRequest) GetTokenBuy() GetSignableOrderRequestTokenBuy 
 
 // GetTokenBuyOk returns a tuple with the TokenBuy field value
 // and a boolean to check if the value has been set.
-func (o *GetSignableOrderRequest) GetTokenBuyOk() (*GetSignableOrderRequestTokenBuy, bool) {
+func (o *GetSignableOrderRequest) GetTokenBuyOk() (*SignableToken, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -185,14 +185,14 @@ func (o *GetSignableOrderRequest) GetTokenBuyOk() (*GetSignableOrderRequestToken
 }
 
 // SetTokenBuy sets field value
-func (o *GetSignableOrderRequest) SetTokenBuy(v GetSignableOrderRequestTokenBuy) {
+func (o *GetSignableOrderRequest) SetTokenBuy(v SignableToken) {
 	o.TokenBuy = v
 }
 
 // GetTokenSell returns the TokenSell field value
-func (o *GetSignableOrderRequest) GetTokenSell() GetSignableOrderRequestTokenSell {
+func (o *GetSignableOrderRequest) GetTokenSell() SignableToken {
 	if o == nil {
-		var ret GetSignableOrderRequestTokenSell
+		var ret SignableToken
 		return ret
 	}
 
@@ -201,7 +201,7 @@ func (o *GetSignableOrderRequest) GetTokenSell() GetSignableOrderRequestTokenSel
 
 // GetTokenSellOk returns a tuple with the TokenSell field value
 // and a boolean to check if the value has been set.
-func (o *GetSignableOrderRequest) GetTokenSellOk() (*GetSignableOrderRequestTokenSell, bool) {
+func (o *GetSignableOrderRequest) GetTokenSellOk() (*SignableToken, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -209,7 +209,7 @@ func (o *GetSignableOrderRequest) GetTokenSellOk() (*GetSignableOrderRequestToke
 }
 
 // SetTokenSell sets field value
-func (o *GetSignableOrderRequest) SetTokenSell(v GetSignableOrderRequestTokenSell) {
+func (o *GetSignableOrderRequest) SetTokenSell(v SignableToken) {
 	o.TokenSell = v
 }
 

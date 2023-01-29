@@ -327,7 +327,7 @@ import (
 )
 
 func main() {
-    getSignableOrderRequestV3 := *openapiclient.NewGetSignableOrderRequest("AmountBuy_example", "AmountSell_example", *openapiclient.NewGetSignableOrderRequestTokenBuy(), *openapiclient.NewGetSignableOrderRequestTokenSell(), "User_example") // GetSignableOrderRequest | get a signable order
+    getSignableOrderRequestV3 := *openapiclient.NewGetSignableOrderRequest("AmountBuy_example", "AmountSell_example", *openapiclient.NewSignableToken(), *openapiclient.NewSignableToken(), "User_example") // GetSignableOrderRequest | get a signable order
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
@@ -400,10 +400,10 @@ func main() {
     direction := "direction_example" // string | Direction to sort (asc/desc) (optional)
     user := "user_example" // string | Ethereum address of the user who submitted this order (optional)
     status := "status_example" // string | Status of this order (optional)
-    minTimestamp := "minTimestamp_example" // string | Filter orders to include those with created_at timestamps after this time, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z' (optional)
-    maxTimestamp := "maxTimestamp_example" // string | Filter orders to include those with created_at timestamps before this time, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z' (optional)
-    updatedMinTimestamp := "updatedMinTimestamp_example" // string | Filter orders to include those with updated_at timestamps after this time, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z' (optional)
-    updatedMaxTimestamp := "updatedMaxTimestamp_example" // string | Filter orders to include those with updated_at timestamps before this time, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z' (optional)
+    minTimestamp := "minTimestamp_example" // string | Minimum created at timestamp for this order, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z' (optional)
+    maxTimestamp := "maxTimestamp_example" // string | Maximum created at timestamp for this order, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z' (optional)
+    updatedMinTimestamp := "updatedMinTimestamp_example" // string | Minimum updated at timestamp for this order, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z' (optional)
+    updatedMaxTimestamp := "updatedMaxTimestamp_example" // string | Maximum updated at timestamp for this order, in ISO 8601 UTC format. Example: '2022-05-27T00:10:22Z' (optional)
     buyTokenType := "buyTokenType_example" // string | Token type of the asset this order buys (optional)
     buyTokenId := "buyTokenId_example" // string | ERC721 Token ID of the asset this order buys (optional)
     buyAssetId := "buyAssetId_example" // string | Internal IMX ID of the asset this order buys (optional)
@@ -453,10 +453,10 @@ Name | Type | Description  | Notes
  **direction** | **string** | Direction to sort (asc/desc) | 
  **user** | **string** | Ethereum address of the user who submitted this order | 
  **status** | **string** | Status of this order | 
- **minTimestamp** | **string** | Filter orders to include those with created_at timestamps after this time, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39; | 
- **maxTimestamp** | **string** | Filter orders to include those with created_at timestamps before this time, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39; | 
- **updatedMinTimestamp** | **string** | Filter orders to include those with updated_at timestamps after this time, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39; | 
- **updatedMaxTimestamp** | **string** | Filter orders to include those with updated_at timestamps before this time, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39; | 
+ **minTimestamp** | **string** | Minimum created at timestamp for this order, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39; | 
+ **maxTimestamp** | **string** | Maximum created at timestamp for this order, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39; | 
+ **updatedMinTimestamp** | **string** | Minimum updated at timestamp for this order, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39; | 
+ **updatedMaxTimestamp** | **string** | Maximum updated at timestamp for this order, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39; | 
  **buyTokenType** | **string** | Token type of the asset this order buys | 
  **buyTokenId** | **string** | ERC721 Token ID of the asset this order buys | 
  **buyAssetId** | **string** | Internal IMX ID of the asset this order buys | 

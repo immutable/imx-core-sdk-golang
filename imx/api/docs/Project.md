@@ -14,7 +14,6 @@ Name | Type | Description | Notes
 **MintMonthlyLimit** | **int32** | The total monthly mint operation limit | 
 **MintRemaining** | **int32** | The number of mint operation remaining in the current period | 
 **Name** | **string** | The project name | 
-**OrgId** | Pointer to **string** | The organisation ID that the project belongs to | [optional] 
 
 ## Methods
 
@@ -234,31 +233,6 @@ and a boolean to check if the value has been set.
 
 SetName sets Name field to given value.
 
-
-### GetOrgId
-
-`func (o *Project) GetOrgId() string`
-
-GetOrgId returns the OrgId field if non-nil, zero value otherwise.
-
-### GetOrgIdOk
-
-`func (o *Project) GetOrgIdOk() (*string, bool)`
-
-GetOrgIdOk returns a tuple with the OrgId field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetOrgId
-
-`func (o *Project) SetOrgId(v string)`
-
-SetOrgId sets OrgId field to given value.
-
-### HasOrgId
-
-`func (o *Project) HasOrgId() bool`
-
-HasOrgId returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

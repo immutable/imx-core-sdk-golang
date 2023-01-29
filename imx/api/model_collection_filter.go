@@ -19,7 +19,7 @@ import (
 type CollectionFilter struct {
 	// Key of this property
 	Key *string `json:"key,omitempty"`
-	Range *CollectionFilterRange `json:"range,omitempty"`
+	Range *Range `json:"range,omitempty"`
 	// Type of this filter
 	Type *string `json:"type,omitempty"`
 	// List of possible values for this property
@@ -76,9 +76,9 @@ func (o *CollectionFilter) SetKey(v string) {
 }
 
 // GetRange returns the Range field value if set, zero value otherwise.
-func (o *CollectionFilter) GetRange() CollectionFilterRange {
+func (o *CollectionFilter) GetRange() Range {
 	if o == nil || o.Range == nil {
-		var ret CollectionFilterRange
+		var ret Range
 		return ret
 	}
 	return *o.Range
@@ -86,7 +86,7 @@ func (o *CollectionFilter) GetRange() CollectionFilterRange {
 
 // GetRangeOk returns a tuple with the Range field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CollectionFilter) GetRangeOk() (*CollectionFilterRange, bool) {
+func (o *CollectionFilter) GetRangeOk() (*Range, bool) {
 	if o == nil || o.Range == nil {
 		return nil, false
 	}
@@ -102,8 +102,8 @@ func (o *CollectionFilter) HasRange() bool {
 	return false
 }
 
-// SetRange gets a reference to the given CollectionFilterRange and assigns it to the Range field.
-func (o *CollectionFilter) SetRange(v CollectionFilterRange) {
+// SetRange gets a reference to the given Range and assigns it to the Range field.
+func (o *CollectionFilter) SetRange(v Range) {
 	o.Range = &v
 }
 

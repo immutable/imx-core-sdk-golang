@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Status** | **string** | Status of this deposit in Immutable X | 
 **Timestamp** | **string** | Timestamp of the deposit | 
-**Token** | [**DepositToken**](DepositToken.md) |  | 
+**Token** | [**Token**](Token.md) |  | 
 **TransactionId** | **int32** | Sequential ID of this transaction within Immutable X | 
 **User** | **string** | Ethereum address of the user making this deposit | 
 
@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 
 ### NewDeposit
 
-`func NewDeposit(status string, timestamp string, token DepositToken, transactionId int32, user string, ) *Deposit`
+`func NewDeposit(status string, timestamp string, token Token, transactionId int32, user string, ) *Deposit`
 
 NewDeposit instantiates a new Deposit object
 This constructor will assign default values to properties that have it defined,
@@ -71,20 +71,20 @@ SetTimestamp sets Timestamp field to given value.
 
 ### GetToken
 
-`func (o *Deposit) GetToken() DepositToken`
+`func (o *Deposit) GetToken() Token`
 
 GetToken returns the Token field if non-nil, zero value otherwise.
 
 ### GetTokenOk
 
-`func (o *Deposit) GetTokenOk() (*DepositToken, bool)`
+`func (o *Deposit) GetTokenOk() (*Token, bool)`
 
 GetTokenOk returns a tuple with the Token field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetToken
 
-`func (o *Deposit) SetToken(v DepositToken)`
+`func (o *Deposit) SetToken(v Token)`
 
 SetToken sets Token field to given value.
 

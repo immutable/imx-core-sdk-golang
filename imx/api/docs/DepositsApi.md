@@ -103,7 +103,7 @@ import (
 )
 
 func main() {
-    getSignableDepositRequest := *openapiclient.NewGetSignableDepositRequest("Amount_example", *openapiclient.NewGetSignableDepositRequestToken(), "User_example") // GetSignableDepositRequest | Get details of signable deposit
+    getSignableDepositRequest := *openapiclient.NewGetSignableDepositRequest("Amount_example", *openapiclient.NewSignableToken(), "User_example") // GetSignableDepositRequest | Get details of signable deposit
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)

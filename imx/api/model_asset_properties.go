@@ -17,7 +17,7 @@ import (
 
 // AssetProperties struct for AssetProperties
 type AssetProperties struct {
-	Collection *AssetPropertiesCollection `json:"collection,omitempty"`
+	Collection *CollectionDetails `json:"collection,omitempty"`
 	// Image URL of this asset
 	ImageUrl *string `json:"image_url,omitempty"`
 	// Name of this asset
@@ -42,9 +42,9 @@ func NewAssetPropertiesWithDefaults() *AssetProperties {
 }
 
 // GetCollection returns the Collection field value if set, zero value otherwise.
-func (o *AssetProperties) GetCollection() AssetPropertiesCollection {
+func (o *AssetProperties) GetCollection() CollectionDetails {
 	if o == nil || o.Collection == nil {
-		var ret AssetPropertiesCollection
+		var ret CollectionDetails
 		return ret
 	}
 	return *o.Collection
@@ -52,7 +52,7 @@ func (o *AssetProperties) GetCollection() AssetPropertiesCollection {
 
 // GetCollectionOk returns a tuple with the Collection field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *AssetProperties) GetCollectionOk() (*AssetPropertiesCollection, bool) {
+func (o *AssetProperties) GetCollectionOk() (*CollectionDetails, bool) {
 	if o == nil || o.Collection == nil {
 		return nil, false
 	}
@@ -68,8 +68,8 @@ func (o *AssetProperties) HasCollection() bool {
 	return false
 }
 
-// SetCollection gets a reference to the given AssetPropertiesCollection and assigns it to the Collection field.
-func (o *AssetProperties) SetCollection(v AssetPropertiesCollection) {
+// SetCollection gets a reference to the given CollectionDetails and assigns it to the Collection field.
+func (o *AssetProperties) SetCollection(v CollectionDetails) {
 	o.Collection = &v
 }
 

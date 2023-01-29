@@ -6,13 +6,13 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Amount** | **string** | Amount of the token to transfer | 
 **Receiver** | **string** | Ethereum address of the receiving user | 
-**Token** | [**SignableTransferDetailsToken**](SignableTransferDetailsToken.md) |  | 
+**Token** | [**SignableToken**](SignableToken.md) |  | 
 
 ## Methods
 
 ### NewSignableTransferDetails
 
-`func NewSignableTransferDetails(amount string, receiver string, token SignableTransferDetailsToken, ) *SignableTransferDetails`
+`func NewSignableTransferDetails(amount string, receiver string, token SignableToken, ) *SignableTransferDetails`
 
 NewSignableTransferDetails instantiates a new SignableTransferDetails object
 This constructor will assign default values to properties that have it defined,
@@ -69,20 +69,20 @@ SetReceiver sets Receiver field to given value.
 
 ### GetToken
 
-`func (o *SignableTransferDetails) GetToken() SignableTransferDetailsToken`
+`func (o *SignableTransferDetails) GetToken() SignableToken`
 
 GetToken returns the Token field if non-nil, zero value otherwise.
 
 ### GetTokenOk
 
-`func (o *SignableTransferDetails) GetTokenOk() (*SignableTransferDetailsToken, bool)`
+`func (o *SignableTransferDetails) GetTokenOk() (*SignableToken, bool)`
 
 GetTokenOk returns a tuple with the Token field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetToken
 
-`func (o *SignableTransferDetails) SetToken(v SignableTransferDetailsToken)`
+`func (o *SignableTransferDetails) SetToken(v SignableToken)`
 
 SetToken sets Token field to given value.
 

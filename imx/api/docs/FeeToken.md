@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Data** | Pointer to [**FeeTokenData**](FeeTokenData.md) |  | [optional] 
+**Data** | Pointer to [**FeeData**](FeeData.md) |  | [optional] 
 **Type** | Pointer to **string** | Fee token type. One of ETH/ERC20 | [optional] 
 
 ## Methods
@@ -28,20 +28,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetData
 
-`func (o *FeeToken) GetData() FeeTokenData`
+`func (o *FeeToken) GetData() FeeData`
 
 GetData returns the Data field if non-nil, zero value otherwise.
 
 ### GetDataOk
 
-`func (o *FeeToken) GetDataOk() (*FeeTokenData, bool)`
+`func (o *FeeToken) GetDataOk() (*FeeData, bool)`
 
 GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetData
 
-`func (o *FeeToken) SetData(v FeeTokenData)`
+`func (o *FeeToken) SetData(v FeeData)`
 
 SetData sets Data field to given value.
 

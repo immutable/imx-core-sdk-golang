@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Collection** | Pointer to [**AssetPropertiesCollection**](AssetPropertiesCollection.md) |  | [optional] 
+**Collection** | Pointer to [**CollectionDetails**](CollectionDetails.md) |  | [optional] 
 **ImageUrl** | Pointer to **string** | Image URL of this asset | [optional] 
 **Name** | Pointer to **string** | Name of this asset | [optional] 
 
@@ -29,20 +29,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetCollection
 
-`func (o *AssetProperties) GetCollection() AssetPropertiesCollection`
+`func (o *AssetProperties) GetCollection() CollectionDetails`
 
 GetCollection returns the Collection field if non-nil, zero value otherwise.
 
 ### GetCollectionOk
 
-`func (o *AssetProperties) GetCollectionOk() (*AssetPropertiesCollection, bool)`
+`func (o *AssetProperties) GetCollectionOk() (*CollectionDetails, bool)`
 
 GetCollectionOk returns a tuple with the Collection field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetCollection
 
-`func (o *AssetProperties) SetCollection(v AssetPropertiesCollection)`
+`func (o *AssetProperties) SetCollection(v CollectionDetails)`
 
 SetCollection sets Collection field to given value.
 

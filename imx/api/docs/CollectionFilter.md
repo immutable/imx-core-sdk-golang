@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Key** | Pointer to **string** | Key of this property | [optional] 
-**Range** | Pointer to [**CollectionFilterRange**](CollectionFilterRange.md) |  | [optional] 
+**Range** | Pointer to [**Range**](Range.md) |  | [optional] 
 **Type** | Pointer to **string** | Type of this filter | [optional] 
 **Value** | Pointer to **[]string** | List of possible values for this property | [optional] 
 
@@ -55,20 +55,20 @@ HasKey returns a boolean if a field has been set.
 
 ### GetRange
 
-`func (o *CollectionFilter) GetRange() CollectionFilterRange`
+`func (o *CollectionFilter) GetRange() Range`
 
 GetRange returns the Range field if non-nil, zero value otherwise.
 
 ### GetRangeOk
 
-`func (o *CollectionFilter) GetRangeOk() (*CollectionFilterRange, bool)`
+`func (o *CollectionFilter) GetRangeOk() (*Range, bool)`
 
 GetRangeOk returns a tuple with the Range field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetRange
 
-`func (o *CollectionFilter) SetRange(v CollectionFilterRange)`
+`func (o *CollectionFilter) SetRange(v Range)`
 
 SetRange sets Range field to given value.
 

@@ -875,25 +875,25 @@ func (r ApiListOrdersRequest) Status(status string) ApiListOrdersRequest {
 	return r
 }
 
-// Filter orders to include those with created_at timestamps after this time, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39;
+// Minimum created at timestamp for this order, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39;
 func (r ApiListOrdersRequest) MinTimestamp(minTimestamp string) ApiListOrdersRequest {
 	r.minTimestamp = &minTimestamp
 	return r
 }
 
-// Filter orders to include those with created_at timestamps before this time, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39;
+// Maximum created at timestamp for this order, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39;
 func (r ApiListOrdersRequest) MaxTimestamp(maxTimestamp string) ApiListOrdersRequest {
 	r.maxTimestamp = &maxTimestamp
 	return r
 }
 
-// Filter orders to include those with updated_at timestamps after this time, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39;
+// Minimum updated at timestamp for this order, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39;
 func (r ApiListOrdersRequest) UpdatedMinTimestamp(updatedMinTimestamp string) ApiListOrdersRequest {
 	r.updatedMinTimestamp = &updatedMinTimestamp
 	return r
 }
 
-// Filter orders to include those with updated_at timestamps before this time, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39;
+// Maximum updated at timestamp for this order, in ISO 8601 UTC format. Example: &#39;2022-05-27T00:10:22Z&#39;
 func (r ApiListOrdersRequest) UpdatedMaxTimestamp(updatedMaxTimestamp string) ApiListOrdersRequest {
 	r.updatedMaxTimestamp = &updatedMaxTimestamp
 	return r

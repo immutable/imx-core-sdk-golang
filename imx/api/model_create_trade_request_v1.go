@@ -27,7 +27,7 @@ type CreateTradeRequestV1 struct {
 	AssetIdSell string `json:"asset_id_sell"`
 	// Expiration timestamp for this trade
 	ExpirationTimestamp int32 `json:"expiration_timestamp"`
-	FeeInfo *CreateTradeRequestV1FeeInfo `json:"fee_info,omitempty"`
+	FeeInfo *FeeInfo `json:"fee_info,omitempty"`
 	// Fee information
 	Fees []FeeEntry `json:"fees,omitempty"`
 	// [deprecated] All orders include fees since the introduction of protocol fees
@@ -195,9 +195,9 @@ func (o *CreateTradeRequestV1) SetExpirationTimestamp(v int32) {
 }
 
 // GetFeeInfo returns the FeeInfo field value if set, zero value otherwise.
-func (o *CreateTradeRequestV1) GetFeeInfo() CreateTradeRequestV1FeeInfo {
+func (o *CreateTradeRequestV1) GetFeeInfo() FeeInfo {
 	if o == nil || o.FeeInfo == nil {
-		var ret CreateTradeRequestV1FeeInfo
+		var ret FeeInfo
 		return ret
 	}
 	return *o.FeeInfo
@@ -205,7 +205,7 @@ func (o *CreateTradeRequestV1) GetFeeInfo() CreateTradeRequestV1FeeInfo {
 
 // GetFeeInfoOk returns a tuple with the FeeInfo field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CreateTradeRequestV1) GetFeeInfoOk() (*CreateTradeRequestV1FeeInfo, bool) {
+func (o *CreateTradeRequestV1) GetFeeInfoOk() (*FeeInfo, bool) {
 	if o == nil || o.FeeInfo == nil {
 		return nil, false
 	}
@@ -221,8 +221,8 @@ func (o *CreateTradeRequestV1) HasFeeInfo() bool {
 	return false
 }
 
-// SetFeeInfo gets a reference to the given CreateTradeRequestV1FeeInfo and assigns it to the FeeInfo field.
-func (o *CreateTradeRequestV1) SetFeeInfo(v CreateTradeRequestV1FeeInfo) {
+// SetFeeInfo gets a reference to the given FeeInfo and assigns it to the FeeInfo field.
+func (o *CreateTradeRequestV1) SetFeeInfo(v FeeInfo) {
 	o.FeeInfo = &v
 }
 
