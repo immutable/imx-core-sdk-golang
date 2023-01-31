@@ -22,6 +22,8 @@ See the [Developer Home](https://docs.x.immutable.com/) for general information 
 
 The following code snippets talk about how to get setup and use the various sections of the Golang SDK for most common use cases. Any questions that are not covered here please reach out to team. See [Getting Help](#getting-help)
 
+### Examples
+* **Sample code** - see the [examples](./imx/examples/) folder for sample code for key SDK functionality.
 
 ## Installation
 
