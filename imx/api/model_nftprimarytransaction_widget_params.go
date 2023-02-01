@@ -17,6 +17,7 @@ import (
 
 // NftprimarytransactionWidgetParams struct for NftprimarytransactionWidgetParams
 type NftprimarytransactionWidgetParams struct {
+	// enums(light, dark)
 	Theme *string `json:"theme,omitempty"`
 }
 

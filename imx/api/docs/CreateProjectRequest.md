@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **CompanyName** | **string** | The company name | 
-**ContactEmail** | **string** | The project contact email | 
+**ContactEmail** | **string** | The project contact email (must be registered as a developer account with Immutable at https://hub.immutable.com) | 
 **Name** | **string** | The project name | 
 
 ## Methods

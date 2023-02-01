@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Theme** | Pointer to **string** |  | [optional] 
+**Theme** | Pointer to **string** | enums(light, dark) | [optional] 
 
 ## Methods
 

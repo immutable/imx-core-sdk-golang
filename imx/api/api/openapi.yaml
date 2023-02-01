@@ -658,13 +658,13 @@ paths:
       - description: "Minimum timestamp for this deposit, in ISO 8601 UTC format.\
           \ Example: '2022-05-27T00:10:22Z'"
         in: query
-        name: updated_min_timestamp
+        name: min_timestamp
         schema:
           type: string
       - description: "Maximum timestamp for this deposit, in ISO 8601 UTC format.\
           \ Example: '2022-05-27T00:10:22Z'"
         in: query
-        name: updated_max_timestamp
+        name: max_timestamp
         schema:
           type: string
       - description: Token type of the deposited asset
@@ -1186,11 +1186,6 @@ paths:
       - description: ERC721 Token ID of the minted asset
         in: query
         name: token_id
-        schema:
-          type: string
-      - description: "[DEPRECATED] Internal IMX ID of the minted asset"
-        in: query
-        name: asset_id
         schema:
           type: string
       - description: Token Name of the minted asset
@@ -2828,7 +2823,7 @@ paths:
       x-codegen-request-body-name: MintTokensRequestV2
   /v2/nft/primary:
     get:
-      description: Returns a list of NFT primary transactions
+      description: Returns a list of NFT primary sales transactions
       operationId: getNftPrimaryTransactions
       parameters:
       - description: Page size of the result
@@ -2873,22 +2868,28 @@ paths:
           type: string
       - description: Ethereum address of the user who wants to create transaction
         in: query
-        name: wallet_address
+        name: user_wallet_address
         schema:
           type: string
       - description: Transaction status
         in: query
         name: status
         schema:
+          enum:
+          - created
+          - waitingPayment
+          - pending
+          - completed
+          - failed
           type: string
-      - description: Provider name
+      - description: Checkout provider name
         in: query
         name: provider
         schema:
           enum:
           - moonpay
           type: string
-      - description: Mint id
+      - description: Minting transaction ID - see mintTokens response
         in: query
         name: mint_id
         schema:
@@ -2906,11 +2907,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/lambdas.APIError'
           description: Bad Request
-      summary: Get a list of NFT primary transactions
+      summary: Get a list of NFT primary sales transactions
       tags:
       - nft-checkout-primary
     post:
-      description: creates nft primary transaction
+      description: Creates a transaction representing minting an NFT with a card payment.
       operationId: createNftPrimary
       requestBody:
         content:
@@ -2932,7 +2933,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/lambdas.APIError'
           description: Bad Request
-      summary: Create nft primary transaction
+      summary: Create NFT primary sale transaction
       tags:
       - nft-checkout-primary
       x-codegen-request-body-name: CreateAPIRequest
@@ -2969,9 +2970,39 @@ paths:
       summary: Get currencies with limits
       tags:
       - nft-checkout-primary
+  /v2/nft/primary/register:
+    post:
+      description: Registers a new contract for use in the minting with fiat card
+        flow
+      operationId: registerNftPrimarySalesContract
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contract.CreateAPIRequest'
+        description: req
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/contract.CreateResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/lambdas.APIError'
+          description: Bad Request
+      summary: Executes NFT primary sales contract registration
+      tags:
+      - nft-checkout-primary
+      x-codegen-request-body-name: CreateAPIRequest
   /v2/nft/primary/{transaction_id}:
     get:
-      description: gets nft primary transaction by transaction id
+      description: "given a transaction id, returns the corresponding transaction\
+        \ representing a mint executed from a card payment"
       operationId: getNftPrimaryTransaction
       parameters:
       - description: Transaction id
@@ -2993,7 +3024,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/lambdas.APIError'
           description: Bad Request
-      summary: Get nft primary transaction by id
+      summary: Get NFT primary sale transaction by id
       tags:
       - nft-checkout-primary
   /v2/signable-transfer-details:
@@ -3101,41 +3132,6 @@ paths:
       tags:
       - transfers
       x-codegen-request-body-name: CreateTransferRequestV2
-  /v2/{provider}/transaction_status:
-    get:
-      description: gets mint status by transaction ids
-      operationId: getMintStatusById
-      parameters:
-      - description: Provider name
-        in: path
-        name: provider
-        required: true
-        schema:
-          enum:
-          - moonpay
-          type: string
-      - description: transaction id
-        in: query
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/provider.GetMintStatusResponse'
-          description: OK
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/lambdas.APIError'
-          description: Bad Request
-      summary: Get mint status by transaction id
-      tags:
-      - nft-checkout-primary
   /v3/exchanges:
     get:
       description: Returns a list of exchanges based on the request
@@ -3961,7 +3957,8 @@ components:
           description: The company name
           type: string
         contact_email:
-          description: The project contact email
+          description: The project contact email (must be registered as a developer
+            account with Immutable at https://hub.immutable.com)
           type: string
         name:
           description: The project name
@@ -4391,7 +4388,7 @@ components:
           transfer_id: transfer_id
           to_currency: to_currency
         updated_at: updated_at
-        provider: "moonpay, layerswap"
+        provider: moonpay
         created_at: created_at
         id: 5
         type: onramp
@@ -4407,7 +4404,7 @@ components:
           type: integer
         provider:
           description: Provider name
-          example: "moonpay, layerswap"
+          example: moonpay
           type: string
         status:
           description: Transaction status
@@ -5226,7 +5223,7 @@ components:
             transfer_id: transfer_id
             to_currency: to_currency
           updated_at: updated_at
-          provider: "moonpay, layerswap"
+          provider: moonpay
           created_at: created_at
           id: 5
           type: onramp
@@ -5242,7 +5239,7 @@ components:
             transfer_id: transfer_id
             to_currency: to_currency
           updated_at: updated_at
-          provider: "moonpay, layerswap"
+          provider: moonpay
           created_at: created_at
           id: 5
           type: onramp
@@ -6190,6 +6187,7 @@ components:
           description: Users to mint to
           items:
             $ref: '#/components/schemas/MintUser'
+          minItems: 1
           type: array
       required:
       - auth_signature
@@ -6522,7 +6520,8 @@ components:
           description: The company name
           type: string
         contact_email:
-          description: The project contact email
+          description: The project contact email (must be registered as a developer
+            account with Immutable at https://hub.immutable.com)
           type: string
         id:
           description: The project ID
@@ -7080,6 +7079,22 @@ components:
           description: Min transaction amount
           type: number
       type: object
+    contract.CreateAPIRequest:
+      properties:
+        contract_address:
+          type: string
+        data_url:
+          type: string
+        mint_url:
+          type: string
+      type: object
+    contract.CreateResponse:
+      example:
+        webhook_hash: webhook_hash
+      properties:
+        webhook_hash:
+          type: string
+      type: object
     encodeAssetRequestToken:
       example:
         data:
@@ -7174,22 +7189,26 @@ components:
           description: Contract address of the asset to be created
           type: string
         offer_id:
-          description: Temporary asset id
+          description: Temporary asset id. Might be a token id if the token id is
+            known or a generic description if it's not
           type: string
         provider:
           description: Provider name
           type: string
         seller_wallet_address:
-          description: Ethereum address of the seller
+          description: Wallet address that will receive the payment (in crypto) from
+            the checkout provider for the minted NFT
           type: string
         token_id:
-          description: Asset id
+          description: ID of the token that has been successfully minted - should
+            be the same as `offer_id`
           type: string
         transaction_id:
           description: Transaction id
           type: string
         url:
-          description: Widget Url signed by provider
+          description: NFT purchase URL given by the checkout provider that the user
+            can use to complete payment
           type: string
         user_wallet_address:
           description: Ethereum address of the user who wants to create transaction
@@ -7210,7 +7229,8 @@ components:
           description: Contract address of the asset
           type: string
         offer_id:
-          description: Temporary asset id
+          description: Temporary asset id. Might be a token id if the token id is
+            known or a generic description if it's not
           type: string
         provider:
           description: Provider name
@@ -7219,16 +7239,18 @@ components:
           description: Ethereum address of the seller
           type: string
         status:
-          description: Transaction status
+          description: "Transaction status enums(created, waitingPayment, pending,\
+            \ completed, failed)"
           type: string
         token_id:
-          description: Asset id
+          description: ID of the token that has been successfully minted - might or
+            not be the same as `offer_id`
           type: string
         transaction_id:
           description: Transaction id
           type: string
         user_wallet_address:
-          description: Ethereum address of the user who wants to create transaction
+          description: Wallet address that receives the minted NFT
           type: string
       type: object
     nftprimarytransaction.ListTransactionsResponse:
@@ -7320,19 +7342,21 @@ components:
           description: Fees to pay on this transaction
           type: number
         from_amount:
-          description: Amount of currency (from_currency) used for transaction
+          description: Amount of the currency specified in `from_currency` that the
+            buyer paid for the transaction
           type: number
         from_currency:
-          description: Currency used for transaction
+          description: Currency that the buyer used for the transaction
           type: string
         mint_id:
-          description: Mint id
+          description: Minting transaction ID - see mintTokens response
           type: string
         mint_status:
           description: Mint status
           type: string
         offer_id:
-          description: Temporary asset id
+          description: Temporary asset id. Might be a token id if the token id is
+            known or a generic description if it's not
           type: string
         provider:
           description: Provider name
@@ -7341,16 +7365,20 @@ components:
           description: Ethereum address of the seller
           type: string
         status:
-          description: Transaction status
+          description: "Transaction status enums(created, waitingPayment, pending,\
+            \ completed, failed)"
           type: string
         to_amount:
-          description: Amount of target currency (to_currency) bought
+          description: Amount of the currency specified in `to_currency` that the
+            seller received from the checkout provider for the transaction
           type: number
         to_currency:
-          description: Target currency
+          description: Currency (crypto) that the checkout provider sent to the seller
+            for the transaction
           type: string
         token_id:
-          description: Asset id
+          description: ID of the token that has been successfully minted - should
+            be the same as `offer_id`
           type: string
         transaction_id:
           description: Transaction id
@@ -7359,71 +7387,14 @@ components:
           description: Timestamp when the transaction was updated
           type: string
         user_wallet_address:
-          description: Ethereum address of the user who wants to create transaction
+          description: Wallet address that receives the minted NFT
           type: string
       type: object
     nftprimarytransaction.WidgetParams:
       properties:
         theme:
+          description: "enums(light, dark)"
           example: light
           type: string
-      type: object
-    provider.GetMintStatusResponse:
-      example:
-        data:
-        - statusChangedAt: statusChangedAt
-          tokenId: tokenId
-          failureReason: failureReason
-          id: id
-          transactionHash:
-          - transactionHash
-          - transactionHash
-          status: status
-        - statusChangedAt: statusChangedAt
-          tokenId: tokenId
-          failureReason: failureReason
-          id: id
-          transactionHash:
-          - transactionHash
-          - transactionHash
-          status: status
-      properties:
-        data:
-          description: Mint status for requested transactions
-          items:
-            $ref: '#/components/schemas/provider.MintStatus'
-          type: array
-      type: object
-    provider.MintStatus:
-      example:
-        statusChangedAt: statusChangedAt
-        tokenId: tokenId
-        failureReason: failureReason
-        id: id
-        transactionHash:
-        - transactionHash
-        - transactionHash
-        status: status
-      properties:
-        failureReason:
-          description: reason for mint failure
-          type: string
-        id:
-          description: External transaction id
-          type: string
-        status:
-          description: Mint status
-          type: string
-        statusChangedAt:
-          description: status updated-at timestamp
-          type: string
-        tokenId:
-          description: Asset id
-          type: string
-        transactionHash:
-          description: Transaction hash
-          items:
-            type: string
-          type: array
       type: object
 x-original-swagger-version: "2.0"

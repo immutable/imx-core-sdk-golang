@@ -357,7 +357,6 @@ type ApiListMintsRequest struct {
 	maxTimestamp *string
 	tokenType *string
 	tokenId *string
-	assetId *string
 	tokenName *string
 	tokenAddress *string
 	minQuantity *string
@@ -422,12 +421,6 @@ func (r ApiListMintsRequest) TokenType(tokenType string) ApiListMintsRequest {
 // ERC721 Token ID of the minted asset
 func (r ApiListMintsRequest) TokenId(tokenId string) ApiListMintsRequest {
 	r.tokenId = &tokenId
-	return r
-}
-
-// [DEPRECATED] Internal IMX ID of the minted asset
-func (r ApiListMintsRequest) AssetId(assetId string) ApiListMintsRequest {
-	r.assetId = &assetId
 	return r
 }
 
@@ -530,9 +523,6 @@ func (a *MintsApiService) ListMintsExecute(r ApiListMintsRequest) (*ListMintsRes
 	}
 	if r.tokenId != nil {
 		localVarQueryParams.Add("token_id", parameterToString(*r.tokenId, ""))
-	}
-	if r.assetId != nil {
-		localVarQueryParams.Add("asset_id", parameterToString(*r.assetId, ""))
 	}
 	if r.tokenName != nil {
 		localVarQueryParams.Add("token_name", parameterToString(*r.tokenName, ""))

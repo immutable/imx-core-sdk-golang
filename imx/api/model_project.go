@@ -25,7 +25,7 @@ type Project struct {
 	CollectionRemaining int32 `json:"collection_remaining"`
 	// The company name
 	CompanyName string `json:"company_name"`
-	// The project contact email
+	// The project contact email (must be registered as a developer account with Immutable at https://hub.immutable.com)
 	ContactEmail string `json:"contact_email"`
 	// The project ID
 	Id int32 `json:"id"`
