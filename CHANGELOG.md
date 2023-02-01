@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - YYYY-MM-DD
 
+### Removed
+
+- Removed unused parameter from `listMints` interface
+
 ## [v1.0.0-beta.1] - 2022-12-12
 
 ### Changed
