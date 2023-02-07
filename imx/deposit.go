@@ -77,6 +77,7 @@ GetDeposit Gets details of a deposit with the given ID
 */
 func (c *Client) GetDeposit(ctx context.Context, id string) (*api.Deposit, error) {
 	response, httpResponse, err := c.DepositsAPI.GetDeposit(ctx, id).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -101,6 +102,7 @@ ListDeposits Gets a list of deposits
 */
 func (c *Client) ListDeposits(req *api.ApiListDepositsRequest) (*api.ListDepositsResponse, error) {
 	response, httpResponse, err := c.DepositsAPI.ListDepositsExecute(*req)
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -152,6 +154,7 @@ func (c *Client) getSignableDeposit(
 	ctx context.Context,
 	request *api.GetSignableDepositRequest) (*api.GetSignableDepositResponse, error) {
 	signableDepositResponse, httpResponse, err := c.DepositsAPI.GetSignableDeposit(ctx).GetSignableDepositRequest(*request).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -331,6 +334,7 @@ Deposit performs the deposit workflow on the ERC20Deposit.
 func (d *ERC20Deposit) Deposit(ctx context.Context, c *Client, l1signer L1Signer, overrides *bind.TransactOpts) (*types.Transaction, error) {
 	// Get decimals for this specific ERC20
 	token, httpResponse, err := c.TokensAPI.GetToken(ctx, d.TokenAddress).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

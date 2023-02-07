@@ -35,6 +35,7 @@ func (c *Client) RegisterOffchain(ctx context.Context,
 
 	signableRegistrationRequest := api.NewGetSignableRegistrationRequest(etherKey, starkKey)
 	signableResponse, httpResponse, err := c.UsersAPI.GetSignableRegistrationOffchain(ctx).GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -46,6 +47,7 @@ func (c *Client) RegisterOffchain(ctx context.Context,
 
 	registerUserRequest := api.NewRegisterUserRequest(ethSignature, etherKey, starkKey, starkSignature)
 	registerUserResponse, httpResponse, err := c.UsersAPI.RegisterUser(ctx).RegisterUserRequest(*registerUserRequest).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -83,6 +85,7 @@ Can also be used to check if the user is registered or not when it returns an er
 */
 func (c *Client) GetUsers(ctx context.Context, user string) (*api.GetUsersApiResponse, error) {
 	response, httpResponse, err := c.UsersAPI.GetUsers(ctx, user).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -97,6 +100,7 @@ func (c *Client) getSignableRegistrationOnchain(
 	signableRegistrationRequest := api.NewGetSignableRegistrationRequest(etherKey, starkKey)
 	signableRegistrationResponse, httpResponse, err := c.UsersAPI.GetSignableRegistration(ctx).
 		GetSignableRegistrationRequest(*signableRegistrationRequest).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

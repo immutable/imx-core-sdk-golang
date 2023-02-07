@@ -44,6 +44,7 @@ func (c *Client) ListMetadataRefreshes(
 	}
 
 	metadataRefreshes, httpResponse, err := c.MetadataRefreshesAPI.GetAListOfMetadataRefreshesExecute(req)
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -85,6 +86,7 @@ func (c *Client) GetMetadataRefreshErrors(
 	}
 
 	metadataRefreshErrorsResponse, httpResponse, err := c.MetadataRefreshesAPI.GetMetadataRefreshErrorsExecute(req)
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -117,6 +119,7 @@ func (c *Client) GetMetadataRefreshResults(
 		XImxEthTimestamp(timestamp)
 
 	metadataRefreshResponse, httpResponse, err := c.MetadataRefreshesAPI.GetMetadataRefreshResultsExecute(req)
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -149,6 +152,7 @@ func (c *Client) CreateMetadataRefresh(
 	req.CreateMetadataRefreshRequest(*createMetadataRefreshRequest)
 
 	createMetadataRefreshResponse, httpResponse, err := c.MetadataRefreshesAPI.RequestAMetadataRefreshExecute(req)
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

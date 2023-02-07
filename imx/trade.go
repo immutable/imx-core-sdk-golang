@@ -25,6 +25,7 @@ func (c *Client) CreateTrade(
 	ethAddress := l1signer.GetAddress()
 	request.User = ethAddress
 	signableTrade, httpResponse, err := c.TradesAPI.GetSignableTrade(ctx).GetSignableTradeRequest(request).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -53,6 +54,7 @@ func (c *Client) CreateTrade(
 			VaultIdSell:         signableTrade.VaultIdSell,
 		}).
 		XImxEthAddress(ethAddress).XImxEthSignature(ethSignature).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -68,6 +70,7 @@ GetTrade Get details of a trade with the given ID
 */
 func (c *Client) GetTrade(ctx context.Context, id string) (*api.Trade, error) {
 	response, httpResponse, err := c.TradesAPI.GetTrade(ctx, id).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -92,6 +95,7 @@ ListTrades Gets a list of trades
 */
 func (c *Client) ListTrades(req *api.ApiListTradesRequest) (*api.ListTradesResponse, error) {
 	response, httpResponse, err := c.TradesAPI.ListTradesExecute(*req)
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

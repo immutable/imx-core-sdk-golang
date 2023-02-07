@@ -24,6 +24,7 @@ func (c *Client) CreateOrder(ctx context.Context,
 	ethAddress := l1signer.GetAddress()
 	request.User = ethAddress
 	signableOrder, httpResponse, err := c.OrdersAPI.GetSignableOrder(ctx).GetSignableOrderRequestV3(*request).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -50,6 +51,7 @@ func (c *Client) CreateOrder(ctx context.Context,
 			VaultIdBuy:          signableOrder.VaultIdBuy,
 			VaultIdSell:         signableOrder.VaultIdSell,
 		}).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -71,6 +73,7 @@ func (c *Client) CancelOrder(ctx context.Context,
 	request api.GetSignableCancelOrderRequest,
 ) (*api.CancelOrderResponse, error) {
 	signableCancelOrder, httpResponse, err := c.OrdersAPI.GetSignableCancelOrder(ctx).GetSignableCancelOrderRequest(request).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -87,6 +90,7 @@ func (c *Client) CancelOrder(ctx context.Context,
 			OrderId:        request.OrderId,
 			StarkSignature: starkSignature,
 		}).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -102,6 +106,7 @@ GetOrder Get details of an order with the given ID
 */
 func (c *Client) GetOrder(ctx context.Context, id string) (*api.Order, error) {
 	response, httpResponse, err := c.OrdersAPI.GetOrder(ctx, id).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -126,6 +131,7 @@ ListOrders Gets a list of orders
 */
 func (c *Client) ListOrders(req *api.ApiListOrdersRequest) (*api.ListOrdersResponse, error) {
 	response, httpResponse, err := c.OrdersAPI.ListOrdersExecute(*req)
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

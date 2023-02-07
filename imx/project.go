@@ -36,6 +36,7 @@ func (c *Client) CreateProject(
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
 		Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -60,6 +61,7 @@ func (c *Client) GetProject(ctx context.Context, l1signer L1Signer, id string) (
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
 		Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -106,6 +108,7 @@ func (c *Client) GetProjects(
 	}
 
 	response, httpResponse, err := getProjectsRequest.Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

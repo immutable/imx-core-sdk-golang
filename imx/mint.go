@@ -104,6 +104,7 @@ func (c *Client) Mint(
 	}
 
 	mintTokensResponse, httpResponse, err := c.MintsAPI.MintTokens(ctx).MintTokensRequestV2(mintRequest).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -119,6 +120,7 @@ GetMint Get details of a mint with the given ID
 */
 func (c *Client) GetMint(ctx context.Context, id string) (*api.Mint, error) {
 	response, httpResponse, err := c.MintsAPI.GetMint(ctx, id).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -143,6 +145,7 @@ ListMints Gets a list of mints
 */
 func (c *Client) ListMints(req *api.ApiListMintsRequest) (*api.ListMintsResponse, error) {
 	response, httpResponse, err := c.MintsAPI.ListMintsExecute(*req)
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
