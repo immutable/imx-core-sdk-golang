@@ -32,6 +32,7 @@ func (c *Client) PrepareWithdrawal(
 	ethAddress := l1signer.GetAddress()
 	request.User = ethAddress
 	signableResponse, httpResponse, err := c.WithdrawalsAPI.GetSignableWithdrawal(ctx).GetSignableWithdrawalRequest(request).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -51,6 +52,7 @@ func (c *Client) PrepareWithdrawal(
 	}
 	apiCreateWithdrawalRequest := c.WithdrawalsAPI.CreateWithdrawal(ctx).XImxEthAddress(ethAddress).XImxEthSignature(ethSignature)
 	withdrawalResponse, httpResponse, err := apiCreateWithdrawalRequest.CreateWithdrawalRequest(withdrawalRequest).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -297,6 +299,7 @@ func (w *ERC721Withdrawal) CompleteWithdrawal(
 	overrides *bind.TransactOpts,
 ) (*types.Transaction, error) {
 	mintableTokenResponse, httpResponse, err := c.MintsAPI.GetMintableTokenDetailsByClientTokenId(ctx, w.TokenAddress, w.TokenID).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		if httpResponse.StatusCode == 404 {
 			// Token is already minted on L1
@@ -384,6 +387,7 @@ GetWithdrawal Get details of a withdrawal with the given ID
 */
 func (c *Client) GetWithdrawal(ctx context.Context, id string) (*api.Withdrawal, error) {
 	response, httpResponse, err := c.WithdrawalsAPI.GetWithdrawal(ctx, id).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -408,6 +412,7 @@ ListWithdrawals Gets a list of withdrawals
 */
 func (c *Client) ListWithdrawals(req *api.ApiListWithdrawalsRequest) (*api.ListWithdrawalsResponse, error) {
 	response, httpResponse, err := c.WithdrawalsAPI.ListWithdrawalsExecute(*req)
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

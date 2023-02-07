@@ -34,6 +34,7 @@ func (c *Client) CreateCollection(
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
 		Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -65,6 +66,7 @@ func (c *Client) UpdateCollection(
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
 		Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -80,6 +82,7 @@ GetCollection Get details of a collection at the given address
 */
 func (c *Client) GetCollection(ctx context.Context, collectionContractAddress string) (*api.Collection, error) {
 	response, httpResponse, err := c.CollectionsAPI.GetCollection(ctx, collectionContractAddress).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -104,6 +107,7 @@ ListCollections Get a list of collections
 */
 func (c *Client) ListCollections(req *api.ApiListCollectionsRequest) (*api.ListCollectionsResponse, error) {
 	response, httpResponse, err := c.CollectionsAPI.ListCollectionsExecute(*req)
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -129,6 +133,7 @@ ListCollectionFilters Get a list of collection filters
 */
 func (c *Client) ListCollectionFilters(req *api.ApiListCollectionFiltersRequest) (*api.CollectionFilter, error) {
 	response, httpResponse, err := c.CollectionsAPI.ListCollectionFiltersExecute(*req)
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

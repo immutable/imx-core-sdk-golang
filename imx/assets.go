@@ -22,6 +22,7 @@ func (c *Client) GetAsset(ctx context.Context, tokenAddress, tokenID string, inc
 	}
 
 	response, httpResponse, err := apiGetAssetRequest.Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -46,6 +47,7 @@ ListAssets Get a list of assets
 */
 func (c *Client) ListAssets(req *api.ApiListAssetsRequest) (*api.ListAssetsResponse, error) {
 	response, httpResponse, err := c.AssetsAPI.ListAssetsExecute(*req)
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

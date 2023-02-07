@@ -24,6 +24,7 @@ func (c *Client) Transfer(
 	request api.GetSignableTransferRequestV1,
 ) (*api.CreateTransferResponseV1, error) {
 	data, httpResponse, err := c.TransfersAPI.GetSignableTransferV1(ctx).GetSignableTransferRequest(request).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -48,6 +49,7 @@ func (c *Client) Transfer(
 		}).
 		XImxEthAddress(ethAddress).
 		XImxEthSignature(ethSignature).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -70,6 +72,7 @@ func (c *Client) BatchNftTransfer(
 	request api.GetSignableTransferRequest,
 ) (*api.CreateTransferResponse, error) {
 	data, httpResponse, err := c.TransfersAPI.GetSignableTransfer(ctx).GetSignableTransferRequestV2(request).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -94,6 +97,7 @@ func (c *Client) BatchNftTransfer(
 		}).
 		XImxEthAddress(ethAddress).
 		XImxEthSignature(ethSignature).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -109,6 +113,7 @@ GetTransfer Get details of a transfer with the given ID
 */
 func (c *Client) GetTransfer(ctx context.Context, id string) (*api.Transfer, error) {
 	response, httpResponse, err := c.TransfersAPI.GetTransfer(ctx, id).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -133,6 +138,7 @@ ListTransfers Gets a list of transfers
 */
 func (c *Client) ListTransfers(req *api.ApiListTransfersRequest) (*api.ListTransfersResponse, error) {
 	response, httpResponse, err := c.TransfersAPI.ListTransfersExecute(*req)
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

@@ -31,6 +31,7 @@ func (c *Client) AddMetadataSchemaToCollection(
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
 		Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -46,6 +47,7 @@ GetMetadataSchema Gets collection metadata schema
 */
 func (c *Client) GetMetadataSchema(ctx context.Context, collectionContractAddress string) ([]api.MetadataSchemaProperty, error) {
 	metadataSchemaProperties, httpResponse, err := c.MetadataAPI.GetMetadataSchema(ctx, collectionContractAddress).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
@@ -78,6 +80,7 @@ func (c *Client) UpdateMetadataSchemaByName(
 		IMXTimestamp(timestamp).
 		IMXSignature(signature).
 		Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
