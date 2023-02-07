@@ -41,6 +41,7 @@ ListBalances Get a list of balances for given user
 */
 func (c *Client) ListBalances(req *api.ApiListBalancesRequest) (*api.ListBalancesResponse, error) {
 	response, httpResponse, err := c.BalancesAPI.ListBalancesExecute(*req)
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}

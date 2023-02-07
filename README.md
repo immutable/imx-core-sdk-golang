@@ -386,7 +386,8 @@ For any bug fixes.
 
 1. Merge your changes
 2. Check and update your local main branch
-3. Update the `VERSION_STR` in publish-gopkg.sh file when ready to publish
+3. Update the `VERSION_STR` in publish-gopkg.sh file when ready to publish. 
+    - Follow [semantic versioning](https://semver.org/) when updating versions.
 4. Run `publish-gopkag.sh`
     - Tags the release and push to remote
     - Published go module to gopkg.
