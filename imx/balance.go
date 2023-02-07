@@ -16,6 +16,7 @@ GetBalance Fetches the token balances of the user
 */
 func (c *Client) GetBalance(ctx context.Context, owner, tokenAddress string) (*api.Balance, error) {
 	response, httpResponse, err := c.BalancesAPI.GetBalance(ctx, owner, tokenAddress).Execute()
+	defer httpResponse.Body.Close()
 	if err != nil {
 		return nil, NewIMXError(httpResponse, err)
 	}
