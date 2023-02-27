@@ -4,9 +4,9 @@ go 1.18
 
 require (
 	github.com/aarbt/hdkeys v0.0.0-20151205172415-ee76d77aba2f
-	github.com/dontpanicdao/caigo v0.4.1
+	github.com/dontpanicdao/caigo v0.2.0
 	github.com/ethereum/go-ethereum v1.10.26
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.8.2
 )
 
 require (
@@ -16,7 +16,6 @@ require (
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.1.0 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
-	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
