@@ -29,18 +29,18 @@ func (c *Client) ListMetadataRefreshes(
 	}
 
 	req := c.MetadataRefreshesAPI.GetAListOfMetadataRefreshes(ctx)
-	req.XImxEthAddress(l1signer.GetAddress()).
+	req = req.XImxEthAddress(l1signer.GetAddress()).
 		XImxEthSignature(signature).
 		XImxEthTimestamp(timestamp)
 
 	if collectionAddress != nil {
-		req.CollectionAddress(*collectionAddress)
+		req = req.CollectionAddress(*collectionAddress)
 	}
 	if pageSize != nil {
-		req.PageSize(*pageSize)
+		req = req.PageSize(*pageSize)
 	}
 	if cursor != nil {
-		req.Cursor(*cursor)
+		req = req.Cursor(*cursor)
 	}
 
 	metadataRefreshes, httpResponse, err := c.MetadataRefreshesAPI.GetAListOfMetadataRefreshesExecute(req)
