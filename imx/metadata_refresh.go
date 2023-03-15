@@ -74,15 +74,15 @@ func (c *Client) GetMetadataRefreshErrors(
 	}
 
 	req := c.MetadataRefreshesAPI.GetMetadataRefreshErrors(ctx, refreshID)
-	req.XImxEthAddress(l1signer.GetAddress()).
+	req = req.XImxEthAddress(l1signer.GetAddress()).
 		XImxEthSignature(signature).
 		XImxEthTimestamp(timestamp)
 
 	if pageSize != nil {
-		req.PageSize(*pageSize)
+		req = req.PageSize(*pageSize)
 	}
 	if cursor != nil {
-		req.Cursor(*cursor)
+		req = req.Cursor(*cursor)
 	}
 
 	metadataRefreshErrorsResponse, httpResponse, err := c.MetadataRefreshesAPI.GetMetadataRefreshErrorsExecute(req)
@@ -114,7 +114,7 @@ func (c *Client) GetMetadataRefreshResults(
 	}
 
 	req := c.MetadataRefreshesAPI.GetMetadataRefreshResults(ctx, refreshID)
-	req.XImxEthAddress(l1signer.GetAddress()).
+	req = req.XImxEthAddress(l1signer.GetAddress()).
 		XImxEthSignature(signature).
 		XImxEthTimestamp(timestamp)
 
@@ -145,11 +145,11 @@ func (c *Client) CreateMetadataRefresh(
 	}
 
 	req := c.MetadataRefreshesAPI.RequestAMetadataRefresh(ctx)
-	req.XImxEthAddress(l1signer.GetAddress()).
+	req = req.XImxEthAddress(l1signer.GetAddress()).
 		XImxEthSignature(signature).
 		XImxEthTimestamp(timestamp)
 
-	req.CreateMetadataRefreshRequest(*createMetadataRefreshRequest)
+	req = req.CreateMetadataRefreshRequest(*createMetadataRefreshRequest)
 
 	createMetadataRefreshResponse, httpResponse, err := c.MetadataRefreshesAPI.RequestAMetadataRefreshExecute(req)
 	defer httpResponse.Body.Close()
