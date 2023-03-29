@@ -1251,8 +1251,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Mint'
-          description: OK
+                items:
+                  $ref: '#/components/schemas/Mint'
+                type: array
+          description: Result array will contain only one item
         "400":
           content:
             application/json:

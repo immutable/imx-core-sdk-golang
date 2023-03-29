@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 ## GetMint
 
-> Mint GetMint(ctx, id).Execute()
+> []Mint GetMint(ctx, id).Execute()
 
 Get details of a mint with the given ID
 
@@ -42,7 +42,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `MintsApi.GetMint``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `GetMint`: Mint
+    // response from `GetMint`: []Mint
     fmt.Fprintf(os.Stdout, "Response from `MintsApi.GetMint`: %v\n", resp)
 }
 ```
@@ -66,7 +66,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Mint**](Mint.md)
+[**[]Mint**](Mint.md)
 
 ### Authorization
 

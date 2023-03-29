@@ -35,8 +35,8 @@ type MintsApi interface {
 	GetMint(ctx context.Context, id string) ApiGetMintRequest
 
 	// GetMintExecute executes the request
-	//  @return Mint
-	GetMintExecute(r ApiGetMintRequest) (*Mint, *http.Response, error)
+	//  @return []Mint
+	GetMintExecute(r ApiGetMintRequest) ([]Mint, *http.Response, error)
 
 	/*
 	GetMintableTokenDetailsByClientTokenId Get details of a mintable token with the given token address and token ID
@@ -92,7 +92,7 @@ type ApiGetMintRequest struct {
 	id string
 }
 
-func (r ApiGetMintRequest) Execute() (*Mint, *http.Response, error) {
+func (r ApiGetMintRequest) Execute() ([]Mint, *http.Response, error) {
 	return r.ApiService.GetMintExecute(r)
 }
 
@@ -114,13 +114,13 @@ func (a *MintsApiService) GetMint(ctx context.Context, id string) ApiGetMintRequ
 }
 
 // Execute executes the request
-//  @return Mint
-func (a *MintsApiService) GetMintExecute(r ApiGetMintRequest) (*Mint, *http.Response, error) {
+//  @return []Mint
+func (a *MintsApiService) GetMintExecute(r ApiGetMintRequest) ([]Mint, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *Mint
+		localVarReturnValue  []Mint
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MintsApiService.GetMint")
