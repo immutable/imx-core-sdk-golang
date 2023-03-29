@@ -118,7 +118,7 @@ GetMint Get details of a mint with the given ID
 @param id Mint ID. This is the transaction_id returned from listMints
 @return ApiGetMintRequest
 */
-func (c *Client) GetMint(ctx context.Context, id string) (*api.Mint, error) {
+func (c *Client) GetMint(ctx context.Context, id string) ([]api.Mint, error) {
 	response, httpResponse, err := c.MintsAPI.GetMint(ctx, id).Execute()
 	defer httpResponse.Body.Close()
 	if err != nil {
