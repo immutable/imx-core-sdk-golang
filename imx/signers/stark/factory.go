@@ -99,11 +99,28 @@ func grind(key *big.Int) *big.Int {
 
 	upperBound := new(big.Int).Sub(sha256EcMaxDigest, new(big.Int).Rem(sha256EcMaxDigest, starkEcOrder))
 
+	//index is 0, 0, 1, 2...
 	var i byte = 0
 	key = hashKeyWithIndex(key, i)
 	for key.Cmp(upperBound) >= 0 {
 		key = hashKeyWithIndex(key, i)
 		i += 1
+	}
+	return new(big.Int).Rem(key, starkEcOrder)
+}
+
+func grindCorrect(key *big.Int) *big.Int {
+	sha256EcMaxDigest, _ := new(big.Int).SetString("10000000000000000000000000000000000000000000000000000000000000000", 16)
+	starkEcOrder, _ := new(big.Int).SetString("0800000000000010ffffffffffffffffb781126dcae7b2321e66a241adc64d2f", 16)
+
+	upperBound := new(big.Int).Sub(sha256EcMaxDigest, new(big.Int).Rem(sha256EcMaxDigest, starkEcOrder))
+
+	//index is 0, 1, 2, ...
+	var i byte = 0
+	key = hashKeyWithIndex(key, i)
+	for key.Cmp(upperBound) >= 0 {
+		i += 1
+		key = hashKeyWithIndex(key, i)
 	}
 	return new(big.Int).Rem(key, starkEcOrder)
 }
