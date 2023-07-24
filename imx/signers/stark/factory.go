@@ -58,7 +58,7 @@ const (
 )
 
 // GenerateLegacyKey Generates a deterministic Stark private key from the provided signer.
-// @return Deterministically generated private key.
+// @return Deterministically generated private key in hex.
 func GenerateLegacyKey(signer imx.L1Signer) (string, error) {
 	seed, err := generateSeed(signer, DefaultSeedMessage)
 	if err != nil {
@@ -180,7 +180,7 @@ func grindKeyV100Beta1(key *big.Int) *big.Int {
 
 	upperBound := new(big.Int).Sub(sha256EcMaxDigest, new(big.Int).Rem(sha256EcMaxDigest, starkEcOrder))
 
-	//index is 0, 0, 1, 2...
+	// index is 0, 0, 1, 2...
 	var i byte = 0
 	key = hashKeyWithIndex(key, i)
 	for key.Cmp(upperBound) >= 0 {
@@ -197,7 +197,7 @@ func grindKeyLegacy(key *big.Int) *big.Int {
 
 	upperBound := new(big.Int).Sub(sha256EcMaxDigest, new(big.Int).Rem(sha256EcMaxDigest, starkEcOrder))
 
-	//index is 0, 0, 0, ...
+	// index is 0, 0, 0, ...
 	var i byte = 0
 	key = hashKeyWithIndex(key, i)
 	for key.Cmp(upperBound) >= 0 {
@@ -213,7 +213,7 @@ func grindKey(key *big.Int) *big.Int {
 
 	upperBound := new(big.Int).Sub(sha256EcMaxDigest, new(big.Int).Rem(sha256EcMaxDigest, starkEcOrder))
 
-	//index is 0, 1, 2, ...
+	// index is 0, 1, 2, ...
 	var i byte = 0
 	key = hashKeyWithIndex(key, i)
 	for key.Cmp(upperBound) >= 0 {
@@ -286,10 +286,10 @@ func getStarkPublicKeyFromImx(ctx context.Context, ethAddress string) (starkPubl
 		URL:         imx.Mainnet.BaseAPIPath,
 		Description: "Prod Environment",
 	}
-	usersApi := api.NewAPIClient(apiConfig).UsersApi
+	usersAPI := api.NewAPIClient(apiConfig).UsersApi
 
 	// Query existing account value for the given user (ethAddress).
-	response, httpResponse, err := usersApi.GetUsers(ctx, ethAddress).Execute()
+	response, httpResponse, err := usersAPI.GetUsers(ctx, ethAddress).Execute()
 	defer httpResponse.Body.Close()
 	if err != nil {
 		if httpResponse.StatusCode == http.StatusNotFound {
@@ -297,7 +297,7 @@ func getStarkPublicKeyFromImx(ctx context.Context, ethAddress string) (starkPubl
 		}
 		return "", false, imx.NewIMXError(httpResponse, err)
 	}
-	//err is nil from here on
+	// err is nil from here on
 	if response == nil {
 		return "", false, imx.NewIMXError(httpResponse, errors.New("nil response"))
 	}
