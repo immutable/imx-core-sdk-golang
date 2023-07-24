@@ -66,15 +66,12 @@ func GenerateLegacyKey(signer imx.L1Signer) (string, error) {
 	}
 
 	starkPath := getStarkPath(LayerName, ApplicationName, signer.GetAddress(), Index)
-	log.Println("stark path:", starkPath)
 	childKey, err := hdkeys.NewMasterKey(seed).Chain(starkPath)
 	if err != nil {
 		return "", err
 	}
-	childBigInt := new(big.Int).SetBytes(childKey.Serialize())
-	log.Println("child key:", hexutil.EncodeBig(childBigInt))
 
-	// Last 32 bits
+	// Last 32 bytes
 	childPrivateKey := childKey.Serialize()[46:]
 	keyBigInt := new(big.Int).SetBytes(childPrivateKey)
 	starkPrivateKey := hexutil.EncodeBig(grindKey(keyBigInt))
@@ -94,7 +91,6 @@ func GenerateLegacyKey(signer imx.L1Signer) (string, error) {
 
 	// The bug only exists if the hashed value of given seed is above the stark curve limit.
 	if !checkIfHashedKeyIsAboveLimit(keyBigInt) {
-		log.Println("1")
 		return starkPrivateKey, nil
 	}
 
