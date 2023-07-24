@@ -9,6 +9,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"log"
 	"math/big"
 	"net/http"
 
@@ -65,10 +66,13 @@ func GenerateLegacyKey(signer imx.L1Signer) (string, error) {
 	}
 
 	starkPath := getStarkPath(LayerName, ApplicationName, signer.GetAddress(), Index)
+	log.Println("stark path:", starkPath)
 	childKey, err := hdkeys.NewMasterKey(seed).Chain(starkPath)
 	if err != nil {
 		return "", err
 	}
+	childBigInt := new(big.Int).SetBytes(childKey.Serialize())
+	log.Println("child key:", hexutil.EncodeBig(childBigInt))
 
 	// Last 32 bits
 	childPrivateKey := childKey.Serialize()[46:]
@@ -90,6 +94,7 @@ func GenerateLegacyKey(signer imx.L1Signer) (string, error) {
 
 	// The bug only exists if the hashed value of given seed is above the stark curve limit.
 	if !checkIfHashedKeyIsAboveLimit(keyBigInt) {
+		log.Println("1")
 		return starkPrivateKey, nil
 	}
 
@@ -100,7 +105,7 @@ func GenerateLegacyKey(signer imx.L1Signer) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("error in obtaining the registered public key: %w", err)
 	}
-
+	log.Println("get public key from imx - no err")
 	// If the account is not found or account matches we just return the key pair at the end of this method.
 	// Only need to so alternative method if the account is found but the stark public key does not match.
 
