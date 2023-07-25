@@ -9,7 +9,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"log"
 	"math/big"
 	"net/http"
 
@@ -97,11 +96,11 @@ func GenerateLegacyKey(signer imx.L1Signer) (string, error) {
 	// Check if the generated stark public key matches with the existing account value for that user.
 	// We are only validating for Production environment.
 	// For Sandbox account/key mismatch, solution is to discard the old account and create a new one.
-	registeredStarkPublicKey, accountNotFound, err := getStarkPublicKeyFromImx(context.Background(), signer.GetAddress())
+	registeredStarkPublicKeyInHex, accountNotFound, err := getStarkPublicKeyFromImx(context.Background(), signer.GetAddress())
 	if err != nil {
 		return "", fmt.Errorf("error in obtaining the registered public key: %w", err)
 	}
-	log.Println("get public key from imx - no err")
+
 	// If the account is not found or account matches we just return the key pair at the end of this method.
 	// Only need to so alternative method if the account is found but the stark public key does not match.
 
@@ -110,12 +109,17 @@ func GenerateLegacyKey(signer imx.L1Signer) (string, error) {
 		return starkPrivateKey, nil
 	}
 
+	registeredStarkPublicKey, success := new(big.Int).SetString(registeredStarkPublicKeyInHex, 0)
+	if !success {
+		return "", fmt.Errorf("error in converting the registered public key to big.Int: %v", registeredStarkPublicKeyInHex)
+	}
+
 	starkSigner, err := NewSigner(starkPrivateKey)
 	if err != nil {
 		return "", fmt.Errorf("creating stark signer: %w", err)
 	}
 	// If the user account matches with generated stark public key user, just return Stark Private Key.
-	if registeredStarkPublicKey == starkSigner.GetPublicKey() {
+	if registeredStarkPublicKey.Cmp(starkSigner.PublicKey()) == 0 {
 		return starkPrivateKey, nil
 	}
 
@@ -129,7 +133,7 @@ func GenerateLegacyKey(signer imx.L1Signer) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("creating stark signer: %w", err)
 	}
-	if registeredStarkPublicKey == starkSigner.GetPublicKey() {
+	if registeredStarkPublicKey.Cmp(starkSigner.PublicKey()) == 0 {
 		return starkPrivateKeyV100Beta1Compatible, nil
 	}
 
@@ -141,7 +145,7 @@ func GenerateLegacyKey(signer imx.L1Signer) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("creating stark signer: %w", err)
 	}
-	if registeredStarkPublicKey == starkSigner.GetPublicKey() {
+	if registeredStarkPublicKey.Cmp(starkSigner.PublicKey()) == 0 {
 		return starkPrivateKeyLegacy, nil
 	}
 
