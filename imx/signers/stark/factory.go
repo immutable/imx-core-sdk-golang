@@ -124,7 +124,7 @@ func GenerateLegacyKey(signer imx.L1Signer) (string, error) {
 	}
 
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	// This is backwards compatible crypto (core-sdk) version 2.0.1
+	// This is backwards compatible with golang SDK 1.0.0-beta.1
 
 	// If we are here, we found the account but did not match with the recorded user account.
 	// Lets try to use grindKeyV100Beta1 method from backwards compatible logic to generate a key and see if that matches.
