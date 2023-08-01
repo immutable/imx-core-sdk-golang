@@ -94,6 +94,11 @@ func (base *Signer) GetPublicKey() string {
 	return fmt.Sprintf("0x%064x", base.publicKey)
 }
 
+// PublicKey returns the stark public key of the StarkSigner as a big.Int.
+func (base *Signer) PublicKey() *big.Int {
+	return base.publicKey
+}
+
 func rsFromSig(signature string) (r, s *big.Int) {
 	sig := signature[2:]
 	size := 64

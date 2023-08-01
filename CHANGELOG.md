@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - YYYY-MM-DD
 
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [v1.0.0] - 2023-08-01
+
+### Fixed
+
+- Added support to generate backwards compatible stark key using `GenerateLegacyKey` for accounts created using `imx-core-sdk` versions and `imx-sdk-js` versions
+
 ### Removed
 
 - Removed unused parameter from `listMints` interface
