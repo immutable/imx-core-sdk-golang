@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2023-08-01
+## [v1.0.0] - 2023-08-01
 
 ### Fixed
 
@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Removed unused parameter from `listMints` interface
 
-## [1.0.0-beta.1] - 2022-12-12
+## [v1.0.0-beta.1] - 2022-12-12
 
 ### Changed
 
@@ -28,19 +28,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Deposit workflow for register and deposit NFT
 
-## [0.2.2] - 2022-11-11
+## [v0.2.2] - 2022-11-11
 
 ### Fixed
 
 - Bug fix to initialize the metadataRefreshesAPI object.
 
-## [0.2.1] - 2022-10-10
+## [v0.2.1] - 2022-10-10
 
 ### Changed
 
 - Added Goerli configuration.
 
-## [0.2.0] - 2022-10-10
+## [v0.2.0] - 2022-10-10
 
 ### Changed
 
@@ -56,7 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated readme to use new interface.
 - Added metadata refresh methods.
 
-## [0.1.0] - 2022-08-29
+## [v0.1.0] - 2022-08-29
 
 Initial release of Core SDK for Golang.
 
