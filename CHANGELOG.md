@@ -5,13 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - YYYY-MM-DD
+## [1.0.0] - 2023-08-01
+
+### Fixed
+
+- Added support to generate backwards compatible stark key using `GenerateLegacyKey` for accounts created using `imx-core-sdk` versions and `imx-sdk-js` versions
 
 ### Removed
 
 - Removed unused parameter from `listMints` interface
 
-## [v1.0.0-beta.1] - 2022-12-12
+## [1.0.0-beta.1] - 2022-12-12
 
 ### Changed
 
@@ -24,19 +28,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Deposit workflow for register and deposit NFT
 
-## [v0.2.2] - 2022-11-11
+## [0.2.2] - 2022-11-11
 
 ### Fixed
 
 - Bug fix to initialize the metadataRefreshesAPI object.
 
-## [v0.2.1] - 2022-10-10
+## [0.2.1] - 2022-10-10
 
 ### Changed
 
 - Added Goerli configuration.
 
-## [v0.2.0] - 2022-10-10
+## [0.2.0] - 2022-10-10
 
 ### Changed
 
@@ -52,7 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated readme to use new interface.
 - Added metadata refresh methods.
 
-## [v0.1.0] - 2022-08-29
+## [0.1.0] - 2022-08-29
 
 Initial release of Core SDK for Golang.
 
