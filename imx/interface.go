@@ -15,7 +15,7 @@ var (
 		EthereumRPC:                 "https://eth-sepolia.g.alchemy.com/v2/",
 		RegistrationContractAddress: "0x1C97Ada273C9A52253f463042f29117090Cd7D83",
 		CoreContractAddress:         "0x7917eDb51ecD6CdB3F9854c3cc593F33de10c623",
-		ChainID:                     big.NewInt(11155111), // Goërli
+		ChainID:                     big.NewInt(11155111), // Sepolia
 	}
 	Mainnet = Environment{
 		BaseAPIPath:                 "https://api.x.immutable.com",
