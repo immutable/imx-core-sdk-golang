@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [v1.0.1] - 2023-10-24
+
+### Deprecated
+
+- The `POST v1/projects` endpoint is now deprecated. Project creations should be done using the [Immutable Developer Hub](https://hub.immutable.com).
+
 ## [v1.0.0] - 2023-08-01
 
 ### Fixed

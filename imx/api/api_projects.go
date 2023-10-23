@@ -30,11 +30,14 @@ type ProjectsApi interface {
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiCreateProjectRequest
+
+	Deprecated
 	*/
 	CreateProject(ctx context.Context) ApiCreateProjectRequest
 
 	// CreateProjectExecute executes the request
 	//  @return CreateProjectResponse
+	// Deprecated
 	CreateProjectExecute(r ApiCreateProjectRequest) (*CreateProjectResponse, *http.Response, error)
 
 	/*
@@ -107,6 +110,8 @@ Create a project
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiCreateProjectRequest
+
+Deprecated
 */
 func (a *ProjectsApiService) CreateProject(ctx context.Context) ApiCreateProjectRequest {
 	return ApiCreateProjectRequest{
@@ -117,6 +122,7 @@ func (a *ProjectsApiService) CreateProject(ctx context.Context) ApiCreateProject
 
 // Execute executes the request
 //  @return CreateProjectResponse
+// Deprecated
 func (a *ProjectsApiService) CreateProjectExecute(r ApiCreateProjectRequest) (*CreateProjectResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
