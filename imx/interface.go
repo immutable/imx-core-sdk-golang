@@ -12,7 +12,7 @@ import (
 var (
 	Sandbox = Environment{
 		BaseAPIPath:                 "https://api.sandbox.x.immutable.com",
-		EthereumRPC:                 "https://eth-sepolia.alchemyapi.io/v2/",
+		EthereumRPC:                 "https://eth-sepolia.g.alchemy.com/v2/",
 		RegistrationContractAddress: "0xDbA6129C02E69405622fAdc3d5A7f8d23eac3b97",
 		CoreContractAddress:         "0x2d5C349fD8464DA06a3f90b4B0E9195F3d1b7F98",
 		ChainID:                     big.NewInt(11155111), // Sepolia
