@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-VERSION_STR="v1.0.0"
+VERSION_STR="v1.0.1"
 
 git tag ${VERSION_STR}
 git push origin ${VERSION_STR}
