@@ -6,6 +6,10 @@
   </p>
 </div>
 
+# 🚨 This library is no longer maintained 🚨
+
+If you're building apps with Immutable, please use [Immutable's Unified SDK](https://github.com/immutable/ts-immutable-sdk)
+
 # Immutable Core SDK Golang
 
 The Immutable Core SDK Golang provides convenient access to the Immutable X API and Ethereum smart contracts for applications written on the Immutable X platform.
