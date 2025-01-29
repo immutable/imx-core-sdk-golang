@@ -623,8 +623,8 @@ type ReadWriter interface {
 ```
 
 ## Use interfaces to inject dependencies
-* Injecting dependancies allows us to replace them with other implementations and mocks for testing
-* Data / metadata is not a dependancy and should be passed in through integral types or value objects (e.g. do not pass config around)
+* Injecting dependencies allows us to replace them with other implementations and mocks for testing
+* Data / metadata is not a dependency and should be passed in through integral types or value objects (e.g. do not pass config around)
 
 :white_check_mark: Good (client is injected, config types are not introduced at all):
 ```
