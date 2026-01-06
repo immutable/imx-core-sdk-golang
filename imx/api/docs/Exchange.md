@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **Provider** | Pointer to **string** | Provider name | [optional] 
 **Status** | Pointer to **string** | Transaction status | [optional] 
 **Type** | Pointer to **string** | Transaction type | [optional] 
-**UpdatedAt** | Pointer to **string** | Time this transaction was updates | [optional] 
+**UpdatedAt** | Pointer to **string** | Time this transaction was updated | [optional] 
 **WalletAddress** | Pointer to **string** | Ethereum address of the user who created transaction | [optional] 
 
 ## Methods
