@@ -280,7 +280,7 @@ if !doesUserOwnThisAsset(user, asset) {
 ```
 package main
 
-// store is cached in between lambda function invocation to make a noticable performance impact.
+// store is cached in between lambda function invocation to make a noticeable performance impact.
 var store *pg.Store
 
 func Handler(....) {
